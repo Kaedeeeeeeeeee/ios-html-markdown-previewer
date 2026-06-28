@@ -45,12 +45,13 @@ Apple references:
 1. Run `scripts/release-audit.sh` on the final commit.
 2. Run `scripts/release-device-build.sh` on the final commit to verify the generic iOS Release build path before signing.
 3. Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before signing.
-4. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Release Device Build And Archive, and Unit Tests.
-5. Select a Generic iOS Device or physical iPhone destination in Xcode.
-6. Create a signed archive from the Release configuration.
-7. Upload the archive to App Store Connect.
-8. Install the processed build through TestFlight or run the archived build on a physical device.
-9. Smoke test:
+4. Run `scripts/verify-public-pages.sh` on the final commit to confirm the public privacy and support URLs are reachable and match local source docs.
+5. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Public App Store Pages, Release Device Build And Archive, and Unit Tests.
+6. Select a Generic iOS Device or physical iPhone destination in Xcode.
+7. Create a signed archive from the Release configuration.
+8. Upload the archive to App Store Connect.
+9. Install the processed build through TestFlight or run the archived build on a physical device.
+10. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.

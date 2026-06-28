@@ -21,9 +21,20 @@ jobs:
           bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh
+          bash -n scripts/verify-public-pages.sh
 
       - name: Run release audit
         run: scripts/release-audit.sh
+
+  public-pages:
+    name: Public App Store Pages
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Verify public privacy and support pages
+        run: scripts/verify-public-pages.sh
 
   release-device-build:
     name: Release Device Build And Archive

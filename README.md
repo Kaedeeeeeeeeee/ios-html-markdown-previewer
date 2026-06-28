@@ -46,6 +46,12 @@ Archive preflight:
 scripts/archive-preflight.sh
 ```
 
+Public App Store page verification:
+
+```sh
+scripts/verify-public-pages.sh
+```
+
 Physical-device validation sample staging:
 
 ```sh
@@ -58,6 +64,7 @@ scripts/prepare-validation-samples.sh
 - App Store Connect handoff: `docs/app-store-connect-handoff.md`
 - Release checklist: `docs/release-checklist.md`
 - Local release audit: `scripts/release-audit.sh`
+- Public App Store page verification: `scripts/verify-public-pages.sh`
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`
 - Generic iOS archive preflight: `scripts/archive-preflight.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
