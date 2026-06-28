@@ -16,6 +16,7 @@
 		2B9B6180BEF46D10F4CF139E /* BuiltInSampleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B7C0F78D5EE26430B2A543 /* BuiltInSampleProvider.swift */; };
 		2C8C029E3B1B9716F3B8707A /* MarkdownRenderServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A15C97FAAE1111325EE80 /* MarkdownRenderServiceTests.swift */; };
 		3296042087BA71A461B01641 /* PreviewDocumentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6445FCACD5DF544D9C8B3C7 /* PreviewDocumentType.swift */; };
+		3B2B653379ECC2EF434C4D0C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FAEC0E1F90889D8DFAC7FCCE /* PrivacyInfo.xcprivacy */; };
 		3CD015B3D1CDC6A1731FA703 /* HTMLSecurityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF65232463BAF59AFE4F50E /* HTMLSecurityTests.swift */; };
 		4BADA28352E97D390F79F0B6 /* BuiltInSampleProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A6A7A19A2DAB57B9E6978 /* BuiltInSampleProviderTests.swift */; };
 		55E257A6BD4B59E091DAAB33 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2E0EA146E3FC5082BD99C3 /* AppView.swift */; };
@@ -88,6 +89,7 @@
 		EB2E0EA146E3FC5082BD99C3 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		EF43D9B0FB07AC1BFFDA700F /* WebNavigationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebNavigationPolicy.swift; sourceTree = "<group>"; };
 		F9B41A86144BE735C5DC2114 /* DocumentPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPreviewView.swift; sourceTree = "<group>"; };
+		FAEC0E1F90889D8DFAC7FCCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				EB2E0EA146E3FC5082BD99C3 /* AppView.swift */,
 				EB2076F32E6C08215040A8F8 /* HTMLMarkdownPreviewerApp.swift */,
 				19DE2ED027CD0D6E8AD1357D /* Info.plist */,
+				FAEC0E1F90889D8DFAC7FCCE /* PrivacyInfo.xcprivacy */,
 				C75419B9343BE0DD2851C7D7 /* Models */,
 				7C10C6C32A904CC9B9784598 /* Services */,
 				03C98A20222D807819DA4269 /* Utilities */,
@@ -245,6 +248,7 @@
 			buildConfigurationList = 0A1CEF86C4A5FFD6F117DC46 /* Build configuration list for PBXNativeTarget "HTMLMarkdownPreviewer" */;
 			buildPhases = (
 				3FFB1766C1A05D4439FD41AB /* Sources */,
+				33C5D4EC7A4364424F4458DD /* Resources */,
 				173BBCA3272D250EC0BF3F60 /* Frameworks */,
 			);
 			buildRules = (
@@ -297,6 +301,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		33C5D4EC7A4364424F4458DD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B2B653379ECC2EF434C4D0C /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3FFB1766C1A05D4439FD41AB /* Sources */ = {
