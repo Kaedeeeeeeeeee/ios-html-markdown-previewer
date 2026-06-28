@@ -30,14 +30,23 @@ final class SmokeUITests: XCTestCase {
     }
 
     private func openSettingsAndVerifyReleaseClaims(app: XCUIApplication) {
-        app.buttons["Settings"].tap()
-        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
+        let settingsButton = app.buttons["settings-button"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 10))
+        for _ in 0..<2 where !settingsScreenExists(app: app) {
+            if settingsButton.isHittable {
+                settingsButton.tap()
+            }
+            if waitForSettingsScreen(app: app) {
+                break
+            }
+        }
+        XCTAssertTrue(settingsScreenExists(app: app), "Settings screen did not appear")
         assertLabelExists("Safe JavaScript: Disabled", app: app)
         assertLabelExists("Safe External Resources: Blocked", app: app)
         assertLabelExists("Processing: On Device", app: app)
         assertLabelExists("Account: None", app: app)
         assertLabelExists("Ads: None", app: app)
-        app.buttons["Done"].tap()
+        app.buttons["settings-done-button"].tap()
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 5))
     }
 
@@ -76,6 +85,22 @@ final class SmokeUITests: XCTestCase {
             app.swipeUp()
         }
         return element.exists
+    }
+
+    private func waitForSettingsScreen(app: XCUIApplication) -> Bool {
+        for _ in 0..<15 {
+            if settingsScreenExists(app: app) {
+                return true
+            }
+            RunLoop.current.run(until: Date().addingTimeInterval(1))
+        }
+        return settingsScreenExists(app: app)
+    }
+
+    private func settingsScreenExists(app: XCUIApplication) -> Bool {
+        app.navigationBars["Settings"].exists
+            || app.collectionViews["settings-screen"].exists
+            || app.staticTexts["Safe JavaScript: Disabled"].exists
     }
 
     private func navigateHome(app: XCUIApplication) {

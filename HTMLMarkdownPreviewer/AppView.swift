@@ -74,6 +74,7 @@ struct AppView: View {
                         Image(systemName: "gearshape")
                     }
                     .accessibilityLabel("Settings")
+                    .accessibilityIdentifier("settings-button")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {

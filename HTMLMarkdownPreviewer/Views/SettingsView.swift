@@ -27,6 +27,7 @@ struct SettingsView: View {
                     settingsRow("Ads", value: "None")
                 }
             }
+            .accessibilityIdentifier("settings-screen")
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -34,6 +35,7 @@ struct SettingsView: View {
                     Button("Done") {
                         dismiss()
                     }
+                    .accessibilityIdentifier("settings-done-button")
                 }
             }
         }
