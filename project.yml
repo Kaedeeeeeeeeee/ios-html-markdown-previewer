@@ -13,6 +13,9 @@ packages:
   ZIPFoundation:
     url: https://github.com/weichsel/ZIPFoundation.git
     from: 0.9.20
+  SwiftMarkdown:
+    url: https://github.com/swiftlang/swift-markdown.git
+    from: 0.8.0
 targets:
   HTMLMarkdownPreviewer:
     type: application
@@ -22,6 +25,8 @@ targets:
       - path: HTMLMarkdownPreviewer
     dependencies:
       - package: ZIPFoundation
+      - package: SwiftMarkdown
+        product: Markdown
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
@@ -36,6 +41,8 @@ targets:
     dependencies:
       - target: HTMLMarkdownPreviewer
       - package: ZIPFoundation
+      - package: SwiftMarkdown
+        product: Markdown
     hostApplication: HTMLMarkdownPreviewer
     settings:
       base:
@@ -49,4 +56,3 @@ schemes:
     test:
       targets:
         - HTMLMarkdownPreviewerTests
-
