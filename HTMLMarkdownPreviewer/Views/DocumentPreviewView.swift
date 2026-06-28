@@ -109,7 +109,10 @@ struct DocumentPreviewView: View {
                 if previewMode == .rawText {
                     state = .rawText(try String(contentsOf: entryFileURL, encoding: .utf8))
                 } else {
-                    state = .markdown(try MarkdownRenderService().render(fileURL: entryFileURL))
+                    state = .markdown(try MarkdownRenderService().render(
+                        fileURL: entryFileURL,
+                        readAccessRootURL: readAccessRootURL(for: document)
+                    ))
                 }
             case .html:
                 if previewMode == .rawText {

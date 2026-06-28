@@ -72,7 +72,8 @@ final class MarkdownRenderServiceTests: XCTestCase {
 
             ![Remote alt](https://example.com/pixel.png)
             """,
-            baseURL: baseURL
+            baseURL: baseURL,
+            readAccessRootURL: baseURL
         )
 
         XCTAssertEqual(document.blocks.count, 2)
@@ -82,7 +83,7 @@ final class MarkdownRenderServiceTests: XCTestCase {
             return XCTFail("Expected local image.")
         }
         XCTAssertEqual(localImage.altText, "Local alt")
-        XCTAssertEqual(localURL, baseURL.appendingPathComponent("images/pixel.png"))
+        XCTAssertEqual(localURL, baseURL.appendingPathComponent("images/pixel.png").standardizedFileURL)
 
         guard case .image(let remoteImage) = document.blocks[1],
               case .remoteBlocked(let source) = remoteImage.kind else {
@@ -91,5 +92,41 @@ final class MarkdownRenderServiceTests: XCTestCase {
         XCTAssertEqual(remoteImage.altText, "Remote alt")
         XCTAssertEqual(source, "https://example.com/pixel.png")
     }
-}
 
+    func testMarkdownLocalImagesCannotEscapeReadAccessRoot() throws {
+        let containerURL = try makeTemporaryDirectory()
+        let rootURL = containerURL.appendingPathComponent("document-root", isDirectory: true)
+        let baseURL = rootURL.appendingPathComponent("nested", isDirectory: true)
+        let outsideURL = containerURL.appendingPathComponent("outside.png")
+        try FileManager.default.createDirectory(at: baseURL, withIntermediateDirectories: true)
+
+        let document = MarkdownRenderService().render(
+            markdown: """
+            ![Root asset](../asset.png)
+
+            ![Outside relative](../../outside.png)
+
+            ![Outside file](\(outsideURL.absoluteString))
+
+            ![Backslash](images\\pixel.png)
+            """,
+            baseURL: baseURL,
+            readAccessRootURL: rootURL
+        )
+
+        XCTAssertEqual(document.blocks.count, 4)
+
+        guard case .image(let rootAsset) = document.blocks[0],
+              case .local(let rootAssetURL) = rootAsset.kind else {
+            return XCTFail("Expected root-contained image.")
+        }
+        XCTAssertEqual(rootAssetURL, rootURL.appendingPathComponent("asset.png").standardizedFileURL)
+
+        for index in 1...3 {
+            guard case .image(let image) = document.blocks[index],
+                  case .unsupported = image.kind else {
+                return XCTFail("Expected unsupported escaped image at index \(index).")
+            }
+        }
+    }
+}

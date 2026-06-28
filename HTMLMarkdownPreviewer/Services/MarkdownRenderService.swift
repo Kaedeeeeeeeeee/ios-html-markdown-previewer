@@ -2,35 +2,50 @@ import Foundation
 import Markdown
 
 final class MarkdownRenderService {
-    func render(markdown: String, baseURL: URL? = nil) -> MarkdownDocument {
+    func render(markdown: String, baseURL: URL? = nil, readAccessRootURL: URL? = nil) -> MarkdownDocument {
         let document = Document(parsing: markdown)
-        let blocks = document.children.flatMap { renderBlock($0, baseURL: baseURL) }
+        let blocks = document.children.flatMap {
+            renderBlock($0, baseURL: baseURL, readAccessRootURL: readAccessRootURL)
+        }
         return MarkdownDocument(blocks: blocks)
     }
 
-    func render(fileURL: URL) throws -> MarkdownDocument {
+    func render(fileURL: URL, readAccessRootURL: URL? = nil) throws -> MarkdownDocument {
         let markdown = try String(contentsOf: fileURL, encoding: .utf8)
-        return render(markdown: markdown, baseURL: fileURL.deletingLastPathComponent())
+        return render(
+            markdown: markdown,
+            baseURL: fileURL.deletingLastPathComponent(),
+            readAccessRootURL: readAccessRootURL
+        )
     }
 
-    private func renderBlock(_ markup: Markup, baseURL: URL?) -> [MarkdownBlock] {
+    private func renderBlock(_ markup: Markup, baseURL: URL?, readAccessRootURL: URL?) -> [MarkdownBlock] {
         switch markup {
         case let heading as Heading:
             return [.heading(level: min(max(heading.level, 1), 6), text: renderInlineChildren(of: heading))]
         case let paragraph as Paragraph:
             if let image = paragraph.children.compactMap({ $0 as? Markdown.Image }).first,
                paragraph.childCount == 1 {
-                return [.image(renderImage(image, baseURL: baseURL))]
+                return [.image(renderImage(image, baseURL: baseURL, readAccessRootURL: readAccessRootURL))]
             }
             return [.paragraph(renderInlineChildren(of: paragraph))]
         case let codeBlock as CodeBlock:
             return [.codeBlock(language: codeBlock.language, code: codeBlock.code)]
         case let quote as BlockQuote:
-            return [.blockQuote(quote.children.flatMap { renderBlock($0, baseURL: baseURL) })]
+            return [.blockQuote(quote.children.flatMap {
+                renderBlock($0, baseURL: baseURL, readAccessRootURL: readAccessRootURL)
+            })]
         case let list as UnorderedList:
-            return [.unorderedList(renderListItems(from: list, baseURL: baseURL))]
+            return [.unorderedList(renderListItems(
+                from: list,
+                baseURL: baseURL,
+                readAccessRootURL: readAccessRootURL
+            ))]
         case let list as OrderedList:
-            return [.orderedList(start: Int(list.startIndex), items: renderListItems(from: list, baseURL: baseURL))]
+            return [.orderedList(
+                start: Int(list.startIndex),
+                items: renderListItems(from: list, baseURL: baseURL, readAccessRootURL: readAccessRootURL)
+            )]
         case _ as ThematicBreak:
             return [.thematicBreak]
         default:
@@ -39,7 +54,11 @@ final class MarkdownRenderService {
         }
     }
 
-    private func renderListItems(from container: ListItemContainer, baseURL: URL?) -> [MarkdownListItem] {
+    private func renderListItems(
+        from container: ListItemContainer,
+        baseURL: URL?,
+        readAccessRootURL: URL?
+    ) -> [MarkdownListItem] {
         container.children.compactMap { child -> MarkdownListItem? in
             guard let item = child as? ListItem else {
                 return nil
@@ -52,7 +71,11 @@ final class MarkdownRenderService {
                 if let paragraph = itemChild as? Paragraph, text.characters.isEmpty {
                     text = renderInlineChildren(of: paragraph)
                 } else {
-                    nestedBlocks.append(contentsOf: renderBlock(itemChild, baseURL: baseURL))
+                    nestedBlocks.append(contentsOf: renderBlock(
+                        itemChild,
+                        baseURL: baseURL,
+                        readAccessRootURL: readAccessRootURL
+                    ))
                 }
             }
 
@@ -114,7 +137,7 @@ final class MarkdownRenderService {
         return markup.children.map { plainText(from: $0) }.joined(separator: " ")
     }
 
-    private func renderImage(_ image: Markdown.Image, baseURL: URL?) -> MarkdownImage {
+    private func renderImage(_ image: Markdown.Image, baseURL: URL?, readAccessRootURL: URL?) -> MarkdownImage {
         let source = image.source ?? ""
         let altText = image.plainText
         let kind: MarkdownImage.SourceKind
@@ -124,12 +147,13 @@ final class MarkdownRenderService {
             case "http", "https":
                 kind = .remoteBlocked(source)
             case "file":
-                kind = .local(url)
+                kind = containedLocalImageKind(for: url, source: source, readAccessRootURL: readAccessRootURL)
             default:
                 kind = .unsupported(source)
             }
         } else if let baseURL {
-            kind = .local(baseURL.appendingPathComponent(source))
+            let resolvedURL = baseURL.appendingPathComponent(source)
+            kind = containedLocalImageKind(for: resolvedURL, source: source, readAccessRootURL: readAccessRootURL)
         } else {
             kind = .unsupported(source)
         }
@@ -140,5 +164,33 @@ final class MarkdownRenderService {
             title: image.title,
             kind: kind
         )
+    }
+
+    private func containedLocalImageKind(
+        for url: URL,
+        source: String,
+        readAccessRootURL: URL?
+    ) -> MarkdownImage.SourceKind {
+        guard !source.isEmpty else {
+            return .unsupported(source)
+        }
+
+        guard let readAccessRootURL else {
+            return .local(url)
+        }
+
+        guard !source.contains("\\") else {
+            return .unsupported(source)
+        }
+
+        let imageURL = url.standardizedFileURL
+        let rootURL = readAccessRootURL.standardizedFileURL
+        let rootPath = rootURL.path.hasSuffix("/") ? rootURL.path : "\(rootURL.path)/"
+
+        guard imageURL.path == rootURL.path || imageURL.path.hasPrefix(rootPath) else {
+            return .unsupported(source)
+        }
+
+        return .local(imageURL)
     }
 }
