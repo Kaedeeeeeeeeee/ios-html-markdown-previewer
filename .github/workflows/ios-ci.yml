@@ -9,10 +9,10 @@ on:
 jobs:
   release-audit:
     name: Release Audit
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Validate shell scripts
         run: |
@@ -24,10 +24,10 @@ jobs:
 
   test:
     name: Unit Tests
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Resolve packages
         run: |
