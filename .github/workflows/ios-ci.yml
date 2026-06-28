@@ -17,10 +17,21 @@ jobs:
       - name: Validate shell scripts
         run: |
           bash -n scripts/capture-release-screenshots.sh
+          bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh
 
       - name: Run release audit
         run: scripts/release-audit.sh
+
+  release-device-build:
+    name: Release Device Build
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build generic iOS Release app
+        run: scripts/release-device-build.sh
 
   test:
     name: Unit Tests

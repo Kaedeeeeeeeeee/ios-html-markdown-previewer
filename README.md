@@ -34,10 +34,18 @@ xcodebuild test \
   -derivedDataPath DerivedData
 ```
 
+Release device build preflight:
+
+```sh
+scripts/release-device-build.sh
+```
+
 ## Release Materials
 
 - App Store listing draft: `docs/app-store-listing.md`
 - Release checklist: `docs/release-checklist.md`
+- Local release audit: `scripts/release-audit.sh`
+- Generic iOS Release build preflight: `scripts/release-device-build.sh`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`
