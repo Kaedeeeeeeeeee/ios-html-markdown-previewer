@@ -3,6 +3,7 @@ import SwiftUI
 struct AppView: View {
     private let store: DocumentLibraryStore
     private let importService: DocumentImportService
+    private let sampleProvider: BuiltInSampleProvider
 
     @State private var documents: [PreviewDocument] = []
     @State private var path: [PreviewDocument] = []
@@ -13,6 +14,7 @@ struct AppView: View {
     init(store: DocumentLibraryStore = DocumentLibraryStore()) {
         self.store = store
         self.importService = DocumentImportService(store: store)
+        self.sampleProvider = BuiltInSampleProvider()
     }
 
     var body: some View {
@@ -23,6 +25,16 @@ struct AppView: View {
                         isImporterPresented = true
                     } label: {
                         Label("Open File", systemImage: "doc.badge.plus")
+                    }
+                }
+
+                Section("Samples") {
+                    ForEach(BuiltInSample.allCases) { sample in
+                        Button {
+                            importSample(sample)
+                        } label: {
+                            SampleRow(sample: sample)
+                        }
                     }
                 }
 
@@ -117,6 +129,15 @@ struct AppView: View {
         }
     }
 
+    private func importSample(_ sample: BuiltInSample) {
+        do {
+            let sampleURL = try sampleProvider.makeSampleURL(for: sample)
+            importURL(sampleURL, source: .bundledSample)
+        } catch {
+            showError(error)
+        }
+    }
+
     private func reloadDocuments() {
         do {
             documents = try store.loadDocuments()
@@ -177,6 +198,25 @@ struct AppView: View {
         }
 
         return error.localizedDescription
+    }
+}
+
+private struct SampleRow: View {
+    let sample: BuiltInSample
+
+    var body: some View {
+        Label {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(sample.title)
+                    .font(.body)
+                Text(sample.subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        } icon: {
+            Image(systemName: sample.documentType.systemImage)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
