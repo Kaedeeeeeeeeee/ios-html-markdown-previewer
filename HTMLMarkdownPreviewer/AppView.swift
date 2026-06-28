@@ -53,6 +53,7 @@ struct AppView: View {
                             NavigationLink(value: document) {
                                 DocumentRow(document: document)
                             }
+                            .accessibilityIdentifier("recent-document-\(document.originalFilename)")
                         }
                         .onDelete(perform: deleteDocuments)
                     }

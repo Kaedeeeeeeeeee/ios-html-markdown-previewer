@@ -25,7 +25,8 @@ final class SmokeUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(identifier: "Scripts and external network resources are blocked.").firstMatch.exists)
         navigateHome(app: app)
 
-        assertLabelExists("Recent", app: app)
+        let recentZIPSample = app.buttons["recent-document-sample-report.zip"]
+        XCTAssertTrue(scrollUntilExists(recentZIPSample, app: app), "Missing recent ZIP sample row")
     }
 
     private func openSettingsAndVerifyReleaseClaims(app: XCUIApplication) {
@@ -65,6 +66,16 @@ final class SmokeUITests: XCTestCase {
             app.swipeUp()
         }
         return element.exists && element.isHittable
+    }
+
+    private func scrollUntilExists(_ element: XCUIElement, app: XCUIApplication) -> Bool {
+        for _ in 0..<6 {
+            if element.waitForExistence(timeout: 1) {
+                return true
+            }
+            app.swipeUp()
+        }
+        return element.exists
     }
 
     private func navigateHome(app: XCUIApplication) {
