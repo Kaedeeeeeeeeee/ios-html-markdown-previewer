@@ -8,6 +8,7 @@ struct AppView: View {
     @State private var documents: [PreviewDocument] = []
     @State private var path: [PreviewDocument] = []
     @State private var isImporterPresented = false
+    @State private var importPickerScope: ImportPickerScope = .previewDocument
     @State private var isSettingsPresented = false
     @State private var errorMessage: String?
     @State private var didHandleLaunchArguments = false
@@ -23,10 +24,18 @@ struct AppView: View {
             List {
                 Section {
                     Button {
-                        isImporterPresented = true
+                        presentImporter(scope: .previewDocument)
                     } label: {
                         Label("Open File", systemImage: "doc.badge.plus")
                     }
+                    .accessibilityIdentifier("open-file-button")
+
+                    Button {
+                        presentImporter(scope: .zipPackage)
+                    } label: {
+                        Label("Open ZIP Package", systemImage: "archivebox")
+                    }
+                    .accessibilityIdentifier("open-zip-package-button")
                 }
 
                 Section("Samples") {
@@ -89,7 +98,7 @@ struct AppView: View {
         }
         .fileImporter(
             isPresented: $isImporterPresented,
-            allowedContentTypes: SupportedDocumentTypes.all,
+            allowedContentTypes: importPickerScope.allowedContentTypes,
             allowsMultipleSelection: false
         ) { result in
             switch result {
@@ -125,6 +134,11 @@ struct AppView: View {
                 }
             }
         )
+    }
+
+    private func presentImporter(scope: ImportPickerScope) {
+        importPickerScope = scope
+        isImporterPresented = true
     }
 
     private func importURL(_ url: URL, source: ImportSource) {

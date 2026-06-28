@@ -34,6 +34,15 @@ final class FileTypeDetectorTests: XCTestCase {
         XCTAssertEqual(FileTypeDetector.documentType(for: .zip), .zipPackage)
     }
 
+    func testImportPickerScopesSeparateDocumentAndZipEntries() {
+        XCTAssertTrue(ImportPickerScope.previewDocument.allowedContentTypes.contains(.html))
+        XCTAssertTrue(ImportPickerScope.previewDocument.allowedContentTypes.contains(SupportedDocumentTypes.markdown))
+        XCTAssertFalse(ImportPickerScope.previewDocument.allowedContentTypes.contains(.zip))
+
+        XCTAssertEqual(ImportPickerScope.zipPackage.allowedContentTypes, [.zip])
+        XCTAssertTrue(SupportedDocumentTypes.all.contains(.zip))
+    }
+
     func testFallsBackToUnsupportedForUnknownOrMissingExtension() {
         XCTAssertEqual(FileTypeDetector.documentType(forPath: "folder/report.txt"), .unsupported)
         XCTAssertEqual(FileTypeDetector.documentType(forPath: "folder/report"), .unsupported)

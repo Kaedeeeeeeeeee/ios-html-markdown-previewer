@@ -9,7 +9,7 @@ The product and implementation plan is in `ios-html-markdown-previewer-plan.md`.
 MVP implementation is complete for the local core flow:
 
 - Document type declarations for HTML, Markdown, and ZIP.
-- App file picker import.
+- Separate app file picker entries for HTML/Markdown files and ZIP report packages.
 - Safe WKWebView preview with JavaScript disabled and external HTTP/HTTPS resources blocked by default.
 - Native Markdown reading view for common Markdown.
 - ZIP package import with local CSS/image resource loading.

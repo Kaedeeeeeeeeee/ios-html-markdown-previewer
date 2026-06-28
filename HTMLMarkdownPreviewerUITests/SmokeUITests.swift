@@ -8,6 +8,8 @@ final class SmokeUITests: XCTestCase {
         app.launchArguments = ["--screenshot-reset-library"]
         app.launch()
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["open-file-button"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["open-zip-package-button"].waitForExistence(timeout: 5))
 
         openSettingsAndVerifyReleaseClaims(app: app)
 
