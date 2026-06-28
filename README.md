@@ -46,6 +46,12 @@ Archive preflight:
 scripts/archive-preflight.sh
 ```
 
+Signed archive creation:
+
+```sh
+DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
+```
+
 Public App Store page verification:
 
 ```sh
@@ -75,6 +81,7 @@ scripts/prepare-validation-samples.sh
 - Public App Store page verification: `scripts/verify-public-pages.sh`
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`
 - Generic iOS archive preflight: `scripts/archive-preflight.sh`
+- Signed Release archive helper: `scripts/create-signed-archive.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`

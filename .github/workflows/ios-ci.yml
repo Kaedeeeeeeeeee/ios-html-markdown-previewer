@@ -18,6 +18,7 @@ jobs:
         run: |
           bash -n scripts/capture-release-screenshots.sh
           bash -n scripts/archive-preflight.sh
+          bash -n scripts/create-signed-archive.sh
           bash -n scripts/prepare-release-packet.sh
           bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh

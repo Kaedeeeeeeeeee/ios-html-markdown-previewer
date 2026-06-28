@@ -13,6 +13,7 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 - `scripts/prepare-release-packet.sh` has generated `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`.
 - `scripts/release-device-build.sh` passes locally.
 - `scripts/archive-preflight.sh` passes locally.
+- `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` has produced the signed Release archive for upload.
 - A signed Release archive or TestFlight build is available for smoke testing.
 - Final archive/TestFlight smoke is recorded with `docs/final-archive-smoke-test-template.md` before submission.
 
@@ -132,9 +133,10 @@ Before selecting the build:
 4. Run `scripts/prepare-release-packet.sh`.
 5. Run `scripts/release-device-build.sh`.
 6. Run `scripts/archive-preflight.sh`.
-7. Create and upload a signed Release archive.
-8. Install the processed build through TestFlight or run the archived build on a physical device.
-9. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with `docs/final-archive-smoke-test-template.md`.
+7. Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh`.
+8. Upload the signed archive from Xcode Organizer and select the processed build in App Store Connect.
+9. Install the processed build through TestFlight or run the archived build on a physical device.
+10. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with `docs/final-archive-smoke-test-template.md`.
 
 Review note summary:
 

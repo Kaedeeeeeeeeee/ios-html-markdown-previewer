@@ -61,6 +61,7 @@ require_file "project.yml"
 require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
 require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
+require_file "scripts/create-signed-archive.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
@@ -164,6 +165,30 @@ else
   fail "Info.plist document types or app metadata are invalid"
 fi
 require_file "docs/export-compliance.md"
+
+echo
+echo "== Signed archive helper =="
+if DEVELOPMENT_TEAM=ABCDE12345 "$ROOT_DIR/scripts/create-signed-archive.sh" --dry-run >/tmp/html-previewer-signed-archive-dry-run.log; then
+  ok "signed archive helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-signed-archive-dry-run.log >&2 || true
+  fail "signed archive helper dry-run failed"
+fi
+if grep -Eq "xcodebuild[[:space:]]+archive" /tmp/html-previewer-signed-archive-dry-run.log; then
+  ok "signed archive helper invokes xcodebuild archive"
+else
+  fail "signed archive helper dry-run is missing xcodebuild archive"
+fi
+if grep -Fq "DEVELOPMENT_TEAM=ABCDE12345" /tmp/html-previewer-signed-archive-dry-run.log; then
+  ok "signed archive helper passes DEVELOPMENT_TEAM"
+else
+  fail "signed archive helper dry-run is missing DEVELOPMENT_TEAM"
+fi
+if grep -Fq "HTMLPreviewer.xcarchive" /tmp/html-previewer-signed-archive-dry-run.log; then
+  ok "signed archive helper uses the expected archive name"
+else
+  fail "signed archive helper dry-run is missing the expected archive name"
+fi
 
 echo
 echo "== Privacy manifest =="
@@ -389,6 +414,9 @@ expected = {
     "HTMLPreviewerReleasePacket/Compliance/export-compliance.md",
     "HTMLPreviewerReleasePacket/AppMetadata/PrivacyInfo.xcprivacy",
     "HTMLPreviewerReleasePacket/AppMetadata/AppIcon-1024x1024@1x.png",
+    "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
+    "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
+    "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
     "HTMLPreviewerReleasePacket/Screenshots/iphone-01-home.png",
     "HTMLPreviewerReleasePacket/Screenshots/ipad-01-home.png",
 }

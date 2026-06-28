@@ -16,6 +16,7 @@
 - App Store handoff materials can be staged with `scripts/prepare-release-packet.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
+- Signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
 - GitHub Actions verifies the public privacy/support URLs on push and pull request.
 - GitHub Actions runs a generic iOS Release device build and archive preflight on push and pull request.
@@ -41,6 +42,7 @@
 - Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.
 - Run `scripts/release-device-build.sh` on the final commit to verify the iPhoneOS Release build path before creating a signed archive.
 - Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
+- Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` on the final commit with the account owner's Apple signing setup.
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
 - Record final archive/TestFlight smoke with `docs/final-archive-smoke-test-template.md` and attach or summarize it in issue #10.
