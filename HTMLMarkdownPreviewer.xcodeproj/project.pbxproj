@@ -36,6 +36,7 @@
 		9F4E2CA17A60915083869830 /* PreviewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C5034F1E81532826C8903C /* PreviewMode.swift */; };
 		A6894C5D7C98820EAF6B487E /* PreviewDocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAC59C06F80EC28688824ED /* PreviewDocumentTests.swift */; };
 		B7861DE67BAD9FE871CBDE59 /* MarkdownRenderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29CEA49687FA097FC44F733 /* MarkdownRenderService.swift */; };
+		D36277C76DC796175C1DECC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C7D7B0936F2EEB27420AC3F /* Assets.xcassets */; };
 		DBA9502FEBAD64AF3A03F3BC /* ImportSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68040EB20BE0C5F832A0B438 /* ImportSource.swift */; };
 		E67CC1AD346DF3B9DF5AF54F /* HTMLMarkdownPreviewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2076F32E6C08215040A8F8 /* HTMLMarkdownPreviewerApp.swift */; };
 		F03DF84FAE2D6E7EB26CD0E7 /* ZipImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7362B1416EB9CA5169E465 /* ZipImportServiceTests.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C7D7B0936F2EEB27420AC3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0FF65232463BAF59AFE4F50E /* HTMLSecurityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLSecurityTests.swift; sourceTree = "<group>"; };
 		19DE2ED027CD0D6E8AD1357D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1A488F87F6736B81628B398F /* ZipImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipImportService.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				EB2E0EA146E3FC5082BD99C3 /* AppView.swift */,
+				0C7D7B0936F2EEB27420AC3F /* Assets.xcassets */,
 				EB2076F32E6C08215040A8F8 /* HTMLMarkdownPreviewerApp.swift */,
 				19DE2ED027CD0D6E8AD1357D /* Info.plist */,
 				FAEC0E1F90889D8DFAC7FCCE /* PrivacyInfo.xcprivacy */,
@@ -307,6 +310,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D36277C76DC796175C1DECC7 /* Assets.xcassets in Resources */,
 				3B2B653379ECC2EF434C4D0C /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
