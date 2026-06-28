@@ -43,6 +43,19 @@ final class ZipImportServiceTests: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: destinationURL.path))
     }
 
+    func testRejectsArchiveFileOverConfiguredSizeLimit() throws {
+        let archiveURL = try makeArchive(files: [
+            "index.html": "<p>root</p>".data(using: .utf8)!
+        ])
+        let destinationURL = try makeTemporaryDirectory().appendingPathComponent("import", isDirectory: true)
+        let service = ZipImportService(limits: ZipImportLimits(maxArchiveBytes: 1))
+
+        XCTAssertThrowsError(try service.importArchive(from: archiveURL, to: destinationURL)) { error in
+            XCTAssertEqual(error as? ZipImportError, .archiveTooLarge)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: destinationURL.path))
+    }
+
     func testSelectsRootIndexHTMLAndSkipsMacOSMetadata() throws {
         let archiveURL = try makeArchive(files: [
             "__MACOSX/._index.html": Data([0]),

@@ -2,6 +2,7 @@ import Foundation
 import ZIPFoundation
 
 struct ZipImportLimits: Sendable {
+    var maxArchiveBytes: UInt64 = 100 * 1_024 * 1_024
     var maxFileCount: Int = 5_000
     var maxSingleFileBytes: UInt64 = 100 * 1_024 * 1_024
     var maxTotalUncompressedBytes: UInt64 = 300 * 1_024 * 1_024
@@ -20,6 +21,7 @@ enum ZipImportError: Error, Equatable {
     case unsupportedEntry(String)
     case duplicatePath(String)
     case caseConflictingPath(String)
+    case archiveTooLarge
     case tooManyFiles(Int)
     case singleFileTooLarge(String)
     case expandedSizeTooLarge
@@ -36,6 +38,7 @@ final class ZipImportService {
     }
 
     func importArchive(from archiveURL: URL, to destinationRootURL: URL) throws -> ZipImportResult {
+        try validateArchiveSize(archiveURL)
         let archive = try Archive(url: archiveURL, accessMode: .read)
 
         let temporaryRootURL = fileManager.temporaryDirectory
@@ -65,6 +68,14 @@ final class ZipImportService {
         } catch {
             try? fileManager.removeItem(at: temporaryRootURL)
             throw error
+        }
+    }
+
+    private func validateArchiveSize(_ archiveURL: URL) throws {
+        let archiveFileSize = try archiveURL.resourceValues(forKeys: [.fileSizeKey]).fileSize
+            .map(UInt64.init) ?? 0
+        guard archiveFileSize <= limits.maxArchiveBytes else {
+            throw ZipImportError.archiveTooLarge
         }
     }
 
