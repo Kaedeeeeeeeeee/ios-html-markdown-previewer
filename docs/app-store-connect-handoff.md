@@ -13,6 +13,7 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 - `scripts/release-device-build.sh` passes locally.
 - `scripts/archive-preflight.sh` passes locally.
 - A signed Release archive or TestFlight build is available for smoke testing.
+- Final archive/TestFlight smoke is recorded with `docs/final-archive-smoke-test-template.md` before submission.
 
 ## App Record
 
@@ -131,7 +132,7 @@ Before selecting the build:
 5. Run `scripts/archive-preflight.sh`.
 6. Create and upload a signed Release archive.
 7. Install the processed build through TestFlight or run the archived build on a physical device.
-8. Smoke test the built-in HTML, Markdown, and ZIP samples.
+8. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with `docs/final-archive-smoke-test-template.md`.
 
 Review note summary:
 

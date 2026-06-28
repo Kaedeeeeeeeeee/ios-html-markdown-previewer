@@ -41,6 +41,7 @@
 - Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
+- Record final archive/TestFlight smoke with `docs/final-archive-smoke-test-template.md` and attach or summarize it in issue #10.
 
 Use `docs/physical-device-validation.md` for the external-open matrix and `docs/app-store-submission-runbook.md` for the App Store Connect handoff.
 

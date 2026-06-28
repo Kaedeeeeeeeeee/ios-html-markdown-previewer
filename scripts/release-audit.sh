@@ -229,6 +229,7 @@ for path in \
   "docs/app-store-listing.md" \
   "docs/app-store-connect-handoff.md" \
   "docs/app-store-submission-runbook.md" \
+  "docs/final-archive-smoke-test-template.md" \
   "docs/release-checklist.md" \
   "docs/privacy-policy.md" \
   "docs/support.md" \
@@ -250,6 +251,8 @@ require_text "docs/app-store-connect-handoff.md" "Commercial model: paid downloa
 require_text "docs/app-store-connect-handoff.md" "Data collected: none" "App Store Connect handoff states no data collected"
 require_text "docs/app-store-connect-handoff.md" "Unrestricted web access.*No" "App Store Connect handoff covers unrestricted web access"
 require_text "docs/app-store-connect-handoff.md" "ITSAppUsesNonExemptEncryption=false" "App Store Connect handoff covers export compliance"
+require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"
+require_text "docs/final-archive-smoke-test-template.md" "Data Not Collected" "final smoke template covers App Store privacy label check"
 require_text "docs/physical-device-validation-result-template.md" "External Open Matrix" "physical-device result template includes source matrix"
 require_text "docs/physical-device-validation-result-template.md" "Can close #1" "physical-device result template includes issue close decision"
 require_text "docs/privacy-policy.md" "HTML Previewer does not collect personal data" "privacy policy states no personal data collection"

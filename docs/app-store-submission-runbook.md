@@ -17,6 +17,7 @@ Use this runbook after physical-device validation passes and a completed result 
 - Export compliance note: `docs/export-compliance.md`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`
 - Usability samples and review smoke-test samples: `docs/usability-testing/samples/`
+- Final archive/TestFlight smoke template: `docs/final-archive-smoke-test-template.md`
 
 ## App Store Connect
 
@@ -51,7 +52,8 @@ Apple references:
 7. Create a signed archive from the Release configuration.
 8. Upload the archive to App Store Connect.
 9. Install the processed build through TestFlight or run the archived build on a physical device.
-10. Smoke test:
+10. Copy `docs/final-archive-smoke-test-template.md` and record the smoke result.
+11. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.
@@ -70,3 +72,4 @@ Close #10 only after:
 - Physical-device external-open validation from #1 is complete.
 - Physical-device validation evidence is recorded from `docs/physical-device-validation-result-template.md`.
 - Final archive or TestFlight smoke test passes.
+- Final archive or TestFlight smoke evidence is recorded from `docs/final-archive-smoke-test-template.md`.
