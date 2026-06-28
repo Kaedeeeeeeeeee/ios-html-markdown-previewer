@@ -34,11 +34,12 @@ Apple references:
 
 ## Archive And Smoke Test
 
-1. Select a Generic iOS Device or physical iPhone destination in Xcode.
-2. Create an archive from the Release configuration.
-3. Upload the archive to App Store Connect.
-4. Install the processed build through TestFlight or run the archived build on a physical device.
-5. Smoke test:
+1. Run `scripts/release-audit.sh` on the final commit.
+2. Select a Generic iOS Device or physical iPhone destination in Xcode.
+3. Create an archive from the Release configuration.
+4. Upload the archive to App Store Connect.
+5. Install the processed build through TestFlight or run the archived build on a physical device.
+6. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.
