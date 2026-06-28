@@ -22,6 +22,7 @@ copy_dir() {
 }
 
 "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only >/dev/null
+"$ROOT_DIR/scripts/prepare-usability-test-packet.sh" >/dev/null
 
 rm -rf "$PACKET_DIR" "$ZIP_PATH"
 mkdir -p "$PACKET_DIR"
@@ -44,6 +45,8 @@ Key files:
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/HTMLPreviewerValidationSamples.zip
 - PhysicalDevice/validation-download-index.html
+- UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip
+- UsabilityTesting/first-round-result-template.md
 - Screenshots/
 - PublicPages/privacy-policy.md
 - PublicPages/support.md
@@ -72,6 +75,8 @@ copy_file "$ROOT_DIR/DerivedData/ValidationSamples/README-browser-delivery.txt" 
 copy_file "$ROOT_DIR/docs/usability-testing/README.md" "$PACKET_DIR/UsabilityTesting/README.md"
 copy_file "$ROOT_DIR/docs/usability-testing/script.md" "$PACKET_DIR/UsabilityTesting/script.md"
 copy_file "$ROOT_DIR/docs/usability-testing/observation-template.md" "$PACKET_DIR/UsabilityTesting/observation-template.md"
+copy_file "$ROOT_DIR/docs/usability-testing/first-round-result-template.md" "$PACKET_DIR/UsabilityTesting/first-round-result-template.md"
+copy_file "$ROOT_DIR/DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip" "$PACKET_DIR/UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip"
 
 copy_file "$ROOT_DIR/docs/privacy-policy.md" "$PACKET_DIR/PublicPages/privacy-policy.md"
 copy_file "$ROOT_DIR/docs/support.md" "$PACKET_DIR/PublicPages/support.md"
@@ -89,6 +94,7 @@ copy_file "$ROOT_DIR/scripts/archive-preflight.sh" "$PACKET_DIR/Scripts/archive-
 copy_file "$ROOT_DIR/scripts/release-audit.sh" "$PACKET_DIR/Scripts/release-audit.sh"
 copy_file "$ROOT_DIR/scripts/release-device-build.sh" "$PACKET_DIR/Scripts/release-device-build.sh"
 copy_file "$ROOT_DIR/scripts/verify-public-pages.sh" "$PACKET_DIR/Scripts/verify-public-pages.sh"
+copy_file "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" "$PACKET_DIR/Scripts/prepare-usability-test-packet.sh"
 copy_file "$ROOT_DIR/scripts/prepare-validation-samples.sh" "$PACKET_DIR/Scripts/prepare-validation-samples.sh"
 copy_file "$ROOT_DIR/scripts/serve-validation-samples.sh" "$PACKET_DIR/Scripts/serve-validation-samples.sh"
 

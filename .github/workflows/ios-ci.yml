@@ -20,6 +20,7 @@ jobs:
           bash -n scripts/archive-preflight.sh
           bash -n scripts/create-signed-archive.sh
           bash -n scripts/prepare-release-packet.sh
+          bash -n scripts/prepare-usability-test-packet.sh
           bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh

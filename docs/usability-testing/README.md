@@ -2,7 +2,18 @@
 
 This folder contains the first-round usability test materials for HTML Previewer.
 
-Use `script.md` to run the session, `observation-template.md` to capture findings, and `samples/` as the file set shared to the test device through Files, Mail, AirDrop, iCloud Drive, or a messaging app.
+Use `script.md` to run the session, `observation-template.md` to capture findings, `first-round-result-template.md` to record the close decision, and `samples/` as the file set shared to the test device through Files, Mail, AirDrop, iCloud Drive, Safari downloads, or a messaging app.
+
+To stage a self-contained first-round test packet, run:
+
+```sh
+scripts/prepare-usability-test-packet.sh
+```
+
+This creates:
+
+- `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket/`
+- `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`
 
 The first test round should verify that a user can:
 

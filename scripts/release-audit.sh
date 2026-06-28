@@ -63,6 +63,7 @@ require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/prepare-release-packet.sh"
+require_file "scripts/prepare-usability-test-packet.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
 require_file "scripts/serve-validation-samples.sh"
@@ -264,7 +265,8 @@ for path in \
   "docs/physical-device-validation.md" \
   "docs/physical-device-validation-result-template.md" \
   "docs/usability-testing/script.md" \
-  "docs/usability-testing/observation-template.md"; do
+  "docs/usability-testing/observation-template.md" \
+  "docs/usability-testing/first-round-result-template.md"; do
   require_file "$path"
 done
 require_text "docs/app-store-listing.md" "No in-app purchases" "listing states no in-app purchases"
@@ -282,6 +284,8 @@ require_text "docs/final-archive-smoke-test-template.md" "Can submit for review"
 require_text "docs/final-archive-smoke-test-template.md" "Data Not Collected" "final smoke template covers App Store privacy label check"
 require_text "docs/physical-device-validation-result-template.md" "External Open Matrix" "physical-device result template includes source matrix"
 require_text "docs/physical-device-validation-result-template.md" "Can close #1" "physical-device result template includes issue close decision"
+require_text "docs/usability-testing/first-round-result-template.md" "Can close #11" "usability result template includes issue close decision"
+require_text "docs/usability-testing/first-round-result-template.md" "Do not store the participant's real name" "usability result template avoids direct participant identifiers"
 require_text "docs/privacy-policy.md" "HTML Previewer does not collect personal data" "privacy policy states no personal data collection"
 require_text "docs/support.md" "https://gist\\.github\\.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c" "support page includes support contact"
 
@@ -420,6 +424,46 @@ then
 else
   fail "validation sample browser delivery page is missing expected links"
 fi
+if "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" >/tmp/html-previewer-usability-packet.log; then
+  ok "usability test packet can be generated"
+else
+  cat /tmp/html-previewer-usability-packet.log >&2 || true
+  fail "usability test packet generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip" <<'PY'
+import subprocess
+import sys
+
+zip_path = sys.argv[1]
+expected = {
+    "HTMLPreviewerUsabilityTestPacket/README.txt",
+    "HTMLPreviewerUsabilityTestPacket/README-usability.md",
+    "HTMLPreviewerUsabilityTestPacket/script.md",
+    "HTMLPreviewerUsabilityTestPacket/observation-template.md",
+    "HTMLPreviewerUsabilityTestPacket/first-round-result-template.md",
+    "HTMLPreviewerUsabilityTestPacket/AppStore/app-store-listing.md",
+    "HTMLPreviewerUsabilityTestPacket/AppStore/privacy-policy.md",
+    "HTMLPreviewerUsabilityTestPacket/Samples/basic-report.html",
+    "HTMLPreviewerUsabilityTestPacket/Samples/legacy-report.htm",
+    "HTMLPreviewerUsabilityTestPacket/Samples/markdown-notes.md",
+    "HTMLPreviewerUsabilityTestPacket/Samples/markdown-reference.markdown",
+    "HTMLPreviewerUsabilityTestPacket/Samples/zip-report.zip",
+    "HTMLPreviewerUsabilityTestPacket/Samples/external-resource.html",
+    "HTMLPreviewerUsabilityTestPacket/Samples/interactive-trusted.html",
+    "HTMLPreviewerUsabilityTestPacket/Samples/broken.zip",
+}
+raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
+found = set(raw.splitlines())
+missing = sorted(expected - found)
+if missing:
+    print("missing files in usability test packet: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "usability test packet contains expected files"
+else
+  fail "usability test packet is missing expected files"
+fi
 
 echo
 echo "== Release packet =="
@@ -448,6 +492,8 @@ expected = {
     "HTMLPreviewerReleasePacket/PhysicalDevice/README-browser-delivery.txt",
     "HTMLPreviewerReleasePacket/UsabilityTesting/script.md",
     "HTMLPreviewerReleasePacket/UsabilityTesting/observation-template.md",
+    "HTMLPreviewerReleasePacket/UsabilityTesting/first-round-result-template.md",
+    "HTMLPreviewerReleasePacket/UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip",
     "HTMLPreviewerReleasePacket/PublicPages/privacy-policy.md",
     "HTMLPreviewerReleasePacket/PublicPages/support.md",
     "HTMLPreviewerReleasePacket/Compliance/privacy-required-reasons.md",
@@ -458,6 +504,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-usability-test-packet.sh",
     "HTMLPreviewerReleasePacket/Screenshots/iphone-01-home.png",
     "HTMLPreviewerReleasePacket/Screenshots/ipad-01-home.png",
 }
