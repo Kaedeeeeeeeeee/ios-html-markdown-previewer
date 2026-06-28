@@ -11,6 +11,7 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
 - Privacy and required reason API note: `docs/privacy-required-reasons.md`
+- Export compliance note: `docs/export-compliance.md`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`
 - Usability samples and review smoke-test samples: `docs/usability-testing/samples/`
 
@@ -22,7 +23,8 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 4. Enter the listing name, subtitle, description, keywords, promotional text, and review notes from `docs/app-store-listing.md`.
 5. Upload screenshots from `docs/app-store-screenshots/`.
 6. Set privacy labels to "Data Not Collected" to match the app behavior and privacy manifest.
-7. Add the uploaded build after it finishes App Store Connect processing.
+7. Confirm export compliance answers match `ITSAppUsesNonExemptEncryption=false`.
+8. Add the uploaded build after it finishes App Store Connect processing.
 
 Apple references:
 
@@ -31,6 +33,7 @@ Apple references:
 - Manage app privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy
 - Screenshot specifications: https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
 - Required reason API declarations: https://developer.apple.com/documentation/bundleresources/describing-use-of-required-reason-api
+- Export compliance overview: https://developer.apple.com/help/app-store-connect/manage-app-information/overview-of-export-compliance
 
 ## Archive And Smoke Test
 

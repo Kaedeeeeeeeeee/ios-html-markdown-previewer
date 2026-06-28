@@ -5,6 +5,7 @@
 - Final app icon is included in `Assets.xcassets`.
 - Privacy manifest is included in the app target.
 - Required reason API usage is documented in `docs/privacy-required-reasons.md`.
+- Export compliance metadata is documented in `docs/export-compliance.md`.
 - App Store listing draft and review notes are in `docs/app-store-listing.md`.
 - iPhone and iPad screenshot sets are captured in `docs/app-store-screenshots/`.
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
@@ -21,6 +22,7 @@
 - Create App Store Connect record as paid download.
 - Confirm no IAP products are configured for MVP.
 - Fill privacy labels as "Data Not Collected".
+- Confirm export compliance in App Store Connect matches `ITSAppUsesNonExemptEncryption=false`.
 - Add review notes from `docs/app-store-listing.md`.
 - Run full simulator test suite on the final commit.
 - Run `scripts/release-audit.sh` on the final commit.

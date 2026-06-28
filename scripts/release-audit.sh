@@ -119,6 +119,8 @@ if data.get("CFBundleDisplayName") != "HTML Previewer":
     errors.append("CFBundleDisplayName must be HTML Previewer")
 if data.get("LSApplicationCategoryType") != "public.app-category.productivity":
     errors.append("LSApplicationCategoryType must be productivity")
+if data.get("ITSAppUsesNonExemptEncryption") is not False:
+    errors.append("ITSAppUsesNonExemptEncryption must be false")
 if data.get("LSSupportsOpeningDocumentsInPlace") is not True:
     errors.append("LSSupportsOpeningDocumentsInPlace must be true")
 
@@ -154,6 +156,7 @@ then
 else
   fail "Info.plist document types or app metadata are invalid"
 fi
+require_file "docs/export-compliance.md"
 
 echo
 echo "== Privacy manifest =="
@@ -220,6 +223,7 @@ for path in \
   "docs/app-store-listing.md" \
   "docs/app-store-submission-runbook.md" \
   "docs/release-checklist.md" \
+  "docs/export-compliance.md" \
   "docs/physical-device-validation.md" \
   "docs/usability-testing/script.md" \
   "docs/usability-testing/observation-template.md"; do
