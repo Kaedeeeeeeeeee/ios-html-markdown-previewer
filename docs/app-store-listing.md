@@ -14,6 +14,12 @@ Name: HTML Previewer
 
 Subtitle: Local HTML and Markdown viewer
 
+## App Information URLs
+
+Privacy Policy URL: https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/privacy-policy.md
+
+Support URL: https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/support.md
+
 ## Promotional Text
 
 Open local HTML, Markdown, and ZIP report packages on iPhone and iPad. Files stay on device, with safe HTML preview enabled by default.

@@ -7,6 +7,8 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 ## Source Materials
 
 - Listing draft: `docs/app-store-listing.md`
+- Privacy policy page: `docs/privacy-policy.md`
+- Support page: `docs/support.md`
 - Release checklist: `docs/release-checklist.md`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
@@ -20,16 +22,18 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 1. Create or open the app record for bundle id `com.kaede.htmlmarkdownpreviewer`.
 2. Configure the commercial model as paid download.
 3. Confirm no in-app purchase products are configured for MVP.
-4. Enter the listing name, subtitle, description, keywords, promotional text, and review notes from `docs/app-store-listing.md`.
-5. Upload screenshots from `docs/app-store-screenshots/`.
-6. Set privacy labels to "Data Not Collected" to match the app behavior and privacy manifest.
-7. Confirm export compliance answers match `ITSAppUsesNonExemptEncryption=false`.
-8. Add the uploaded build after it finishes App Store Connect processing.
+4. Enter the listing name, subtitle, description, keywords, promotional text, support URL, privacy policy URL, and review notes from `docs/app-store-listing.md`.
+5. Confirm `docs/privacy-policy.md` and `docs/support.md` are reachable at public HTTPS URLs before submission.
+6. Upload screenshots from `docs/app-store-screenshots/`.
+7. Set privacy labels to "Data Not Collected" to match the app behavior and privacy manifest.
+8. Confirm export compliance answers match `ITSAppUsesNonExemptEncryption=false`.
+9. Add the uploaded build after it finishes App Store Connect processing.
 
 Apple references:
 
 - Create an app record: https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app
 - Upload builds: https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds
+- Required, localizable, and editable properties: https://developer.apple.com/help/app-store-connect/reference/required-localizable-and-editable-properties/
 - Manage app privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy
 - Screenshot specifications: https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
 - Required reason API declarations: https://developer.apple.com/documentation/bundleresources/describing-use-of-required-reason-api
