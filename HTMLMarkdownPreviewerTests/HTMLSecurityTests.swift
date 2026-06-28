@@ -77,6 +77,38 @@ final class HTMLSecurityTests: XCTestCase {
         XCTAssertEqual(imageWidth, 8)
     }
 
+    func testSafePreviewDisablesPageJavaScriptAndInteractiveModeEnablesIt() async throws {
+        let rootURL = try makeTemporaryDirectory()
+        let htmlURL = rootURL.appendingPathComponent("script.html")
+        let html = """
+        <!doctype html>
+        <html>
+        <body>
+          <p id="target">before</p>
+          <script>
+            document.getElementById('target').textContent = 'after';
+          </script>
+        </body>
+        </html>
+        """
+        try html.data(using: .utf8)?.write(to: htmlURL)
+
+        let safeConfiguration = try await HTMLPreviewConfiguration.make(mode: .safePreview)
+        let safeWebView = try await loadFile(htmlURL, readAccessRoot: rootURL, configuration: safeConfiguration)
+        let safeText = try await safeWebView.evaluateJavaScript(
+            "document.getElementById('target').textContent"
+        ) as? String
+
+        let interactiveConfiguration = try await HTMLPreviewConfiguration.make(mode: .interactive)
+        let interactiveWebView = try await loadFile(htmlURL, readAccessRoot: rootURL, configuration: interactiveConfiguration)
+        let interactiveText = try await interactiveWebView.evaluateJavaScript(
+            "document.getElementById('target').textContent"
+        ) as? String
+
+        XCTAssertEqual(safeText, "before")
+        XCTAssertEqual(interactiveText, "after")
+    }
+
     private func loadFile(
         _ fileURL: URL,
         readAccessRoot: URL,
