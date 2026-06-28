@@ -222,6 +222,7 @@ echo
 echo "== App Store materials =="
 for path in \
   "docs/app-store-listing.md" \
+  "docs/app-store-connect-handoff.md" \
   "docs/app-store-submission-runbook.md" \
   "docs/release-checklist.md" \
   "docs/privacy-policy.md" \
@@ -239,6 +240,10 @@ require_text "docs/app-store-listing.md" "Paid download" "listing states paid do
 require_text "docs/app-store-listing.md" "Data collected: None" "listing privacy draft states no data collected"
 require_text "docs/app-store-listing.md" "Privacy Policy URL: https://gist\\.github\\.com/Kaedeeeeeeeeee/b3baa9048f37467e51bd9b3513787c42" "listing includes privacy policy URL"
 require_text "docs/app-store-listing.md" "Support URL: https://gist\\.github\\.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c" "listing includes support URL"
+require_text "docs/app-store-connect-handoff.md" "Commercial model: paid download" "App Store Connect handoff states paid download"
+require_text "docs/app-store-connect-handoff.md" "Data collected: none" "App Store Connect handoff states no data collected"
+require_text "docs/app-store-connect-handoff.md" "Unrestricted web access.*No" "App Store Connect handoff covers unrestricted web access"
+require_text "docs/app-store-connect-handoff.md" "ITSAppUsesNonExemptEncryption=false" "App Store Connect handoff covers export compliance"
 require_text "docs/privacy-policy.md" "HTML Previewer does not collect personal data" "privacy policy states no personal data collection"
 require_text "docs/support.md" "https://gist\\.github\\.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c" "support page includes support contact"
 

@@ -7,6 +7,7 @@
 - Required reason API usage is documented in `docs/privacy-required-reasons.md`.
 - Export compliance metadata is documented in `docs/export-compliance.md`.
 - App Store listing draft and review notes are in `docs/app-store-listing.md`.
+- App Store Connect field handoff is in `docs/app-store-connect-handoff.md`.
 - Privacy policy and support page drafts are in `docs/privacy-policy.md` and `docs/support.md`.
 - iPhone and iPad screenshot sets are captured in `docs/app-store-screenshots/`.
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
@@ -23,6 +24,7 @@
 - Verify document type open/share flow on a physical iPhone.
 - Verify Files, Mail, AirDrop, iCloud Drive, and at least one messaging app source.
 - Create App Store Connect record as paid download.
+- Use `docs/app-store-connect-handoff.md` to fill and confirm app record, pricing, privacy, age rating, export compliance, screenshots, and review notes.
 - Confirm privacy policy URL and support URL are publicly reachable HTTPS pages.
 - Confirm no IAP products are configured for MVP.
 - Fill privacy labels as "Data Not Collected".

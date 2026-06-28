@@ -7,6 +7,7 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 ## Source Materials
 
 - Listing draft: `docs/app-store-listing.md`
+- App Store Connect handoff: `docs/app-store-connect-handoff.md`
 - Privacy policy page: `docs/privacy-policy.md`
 - Support page: `docs/support.md`
 - Release checklist: `docs/release-checklist.md`
@@ -22,7 +23,7 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 1. Create or open the app record for bundle id `com.kaede.htmlmarkdownpreviewer`.
 2. Configure the commercial model as paid download.
 3. Confirm no in-app purchase products are configured for MVP.
-4. Enter the listing name, subtitle, description, keywords, promotional text, support URL, privacy policy URL, and review notes from `docs/app-store-listing.md`.
+4. Enter the app record, pricing, listing, privacy, age rating, export compliance, support URL, privacy policy URL, and review notes using `docs/app-store-connect-handoff.md` and `docs/app-store-listing.md`.
 5. Confirm the public privacy policy and support gist URLs in `docs/app-store-listing.md` are reachable before submission.
 6. Upload screenshots from `docs/app-store-screenshots/`.
 7. Set privacy labels to "Data Not Collected" to match the app behavior and privacy manifest.

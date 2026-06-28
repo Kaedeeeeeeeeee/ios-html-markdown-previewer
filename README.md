@@ -43,6 +43,7 @@ scripts/release-device-build.sh
 ## Release Materials
 
 - App Store listing draft: `docs/app-store-listing.md`
+- App Store Connect handoff: `docs/app-store-connect-handoff.md`
 - Release checklist: `docs/release-checklist.md`
 - Local release audit: `scripts/release-audit.sh`
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`
