@@ -82,6 +82,12 @@ First-round usability test packet:
 scripts/prepare-usability-test-packet.sh
 ```
 
+Final submission preflight:
+
+```sh
+scripts/final-submission-preflight.sh
+```
+
 ## Release Materials
 
 - App Store listing draft: `docs/app-store-listing.md`
@@ -97,6 +103,7 @@ scripts/prepare-usability-test-packet.sh
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
 - Physical-device validation browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
+- Final submission preflight: `scripts/final-submission-preflight.sh`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`

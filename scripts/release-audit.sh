@@ -62,6 +62,7 @@ require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
 require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
 require_file "scripts/create-signed-archive.sh"
+require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
 require_file "scripts/prepare-validation-samples.sh"
@@ -501,6 +502,7 @@ expected = {
     "HTMLPreviewerReleasePacket/AppMetadata/PrivacyInfo.xcprivacy",
     "HTMLPreviewerReleasePacket/AppMetadata/AppIcon-1024x1024@1x.png",
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
+    "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",

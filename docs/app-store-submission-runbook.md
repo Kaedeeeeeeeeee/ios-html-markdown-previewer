@@ -22,6 +22,7 @@ Use this runbook after physical-device validation passes and a completed result 
 - Signed archive helper: `scripts/create-signed-archive.sh`
 - Physical-device sample browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
+- Final submission preflight: `scripts/final-submission-preflight.sh`
 
 ## App Store Connect
 
@@ -47,22 +48,19 @@ Apple references:
 
 ## Archive And Smoke Test
 
-1. Run `scripts/release-audit.sh` on the final commit.
-2. Run `scripts/verify-public-pages.sh` on the final commit to confirm the public privacy and support URLs are reachable and match local source docs.
-3. Run `scripts/prepare-release-packet.sh` on the final commit and keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
-4. Run `scripts/release-device-build.sh` on the final commit to verify the generic iOS Release build path before signing.
-5. Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before signing.
-6. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
-7. Create a signed archive from the final commit:
+1. Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence. This covers release audit, public page verification, release packet staging, usability packet staging, validation sample staging, signed-archive dry-run, generic iOS Release build, and archive preflight.
+2. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
+3. Keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
+4. Create a signed archive from the final commit:
    ```sh
    DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
    ```
    Set `PROVISIONING_PROFILE_SPECIFIER=<profile name>` only if the account owner uses manual signing.
-8. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
-9. Wait for App Store Connect processing to finish and select the processed build.
-10. Install the processed build through TestFlight or run the archived build on a physical device.
-11. Copy `docs/final-archive-smoke-test-template.md` and record the smoke result.
-12. Smoke test:
+5. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
+6. Wait for App Store Connect processing to finish and select the processed build.
+7. Install the processed build through TestFlight or run the archived build on a physical device.
+8. Copy `docs/final-archive-smoke-test-template.md` and record the smoke result.
+9. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.

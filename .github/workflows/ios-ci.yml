@@ -19,6 +19,7 @@ jobs:
           bash -n scripts/capture-release-screenshots.sh
           bash -n scripts/archive-preflight.sh
           bash -n scripts/create-signed-archive.sh
+          bash -n scripts/final-submission-preflight.sh
           bash -n scripts/prepare-release-packet.sh
           bash -n scripts/prepare-usability-test-packet.sh
           bash -n scripts/prepare-validation-samples.sh

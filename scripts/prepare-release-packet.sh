@@ -55,6 +55,7 @@ Key files:
 - AppMetadata/PrivacyInfo.xcprivacy
 - AppMetadata/AppIcon-1024x1024@1x.png
 - Scripts/create-signed-archive.sh
+- Scripts/final-submission-preflight.sh
 
 Before submission, complete the physical-device and final archive/TestFlight
 result templates and summarize them in the linked GitHub issues.
@@ -90,6 +91,7 @@ copy_file "$ROOT_DIR/HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/Ap
 copy_dir "$ROOT_DIR/docs/app-store-screenshots" "$PACKET_DIR/Screenshots"
 
 copy_file "$ROOT_DIR/scripts/create-signed-archive.sh" "$PACKET_DIR/Scripts/create-signed-archive.sh"
+copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts/final-submission-preflight.sh"
 copy_file "$ROOT_DIR/scripts/archive-preflight.sh" "$PACKET_DIR/Scripts/archive-preflight.sh"
 copy_file "$ROOT_DIR/scripts/release-audit.sh" "$PACKET_DIR/Scripts/release-audit.sh"
 copy_file "$ROOT_DIR/scripts/release-device-build.sh" "$PACKET_DIR/Scripts/release-device-build.sh"

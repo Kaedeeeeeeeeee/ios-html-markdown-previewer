@@ -9,6 +9,7 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 - Physical-device external-open validation from #1 has passed or all blocking failures are fixed.
 - The final commit passes GitHub Actions jobs: Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
 - `scripts/release-audit.sh` passes locally.
+- `scripts/final-submission-preflight.sh` passes locally and has generated `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md`.
 - `scripts/verify-public-pages.sh` passes locally.
 - `scripts/prepare-release-packet.sh` has generated `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`.
 - `scripts/serve-validation-samples.sh --prepare-only` passes locally.
@@ -130,15 +131,12 @@ Use `docs/export-compliance.md`.
 Before selecting the build:
 
 1. Confirm final GitHub Actions run is green.
-2. Run `scripts/release-audit.sh`.
-3. Run `scripts/verify-public-pages.sh`.
-4. Run `scripts/prepare-release-packet.sh`.
-5. Run `scripts/release-device-build.sh`.
-6. Run `scripts/archive-preflight.sh`.
-7. Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh`.
-8. Upload the signed archive from Xcode Organizer and select the processed build in App Store Connect.
-9. Install the processed build through TestFlight or run the archived build on a physical device.
-10. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with `docs/final-archive-smoke-test-template.md`.
+2. Run `scripts/final-submission-preflight.sh` and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md`.
+3. Confirm the generated release packet exists at `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`.
+4. Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh`.
+5. Upload the signed archive from Xcode Organizer and select the processed build in App Store Connect.
+6. Install the processed build through TestFlight or run the archived build on a physical device.
+7. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with `docs/final-archive-smoke-test-template.md`.
 
 Review note summary:
 

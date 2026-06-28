@@ -19,6 +19,7 @@
 - Signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials.
 - Physical-device validation samples can be delivered to Safari with `scripts/serve-validation-samples.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.
+- Final local submission gates can be run with `scripts/final-submission-preflight.sh`.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
 - GitHub Actions verifies the public privacy/support URLs on push and pull request.
 - GitHub Actions runs a generic iOS Release device build and archive preflight on push and pull request.
@@ -41,6 +42,7 @@
 - Run full simulator test suite on the final commit.
 - Run `scripts/release-audit.sh` on the final commit.
 - Run `scripts/verify-public-pages.sh` on the final commit.
+- Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence.
 - Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.
 - Run `scripts/prepare-usability-test-packet.sh` and use it for the first external usability round.
 - Run `scripts/serve-validation-samples.sh` when staging sample files for Safari download and device-side sharing.
