@@ -26,6 +26,7 @@
 
 - Verify document type open/share flow on a physical iPhone.
 - Verify Files, Mail, AirDrop, iCloud Drive, and at least one messaging app source.
+- Record the run with `docs/physical-device-validation-result-template.md` and attach or summarize it in issue #1.
 - Create App Store Connect record as paid download.
 - Use `docs/app-store-connect-handoff.md` to fill and confirm app record, pricing, privacy, age rating, export compliance, screenshots, and review notes.
 - Confirm privacy policy URL and support URL are publicly reachable HTTPS pages.

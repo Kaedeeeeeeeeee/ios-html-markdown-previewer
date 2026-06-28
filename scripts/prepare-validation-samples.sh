@@ -24,6 +24,7 @@ mkdir -p "$STAGING_DIR"
 for filename in "${sample_files[@]}"; do
   cp "$SAMPLES_DIR/$filename" "$STAGING_DIR/$filename"
 done
+cp "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$STAGING_DIR/physical-device-validation-result-template.md"
 
 cat > "$STAGING_DIR/README.txt" <<'EOF'
 HTML Previewer validation samples
@@ -41,6 +42,9 @@ Additional safety and error-path samples:
 - external-resource.html verifies Safe Preview external resource blocking.
 - interactive-trusted.html verifies Safe Preview vs Interactive mode behavior.
 - broken.zip verifies the invalid ZIP error path.
+
+Use physical-device-validation-result-template.md to record the physical-device
+source matrix and source-specific caveats.
 
 If this folder is distributed as HTMLPreviewerValidationSamples.zip, first expand it in Files.
 Do not use the outer distribution ZIP as the app's ZIP-import test file; use zip-report.zip.

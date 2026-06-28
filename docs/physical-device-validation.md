@@ -12,6 +12,9 @@ This validation must run on a physical iPhone because simulator source-app behav
 - iOS version:
 - App version:
 
+Copy `docs/physical-device-validation-result-template.md` before each run and keep the completed result with the release evidence. Suggested path:
+`docs/physical-device-validation-results/YYYY-MM-DD-device-build.md`.
+
 ## Test Files
 
 Use the files in `docs/usability-testing/samples/`:
@@ -35,6 +38,8 @@ This creates:
 
 - `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples/`
 - `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`
+
+The staged folder also includes `physical-device-validation-result-template.md` so the tester can keep notes beside the sample files.
 
 If you distribute `HTMLPreviewerValidationSamples.zip` to a device, first expand it in Files. Use the individual files in the expanded folder for the source matrix. Do not use the outer distribution ZIP as the app's ZIP-import test file; use `zip-report.zip`.
 

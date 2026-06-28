@@ -234,6 +234,7 @@ for path in \
   "docs/support.md" \
   "docs/export-compliance.md" \
   "docs/physical-device-validation.md" \
+  "docs/physical-device-validation-result-template.md" \
   "docs/usability-testing/script.md" \
   "docs/usability-testing/observation-template.md"; do
   require_file "$path"
@@ -249,6 +250,8 @@ require_text "docs/app-store-connect-handoff.md" "Commercial model: paid downloa
 require_text "docs/app-store-connect-handoff.md" "Data collected: none" "App Store Connect handoff states no data collected"
 require_text "docs/app-store-connect-handoff.md" "Unrestricted web access.*No" "App Store Connect handoff covers unrestricted web access"
 require_text "docs/app-store-connect-handoff.md" "ITSAppUsesNonExemptEncryption=false" "App Store Connect handoff covers export compliance"
+require_text "docs/physical-device-validation-result-template.md" "External Open Matrix" "physical-device result template includes source matrix"
+require_text "docs/physical-device-validation-result-template.md" "Can close #1" "physical-device result template includes issue close decision"
 require_text "docs/privacy-policy.md" "HTML Previewer does not collect personal data" "privacy policy states no personal data collection"
 require_text "docs/support.md" "https://gist\\.github\\.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c" "support page includes support contact"
 
@@ -336,6 +339,7 @@ expected = {
     "HTMLPreviewerValidationSamples/interactive-trusted.html",
     "HTMLPreviewerValidationSamples/broken.zip",
     "HTMLPreviewerValidationSamples/README.txt",
+    "HTMLPreviewerValidationSamples/physical-device-validation-result-template.md",
 }
 raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
 found = set(raw.splitlines())

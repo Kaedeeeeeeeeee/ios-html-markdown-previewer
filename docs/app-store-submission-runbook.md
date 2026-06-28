@@ -2,7 +2,7 @@
 
 Issue: #10
 
-Use this runbook after physical-device validation passes. Keep the app as a paid download for MVP; do not configure StoreKit products, subscriptions, ads, or account requirements.
+Use this runbook after physical-device validation passes and a completed result exists from `docs/physical-device-validation-result-template.md`. Keep the app as a paid download for MVP; do not configure StoreKit products, subscriptions, ads, or account requirements.
 
 ## Source Materials
 
@@ -68,4 +68,5 @@ Close #10 only after:
 - Privacy labels are filled and match the app behavior.
 - Screenshots are accepted by App Store Connect.
 - Physical-device external-open validation from #1 is complete.
+- Physical-device validation evidence is recorded from `docs/physical-device-validation-result-template.md`.
 - Final archive or TestFlight smoke test passes.
