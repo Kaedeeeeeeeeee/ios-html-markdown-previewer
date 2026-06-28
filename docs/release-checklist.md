@@ -59,6 +59,7 @@ Use `docs/physical-device-validation.md` for the external-open matrix and `docs/
 ## Current Automated Validation
 
 - File type detection
+- External URL detection for file details
 - ZIP path traversal rejection
 - ZIP duplicate/case-conflict rejection
 - ZIP archive, file count, single-file, and expanded-size limits

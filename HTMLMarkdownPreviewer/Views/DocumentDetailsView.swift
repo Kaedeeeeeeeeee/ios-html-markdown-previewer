@@ -28,6 +28,7 @@ struct DocumentDetailsView: View {
 
                 Section("Preview") {
                     LabeledContent("Mode", value: previewMode.displayName)
+                    LabeledContent("External URLs", value: externalURLText)
                     LabeledContent("Entry Path", value: document.entryFileRelativePath)
                     LabeledContent("Root Path", value: document.localRootRelativePath)
                 }
@@ -57,6 +58,18 @@ struct DocumentDetailsView: View {
 
     private func formatted(_ date: Date) -> String {
         date.formatted(date: .abbreviated, time: .shortened)
+    }
+
+    private var externalURLText: String {
+        guard let count = document.externalURLCount else {
+            return "Not scanned"
+        }
+
+        if count == 0 {
+            return "None detected"
+        }
+
+        return "\(count) detected"
     }
 }
 

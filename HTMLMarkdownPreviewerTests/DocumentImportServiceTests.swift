@@ -8,7 +8,10 @@ final class DocumentImportServiceTests: XCTestCase {
 
     func testImportsSingleHTMLIntoSandboxAndWritesMetadata() throws {
         let rootURL = try makeTemporaryDirectory()
-        let sourceURL = try makeFixtureFile(named: "report.html", contents: "<h1>Report</h1>")
+        let sourceURL = try makeFixtureFile(
+            named: "report.html",
+            contents: "<h1>Report</h1><img src=\"https://example.com/chart.png\">"
+        )
         let store = DocumentLibraryStore(rootURL: rootURL)
         let service = makeService(store: store)
 
@@ -24,7 +27,11 @@ final class DocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(document.localRootRelativePath, "Imports/\(fixedID.uuidString)")
         XCTAssertEqual(document.originalFileRelativePath, "original/report.html")
         XCTAssertEqual(document.entryFileRelativePath, "original/report.html")
-        XCTAssertEqual(try String(contentsOf: store.entryFileURL(for: document), encoding: .utf8), "<h1>Report</h1>")
+        XCTAssertEqual(document.externalURLCount, 1)
+        XCTAssertEqual(
+            try String(contentsOf: store.entryFileURL(for: document), encoding: .utf8),
+            "<h1>Report</h1><img src=\"https://example.com/chart.png\">"
+        )
 
         let metadataURL = store.documentRootURL(for: document).appendingPathComponent("metadata.json")
         let decodedDocument = try JSONDecoder().decode(PreviewDocument.self, from: Data(contentsOf: metadataURL))
@@ -35,7 +42,10 @@ final class DocumentImportServiceTests: XCTestCase {
     func testImportsZIPAndStoresEntryMetadata() throws {
         let rootURL = try makeTemporaryDirectory()
         let styleData = "body { color: red; }".data(using: .utf8)!
-        let htmlData = "<link rel=\"stylesheet\" href=\"assets/style.css\">".data(using: .utf8)!
+        let htmlData = """
+        <link rel="stylesheet" href="assets/style.css">
+        <img src="https://example.com/chart.png">
+        """.data(using: .utf8)!
         let archiveURL = try makeArchive(files: [
             "assets/style.css": styleData,
             "index.html": htmlData
@@ -50,10 +60,25 @@ final class DocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(document.importSource, .externalOpen)
         XCTAssertEqual(document.originalFileRelativePath, "original/fixture.zip")
         XCTAssertEqual(document.entryFileRelativePath, "extracted/index.html")
+        XCTAssertEqual(document.externalURLCount, 1)
         XCTAssertEqual(document.extractedFileCount, 2)
         XCTAssertEqual(document.totalUncompressedBytes, UInt64(styleData.count + htmlData.count))
         XCTAssertTrue(FileManager.default.fileExists(atPath: store.originalFileURL(for: document).path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: store.entryFileURL(for: document).path))
+    }
+
+    func testExternalReferenceScannerCountsHTTPAndHTTPSReferences() {
+        let scanner = ExternalReferenceScanner()
+
+        let count = scanner.countExternalURLs(
+            in: """
+            <img src="https://example.com/chart.png">
+            [Remote](http://example.org/report)
+            <a href="/local/path">Local</a>
+            """
+        )
+
+        XCTAssertEqual(count, 2)
     }
 
     func testRejectsUnsupportedFilesBeforeCreatingImportRoot() throws {

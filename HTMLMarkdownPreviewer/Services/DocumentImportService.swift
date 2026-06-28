@@ -14,6 +14,7 @@ enum DocumentImportError: Error, Equatable, LocalizedError {
 final class DocumentImportService {
     private let store: DocumentLibraryStore
     private let zipImportService: ZipImportService
+    private let externalReferenceScanner: ExternalReferenceScanner
     private let fileManager: FileManager
     private let uuidProvider: () -> UUID
     private let dateProvider: () -> Date
@@ -21,12 +22,14 @@ final class DocumentImportService {
     init(
         store: DocumentLibraryStore = DocumentLibraryStore(),
         zipImportService: ZipImportService = ZipImportService(),
+        externalReferenceScanner: ExternalReferenceScanner = ExternalReferenceScanner(),
         fileManager: FileManager = .default,
         uuidProvider: @escaping () -> UUID = UUID.init,
         dateProvider: @escaping () -> Date = Date.init
     ) {
         self.store = store
         self.zipImportService = zipImportService
+        self.externalReferenceScanner = externalReferenceScanner
         self.fileManager = fileManager
         self.uuidProvider = uuidProvider
         self.dateProvider = dateProvider
@@ -81,6 +84,7 @@ final class DocumentImportService {
                     entryFileRelativePath: entryRelativePath,
                     entryDocumentType: entryType,
                     fileSize: fileSize,
+                    externalURLCount: externalURLCount(for: zipResult.entryFileURL, type: entryType),
                     extractedFileCount: zipResult.extractedFileCount,
                     totalUncompressedBytes: zipResult.totalUncompressedBytes
                 )
@@ -97,7 +101,8 @@ final class DocumentImportService {
                     originalFileRelativePath: "original/\(originalFilename)",
                     entryFileRelativePath: "original/\(originalFilename)",
                     entryDocumentType: detectedType,
-                    fileSize: fileSize
+                    fileSize: fileSize,
+                    externalURLCount: externalURLCount(for: originalFileURL, type: detectedType)
                 )
             }
 
@@ -125,6 +130,14 @@ final class DocumentImportService {
         return filename.isEmpty ? sourceURL.lastPathComponent : filename
     }
 
+    private func externalURLCount(for fileURL: URL, type: PreviewDocumentType) -> Int? {
+        guard type == .html || type == .markdown else {
+            return nil
+        }
+
+        return try? externalReferenceScanner.countExternalURLs(in: fileURL)
+    }
+
     private func relativePath(of fileURL: URL, from rootURL: URL) throws -> String {
         let rootPath = rootURL.standardizedFileURL.path
         let filePath = fileURL.standardizedFileURL.path
@@ -136,4 +149,23 @@ final class DocumentImportService {
 
         return String(filePath.dropFirst(prefix.count))
     }
+}
+
+struct ExternalReferenceScanner {
+    func countExternalURLs(in fileURL: URL) throws -> Int {
+        let text = try String(contentsOf: fileURL, encoding: .utf8)
+        return countExternalURLs(in: text)
+    }
+
+    func countExternalURLs(in text: String) -> Int {
+        Self.externalURLExpression.matches(
+            in: text,
+            range: NSRange(text.startIndex..<text.endIndex, in: text)
+        ).count
+    }
+
+    private static let externalURLExpression = try! NSRegularExpression(
+        pattern: #"https?://[^\s"'<>)]+"#,
+        options: [.caseInsensitive]
+    )
 }

@@ -13,6 +13,7 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
     var entryFileRelativePath: String
     var entryDocumentType: PreviewDocumentType
     var fileSize: Int64
+    var externalURLCount: Int?
     var extractedFileCount: Int?
     var totalUncompressedBytes: UInt64?
     var lastOpenedAt: Date?
@@ -31,6 +32,7 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         entryFileRelativePath: String,
         entryDocumentType: PreviewDocumentType? = nil,
         fileSize: Int64,
+        externalURLCount: Int? = nil,
         extractedFileCount: Int? = nil,
         totalUncompressedBytes: UInt64? = nil,
         lastOpenedAt: Date? = nil,
@@ -48,6 +50,7 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         self.entryFileRelativePath = entryFileRelativePath
         self.entryDocumentType = entryDocumentType ?? type
         self.fileSize = fileSize
+        self.externalURLCount = externalURLCount
         self.extractedFileCount = extractedFileCount
         self.totalUncompressedBytes = totalUncompressedBytes
         self.lastOpenedAt = lastOpenedAt

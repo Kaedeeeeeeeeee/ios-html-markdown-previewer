@@ -14,6 +14,7 @@ final class PreviewDocumentTests: XCTestCase {
             localRootRelativePath: "Imports/report/original",
             entryFileRelativePath: "report.html",
             fileSize: 12_345,
+            externalURLCount: 2,
             lastOpenedAt: Date(timeIntervalSince1970: 1_718_003_600),
             preferredPreviewMode: .safePreview
         )
