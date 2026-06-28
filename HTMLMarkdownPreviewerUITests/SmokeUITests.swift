@@ -25,7 +25,7 @@ final class SmokeUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(identifier: "Scripts and external network resources are blocked.").firstMatch.exists)
         navigateHome(app: app)
 
-        XCTAssertTrue(app.staticTexts["Recent"].waitForExistence(timeout: 5))
+        assertLabelExists("Recent", app: app)
     }
 
     private func openSettingsAndVerifyReleaseClaims(app: XCUIApplication) {
