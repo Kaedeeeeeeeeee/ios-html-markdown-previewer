@@ -10,6 +10,7 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 - Release checklist: `docs/release-checklist.md`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
+- Privacy and required reason API note: `docs/privacy-required-reasons.md`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`
 - Usability samples and review smoke-test samples: `docs/usability-testing/samples/`
 
@@ -29,6 +30,7 @@ Apple references:
 - Upload builds: https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds
 - Manage app privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy
 - Screenshot specifications: https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
+- Required reason API declarations: https://developer.apple.com/documentation/bundleresources/describing-use-of-required-reason-api
 
 ## Archive And Smoke Test
 

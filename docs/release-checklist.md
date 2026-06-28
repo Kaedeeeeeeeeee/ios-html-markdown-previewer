@@ -4,6 +4,7 @@
 
 - Final app icon is included in `Assets.xcassets`.
 - Privacy manifest is included in the app target.
+- Required reason API usage is documented in `docs/privacy-required-reasons.md`.
 - App Store listing draft and review notes are in `docs/app-store-listing.md`.
 - iPhone and iPad screenshot sets are captured in `docs/app-store-screenshots/`.
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
