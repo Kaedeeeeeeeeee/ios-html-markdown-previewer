@@ -236,10 +236,10 @@ require_text "docs/app-store-listing.md" "No ads" "listing states no ads"
 require_text "docs/app-store-listing.md" "No account" "listing states no account"
 require_text "docs/app-store-listing.md" "Paid download" "listing states paid download"
 require_text "docs/app-store-listing.md" "Data collected: None" "listing privacy draft states no data collected"
-require_text "docs/app-store-listing.md" "Privacy Policy URL: https://github\\.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/privacy-policy\\.md" "listing includes privacy policy URL"
-require_text "docs/app-store-listing.md" "Support URL: https://github\\.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/support\\.md" "listing includes support URL"
+require_text "docs/app-store-listing.md" "Privacy Policy URL: https://gist\\.github\\.com/Kaedeeeeeeeeee/b3baa9048f37467e51bd9b3513787c42" "listing includes privacy policy URL"
+require_text "docs/app-store-listing.md" "Support URL: https://gist\\.github\\.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c" "listing includes support URL"
 require_text "docs/privacy-policy.md" "HTML Previewer does not collect personal data" "privacy policy states no personal data collection"
-require_text "docs/support.md" "https://github\\.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/issues" "support page includes support contact"
+require_text "docs/support.md" "https://gist\\.github\\.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c" "support page includes support contact"
 
 echo
 echo "== Screenshots =="

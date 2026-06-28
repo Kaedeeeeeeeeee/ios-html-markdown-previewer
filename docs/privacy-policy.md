@@ -38,7 +38,7 @@ The app is not directed to children and does not knowingly collect data from chi
 
 For support or privacy questions, use the support page:
 
-https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/support.md
+https://gist.github.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c
 
 ## Changes
 

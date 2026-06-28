@@ -16,9 +16,9 @@ Subtitle: Local HTML and Markdown viewer
 
 ## App Information URLs
 
-Privacy Policy URL: https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/privacy-policy.md
+Privacy Policy URL: https://gist.github.com/Kaedeeeeeeeeee/b3baa9048f37467e51bd9b3513787c42
 
-Support URL: https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/blob/main/docs/support.md
+Support URL: https://gist.github.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c
 
 ## Promotional Text
 

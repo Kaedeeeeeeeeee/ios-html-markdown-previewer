@@ -23,7 +23,7 @@ Use this runbook after physical-device validation passes. Keep the app as a paid
 2. Configure the commercial model as paid download.
 3. Confirm no in-app purchase products are configured for MVP.
 4. Enter the listing name, subtitle, description, keywords, promotional text, support URL, privacy policy URL, and review notes from `docs/app-store-listing.md`.
-5. Confirm `docs/privacy-policy.md` and `docs/support.md` are reachable at public HTTPS URLs before submission.
+5. Confirm the public privacy policy and support gist URLs in `docs/app-store-listing.md` are reachable before submission.
 6. Upload screenshots from `docs/app-store-screenshots/`.
 7. Set privacy labels to "Data Not Collected" to match the app behavior and privacy manifest.
 8. Confirm export compliance answers match `ITSAppUsesNonExemptEncryption=false`.

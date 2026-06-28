@@ -4,9 +4,11 @@ HTML Previewer is a local HTML, Markdown, and ZIP report package viewer for iPho
 
 ## Support Contact
 
-For support, bug reports, or privacy questions, open an issue on GitHub:
+For support, bug reports, or privacy questions, use this public support page:
 
-https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/issues
+https://gist.github.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c
+
+You may leave a comment on the public support gist when signed in to GitHub.
 
 ## Before Contacting Support
 
@@ -19,7 +21,7 @@ Include:
 - Source app, such as Files, Mail, AirDrop, iCloud Drive, Safari downloads, or a messaging app
 - Whether the file opens in Safe Preview, Interactive mode, or Raw Text
 
-Do not attach sensitive files to public GitHub issues.
+Do not attach sensitive files to public comments.
 
 ## Common Notes
 
