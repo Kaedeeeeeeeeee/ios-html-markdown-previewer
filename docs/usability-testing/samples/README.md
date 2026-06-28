@@ -11,6 +11,14 @@ Use these files for first-round external open and usability testing:
 - `interactive-trusted.html`: local JavaScript interaction used to evaluate the Safe Preview vs Interactive mode decision.
 - `broken.zip`: intentionally invalid ZIP file used to verify the error path.
 
+To stage a clean folder and distribution ZIP for a physical device, run:
+
+```sh
+scripts/prepare-validation-samples.sh
+```
+
+The generated distribution ZIP is only for moving the sample set to a device. After expanding it in Files, use the individual files for testing.
+
 Regenerate `zip-report.zip` from `zip-report-source/` after editing the source files:
 
 ```sh

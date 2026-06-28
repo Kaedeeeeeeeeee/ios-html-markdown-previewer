@@ -59,6 +59,7 @@ check_png_dimensions() {
 echo "== Project metadata =="
 require_file "project.yml"
 require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
+require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
 require_text "project.yml" "CURRENT_PROJECT_VERSION: 1" "project.yml build number is 1"
 require_text "project.yml" "MARKETING_VERSION: 1\\.0" "project.yml marketing version is 1.0"
@@ -309,6 +310,40 @@ if unzip -t "$ROOT_DIR/docs/usability-testing/samples/broken.zip" >/dev/null 2>&
   fail "broken.zip should remain intentionally invalid"
 else
   ok "broken.zip remains intentionally invalid"
+fi
+if "$ROOT_DIR/scripts/prepare-validation-samples.sh" >/tmp/html-previewer-validation-samples.log; then
+  ok "validation sample staging package can be generated"
+else
+  cat /tmp/html-previewer-validation-samples.log >&2 || true
+  fail "validation sample staging package generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip" <<'PY'
+import subprocess
+import sys
+
+zip_path = sys.argv[1]
+expected = {
+    "HTMLPreviewerValidationSamples/basic-report.html",
+    "HTMLPreviewerValidationSamples/legacy-report.htm",
+    "HTMLPreviewerValidationSamples/markdown-notes.md",
+    "HTMLPreviewerValidationSamples/markdown-reference.markdown",
+    "HTMLPreviewerValidationSamples/zip-report.zip",
+    "HTMLPreviewerValidationSamples/external-resource.html",
+    "HTMLPreviewerValidationSamples/interactive-trusted.html",
+    "HTMLPreviewerValidationSamples/broken.zip",
+    "HTMLPreviewerValidationSamples/README.txt",
+}
+raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
+found = set(raw.splitlines())
+missing = sorted(expected - found)
+if missing:
+    print("missing files in validation sample package: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "validation sample package contains expected files"
+else
+  fail "validation sample package is missing expected files"
 fi
 
 echo

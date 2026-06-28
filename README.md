@@ -40,6 +40,12 @@ Release device build preflight:
 scripts/release-device-build.sh
 ```
 
+Physical-device validation sample staging:
+
+```sh
+scripts/prepare-validation-samples.sh
+```
+
 ## Release Materials
 
 - App Store listing draft: `docs/app-store-listing.md`
@@ -47,6 +53,7 @@ scripts/release-device-build.sh
 - Release checklist: `docs/release-checklist.md`
 - Local release audit: `scripts/release-audit.sh`
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`
+- Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`

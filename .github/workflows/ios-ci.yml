@@ -17,6 +17,7 @@ jobs:
       - name: Validate shell scripts
         run: |
           bash -n scripts/capture-release-screenshots.sh
+          bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh
 

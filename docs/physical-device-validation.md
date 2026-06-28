@@ -25,6 +25,19 @@ Use the files in `docs/usability-testing/samples/`:
 - `interactive-trusted.html`
 - `broken.zip`
 
+To stage only the files needed for device testing, run:
+
+```sh
+scripts/prepare-validation-samples.sh
+```
+
+This creates:
+
+- `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples/`
+- `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`
+
+If you distribute `HTMLPreviewerValidationSamples.zip` to a device, first expand it in Files. Use the individual files in the expanded folder for the source matrix. Do not use the outer distribution ZIP as the app's ZIP-import test file; use `zip-report.zip`.
+
 Use this extension mapping for the source matrix:
 
 | Extension | Primary sample |
