@@ -23,6 +23,7 @@ jobs:
           bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh
+          bash -n scripts/serve-validation-samples.sh
           bash -n scripts/verify-public-pages.sh
 
       - name: Run release audit

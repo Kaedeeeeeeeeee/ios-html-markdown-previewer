@@ -65,6 +65,7 @@ require_file "scripts/create-signed-archive.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
+require_file "scripts/serve-validation-samples.sh"
 require_file "scripts/verify-public-pages.sh"
 require_text "project.yml" "type: bundle\\.ui-testing" "project.yml includes UI test target"
 require_text "project.yml" "CURRENT_PROJECT_VERSION: 1" "project.yml build number is 1"
@@ -382,6 +383,43 @@ then
 else
   fail "validation sample package is missing expected files"
 fi
+if "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only >/tmp/html-previewer-validation-samples-server.log; then
+  ok "validation sample browser delivery page can be prepared"
+else
+  cat /tmp/html-previewer-validation-samples-server.log >&2 || true
+  fail "validation sample browser delivery page generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/ValidationSamples/index.html" <<'PY'
+import pathlib
+import sys
+
+index_path = pathlib.Path(sys.argv[1])
+if not index_path.exists():
+    print(f"missing validation download index: {index_path}", file=sys.stderr)
+    raise SystemExit(1)
+
+html = index_path.read_text(encoding="utf-8")
+expected_links = [
+    "HTMLPreviewerValidationSamples/basic-report.html",
+    "HTMLPreviewerValidationSamples/legacy-report.htm",
+    "HTMLPreviewerValidationSamples/markdown-notes.md",
+    "HTMLPreviewerValidationSamples/markdown-reference.markdown",
+    "HTMLPreviewerValidationSamples/zip-report.zip",
+    "HTMLPreviewerValidationSamples/external-resource.html",
+    "HTMLPreviewerValidationSamples/interactive-trusted.html",
+    "HTMLPreviewerValidationSamples/broken.zip",
+    "HTMLPreviewerValidationSamples.zip",
+]
+missing = [link for link in expected_links if link not in html]
+if missing:
+    print("missing links in validation download index: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "validation sample browser delivery page links expected files"
+else
+  fail "validation sample browser delivery page is missing expected links"
+fi
 
 echo
 echo "== Release packet =="
@@ -406,6 +444,8 @@ expected = {
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
+    "HTMLPreviewerReleasePacket/PhysicalDevice/validation-download-index.html",
+    "HTMLPreviewerReleasePacket/PhysicalDevice/README-browser-delivery.txt",
     "HTMLPreviewerReleasePacket/UsabilityTesting/script.md",
     "HTMLPreviewerReleasePacket/UsabilityTesting/observation-template.md",
     "HTMLPreviewerReleasePacket/PublicPages/privacy-policy.md",
@@ -417,6 +457,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
+    "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",
     "HTMLPreviewerReleasePacket/Screenshots/iphone-01-home.png",
     "HTMLPreviewerReleasePacket/Screenshots/ipad-01-home.png",
 }

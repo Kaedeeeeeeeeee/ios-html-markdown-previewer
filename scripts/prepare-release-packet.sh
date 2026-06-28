@@ -21,7 +21,7 @@ copy_dir() {
   cp -R "$source" "$destination"
 }
 
-"$ROOT_DIR/scripts/prepare-validation-samples.sh" >/dev/null
+"$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only >/dev/null
 
 rm -rf "$PACKET_DIR" "$ZIP_PATH"
 mkdir -p "$PACKET_DIR"
@@ -43,6 +43,7 @@ Key files:
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/HTMLPreviewerValidationSamples.zip
+- PhysicalDevice/validation-download-index.html
 - Screenshots/
 - PublicPages/privacy-policy.md
 - PublicPages/support.md
@@ -65,6 +66,8 @@ copy_file "$ROOT_DIR/docs/final-archive-smoke-test-template.md" "$PACKET_DIR/App
 copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation.md"
 copy_file "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-template.md"
 copy_file "$ROOT_DIR/DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip" "$PACKET_DIR/PhysicalDevice/HTMLPreviewerValidationSamples.zip"
+copy_file "$ROOT_DIR/DerivedData/ValidationSamples/index.html" "$PACKET_DIR/PhysicalDevice/validation-download-index.html"
+copy_file "$ROOT_DIR/DerivedData/ValidationSamples/README-browser-delivery.txt" "$PACKET_DIR/PhysicalDevice/README-browser-delivery.txt"
 
 copy_file "$ROOT_DIR/docs/usability-testing/README.md" "$PACKET_DIR/UsabilityTesting/README.md"
 copy_file "$ROOT_DIR/docs/usability-testing/script.md" "$PACKET_DIR/UsabilityTesting/script.md"
@@ -87,6 +90,7 @@ copy_file "$ROOT_DIR/scripts/release-audit.sh" "$PACKET_DIR/Scripts/release-audi
 copy_file "$ROOT_DIR/scripts/release-device-build.sh" "$PACKET_DIR/Scripts/release-device-build.sh"
 copy_file "$ROOT_DIR/scripts/verify-public-pages.sh" "$PACKET_DIR/Scripts/verify-public-pages.sh"
 copy_file "$ROOT_DIR/scripts/prepare-validation-samples.sh" "$PACKET_DIR/Scripts/prepare-validation-samples.sh"
+copy_file "$ROOT_DIR/scripts/serve-validation-samples.sh" "$PACKET_DIR/Scripts/serve-validation-samples.sh"
 
 (
   cd "$OUTPUT_ROOT"

@@ -43,6 +43,14 @@ The staged folder also includes `physical-device-validation-result-template.md` 
 
 If you distribute `HTMLPreviewerValidationSamples.zip` to a device, first expand it in Files. Use the individual files in the expanded folder for the source matrix. Do not use the outer distribution ZIP as the app's ZIP-import test file; use `zip-report.zip`.
 
+To serve the samples from the Mac for physical-device Safari downloads, run:
+
+```sh
+scripts/serve-validation-samples.sh
+```
+
+Open the printed device URL on an iPhone on the same network, then download or share the individual sample files. Use those downloaded individual files for the Safari download row. This browser delivery helper is only for moving samples onto the device; it does not replace the source-app matrix.
+
 Use this extension mapping for the source matrix:
 
 | Extension | Primary sample |

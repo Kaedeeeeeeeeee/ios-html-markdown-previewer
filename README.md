@@ -70,6 +70,12 @@ Physical-device validation sample staging:
 scripts/prepare-validation-samples.sh
 ```
 
+Physical-device validation sample browser delivery:
+
+```sh
+scripts/serve-validation-samples.sh
+```
+
 ## Release Materials
 
 - App Store listing draft: `docs/app-store-listing.md`
@@ -83,6 +89,7 @@ scripts/prepare-validation-samples.sh
 - Generic iOS archive preflight: `scripts/archive-preflight.sh`
 - Signed Release archive helper: `scripts/create-signed-archive.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
+- Physical-device validation browser delivery: `scripts/serve-validation-samples.sh`
 - Screenshot set: `docs/app-store-screenshots/`
 - Privacy manifest: `HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy`
 - App icon: `HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/`

@@ -11,6 +11,7 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 - `scripts/release-audit.sh` passes locally.
 - `scripts/verify-public-pages.sh` passes locally.
 - `scripts/prepare-release-packet.sh` has generated `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`.
+- `scripts/serve-validation-samples.sh --prepare-only` passes locally.
 - `scripts/release-device-build.sh` passes locally.
 - `scripts/archive-preflight.sh` passes locally.
 - `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` has produced the signed Release archive for upload.
