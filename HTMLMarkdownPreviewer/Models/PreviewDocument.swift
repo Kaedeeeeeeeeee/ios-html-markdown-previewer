@@ -9,8 +9,12 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
     var importSource: ImportSource
     var importedAt: Date
     var localRootRelativePath: String
+    var originalFileRelativePath: String
     var entryFileRelativePath: String
+    var entryDocumentType: PreviewDocumentType
     var fileSize: Int64
+    var extractedFileCount: Int?
+    var totalUncompressedBytes: UInt64?
     var lastOpenedAt: Date?
     var preferredPreviewMode: PreviewMode
 
@@ -23,8 +27,12 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         importSource: ImportSource,
         importedAt: Date = Date(),
         localRootRelativePath: String,
+        originalFileRelativePath: String? = nil,
         entryFileRelativePath: String,
+        entryDocumentType: PreviewDocumentType? = nil,
         fileSize: Int64,
+        extractedFileCount: Int? = nil,
+        totalUncompressedBytes: UInt64? = nil,
         lastOpenedAt: Date? = nil,
         preferredPreviewMode: PreviewMode = .safePreview
     ) {
@@ -36,8 +44,12 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         self.importSource = importSource
         self.importedAt = importedAt
         self.localRootRelativePath = localRootRelativePath
+        self.originalFileRelativePath = originalFileRelativePath ?? entryFileRelativePath
         self.entryFileRelativePath = entryFileRelativePath
+        self.entryDocumentType = entryDocumentType ?? type
         self.fileSize = fileSize
+        self.extractedFileCount = extractedFileCount
+        self.totalUncompressedBytes = totalUncompressedBytes
         self.lastOpenedAt = lastOpenedAt
         self.preferredPreviewMode = preferredPreviewMode
     }
