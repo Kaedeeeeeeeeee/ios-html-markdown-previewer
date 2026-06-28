@@ -20,6 +20,8 @@
 - Run full simulator test suite on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
 
+Use `docs/physical-device-validation.md` for the external-open matrix and `docs/app-store-submission-runbook.md` for the App Store Connect handoff.
+
 ## Current Automated Validation
 
 - File type detection

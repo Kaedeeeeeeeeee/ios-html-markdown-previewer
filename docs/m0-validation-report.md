@@ -27,7 +27,7 @@ The app launches successfully on simulator and the built Info.plist contains the
 
 Important finding: the initial Swift `UTType(importedAs:)` construction for system types caused runtime type declaration warnings for `public.xhtml` and `public.zip-archive`. This was fixed by using `UTType(filenameExtension:)` for XHTML and `UTType.zip` for ZIP.
 
-Remaining work: Files, WeChat, and Mail "Open In" behavior must be verified on a physical device because those source-app entry points are not reliably testable in the simulator.
+Remaining work: Files, WeChat, Mail, AirDrop, iCloud Drive, and one messaging app "Open In" behavior must be verified on a physical device because those source-app entry points are not reliably testable in the simulator. Use `docs/physical-device-validation.md` for the validation matrix.
 
 ### B. WKWebView Safe Mode External Resource Blocking
 
@@ -69,9 +69,8 @@ xcodebuild test \
   -derivedDataPath DerivedData
 ```
 
-Latest result: 7 tests passed, 0 failed.
+Latest XcodeBuildMCP `test_sim` result on 2026-06-28: 24 tests passed, 0 failed.
 
 ## Tooling Note
 
 XcodeBuildMCP `build_sim` succeeds for compile-only validation. During this M0 run, XcodeBuildMCP `test_sim` and `build_run_sim` intermittently timed out in the simulator launch/test-runner wrapper. Direct `xcodebuild test` and direct `simctl launch` succeeded on the same simulator and build artifacts.
-
