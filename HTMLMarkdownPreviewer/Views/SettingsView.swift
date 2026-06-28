@@ -9,22 +9,22 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 Section("HTML") {
-                    LabeledContent("Default Mode", value: PreviewMode.safePreview.displayName)
-                    LabeledContent("Safe JavaScript", value: "Disabled")
-                    LabeledContent("Safe External Resources", value: "Blocked")
+                    settingsRow("Default Mode", value: PreviewMode.safePreview.displayName)
+                    settingsRow("Safe JavaScript", value: "Disabled")
+                    settingsRow("Safe External Resources", value: "Blocked")
                 }
 
                 Section("ZIP Limits") {
-                    LabeledContent("Archive", value: byteCount(zipLimits.maxArchiveBytes))
-                    LabeledContent("Single File", value: byteCount(zipLimits.maxSingleFileBytes))
-                    LabeledContent("Expanded", value: byteCount(zipLimits.maxTotalUncompressedBytes))
-                    LabeledContent("Files", value: "\(zipLimits.maxFileCount)")
+                    settingsRow("Archive", value: byteCount(zipLimits.maxArchiveBytes))
+                    settingsRow("Single File", value: byteCount(zipLimits.maxSingleFileBytes))
+                    settingsRow("Expanded", value: byteCount(zipLimits.maxTotalUncompressedBytes))
+                    settingsRow("Files", value: "\(zipLimits.maxFileCount)")
                 }
 
                 Section("Privacy") {
-                    LabeledContent("Processing", value: "On Device")
-                    LabeledContent("Account", value: "None")
-                    LabeledContent("Ads", value: "None")
+                    settingsRow("Processing", value: "On Device")
+                    settingsRow("Account", value: "None")
+                    settingsRow("Ads", value: "None")
                 }
             }
             .navigationTitle("Settings")
@@ -41,6 +41,12 @@ struct SettingsView: View {
 
     private func byteCount(_ value: UInt64) -> String {
         ByteCountFormatter.string(fromByteCount: Int64(value), countStyle: .file)
+    }
+
+    private func settingsRow(_ title: String, value: String) -> some View {
+        LabeledContent(title, value: value)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(title): \(value)")
     }
 }
 

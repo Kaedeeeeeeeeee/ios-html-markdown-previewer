@@ -46,7 +46,7 @@ Apple references:
 2. Run `scripts/release-device-build.sh` on the final commit to verify the generic iOS Release build path before signing.
 3. Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before signing.
 4. Run `scripts/verify-public-pages.sh` on the final commit to confirm the public privacy and support URLs are reachable and match local source docs.
-5. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Public App Store Pages, Release Device Build And Archive, and Unit Tests.
+5. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
 6. Select a Generic iOS Device or physical iPhone destination in Xcode.
 7. Create a signed archive from the Release configuration.
 8. Upload the archive to App Store Connect.

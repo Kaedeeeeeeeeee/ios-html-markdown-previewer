@@ -50,7 +50,7 @@ jobs:
         run: scripts/archive-preflight.sh
 
   test:
-    name: Unit Tests
+    name: Automated Tests
     runs-on: macos-15
     steps:
       - name: Checkout
@@ -95,7 +95,7 @@ jobs:
 
       - name: Run tests
         run: |
-          xcodebuild test \
+          xcodebuild -quiet test \
             -project HTMLMarkdownPreviewer.xcodeproj \
             -scheme HTMLMarkdownPreviewer \
             -configuration Debug \

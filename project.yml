@@ -49,6 +49,19 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.kaede.htmlmarkdownpreviewer.tests
         INFOPLIST_FILE: HTMLMarkdownPreviewerTests/Info.plist
+  HTMLMarkdownPreviewerUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: HTMLMarkdownPreviewerUITests
+    dependencies:
+      - target: HTMLMarkdownPreviewer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaede.htmlmarkdownpreviewer.uitests
+        INFOPLIST_FILE: HTMLMarkdownPreviewerUITests/Info.plist
+        TEST_TARGET_NAME: HTMLMarkdownPreviewer
 schemes:
   HTMLMarkdownPreviewer:
     build:
@@ -57,3 +70,4 @@ schemes:
     test:
       targets:
         - HTMLMarkdownPreviewerTests
+        - HTMLMarkdownPreviewerUITests

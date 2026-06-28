@@ -36,6 +36,7 @@ struct AppView: View {
                         } label: {
                             SampleRow(sample: sample)
                         }
+                        .accessibilityIdentifier("sample-\(sample.rawValue)")
                     }
                 }
 
@@ -71,6 +72,7 @@ struct AppView: View {
                     } label: {
                         Image(systemName: "gearshape")
                     }
+                    .accessibilityLabel("Settings")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {

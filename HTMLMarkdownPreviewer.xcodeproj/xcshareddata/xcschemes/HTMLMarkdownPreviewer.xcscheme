@@ -50,6 +50,17 @@
                ReferencedContainer = "container:HTMLMarkdownPreviewer.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A9A868ACC1C46BDB5C8002DE"
+               BuildableName = "HTMLMarkdownPreviewerUITests.xctest"
+               BlueprintName = "HTMLMarkdownPreviewerUITests"
+               ReferencedContainer = "container:HTMLMarkdownPreviewer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>
