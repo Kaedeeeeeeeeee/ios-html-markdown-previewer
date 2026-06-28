@@ -8,6 +8,8 @@
 - iPhone and iPad screenshot sets are captured in `docs/app-store-screenshots/`.
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
 - Built-in HTML, Markdown, and ZIP samples are available for first launch and App Review.
+- App marketing version is set to `1.0` and build number is `1`.
+- Release simulator build verifies `CFBundleShortVersionString=1.0`, `CFBundleVersion=1`, app icon assets, and privacy manifest in the app bundle.
 
 ## Required Before App Store Submission
 
