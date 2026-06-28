@@ -10,6 +10,7 @@ struct AppView: View {
     @State private var isImporterPresented = false
     @State private var isSettingsPresented = false
     @State private var errorMessage: String?
+    @State private var didHandleLaunchArguments = false
 
     init(store: DocumentLibraryStore = DocumentLibraryStore()) {
         self.store = store
@@ -100,7 +101,10 @@ struct AppView: View {
         .onOpenURL { url in
             importURL(url, source: .externalOpen)
         }
-        .onAppear(perform: reloadDocuments)
+        .onAppear {
+            reloadDocuments()
+            handleLaunchArgumentsIfNeeded()
+        }
         .alert("Cannot Open File", isPresented: isErrorPresented) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -136,6 +140,39 @@ struct AppView: View {
         } catch {
             showError(error)
         }
+    }
+
+    private func handleLaunchArgumentsIfNeeded() {
+        guard !didHandleLaunchArguments else {
+            return
+        }
+
+        didHandleLaunchArguments = true
+        let arguments = CommandLine.arguments
+
+        if arguments.contains("--screenshot-reset-library") {
+            for document in documents {
+                try? store.delete(document)
+            }
+            reloadDocuments()
+        }
+
+        if let sample = screenshotSample(from: arguments) {
+            importSample(sample)
+        }
+
+        if arguments.contains("--screenshot-settings") {
+            isSettingsPresented = true
+        }
+    }
+
+    private func screenshotSample(from arguments: [String]) -> BuiltInSample? {
+        guard let argument = arguments.first(where: { $0.hasPrefix("--screenshot-sample=") }) else {
+            return nil
+        }
+
+        let rawValue = String(argument.dropFirst("--screenshot-sample=".count))
+        return BuiltInSample(rawValue: rawValue)
     }
 
     private func reloadDocuments() {
