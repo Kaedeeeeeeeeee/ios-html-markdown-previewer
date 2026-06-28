@@ -70,6 +70,7 @@ jobs:
             python3 <<'PY'
           import json
           import subprocess
+          import sys
 
           raw = subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "-j"], text=True)
           devices_by_runtime = json.loads(raw)["devices"]
@@ -100,7 +101,9 @@ jobs:
               raise SystemExit("No available iPhone simulator found")
 
           candidates.sort(reverse=True)
-          print(candidates[0][2])
+          version, _, _, name, udid = candidates[0]
+          print(f"Selected simulator candidate: {name} iOS {'.'.join(map(str, version))}", file=sys.stderr)
+          print(udid)
           PY
           )"
           echo "id=$SIMULATOR_ID" >> "$GITHUB_OUTPUT"
