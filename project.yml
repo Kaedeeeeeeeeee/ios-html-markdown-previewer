@@ -1,0 +1,52 @@
+name: HTMLMarkdownPreviewer
+options:
+  bundleIdPrefix: com.kaede
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 0.1
+    SWIFT_VERSION: 6.0
+packages:
+  ZIPFoundation:
+    url: https://github.com/weichsel/ZIPFoundation.git
+    from: 0.9.20
+targets:
+  HTMLMarkdownPreviewer:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: HTMLMarkdownPreviewer
+    dependencies:
+      - package: ZIPFoundation
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
+        INFOPLIST_FILE: HTMLMarkdownPreviewer/Info.plist
+        CODE_SIGN_STYLE: Automatic
+  HTMLMarkdownPreviewerTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: HTMLMarkdownPreviewerTests
+    dependencies:
+      - target: HTMLMarkdownPreviewer
+      - package: ZIPFoundation
+    hostApplication: HTMLMarkdownPreviewer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaede.htmlmarkdownpreviewer.tests
+        INFOPLIST_FILE: HTMLMarkdownPreviewerTests/Info.plist
+schemes:
+  HTMLMarkdownPreviewer:
+    build:
+      targets:
+        HTMLMarkdownPreviewer: all
+    test:
+      targets:
+        - HTMLMarkdownPreviewerTests
+

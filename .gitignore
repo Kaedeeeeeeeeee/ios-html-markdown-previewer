@@ -1,5 +1,6 @@
 # Xcode
 DerivedData/
+.xcodebuildmcp/
 *.xcuserstate
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
@@ -23,4 +24,3 @@ Carthage/Build/
 *.ipa
 *.dSYM.zip
 *.dSYM
-
