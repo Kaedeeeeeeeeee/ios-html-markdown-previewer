@@ -35,11 +35,12 @@ Apple references:
 ## Archive And Smoke Test
 
 1. Run `scripts/release-audit.sh` on the final commit.
-2. Select a Generic iOS Device or physical iPhone destination in Xcode.
-3. Create an archive from the Release configuration.
-4. Upload the archive to App Store Connect.
-5. Install the processed build through TestFlight or run the archived build on a physical device.
-6. Smoke test:
+2. Confirm the GitHub Actions iOS CI workflow is passing for the final commit.
+3. Select a Generic iOS Device or physical iPhone destination in Xcode.
+4. Create an archive from the Release configuration.
+5. Upload the archive to App Store Connect.
+6. Install the processed build through TestFlight or run the archived build on a physical device.
+7. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.

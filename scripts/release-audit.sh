@@ -66,6 +66,44 @@ require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "PRODUCT_BUNDLE_I
 require_text "project.yml" "ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon" "AppIcon asset catalog is configured"
 
 echo
+echo "== Package resolution =="
+require_file "HTMLMarkdownPreviewer.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+if python3 - "$ROOT_DIR/HTMLMarkdownPreviewer.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" <<'PY'
+import json
+import sys
+
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as handle:
+    data = json.load(handle)
+
+expected = {
+    "zipfoundation": "0.9.20",
+    "swift-markdown": "0.8.0",
+    "swift-cmark": "0.8.0",
+}
+
+pins = {
+    pin["identity"]: pin.get("state", {}).get("version")
+    for pin in data.get("pins", [])
+}
+
+errors = []
+for identity, version in expected.items():
+    if pins.get(identity) != version:
+        errors.append(f"{identity} must be pinned to {version}, found {pins.get(identity)!r}")
+
+if errors:
+    for error in errors:
+        print(error, file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "Swift package dependencies are pinned to expected versions"
+else
+  fail "Swift package dependency pins are invalid"
+fi
+
+echo
 echo "== Info.plist =="
 require_file "HTMLMarkdownPreviewer/Info.plist"
 if python3 - "$ROOT_DIR/HTMLMarkdownPreviewer/Info.plist" <<'PY'
