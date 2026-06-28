@@ -13,8 +13,10 @@
 
 | Task | Pass/Fail | Notes |
 |---|---|---|
-| Open HTML from Files |  |  |
-| Open Markdown from Files |  |  |
+| Open .html from Files |  |  |
+| Open .htm from Files |  |  |
+| Open .md from Files |  |  |
+| Open .markdown from Files |  |  |
 | Open ZIP package |  |  |
 | Understand Safe Preview |  |  |
 | Decide on Interactive mode |  |  |

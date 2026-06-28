@@ -17,19 +17,23 @@ This validation must run on a physical iPhone because simulator source-app behav
 Use the files in `docs/usability-testing/samples/`:
 
 - `basic-report.html`
+- `legacy-report.htm`
 - `markdown-notes.md`
+- `markdown-reference.markdown`
 - `zip-report.zip`
 - `external-resource.html`
 - `interactive-trusted.html`
 - `broken.zip`
 
-Also test extensions:
+Use this extension mapping for the source matrix:
 
-- `.html`
-- `.htm`
-- `.md`
-- `.markdown`
-- `.zip`
+| Extension | Primary sample |
+|---|---|
+| `.html` | `basic-report.html` |
+| `.htm` | `legacy-report.htm` |
+| `.md` | `markdown-notes.md` |
+| `.markdown` | `markdown-reference.markdown` |
+| `.zip` | `zip-report.zip` |
 
 ## Source Matrix
 

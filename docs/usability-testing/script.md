@@ -10,14 +10,16 @@
 ## Tasks
 
 1. Open `basic-report.html` from Files.
-2. Open `markdown-notes.md` from Files.
-3. Open `zip-report.zip` from Files and confirm the local CSS and image appear.
-4. Open `external-resource.html` and describe what Safe Preview is doing.
-5. Open `interactive-trusted.html`, then decide whether to use Interactive mode.
-6. Try opening `broken.zip` and explain the error message.
-7. Return to the app home screen and reopen a recent file.
-8. Delete a recent file.
-9. Review the app listing text and say whether the pricing and privacy model are clear.
+2. Open `legacy-report.htm` from Files.
+3. Open `markdown-notes.md` from Files.
+4. Open `markdown-reference.markdown` from Files.
+5. Open `zip-report.zip` from Files and confirm the local CSS and image appear.
+6. Open `external-resource.html` and describe what Safe Preview is doing.
+7. Open `interactive-trusted.html`, then decide whether to use Interactive mode.
+8. Try opening `broken.zip` and explain the error message.
+9. Return to the app home screen and reopen a recent file.
+10. Delete a recent file.
+11. Review the app listing text and say whether the pricing and privacy model are clear.
 
 ## Moderator Prompts
 

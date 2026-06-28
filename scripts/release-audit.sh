@@ -270,13 +270,36 @@ echo
 echo "== Usability samples =="
 for path in \
   "docs/usability-testing/samples/basic-report.html" \
+  "docs/usability-testing/samples/legacy-report.htm" \
   "docs/usability-testing/samples/markdown-notes.md" \
+  "docs/usability-testing/samples/markdown-reference.markdown" \
   "docs/usability-testing/samples/external-resource.html" \
   "docs/usability-testing/samples/interactive-trusted.html" \
   "docs/usability-testing/samples/zip-report.zip" \
   "docs/usability-testing/samples/broken.zip"; do
   require_file "$path"
 done
+if python3 - "$ROOT_DIR/docs/usability-testing/samples" <<'PY'
+import pathlib
+import sys
+
+sample_dir = pathlib.Path(sys.argv[1])
+required_extensions = {".html", ".htm", ".md", ".markdown", ".zip"}
+found_extensions = {
+    path.suffix.lower()
+    for path in sample_dir.iterdir()
+    if path.is_file()
+}
+missing_extensions = sorted(required_extensions - found_extensions)
+if missing_extensions:
+    print("missing sample extensions: " + ", ".join(missing_extensions), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "external-open sample files cover html, htm, md, markdown, and zip extensions"
+else
+  fail "external-open sample files are missing supported extension coverage"
+fi
 if unzip -t "$ROOT_DIR/docs/usability-testing/samples/zip-report.zip" >/dev/null; then
   ok "zip-report.zip is valid"
 else
