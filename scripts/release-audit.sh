@@ -61,6 +61,7 @@ require_file "project.yml"
 require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
 require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
+require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
 require_file "scripts/verify-public-pages.sh"
@@ -355,6 +356,53 @@ then
   ok "validation sample package contains expected files"
 else
   fail "validation sample package is missing expected files"
+fi
+
+echo
+echo "== Release packet =="
+if "$ROOT_DIR/scripts/prepare-release-packet.sh" >/tmp/html-previewer-release-packet.log; then
+  ok "release packet can be generated"
+else
+  cat /tmp/html-previewer-release-packet.log >&2 || true
+  fail "release packet generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip" <<'PY'
+import subprocess
+import sys
+
+zip_path = sys.argv[1]
+expected = {
+    "HTMLPreviewerReleasePacket/README.txt",
+    "HTMLPreviewerReleasePacket/AppStore/app-store-listing.md",
+    "HTMLPreviewerReleasePacket/AppStore/app-store-connect-handoff.md",
+    "HTMLPreviewerReleasePacket/AppStore/app-store-submission-runbook.md",
+    "HTMLPreviewerReleasePacket/AppStore/release-checklist.md",
+    "HTMLPreviewerReleasePacket/AppStore/final-archive-smoke-test-template.md",
+    "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
+    "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
+    "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
+    "HTMLPreviewerReleasePacket/UsabilityTesting/script.md",
+    "HTMLPreviewerReleasePacket/UsabilityTesting/observation-template.md",
+    "HTMLPreviewerReleasePacket/PublicPages/privacy-policy.md",
+    "HTMLPreviewerReleasePacket/PublicPages/support.md",
+    "HTMLPreviewerReleasePacket/Compliance/privacy-required-reasons.md",
+    "HTMLPreviewerReleasePacket/Compliance/export-compliance.md",
+    "HTMLPreviewerReleasePacket/AppMetadata/PrivacyInfo.xcprivacy",
+    "HTMLPreviewerReleasePacket/AppMetadata/AppIcon-1024x1024@1x.png",
+    "HTMLPreviewerReleasePacket/Screenshots/iphone-01-home.png",
+    "HTMLPreviewerReleasePacket/Screenshots/ipad-01-home.png",
+}
+raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
+found = set(raw.splitlines())
+missing = sorted(expected - found)
+if missing:
+    print("missing files in release packet: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "release packet contains expected handoff files"
+else
+  fail "release packet is missing expected handoff files"
 fi
 
 echo

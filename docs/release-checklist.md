@@ -13,6 +13,7 @@
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
+- App Store handoff materials can be staged with `scripts/prepare-release-packet.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
@@ -37,6 +38,7 @@
 - Run full simulator test suite on the final commit.
 - Run `scripts/release-audit.sh` on the final commit.
 - Run `scripts/verify-public-pages.sh` on the final commit.
+- Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.
 - Run `scripts/release-device-build.sh` on the final commit to verify the iPhoneOS Release build path before creating a signed archive.
 - Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
