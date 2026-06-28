@@ -80,8 +80,21 @@ jobs:
                   continue
               version = tuple(int(part) for part in runtime.rsplit("iOS-", 1)[1].split("-"))
               for device in devices:
-                  if device.get("isAvailable", False) and device.get("name", "").startswith("iPhone"):
-                      candidates.append((version, device["name"], device["udid"]))
+                  name = device.get("name", "")
+                  if device.get("isAvailable", False) and name.startswith("iPhone"):
+                      parts = name.split()
+                      model = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0
+                      if name.startswith("iPhone SE"):
+                          variant = -1
+                      elif name == f"iPhone {model}":
+                          variant = 3
+                      elif name.endswith(" Plus"):
+                          variant = 2
+                      elif name.endswith(" Pro") or name.endswith(" Pro Max"):
+                          variant = 1
+                      else:
+                          variant = 0
+                      candidates.append((version, model, variant, name, device["udid"]))
 
           if not candidates:
               raise SystemExit("No available iPhone simulator found")
@@ -94,10 +107,12 @@ jobs:
           echo "Selected simulator: $SIMULATOR_ID"
 
       - name: Run tests
+        timeout-minutes: 15
         run: |
-          xcodebuild -quiet test \
+          xcodebuild test \
             -project HTMLMarkdownPreviewer.xcodeproj \
             -scheme HTMLMarkdownPreviewer \
             -configuration Debug \
             -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}" \
-            -derivedDataPath DerivedData
+            -derivedDataPath DerivedData \
+            -parallel-testing-enabled NO

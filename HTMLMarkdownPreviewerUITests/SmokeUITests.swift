@@ -31,19 +31,40 @@ final class SmokeUITests: XCTestCase {
     private func openSettingsAndVerifyReleaseClaims(app: XCUIApplication) {
         app.buttons["Settings"].tap()
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.descendants(matching: .any)["Safe JavaScript: Disabled"].exists)
-        XCTAssertTrue(app.descendants(matching: .any)["Safe External Resources: Blocked"].exists)
-        XCTAssertTrue(app.descendants(matching: .any)["Processing: On Device"].exists)
-        XCTAssertTrue(app.descendants(matching: .any)["Account: None"].exists)
-        XCTAssertTrue(app.descendants(matching: .any)["Ads: None"].exists)
+        assertLabelExists("Safe JavaScript: Disabled", app: app)
+        assertLabelExists("Safe External Resources: Blocked", app: app)
+        assertLabelExists("Processing: On Device", app: app)
+        assertLabelExists("Account: None", app: app)
+        assertLabelExists("Ads: None", app: app)
         app.buttons["Done"].tap()
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 5))
     }
 
     private func openSample(identifier: String, app: XCUIApplication) {
         let sample = app.buttons[identifier]
-        XCTAssertTrue(sample.waitForExistence(timeout: 5), "Missing sample button: \(identifier)")
+        XCTAssertTrue(scrollUntilHittable(sample, app: app), "Missing sample button: \(identifier)")
         sample.tap()
+    }
+
+    private func assertLabelExists(_ label: String, app: XCUIApplication) {
+        let element = app.descendants(matching: .any)[label]
+        if !element.exists {
+            for _ in 0..<4 where !element.exists {
+                app.swipeUp()
+                _ = element.waitForExistence(timeout: 1)
+            }
+        }
+        XCTAssertTrue(element.exists, "Missing label: \(label)")
+    }
+
+    private func scrollUntilHittable(_ element: XCUIElement, app: XCUIApplication) -> Bool {
+        for _ in 0..<6 {
+            if element.waitForExistence(timeout: 1), element.isHittable {
+                return true
+            }
+            app.swipeUp()
+        }
+        return element.exists && element.isHittable
     }
 
     private func navigateHome(app: XCUIApplication) {
