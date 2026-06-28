@@ -7,6 +7,7 @@ struct DocumentPreviewView: View {
     @State private var state: PreviewContentState = .loading
     @State private var previewMode: PreviewMode
     @State private var isInteractiveConfirmationPresented = false
+    @State private var isDetailsPresented = false
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
         self.document = document
@@ -41,6 +42,11 @@ struct DocumentPreviewView: View {
         }
         .navigationTitle(document.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if let status = previewStatus {
+                PreviewStatusBar(status: status)
+            }
+        }
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 if document.entryDocumentType == .html {
@@ -67,14 +73,12 @@ struct DocumentPreviewView: View {
                     }
                 }
 
-                Menu {
-                    LabeledContent("Type", value: document.type.displayName)
-                    LabeledContent("Entry", value: document.entryDocumentType.displayName)
-                    LabeledContent("Source", value: document.importSource.displayName)
-                    LabeledContent("Size", value: ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file))
-                    if let extractedFileCount = document.extractedFileCount {
-                        LabeledContent("Files", value: "\(extractedFileCount)")
-                    }
+                ShareLink(item: store.entryFileURL(for: document)) {
+                    Image(systemName: "square.and.arrow.up")
+                }
+
+                Button {
+                    isDetailsPresented = true
                 } label: {
                     Image(systemName: "info.circle")
                 }
@@ -91,6 +95,9 @@ struct DocumentPreviewView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("Only use interactive mode for HTML files you trust.")
+        }
+        .sheet(isPresented: $isDetailsPresented) {
+            DocumentDetailsView(document: document, store: store, previewMode: previewMode)
         }
     }
 
@@ -123,13 +130,39 @@ struct DocumentPreviewView: View {
     }
 
     private var previewModeIcon: String {
+        previewMode.systemImage
+    }
+
+    private var previewStatus: PreviewStatus? {
+        if previewMode == .rawText {
+            return PreviewStatus(
+                title: PreviewMode.rawText.displayName,
+                message: "Showing the file source.",
+                systemImage: PreviewMode.rawText.systemImage
+            )
+        }
+
+        guard document.entryDocumentType == .html else {
+            return nil
+        }
+
         switch previewMode {
         case .safePreview:
-            "lock.shield"
+            return PreviewStatus(
+                title: PreviewMode.safePreview.displayName,
+                message: document.type == .zipPackage
+                    ? "Scripts and external network resources are blocked."
+                    : "Scripts and external network resources are blocked. Relative assets are best effort for single files.",
+                systemImage: PreviewMode.safePreview.systemImage
+            )
         case .interactive:
-            "bolt"
+            return PreviewStatus(
+                title: PreviewMode.interactive.displayName,
+                message: "Page scripts can run. External navigation remains blocked.",
+                systemImage: PreviewMode.interactive.systemImage
+            )
         case .rawText:
-            "doc.text"
+            return nil
         }
     }
 
@@ -178,6 +211,36 @@ private struct RawTextPreview: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(Color(.systemBackground))
+    }
+}
+
+private struct PreviewStatus: Equatable {
+    let title: String
+    let message: String
+    let systemImage: String
+}
+
+private struct PreviewStatusBar: View {
+    let status: PreviewStatus
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: status.systemImage)
+                .foregroundStyle(.secondary)
+                .frame(width: 20)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(status.title)
+                    .font(.footnote.weight(.semibold))
+                Text(status.message)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .background(.regularMaterial)
     }
 }
 

@@ -7,6 +7,7 @@ struct AppView: View {
     @State private var documents: [PreviewDocument] = []
     @State private var path: [PreviewDocument] = []
     @State private var isImporterPresented = false
+    @State private var isSettingsPresented = false
     @State private var errorMessage: String?
 
     init(store: DocumentLibraryStore = DocumentLibraryStore()) {
@@ -51,9 +52,22 @@ struct AppView: View {
                     }
             }
             .toolbar {
-                if !documents.isEmpty {
-                    EditButton()
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isSettingsPresented = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
                 }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    if !documents.isEmpty {
+                        EditButton()
+                    }
+                }
+            }
+            .sheet(isPresented: $isSettingsPresented) {
+                SettingsView()
             }
         }
         .fileImporter(
@@ -68,7 +82,7 @@ struct AppView: View {
                 }
                 importURL(url, source: .fileImporter)
             case .failure(let error):
-                errorMessage = error.localizedDescription
+                showError(error)
             }
         }
         .onOpenURL { url in
@@ -99,7 +113,7 @@ struct AppView: View {
             reloadDocuments()
             path.append(document)
         } catch {
-            errorMessage = error.localizedDescription
+            showError(error)
         }
     }
 
@@ -107,7 +121,7 @@ struct AppView: View {
         do {
             documents = try store.loadDocuments()
         } catch {
-            errorMessage = error.localizedDescription
+            showError(error)
         }
     }
 
@@ -116,7 +130,7 @@ struct AppView: View {
             _ = try store.markOpened(document)
             documents = try store.loadDocuments()
         } catch {
-            errorMessage = error.localizedDescription
+            showError(error)
         }
     }
 
@@ -127,8 +141,42 @@ struct AppView: View {
             }
             documents = try store.loadDocuments()
         } catch {
-            errorMessage = error.localizedDescription
+            showError(error)
         }
+    }
+
+    private func showError(_ error: Error) {
+        errorMessage = userFacingMessage(for: error)
+    }
+
+    private func userFacingMessage(for error: Error) -> String {
+        if let importError = error as? DocumentImportError {
+            switch importError {
+            case .unsupportedFileType:
+                return "Current version supports HTML, Markdown, and ZIP files."
+            }
+        }
+
+        if let zipError = error as? ZipImportError {
+            switch zipError {
+            case .invalidArchive:
+                return "The ZIP package could not be read."
+            case .unsafePath, .unsupportedEntry, .duplicatePath, .caseConflictingPath:
+                return "The ZIP package contains unsafe or conflicting paths."
+            case .archiveTooLarge:
+                return "The ZIP package is over the 100 MB limit."
+            case .tooManyFiles:
+                return "The ZIP package contains too many files."
+            case .singleFileTooLarge:
+                return "The ZIP package contains a file over the 100 MB limit."
+            case .expandedSizeTooLarge:
+                return "The ZIP package expands beyond the 300 MB limit."
+            case .missingEntryFile:
+                return "No previewable HTML or Markdown entry was found in this ZIP package."
+            }
+        }
+
+        return error.localizedDescription
     }
 }
 
