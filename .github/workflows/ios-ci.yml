@@ -109,7 +109,7 @@ jobs:
           echo "id=$SIMULATOR_ID" >> "$GITHUB_OUTPUT"
           echo "Selected simulator: $SIMULATOR_ID"
 
-      - name: Run tests
+      - name: Run unit tests
         timeout-minutes: 15
         run: |
           xcodebuild test \
@@ -118,4 +118,22 @@ jobs:
             -configuration Debug \
             -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}" \
             -derivedDataPath DerivedData \
-            -parallel-testing-enabled NO
+            -parallel-testing-enabled NO \
+            -only-testing:HTMLMarkdownPreviewerTests
+
+      - name: Reset simulator before UI smoke
+        run: |
+          xcrun simctl shutdown "${{ steps.simulator.outputs.id }}" || true
+          xcrun simctl erase "${{ steps.simulator.outputs.id }}"
+
+      - name: Run UI smoke test
+        timeout-minutes: 10
+        run: |
+          xcodebuild test \
+            -project HTMLMarkdownPreviewer.xcodeproj \
+            -scheme HTMLMarkdownPreviewer \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}" \
+            -derivedDataPath DerivedData \
+            -parallel-testing-enabled NO \
+            -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke
