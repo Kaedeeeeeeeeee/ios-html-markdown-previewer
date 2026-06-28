@@ -7,9 +7,11 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 ## Preconditions
 
 - Physical-device external-open validation from #1 has passed or all blocking failures are fixed.
-- The final commit passes GitHub Actions jobs: Release Audit, Release Device Build, and Unit Tests.
+- The final commit passes GitHub Actions jobs: Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
 - `scripts/release-audit.sh` passes locally.
+- `scripts/verify-public-pages.sh` passes locally.
 - `scripts/release-device-build.sh` passes locally.
+- `scripts/archive-preflight.sh` passes locally.
 - A signed Release archive or TestFlight build is available for smoke testing.
 
 ## App Record
@@ -124,10 +126,12 @@ Before selecting the build:
 
 1. Confirm final GitHub Actions run is green.
 2. Run `scripts/release-audit.sh`.
-3. Run `scripts/release-device-build.sh`.
-4. Create and upload a signed Release archive.
-5. Install the processed build through TestFlight or run the archived build on a physical device.
-6. Smoke test the built-in HTML, Markdown, and ZIP samples.
+3. Run `scripts/verify-public-pages.sh`.
+4. Run `scripts/release-device-build.sh`.
+5. Run `scripts/archive-preflight.sh`.
+6. Create and upload a signed Release archive.
+7. Install the processed build through TestFlight or run the archived build on a physical device.
+8. Smoke test the built-in HTML, Markdown, and ZIP samples.
 
 Review note summary:
 
