@@ -13,8 +13,9 @@
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
+- Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
-- GitHub Actions runs a generic iOS Release device build on push and pull request.
+- GitHub Actions runs a generic iOS Release device build and archive preflight on push and pull request.
 - Built-in HTML, Markdown, and ZIP samples are available for first launch and App Review.
 - App marketing version is set to `1.0` and build number is `1`.
 - Release simulator build verifies `CFBundleShortVersionString=1.0`, `CFBundleVersion=1`, app icon assets, and privacy manifest in the app bundle.
@@ -33,6 +34,7 @@
 - Run full simulator test suite on the final commit.
 - Run `scripts/release-audit.sh` on the final commit.
 - Run `scripts/release-device-build.sh` on the final commit to verify the iPhoneOS Release build path before creating a signed archive.
+- Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
 

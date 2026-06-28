@@ -17,6 +17,7 @@ jobs:
       - name: Validate shell scripts
         run: |
           bash -n scripts/capture-release-screenshots.sh
+          bash -n scripts/archive-preflight.sh
           bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh
@@ -25,7 +26,7 @@ jobs:
         run: scripts/release-audit.sh
 
   release-device-build:
-    name: Release Device Build
+    name: Release Device Build And Archive
     runs-on: macos-15
     steps:
       - name: Checkout
@@ -33,6 +34,9 @@ jobs:
 
       - name: Build generic iOS Release app
         run: scripts/release-device-build.sh
+
+      - name: Create generic iOS archive preflight
+        run: scripts/archive-preflight.sh
 
   test:
     name: Unit Tests

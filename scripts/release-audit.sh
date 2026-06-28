@@ -59,6 +59,7 @@ check_png_dimensions() {
 echo "== Project metadata =="
 require_file "project.yml"
 require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
+require_file "scripts/archive-preflight.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
 require_text "project.yml" "CURRENT_PROJECT_VERSION: 1" "project.yml build number is 1"
