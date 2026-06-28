@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200" role="img" aria-labelledby="title">
+  <title id="title">Local chart asset</title>
+  <rect width="320" height="200" rx="24" fill="#eef4ff"/>
+  <rect x="54" y="104" width="40" height="48" rx="6" fill="#0a84ff"/>
+  <rect x="126" y="72" width="40" height="80" rx="6" fill="#34c759"/>
+  <rect x="198" y="42" width="40" height="110" rx="6" fill="#ff9f0a"/>
+  <path d="M44 154H272" stroke="#6b7280" stroke-width="4" stroke-linecap="round"/>
+</svg>

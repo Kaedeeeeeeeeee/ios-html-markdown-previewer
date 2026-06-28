@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>External Resource Test</title>
+  <link rel="stylesheet" href="https://example.com/blocked.css">
+  <script src="https://example.com/blocked.js"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 32px; line-height: 1.5; }
+    .local { padding: 16px; border-radius: 12px; background: #eef6ff; border: 1px solid #b8d7ff; }
+  </style>
+</head>
+<body>
+  <h1>External Resource Test</h1>
+  <p class="local">This local content should display in Safe Preview.</p>
+  <p>The remote image below should be blocked in Safe Preview.</p>
+  <img src="https://example.com/blocked-image.png" alt="Remote image that should not load">
+  <script>
+    document.body.insertAdjacentHTML("beforeend", "<p>JavaScript executed.</p>");
+  </script>
+</body>
+</html>
