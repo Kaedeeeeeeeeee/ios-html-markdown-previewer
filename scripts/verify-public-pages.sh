@@ -8,6 +8,8 @@ SUPPORT_PATH="$ROOT_DIR/docs/support.md"
 
 PRIVACY_URL="https://gist.github.com/Kaedeeeeeeeeee/b3baa9048f37467e51bd9b3513787c42"
 SUPPORT_URL="https://gist.github.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c"
+PRIVACY_RAW_URL="https://gist.githubusercontent.com/Kaedeeeeeeeeee/b3baa9048f37467e51bd9b3513787c42/raw/privacy-policy.md"
+SUPPORT_RAW_URL="https://gist.githubusercontent.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c/raw/support.md"
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
@@ -49,7 +51,7 @@ verify_raw_matches_local() {
   local local_path="$3"
   local raw_path="$TMP_DIR/$label.md"
 
-  curl "${curl_common[@]}" "$url/raw" > "$raw_path"
+  curl "${curl_common[@]}" "$url" > "$raw_path"
 
   python3 - "$local_path" "$raw_path" "$label" <<'PY'
 import pathlib
@@ -76,7 +78,7 @@ require_listing_url "Support URL" "$SUPPORT_URL"
 verify_public_url "privacy policy" "$PRIVACY_URL"
 verify_public_url "support" "$SUPPORT_URL"
 
-verify_raw_matches_local "privacy-policy" "$PRIVACY_URL" "$PRIVACY_PATH"
-verify_raw_matches_local "support" "$SUPPORT_URL" "$SUPPORT_PATH"
+verify_raw_matches_local "privacy-policy" "$PRIVACY_RAW_URL" "$PRIVACY_PATH"
+verify_raw_matches_local "support" "$SUPPORT_RAW_URL" "$SUPPORT_PATH"
 
 printf 'Public App Store pages verification passed.\n'
