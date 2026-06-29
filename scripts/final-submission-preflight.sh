@@ -231,6 +231,8 @@ refresh_release_packet_report() {
   local packet_root="$ROOT_DIR/DerivedData/ReleasePacket"
   local packet_dir="$packet_root/HTMLPreviewerReleasePacket"
   local zip_path="$packet_root/HTMLPreviewerReleasePacket.zip"
+  local index_path="$packet_dir/Evidence/release-evidence-index.md"
+  local tmp_index_path="$packet_dir/Evidence/release-evidence-index.md.tmp"
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -238,6 +240,16 @@ refresh_release_packet_report() {
 
   mkdir -p "$packet_dir/Evidence"
   cp "$REPORT_PATH" "$packet_dir/Evidence/submission-readiness-report.md"
+  if [[ -f "$index_path" ]]; then
+    awk '
+      /^\| Final preflight report \|/ {
+        print "| Final preflight report | `Evidence/submission-readiness-report.md` | Included |"
+        next
+      }
+      { print }
+    ' "$index_path" >"$tmp_index_path"
+    mv "$tmp_index_path" "$index_path"
+  fi
   (
     cd "$packet_root"
     zip -qry -X "HTMLPreviewerReleasePacket.zip" "HTMLPreviewerReleasePacket"
