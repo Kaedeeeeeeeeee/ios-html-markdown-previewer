@@ -233,6 +233,7 @@ refresh_release_packet_report() {
   local zip_path="$packet_root/HTMLPreviewerReleasePacket.zip"
   local index_path="$packet_dir/Evidence/release-evidence-index.md"
   local tmp_index_path="$packet_dir/Evidence/release-evidence-index.md.tmp"
+  local checksum_path="$packet_dir/Evidence/checksums-sha256.txt"
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -250,6 +251,14 @@ refresh_release_packet_report() {
     ' "$index_path" >"$tmp_index_path"
     mv "$tmp_index_path" "$index_path"
   fi
+  (
+    cd "$packet_dir"
+    find . -type f ! -path "./Evidence/checksums-sha256.txt" -print |
+      LC_ALL=C sort |
+      while IFS= read -r file; do
+        shasum -a 256 "$file" | sed 's# \./#  #'
+      done
+  ) > "$checksum_path"
   (
     cd "$packet_root"
     zip -qry -X "HTMLPreviewerReleasePacket.zip" "HTMLPreviewerReleasePacket"

@@ -84,7 +84,8 @@ and latest evidence commit checks. When local physical-device validation or
 archive-smoke evidence has been staged, the packet also copies those evidence
 files under `PhysicalDevice/LatestValidationRun/` and
 `FinalSmoke/ArchiveDeviceSmoke/`, with a packet-relative index at
-`Evidence/release-evidence-index.md`.
+`Evidence/release-evidence-index.md` and SHA-256 checksums at
+`Evidence/checksums-sha256.txt`.
 
 App Store Connect setup run draft:
 

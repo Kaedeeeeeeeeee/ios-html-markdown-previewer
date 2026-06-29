@@ -21,6 +21,20 @@ copy_dir() {
   cp -R "$source" "$destination"
 }
 
+write_checksums() {
+  local checksum_path="$PACKET_DIR/Evidence/checksums-sha256.txt"
+
+  mkdir -p "$(dirname "$checksum_path")"
+  (
+    cd "$PACKET_DIR"
+    find . -type f ! -path "./Evidence/checksums-sha256.txt" -print |
+      LC_ALL=C sort |
+      while IFS= read -r file; do
+        shasum -a 256 "$file" | sed 's# \./#  #'
+      done
+  ) > "$checksum_path"
+}
+
 latest_file() {
   local search_root="$1"
   local filename="$2"
@@ -80,6 +94,7 @@ Key files:
 - FinalSmoke/ArchiveDeviceSmoke/ (when archive smoke evidence exists)
 - Evidence/README.txt
 - Evidence/release-evidence-index.md
+- Evidence/checksums-sha256.txt
 - Evidence/submission-readiness-report.md (when final preflight already ran)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
@@ -150,6 +165,7 @@ fi
   printf '| Evidence | Packet-relative path | Status |\n'
   printf '|---|---|---|\n'
   printf '| Final preflight report | `Evidence/submission-readiness-report.md` | %s |\n' "$(if [[ -f "$PREFLIGHT_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
+  printf '| Packet checksums | `Evidence/checksums-sha256.txt` | Generated during packet staging |\n'
   printf '| App Store Connect setup draft | `AppStoreConnect/app-store-connect-result-draft.md` | Included |\n'
   printf '| Final archive/TestFlight smoke draft | `FinalSmoke/final-archive-smoke-result-draft.md` | Included |\n'
   if [[ -n "$PHYSICAL_DEVICE_RESULT" && -f "$PHYSICAL_DEVICE_RESULT" ]]; then
@@ -215,6 +231,8 @@ copy_file "$ROOT_DIR/scripts/verify-public-pages.sh" "$PACKET_DIR/Scripts/verify
 copy_file "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" "$PACKET_DIR/Scripts/prepare-usability-test-packet.sh"
 copy_file "$ROOT_DIR/scripts/prepare-validation-samples.sh" "$PACKET_DIR/Scripts/prepare-validation-samples.sh"
 copy_file "$ROOT_DIR/scripts/serve-validation-samples.sh" "$PACKET_DIR/Scripts/serve-validation-samples.sh"
+
+write_checksums
 
 (
   cd "$OUTPUT_ROOT"

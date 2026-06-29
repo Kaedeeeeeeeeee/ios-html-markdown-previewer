@@ -678,6 +678,7 @@ expected = {
     "HTMLPreviewerReleasePacket/FinalSmoke/final-archive-smoke-result-draft.md",
     "HTMLPreviewerReleasePacket/Evidence/README.txt",
     "HTMLPreviewerReleasePacket/Evidence/release-evidence-index.md",
+    "HTMLPreviewerReleasePacket/Evidence/checksums-sha256.txt",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
@@ -749,6 +750,16 @@ then
   ok "release packet copies available local evidence drafts"
 else
   fail "release packet is missing available local evidence drafts"
+fi
+if unzip -p "$ROOT_DIR/DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip" \
+  HTMLPreviewerReleasePacket/Evidence/checksums-sha256.txt |
+  grep -Fq "Evidence/release-evidence-index.md" &&
+  unzip -p "$ROOT_DIR/DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip" \
+    HTMLPreviewerReleasePacket/Evidence/checksums-sha256.txt |
+    grep -Fq "AppStoreConnect/app-store-connect-result-draft.md"; then
+  ok "release packet checksum manifest covers key evidence files"
+else
+  fail "release packet checksum manifest is missing key evidence files"
 fi
 
 echo
