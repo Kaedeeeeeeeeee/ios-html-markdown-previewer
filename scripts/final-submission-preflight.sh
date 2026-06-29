@@ -89,6 +89,7 @@ write_report() {
     printf -- '- Usability test packet: `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`\n'
     printf -- '- Validation samples: `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`\n'
     printf -- '- Browser delivery page: `DerivedData/ValidationSamples/index.html`\n'
+    printf -- '- Final smoke draft: `DerivedData/FinalSmokeRun/`\n'
     printf -- '- Preflight logs: `DerivedData/FinalSubmissionPreflight/logs/`\n'
 
     printf '\n## Manual Gates Still Required\n\n'
@@ -96,7 +97,7 @@ write_report() {
     printf -- '- #11: Run the first usability round with at least one external participant and record `docs/usability-testing/first-round-result-template.md`.\n'
     printf -- '- #10: Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` with the account owner Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as upload evidence.\n'
     printf -- '- #10: If using an archived build for smoke, run `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` on an unlocked physical device and keep the generated report.\n'
-    printf -- '- #10: Upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using `docs/final-archive-smoke-test-template.md`.\n'
+    printf -- '- #10: Run `scripts/prepare-final-smoke-run.sh`, upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using the generated result draft.\n'
   } >"$REPORT_PATH"
 }
 
@@ -130,6 +131,7 @@ run_step "Public App Store pages" "$ROOT_DIR/scripts/verify-public-pages.sh"
 run_step "Release packet staging" "$ROOT_DIR/scripts/prepare-release-packet.sh"
 run_step "Usability test packet staging" "$ROOT_DIR/scripts/prepare-usability-test-packet.sh"
 run_step "Validation sample browser delivery staging" "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only
+run_step "Final smoke result draft staging" "$ROOT_DIR/scripts/prepare-final-smoke-run.sh"
 run_step "Signed archive dry-run" env DEVELOPMENT_TEAM=ABCDE12345 "$ROOT_DIR/scripts/create-signed-archive.sh" --dry-run
 
 if [[ "$RUN_BUILDS" == true ]]; then

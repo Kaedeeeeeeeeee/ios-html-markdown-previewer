@@ -64,7 +64,10 @@ Apple references:
    ```sh
    scripts/run-archive-device-smoke.sh --device <device-id-or-name>
    ```
-8. Copy `docs/final-archive-smoke-test-template.md` and record the smoke result, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable.
+8. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
+   ```sh
+   scripts/prepare-final-smoke-run.sh --device <physical-iPhone> --build-source "signed archive / TestFlight"
+   ```
 9. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.

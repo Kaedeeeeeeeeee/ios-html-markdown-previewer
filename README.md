@@ -100,6 +100,12 @@ First-round usability test packet:
 scripts/prepare-usability-test-packet.sh
 ```
 
+Final archive/TestFlight smoke run draft:
+
+```sh
+scripts/prepare-final-smoke-run.sh --device <physical-iPhone>
+```
+
 Final submission preflight:
 
 ```sh
@@ -119,6 +125,7 @@ scripts/final-submission-preflight.sh
 - Generic iOS archive preflight: `scripts/archive-preflight.sh`
 - Distribution-signed Release archive helper: `scripts/create-signed-archive.sh`
 - Archive physical-device smoke helper: `scripts/run-archive-device-smoke.sh`
+- Final archive/TestFlight smoke run draft: `scripts/prepare-final-smoke-run.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
 - Physical-device validation run draft: `scripts/prepare-physical-device-validation-run.sh`
 - Physical-device validation browser delivery: `scripts/serve-validation-samples.sh`

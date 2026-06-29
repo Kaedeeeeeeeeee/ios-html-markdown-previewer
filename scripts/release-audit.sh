@@ -64,6 +64,7 @@ require_file "scripts/archive-preflight.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/prepare-release-packet.sh"
+require_file "scripts/prepare-final-smoke-run.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
 require_file "scripts/prepare-physical-device-validation-run.sh"
 require_file "scripts/prepare-validation-samples.sh"
@@ -222,6 +223,25 @@ if grep -Fq "devicectl device capture screenshot" /tmp/html-previewer-archive-de
   ok "archive device smoke helper captures a launch screenshot"
 else
   fail "archive device smoke helper dry-run is missing devicectl screenshot capture"
+fi
+
+echo
+echo "== Final smoke run helper =="
+if "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" --device TEST-DEVICE --dry-run >/tmp/html-previewer-final-smoke-run-dry-run.log; then
+  ok "final smoke run helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-final-smoke-run-dry-run.log >&2 || true
+  fail "final smoke run helper dry-run failed"
+fi
+if grep -Fq "final-archive-smoke-result.md" /tmp/html-previewer-final-smoke-run-dry-run.log; then
+  ok "final smoke run helper creates a result draft"
+else
+  fail "final smoke run helper dry-run is missing the result draft"
+fi
+if grep -Fq "Archive smoke report" /tmp/html-previewer-final-smoke-run-dry-run.log; then
+  ok "final smoke run helper links archive smoke evidence"
+else
+  fail "final smoke run helper dry-run is missing archive smoke evidence"
 fi
 
 echo
@@ -642,6 +662,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-final-smoke-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-physical-device-validation-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/run-archive-device-smoke.sh",
     "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",

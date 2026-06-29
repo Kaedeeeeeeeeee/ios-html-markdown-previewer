@@ -19,6 +19,7 @@
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
 - Distribution-signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials. Development signing is opt-in only for local device smoke and is not App Store/TestFlight submission evidence.
 - Archived app physical-device install, launch, and launch-screenshot smoke evidence can be captured with `scripts/run-archive-device-smoke.sh`.
+- Final archive/TestFlight smoke result drafts can be generated with `scripts/prepare-final-smoke-run.sh`.
 - Physical-device validation samples can be delivered to Safari with `scripts/serve-validation-samples.sh`.
 - Physical-device validation run drafts can be generated with `scripts/prepare-physical-device-validation-run.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.
@@ -54,9 +55,10 @@
 - Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
 - Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` on the final commit with the account owner's Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as App Store/TestFlight evidence.
 - Run `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` on the final archive when using an archived build for physical-device smoke evidence.
+- Run `scripts/prepare-final-smoke-run.sh --device <physical-iPhone>` to prefill the final archive/TestFlight smoke result draft with commit, version, and archive smoke evidence paths.
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
-- Record final archive/TestFlight smoke with `docs/final-archive-smoke-test-template.md` and attach or summarize it in issue #10.
+- Record final archive/TestFlight smoke with the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft and attach or summarize it in issue #10.
 - Run the first usability round, record it with `docs/usability-testing/first-round-result-template.md`, and file or fix every P0/P1 finding before closing #11.
 
 Use `docs/physical-device-validation.md` for the external-open matrix and `docs/app-store-submission-runbook.md` for the App Store Connect handoff.
