@@ -55,6 +55,12 @@ DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
 The signed archive helper validates App Store/TestFlight distribution signing by default. Use
 `ALLOW_DEVELOPMENT_SIGNING=YES` only for local physical-device smoke builds.
 
+Archive physical-device smoke helper:
+
+```sh
+scripts/run-archive-device-smoke.sh --device <device-id-or-name>
+```
+
 Public App Store page verification:
 
 ```sh
@@ -103,6 +109,7 @@ scripts/final-submission-preflight.sh
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`
 - Generic iOS archive preflight: `scripts/archive-preflight.sh`
 - Distribution-signed Release archive helper: `scripts/create-signed-archive.sh`
+- Archive physical-device smoke helper: `scripts/run-archive-device-smoke.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
 - Physical-device validation browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`

@@ -56,6 +56,7 @@ Key files:
 - AppMetadata/AppIcon-1024x1024@1x.png
 - Scripts/create-signed-archive.sh
 - Scripts/final-submission-preflight.sh
+- Scripts/run-archive-device-smoke.sh
 
 Before submission, complete the physical-device and final archive/TestFlight
 result templates and summarize them in the linked GitHub issues.
@@ -97,6 +98,7 @@ copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts
 copy_file "$ROOT_DIR/scripts/archive-preflight.sh" "$PACKET_DIR/Scripts/archive-preflight.sh"
 copy_file "$ROOT_DIR/scripts/release-audit.sh" "$PACKET_DIR/Scripts/release-audit.sh"
 copy_file "$ROOT_DIR/scripts/release-device-build.sh" "$PACKET_DIR/Scripts/release-device-build.sh"
+copy_file "$ROOT_DIR/scripts/run-archive-device-smoke.sh" "$PACKET_DIR/Scripts/run-archive-device-smoke.sh"
 copy_file "$ROOT_DIR/scripts/verify-public-pages.sh" "$PACKET_DIR/Scripts/verify-public-pages.sh"
 copy_file "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" "$PACKET_DIR/Scripts/prepare-usability-test-packet.sh"
 copy_file "$ROOT_DIR/scripts/prepare-validation-samples.sh" "$PACKET_DIR/Scripts/prepare-validation-samples.sh"

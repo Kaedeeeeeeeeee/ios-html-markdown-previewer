@@ -67,6 +67,7 @@ require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
+require_file "scripts/run-archive-device-smoke.sh"
 require_file "scripts/serve-validation-samples.sh"
 require_file "scripts/verify-public-pages.sh"
 require_text "project.yml" "type: bundle\\.ui-testing" "project.yml includes UI test target"
@@ -197,6 +198,25 @@ require_text "scripts/create-signed-archive.sh" "Apple Distribution" "signed arc
 require_text "scripts/create-signed-archive.sh" "get-task-allow=false" "signed archive helper rejects debug provisioning profiles"
 require_text "scripts/create-signed-archive.sh" "ProvisionedDevices" "signed archive helper rejects device-limited provisioning profiles"
 require_text "scripts/create-signed-archive.sh" "Apple Development" "signed archive helper rejects Apple Development signing by default"
+
+echo
+echo "== Archive device smoke helper =="
+if "$ROOT_DIR/scripts/run-archive-device-smoke.sh" --device TEST-DEVICE --dry-run >/tmp/html-previewer-archive-device-smoke-dry-run.log; then
+  ok "archive device smoke helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-archive-device-smoke-dry-run.log >&2 || true
+  fail "archive device smoke helper dry-run failed"
+fi
+if grep -Fq "devicectl device install app" /tmp/html-previewer-archive-device-smoke-dry-run.log; then
+  ok "archive device smoke helper installs through devicectl"
+else
+  fail "archive device smoke helper dry-run is missing devicectl install"
+fi
+if grep -Fq "devicectl device process launch" /tmp/html-previewer-archive-device-smoke-dry-run.log; then
+  ok "archive device smoke helper launches through devicectl"
+else
+  fail "archive device smoke helper dry-run is missing devicectl launch"
+fi
 
 echo
 echo "== Privacy manifest =="
@@ -597,6 +617,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
+    "HTMLPreviewerReleasePacket/Scripts/run-archive-device-smoke.sh",
     "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-usability-test-packet.sh",
     "HTMLPreviewerReleasePacket/Screenshots/iphone-01-home.png",

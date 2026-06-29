@@ -18,6 +18,7 @@
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
 - Distribution-signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials. Development signing is opt-in only for local device smoke and is not App Store/TestFlight submission evidence.
+- Archived app physical-device install/launch smoke evidence can be captured with `scripts/run-archive-device-smoke.sh`.
 - Physical-device validation samples can be delivered to Safari with `scripts/serve-validation-samples.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.
 - Final local submission gates can be run with `scripts/final-submission-preflight.sh`.
@@ -50,6 +51,7 @@
 - Run `scripts/release-device-build.sh` on the final commit to verify the iPhoneOS Release build path before creating a signed archive.
 - Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
 - Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` on the final commit with the account owner's Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as App Store/TestFlight evidence.
+- Run `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` on the final archive when using an archived build for physical-device smoke evidence.
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
 - Record final archive/TestFlight smoke with `docs/final-archive-smoke-test-template.md` and attach or summarize it in issue #10.

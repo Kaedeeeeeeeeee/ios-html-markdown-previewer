@@ -95,6 +95,7 @@ write_report() {
     printf -- '- #1: Run the physical-device external-open matrix on a real iPhone and record `docs/physical-device-validation-result-template.md`.\n'
     printf -- '- #11: Run the first usability round with at least one external participant and record `docs/usability-testing/first-round-result-template.md`.\n'
     printf -- '- #10: Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` with the account owner Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as upload evidence.\n'
+    printf -- '- #10: If using an archived build for smoke, run `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` on an unlocked physical device and keep the generated report.\n'
     printf -- '- #10: Upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using `docs/final-archive-smoke-test-template.md`.\n'
   } >"$REPORT_PATH"
 }
