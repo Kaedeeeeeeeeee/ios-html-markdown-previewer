@@ -66,6 +66,7 @@ Use `docs/physical-device-validation.md` for the external-open matrix and `docs/
 - ZIP failed-import cleanup
 - Metadata persistence
 - Delete cleanup
+- Settings clear-imported-files cleanup
 - Safe HTML external resource blocking
 - Safe vs interactive JavaScript behavior
 - Markdown rendering

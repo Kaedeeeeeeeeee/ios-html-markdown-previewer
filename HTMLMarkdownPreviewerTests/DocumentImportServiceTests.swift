@@ -143,6 +143,30 @@ final class DocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(try store.loadDocuments(), [])
     }
 
+    func testDeleteAllRemovesImportedFilesAndMetadata() throws {
+        let rootURL = try makeTemporaryDirectory()
+        let store = DocumentLibraryStore(rootURL: rootURL)
+        let first = makeDocument(id: fixedID, displayName: "First")
+        let second = makeDocument(
+            id: UUID(uuidString: "6DB9EC52-8F27-4C54-B16D-6110C6D33102")!,
+            displayName: "Second"
+        )
+        try store.save(first)
+        try store.save(second)
+        try "first".write(
+            to: store.documentRootURL(for: first).appendingPathComponent("payload.txt"),
+            atomically: true,
+            encoding: .utf8
+        )
+
+        XCTAssertEqual(try store.loadDocuments().count, 2)
+
+        try store.deleteAll()
+
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.importsURL.path))
+        XCTAssertEqual(try store.loadDocuments(), [])
+    }
+
     private func makeService(store: DocumentLibraryStore) -> DocumentImportService {
         DocumentImportService(
             store: store,

@@ -45,6 +45,8 @@ final class SmokeUITests: XCTestCase {
         XCTAssertTrue(settingsScreenExists(app: app), "Settings screen did not appear")
         assertLabelExists("Safe JavaScript: Disabled", app: app)
         assertLabelExists("Safe External Resources: Blocked", app: app)
+        assertLabelExists("Imported Files: Stored in App", app: app)
+        XCTAssertTrue(scrollUntilExists(app.buttons["clear-imported-files-button"], app: app))
         assertLabelExists("Processing: On Device", app: app)
         assertLabelExists("Account: None", app: app)
         assertLabelExists("Ads: None", app: app)

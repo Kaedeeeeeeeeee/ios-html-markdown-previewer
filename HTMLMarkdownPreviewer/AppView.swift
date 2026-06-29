@@ -93,7 +93,7 @@ struct AppView: View {
                 }
             }
             .sheet(isPresented: $isSettingsPresented) {
-                SettingsView()
+                SettingsView(clearImportedFiles: clearImportedFiles)
             }
         }
         .fileImporter(
@@ -219,6 +219,12 @@ struct AppView: View {
         } catch {
             showError(error)
         }
+    }
+
+    private func clearImportedFiles() throws {
+        try store.deleteAll()
+        documents = try store.loadDocuments()
+        path.removeAll()
     }
 
     private func showError(_ error: Error) {

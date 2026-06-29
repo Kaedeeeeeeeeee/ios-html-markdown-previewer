@@ -69,6 +69,12 @@ final class DocumentLibraryStore {
         }
     }
 
+    func deleteAll() throws {
+        if fileManager.fileExists(atPath: importsURL.path) {
+            try fileManager.removeItem(at: importsURL)
+        }
+    }
+
     func documentRootURL(for documentID: UUID) -> URL {
         importsURL.appendingPathComponent(documentID.uuidString, isDirectory: true)
     }
