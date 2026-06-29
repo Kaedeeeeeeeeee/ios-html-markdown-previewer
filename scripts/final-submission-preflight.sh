@@ -244,6 +244,7 @@ write_report() {
     printf -- '- Submission owner handoff: `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md`\n'
     printf -- '- Usability test packet: `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`\n'
     printf -- '- Usability session draft: `DerivedData/UsabilitySessionRun/`\n'
+    printf -- '- Physical-device validation draft: `DerivedData/PhysicalDeviceValidationRun/`\n'
     printf -- '- Validation samples: `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`\n'
     printf -- '- Browser delivery page: `DerivedData/ValidationSamples/index.html`\n'
     printf -- '- App Store Connect draft: `DerivedData/AppStoreConnectRun/`\n'
@@ -254,7 +255,7 @@ write_report() {
 
     printf '\n## Manual Gates Still Required\n\n'
     printf -- '- Owner handoff: Use `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md` to assign the remaining GitHub account owner, App Store Connect account owner, tester, moderator, and release-operator actions.\n'
-    printf -- '- #1: Run `scripts/prepare-physical-device-validation-run.sh --device <physical-iPhone>`, complete the physical-device external-open matrix on a real iPhone, and keep the generated result draft with release evidence.\n'
+    printf -- '- #1: Use the current `DerivedData/PhysicalDeviceValidationRun/.../physical-device-validation-result.md` draft, complete the physical-device external-open matrix on a real iPhone, and keep the completed result with release evidence.\n'
     printf -- '- #11: Run `scripts/prepare-usability-session-run.sh`, complete the first usability round with at least one external participant, and keep the generated result draft with release evidence.\n'
     printf -- '- #10: If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with release evidence.\n'
     printf -- '- #10: Run `scripts/prepare-app-store-connect-run.sh`, then complete the App Store Connect paid-download setup and record the generated result draft.\n'
@@ -359,6 +360,7 @@ run_step "Release audit" "$ROOT_DIR/scripts/release-audit.sh"
 run_step "Public App Store pages" "$ROOT_DIR/scripts/verify-public-pages.sh"
 run_step "Usability test packet staging" "$ROOT_DIR/scripts/prepare-usability-test-packet.sh"
 run_step "Usability session result draft staging" "$ROOT_DIR/scripts/prepare-usability-session-run.sh"
+run_step "Physical-device validation result draft staging" "$ROOT_DIR/scripts/prepare-physical-device-validation-run.sh"
 run_step "Validation sample browser delivery staging" "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only
 run_step "App Store Connect result draft staging" "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh"
 run_step "Final smoke result draft staging" "$ROOT_DIR/scripts/prepare-final-smoke-run.sh"

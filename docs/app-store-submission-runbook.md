@@ -55,7 +55,7 @@ Apple references:
 
 ## Archive And Smoke Test
 
-1. Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence. This covers portable release materials audit, release audit, public page verification, release packet staging, usability packet staging, validation sample staging, signed-archive dry-run, generic iOS Release build, and archive preflight.
+1. Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence. This covers portable release materials audit, release audit, public page verification, release packet staging, usability packet staging, physical-device validation draft staging, validation sample staging, signed-archive dry-run, generic iOS Release build, and archive preflight.
 2. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Portable Release Materials, Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
 3. If GitHub Actions fails before any workflow steps are recorded, run:
    ```sh
