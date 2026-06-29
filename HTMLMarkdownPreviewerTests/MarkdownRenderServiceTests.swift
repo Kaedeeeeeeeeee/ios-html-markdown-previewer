@@ -64,6 +64,30 @@ final class MarkdownRenderServiceTests: XCTestCase {
         XCTAssertEqual(document.blocks[6], .thematicBreak)
     }
 
+    func testRendersUTF16MarkdownFile() throws {
+        let fileURL = try makeTemporaryDirectory().appendingPathComponent("utf16.md")
+        let markdown = """
+        # UTF-16 Title
+
+        Body text
+        """
+        try markdown.data(using: .utf16LittleEndian)!.write(to: fileURL)
+
+        let document = try MarkdownRenderService().render(fileURL: fileURL)
+
+        XCTAssertEqual(document.blocks.first, .heading(level: 1, text: AttributedString("UTF-16 Title")))
+    }
+
+    func testTextFileReaderReportsUnsupportedEncoding() throws {
+        let fileURL = try makeTemporaryDirectory().appendingPathComponent("binary.md")
+        try Data([0x80, 0x81, 0x82]).write(to: fileURL)
+
+        XCTAssertThrowsError(try TextFileReader().readText(from: fileURL)) { error in
+            XCTAssertEqual(error as? TextFileReaderError, .unsupportedEncoding("binary.md"))
+            XCTAssertTrue(error.localizedDescription.contains("UTF-8 or UTF-16"))
+        }
+    }
+
     func testBlocksRemoteImagesAndResolvesLocalImagesAgainstBaseURL() throws {
         let baseURL = try makeTemporaryDirectory()
         let document = MarkdownRenderService().render(

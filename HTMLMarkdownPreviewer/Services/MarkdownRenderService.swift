@@ -11,7 +11,7 @@ final class MarkdownRenderService {
     }
 
     func render(fileURL: URL, readAccessRootURL: URL? = nil) throws -> MarkdownDocument {
-        let markdown = try String(contentsOf: fileURL, encoding: .utf8)
+        let markdown = try TextFileReader().readText(from: fileURL)
         return render(
             markdown: markdown,
             baseURL: fileURL.deletingLastPathComponent(),
@@ -192,5 +192,106 @@ final class MarkdownRenderService {
         }
 
         return .local(imageURL)
+    }
+}
+
+enum TextFileReaderError: Error, Equatable, LocalizedError {
+    case unsupportedEncoding(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .unsupportedEncoding(let filename):
+            "Cannot decode \(filename) as text. Export it as UTF-8 or UTF-16 and try again."
+        }
+    }
+}
+
+struct TextFileReader {
+    func readText(from fileURL: URL) throws -> String {
+        let data = try Data(contentsOf: fileURL)
+        guard !data.isEmpty else {
+            return ""
+        }
+
+        if hasPrefix([0xEF, 0xBB, 0xBF], in: data) {
+            return try decode(data.dropFirst(3), as: .utf8, filename: fileURL.lastPathComponent)
+        }
+
+        if hasPrefix([0xFF, 0xFE], in: data) {
+            return try decode(data.dropFirst(2), as: .utf16LittleEndian, filename: fileURL.lastPathComponent)
+        }
+
+        if hasPrefix([0xFE, 0xFF], in: data) {
+            return try decode(data.dropFirst(2), as: .utf16BigEndian, filename: fileURL.lastPathComponent)
+        }
+
+        if looksLikeUTF16LittleEndian(data),
+           let text = String(data: data, encoding: .utf16LittleEndian) {
+            return text
+        }
+
+        if looksLikeUTF16BigEndian(data),
+           let text = String(data: data, encoding: .utf16BigEndian) {
+            return text
+        }
+
+        if let text = String(data: data, encoding: .utf8),
+           !text.contains("\u{0}") {
+            return text
+        }
+
+        throw TextFileReaderError.unsupportedEncoding(fileURL.lastPathComponent)
+    }
+
+    private func decode(_ data: Data.SubSequence, as encoding: String.Encoding, filename: String) throws -> String {
+        guard let text = String(data: Data(data), encoding: encoding) else {
+            throw TextFileReaderError.unsupportedEncoding(filename)
+        }
+        return text
+    }
+
+    private func hasPrefix(_ prefix: [UInt8], in data: Data) -> Bool {
+        data.count >= prefix.count && zip(prefix, data).allSatisfy { pair in
+            pair.0 == pair.1
+        }
+    }
+
+    private func looksLikeUTF16LittleEndian(_ data: Data) -> Bool {
+        looksLikeUTF16(data, zeroByteOffset: 1)
+    }
+
+    private func looksLikeUTF16BigEndian(_ data: Data) -> Bool {
+        looksLikeUTF16(data, zeroByteOffset: 0)
+    }
+
+    private func looksLikeUTF16(_ data: Data, zeroByteOffset: Int) -> Bool {
+        guard data.count >= 4 else {
+            return false
+        }
+
+        let sampleCount = min(data.count, 512)
+        var expectedZeroBytes = 0
+        var expectedPositions = 0
+        var oppositeZeroBytes = 0
+        var oppositePositions = 0
+
+        for index in 0..<sampleCount {
+            if index % 2 == zeroByteOffset {
+                expectedPositions += 1
+                if data[index] == 0 {
+                    expectedZeroBytes += 1
+                }
+            } else {
+                oppositePositions += 1
+                if data[index] == 0 {
+                    oppositeZeroBytes += 1
+                }
+            }
+        }
+
+        return expectedPositions > 0
+            && oppositePositions > 0
+            && expectedZeroBytes * 100 / expectedPositions >= 30
+            && oppositeZeroBytes * 100 / oppositePositions <= 10
     }
 }

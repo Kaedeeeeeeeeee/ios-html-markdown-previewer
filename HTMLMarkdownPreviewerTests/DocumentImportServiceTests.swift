@@ -81,6 +81,16 @@ final class DocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(count, 2)
     }
 
+    func testExternalReferenceScannerCountsUTF16References() throws {
+        let fileURL = try makeTemporaryDirectory().appendingPathComponent("utf16.html")
+        let html = #"<img src="https://example.com/chart.png">"#
+        try html.data(using: .utf16LittleEndian)!.write(to: fileURL)
+
+        let count = try ExternalReferenceScanner().countExternalURLs(in: fileURL)
+
+        XCTAssertEqual(count, 1)
+    }
+
     func testRejectsUnsupportedFilesBeforeCreatingImportRoot() throws {
         let rootURL = try makeTemporaryDirectory()
         let sourceURL = try makeFixtureFile(named: "report.pdf", contents: "%PDF")

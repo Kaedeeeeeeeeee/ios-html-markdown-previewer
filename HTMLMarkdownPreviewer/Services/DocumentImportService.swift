@@ -153,7 +153,7 @@ final class DocumentImportService {
 
 struct ExternalReferenceScanner {
     func countExternalURLs(in fileURL: URL) throws -> Int {
-        let text = try String(contentsOf: fileURL, encoding: .utf8)
+        let text = try TextFileReader().readText(from: fileURL)
         return countExternalURLs(in: text)
     }
 
