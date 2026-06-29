@@ -15,6 +15,20 @@ This creates:
 - `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket/`
 - `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`
 
+To prepare an actual session evidence folder with the current commit, app
+version, device snapshot, result draft, and observation draft, run:
+
+```sh
+scripts/prepare-usability-session-run.sh --participant-code P01 --device <physical-iPhone>
+```
+
+This creates:
+
+- `DerivedData/UsabilitySessionRun/.../first-round-usability-result.md`
+- `DerivedData/UsabilitySessionRun/.../usability-observation-notes.md`
+- `DerivedData/UsabilitySessionRun/.../HTMLPreviewerUsabilityTestPacket.zip`
+- `DerivedData/UsabilitySessionRun/.../devicectl-devices.txt`
+
 The first test round should verify that a user can:
 
 - Open HTML, Markdown, and ZIP files from another app.

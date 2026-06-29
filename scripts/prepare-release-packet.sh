@@ -51,12 +51,14 @@ report_field() {
 
 "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only >/dev/null
 "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" >/dev/null
+"$ROOT_DIR/scripts/prepare-usability-session-run.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" >/dev/null
 
 APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
 FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
 PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
+USABILITY_SESSION_RESULT="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
 GITHUB_ACTIONS_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 PREFLIGHT_REPORT="$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md"
@@ -105,6 +107,8 @@ Key files:
 - PhysicalDevice/validation-download-index.html
 - UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip
 - UsabilityTesting/first-round-result-template.md
+- UsabilityTesting/first-round-usability-result-draft.md
+- UsabilityTesting/LatestSessionRun/
 - Screenshots/
 - PublicPages/privacy-policy.md
 - PublicPages/support.md
@@ -121,9 +125,11 @@ Key files:
 - Scripts/prepare-final-smoke-run.sh
 - Scripts/prepare-physical-device-validation-run.sh
 - Scripts/run-archive-device-smoke.sh
+- Scripts/prepare-usability-session-run.sh
 
 Before submission, complete the physical-device and final archive/TestFlight
-result templates and summarize them in the linked GitHub issues.
+result templates, then complete the first usability result draft and summarize
+each result in the linked GitHub issues.
 Only a distribution-signed archive produced without ALLOW_DEVELOPMENT_SIGNING=YES
 counts as App Store/TestFlight upload evidence.
 EOF
@@ -193,11 +199,18 @@ fi
     printf '| GitHub Actions execution diagnostic | `Operations/GitHubActionsDiagnostics/github-actions-diagnostics.md` | Not staged locally |\n'
   fi
   printf '| Usability test packet | `UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip` | Included, still requires external participant run |\n'
+  if [[ -n "$USABILITY_SESSION_RESULT" && -f "$USABILITY_SESSION_RESULT" ]]; then
+    printf '| First-round usability result draft | `UsabilityTesting/first-round-usability-result-draft.md` | Included, still requires external participant completion |\n'
+    printf '| First-round usability session folder | `UsabilityTesting/LatestSessionRun/` | Included with observation draft, packet, and device list snapshot |\n'
+  else
+    printf '| First-round usability result draft | `UsabilityTesting/first-round-usability-result-draft.md` | Not staged locally |\n'
+    printf '| First-round usability session folder | `UsabilityTesting/LatestSessionRun/` | Not staged locally |\n'
+  fi
   printf '\n## External Gates Still Required\n\n'
   printf -- '- Complete physical-device external-open validation on an unlocked real iPhone and fill `PhysicalDevice/physical-device-validation-result-draft.md`.\n'
   printf -- '- Complete App Store Connect paid-download setup and fill `AppStoreConnect/app-store-connect-result-draft.md`.\n'
   printf -- '- Upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using `FinalSmoke/final-archive-smoke-result-draft.md`.\n'
-  printf -- '- Run the first external usability round and record the result under the issue #11 materials.\n'
+  printf -- '- Run the first external usability round and fill `UsabilityTesting/first-round-usability-result-draft.md`.\n'
 } > "$PACKET_DIR/Evidence/release-evidence-index.md"
 
 copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation.md"
@@ -215,6 +228,10 @@ copy_file "$ROOT_DIR/docs/usability-testing/script.md" "$PACKET_DIR/UsabilityTes
 copy_file "$ROOT_DIR/docs/usability-testing/observation-template.md" "$PACKET_DIR/UsabilityTesting/observation-template.md"
 copy_file "$ROOT_DIR/docs/usability-testing/first-round-result-template.md" "$PACKET_DIR/UsabilityTesting/first-round-result-template.md"
 copy_file "$ROOT_DIR/DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip" "$PACKET_DIR/UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip"
+if [[ -n "$USABILITY_SESSION_RESULT" && -f "$USABILITY_SESSION_RESULT" ]]; then
+  copy_file "$USABILITY_SESSION_RESULT" "$PACKET_DIR/UsabilityTesting/first-round-usability-result-draft.md"
+  copy_dir "$(dirname "$USABILITY_SESSION_RESULT")" "$PACKET_DIR/UsabilityTesting/LatestSessionRun"
+fi
 
 copy_file "$ROOT_DIR/docs/privacy-policy.md" "$PACKET_DIR/PublicPages/privacy-policy.md"
 copy_file "$ROOT_DIR/docs/support.md" "$PACKET_DIR/PublicPages/support.md"
@@ -242,6 +259,7 @@ copy_file "$ROOT_DIR/scripts/release-device-build.sh" "$PACKET_DIR/Scripts/relea
 copy_file "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" "$PACKET_DIR/Scripts/prepare-app-store-connect-run.sh"
 copy_file "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" "$PACKET_DIR/Scripts/prepare-final-smoke-run.sh"
 copy_file "$ROOT_DIR/scripts/prepare-physical-device-validation-run.sh" "$PACKET_DIR/Scripts/prepare-physical-device-validation-run.sh"
+copy_file "$ROOT_DIR/scripts/prepare-usability-session-run.sh" "$PACKET_DIR/Scripts/prepare-usability-session-run.sh"
 copy_file "$ROOT_DIR/scripts/run-archive-device-smoke.sh" "$PACKET_DIR/Scripts/run-archive-device-smoke.sh"
 copy_file "$ROOT_DIR/scripts/verify-public-pages.sh" "$PACKET_DIR/Scripts/verify-public-pages.sh"
 copy_file "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" "$PACKET_DIR/Scripts/prepare-usability-test-packet.sh"

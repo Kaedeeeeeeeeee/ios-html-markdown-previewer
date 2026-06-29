@@ -69,6 +69,7 @@ require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-app-store-connect-run.sh"
 require_file "scripts/prepare-final-smoke-run.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
+require_file "scripts/prepare-usability-session-run.sh"
 require_file "scripts/prepare-physical-device-validation-run.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
@@ -293,6 +294,30 @@ if grep -Fq "HTMLPreviewerValidationSamples.zip" /tmp/html-previewer-physical-va
   ok "physical-device validation run helper stages the validation sample package"
 else
   fail "physical-device validation run helper dry-run is missing the validation sample package"
+fi
+
+echo
+echo "== Usability session run helper =="
+if "$ROOT_DIR/scripts/prepare-usability-session-run.sh" --participant-code P01 --device TEST-DEVICE --dry-run >/tmp/html-previewer-usability-session-run-dry-run.log; then
+  ok "usability session run helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-usability-session-run-dry-run.log >&2 || true
+  fail "usability session run helper dry-run failed"
+fi
+if grep -Fq "first-round-usability-result.md" /tmp/html-previewer-usability-session-run-dry-run.log; then
+  ok "usability session run helper creates a result draft"
+else
+  fail "usability session run helper dry-run is missing the result draft"
+fi
+if grep -Fq "usability-observation-notes.md" /tmp/html-previewer-usability-session-run-dry-run.log; then
+  ok "usability session run helper creates an observation draft"
+else
+  fail "usability session run helper dry-run is missing the observation draft"
+fi
+if grep -Fq "Participant code: P01" /tmp/html-previewer-usability-session-run-dry-run.log; then
+  ok "usability session run helper carries participant code metadata"
+else
+  fail "usability session run helper dry-run is missing participant code metadata"
 fi
 
 echo
@@ -662,6 +687,44 @@ then
 else
   fail "usability test packet is missing expected files"
 fi
+if "$ROOT_DIR/scripts/prepare-usability-session-run.sh" --participant-code P01 --device TEST-DEVICE >/tmp/html-previewer-usability-session.log; then
+  ok "usability session run can be generated"
+else
+  cat /tmp/html-previewer-usability-session.log >&2 || true
+  fail "usability session run generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/UsabilitySessionRun" <<'PY'
+import pathlib
+import sys
+
+root = pathlib.Path(sys.argv[1])
+results = sorted(root.glob("**/first-round-usability-result.md"))
+if not results:
+    print("missing first-round usability result draft", file=sys.stderr)
+    raise SystemExit(1)
+
+latest = results[-1]
+run_dir = latest.parent
+expected = [
+    run_dir / "usability-observation-notes.md",
+    run_dir / "HTMLPreviewerUsabilityTestPacket.zip",
+    run_dir / "HTMLPreviewerUsabilityTestPacket" / "script.md",
+    run_dir / "devicectl-devices.txt",
+]
+missing = [str(path) for path in expected if not path.exists()]
+text = latest.read_text(encoding="utf-8")
+for marker in ["Issue: #11", "Participant code: P01", "Do not store the participant's real name", "Can close #11"]:
+    if marker not in text:
+        missing.append(f"result marker: {marker}")
+if missing:
+    print("missing usability session artifacts: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "usability session run contains expected drafts and packet artifacts"
+else
+  fail "usability session run is missing expected artifacts"
+fi
 
 echo
 echo "== Release packet =="
@@ -697,6 +760,8 @@ expected = {
     "HTMLPreviewerReleasePacket/UsabilityTesting/observation-template.md",
     "HTMLPreviewerReleasePacket/UsabilityTesting/first-round-result-template.md",
     "HTMLPreviewerReleasePacket/UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip",
+    "HTMLPreviewerReleasePacket/UsabilityTesting/first-round-usability-result-draft.md",
+    "HTMLPreviewerReleasePacket/UsabilityTesting/LatestSessionRun/usability-observation-notes.md",
     "HTMLPreviewerReleasePacket/PublicPages/privacy-policy.md",
     "HTMLPreviewerReleasePacket/PublicPages/support.md",
     "HTMLPreviewerReleasePacket/Compliance/privacy-required-reasons.md",
@@ -713,6 +778,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/prepare-app-store-connect-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-final-smoke-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-physical-device-validation-run.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-usability-session-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/run-archive-device-smoke.sh",
     "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-usability-test-packet.sh",

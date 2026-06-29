@@ -25,6 +25,7 @@ Use this runbook after physical-device validation passes and a completed result 
 - GitHub Actions troubleshooting note: `docs/github-actions-troubleshooting.md`
 - Physical-device sample browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
+- First-round usability session result draft: `scripts/prepare-usability-session-run.sh`
 - Final submission preflight: `scripts/final-submission-preflight.sh`
 
 ## App Store Connect
@@ -89,6 +90,19 @@ Apple references:
    - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
    - Verify recent file reopen and delete.
 
+## Usability Session
+
+Before treating the release as ready for submission, prepare and run the first
+external usability session:
+
+```sh
+scripts/prepare-usability-session-run.sh --participant-code <anonymous-code> --device <physical-iPhone>
+```
+
+Fill the generated `DerivedData/UsabilitySessionRun/.../first-round-usability-result.md`
+and `DerivedData/UsabilitySessionRun/.../usability-observation-notes.md` files.
+File or fix every P0/P1 finding before closing #11.
+
 ## Close Criteria
 
 Close #10 only after:
@@ -103,4 +117,4 @@ Close #10 only after:
 - Final archive or TestFlight smoke test passes.
 - Final archive or TestFlight smoke evidence is recorded from the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft.
 
-Do not treat the release as submission-ready until #11 also has a completed first-round usability result and every P0/P1 finding is filed or fixed.
+Do not treat the release as submission-ready until #11 also has a completed first-round usability result from `DerivedData/UsabilitySessionRun/.../first-round-usability-result.md` and every P0/P1 finding is filed or fixed.

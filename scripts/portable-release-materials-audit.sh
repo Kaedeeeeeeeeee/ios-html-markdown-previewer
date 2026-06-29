@@ -106,6 +106,7 @@ for path in [
     "HTMLMarkdownPreviewer/Localizable.xcstrings",
     "HTMLMarkdownPreviewerUITests/SmokeUITests.swift",
     "scripts/check-github-actions-execution.sh",
+    "scripts/prepare-usability-session-run.sh",
 ]:
     require_file(path)
 
@@ -276,6 +277,7 @@ require_text("docs/github-actions-troubleshooting.md", r"steps: \[\]", "Actions 
 require_text("docs/github-actions-troubleshooting.md", r"Budgets and alerts", "Actions troubleshooting covers budget checks")
 require_text("docs/privacy-policy.md", r"HTML Previewer does not collect personal data", "privacy policy states no personal data collection")
 require_text("docs/support.md", r"HTML Previewer Support", "support page is present")
+require_text("docs/usability-testing/README.md", r"prepare-usability-session-run\.sh", "usability README points to the session run helper")
 require_text("docs/usability-testing/first-round-result-template.md", r"Do not store the participant's real name", "usability template avoids direct participant identifiers")
 
 print("\n== Sample Packages ==")

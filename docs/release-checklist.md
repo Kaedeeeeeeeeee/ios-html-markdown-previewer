@@ -26,6 +26,7 @@
 - Physical-device validation samples can be delivered to Safari with `scripts/serve-validation-samples.sh`.
 - Physical-device validation run drafts can be generated with `scripts/prepare-physical-device-validation-run.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.
+- First-round usability session evidence folders can be generated with `scripts/prepare-usability-session-run.sh`.
 - Final local submission gates can be run with `scripts/final-submission-preflight.sh`.
 - GitHub Actions runs a portable release materials audit on Ubuntu on push and pull request.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
@@ -57,6 +58,7 @@
 - If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with issue #10.
 - Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.
 - Run `scripts/prepare-usability-test-packet.sh` and use it for the first external usability round.
+- Run `scripts/prepare-usability-session-run.sh --participant-code <anonymous-code> --device <physical-iPhone>` before the first external usability round and fill the generated result and observation drafts.
 - Run `scripts/serve-validation-samples.sh` when staging sample files for Safari download and device-side sharing.
 - Run `scripts/release-device-build.sh` on the final commit to verify the iPhoneOS Release build path before creating a signed archive.
 - Run `scripts/archive-preflight.sh` on the final commit to verify the archive action and archive metadata before creating a signed archive.
@@ -66,7 +68,7 @@
 - Confirm the GitHub Actions iOS CI workflow is passing on the final commit.
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
 - Record final archive/TestFlight smoke with the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft and attach or summarize it in issue #10.
-- Run the first usability round, record it with `docs/usability-testing/first-round-result-template.md`, and file or fix every P0/P1 finding before closing #11.
+- Run the first usability round, record it with the generated `DerivedData/UsabilitySessionRun/.../first-round-usability-result.md` draft, and file or fix every P0/P1 finding before closing #11.
 
 Use `docs/physical-device-validation.md` for the external-open matrix and `docs/app-store-submission-runbook.md` for the App Store Connect handoff.
 

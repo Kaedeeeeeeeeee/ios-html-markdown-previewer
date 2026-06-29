@@ -124,6 +124,7 @@ write_latest_evidence() {
   local app_store_connect_result
   local final_smoke_result
   local physical_device_result
+  local usability_session_result
   local archive_smoke_report
   local current_full
   local current_short
@@ -131,6 +132,7 @@ write_latest_evidence() {
   app_store_connect_result="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
   final_smoke_result="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
   physical_device_result="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
+  usability_session_result="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
   current_full="$(git_value rev-parse HEAD)"
   current_short="$(git_value rev-parse --short HEAD)"
@@ -155,6 +157,13 @@ write_latest_evidence() {
     printf -- '  - Commit check: %s\n' "$(commit_status "$physical_device_result" "$current_full" "$current_short")"
   else
     printf -- '- Physical-device validation draft: not generated yet\n'
+  fi
+
+  if [[ -n "$usability_session_result" ]]; then
+    printf -- '- First-round usability result draft: `%s`\n' "$usability_session_result"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$usability_session_result" "$current_full" "$current_short")"
+  else
+    printf -- '- First-round usability result draft: not generated yet\n'
   fi
 
   if [[ -n "$archive_smoke_report" ]]; then
@@ -211,6 +220,7 @@ write_report() {
     printf '\n## Generated Artifacts\n\n'
     printf -- '- Release packet: `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`\n'
     printf -- '- Usability test packet: `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`\n'
+    printf -- '- Usability session draft: `DerivedData/UsabilitySessionRun/`\n'
     printf -- '- Validation samples: `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`\n'
     printf -- '- Browser delivery page: `DerivedData/ValidationSamples/index.html`\n'
     printf -- '- App Store Connect draft: `DerivedData/AppStoreConnectRun/`\n'
@@ -221,7 +231,7 @@ write_report() {
 
     printf '\n## Manual Gates Still Required\n\n'
     printf -- '- #1: Run `scripts/prepare-physical-device-validation-run.sh --device <physical-iPhone>`, complete the physical-device external-open matrix on a real iPhone, and keep the generated result draft with release evidence.\n'
-    printf -- '- #11: Run the first usability round with at least one external participant and record `docs/usability-testing/first-round-result-template.md`.\n'
+    printf -- '- #11: Run `scripts/prepare-usability-session-run.sh`, complete the first usability round with at least one external participant, and keep the generated result draft with release evidence.\n'
     printf -- '- #10: If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with release evidence.\n'
     printf -- '- #10: Run `scripts/prepare-app-store-connect-run.sh`, then complete the App Store Connect paid-download setup and record the generated result draft.\n'
     printf -- '- #10: Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` with the account owner Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as upload evidence.\n'
@@ -299,6 +309,7 @@ run_step "Portable release materials audit" "$ROOT_DIR/scripts/portable-release-
 run_step "Release audit" "$ROOT_DIR/scripts/release-audit.sh"
 run_step "Public App Store pages" "$ROOT_DIR/scripts/verify-public-pages.sh"
 run_step "Usability test packet staging" "$ROOT_DIR/scripts/prepare-usability-test-packet.sh"
+run_step "Usability session result draft staging" "$ROOT_DIR/scripts/prepare-usability-session-run.sh"
 run_step "Validation sample browser delivery staging" "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only
 run_step "App Store Connect result draft staging" "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh"
 run_step "Final smoke result draft staging" "$ROOT_DIR/scripts/prepare-final-smoke-run.sh"
