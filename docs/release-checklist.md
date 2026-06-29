@@ -71,6 +71,7 @@ Use `docs/physical-device-validation.md` for the external-open matrix and `docs/
 - Safe vs interactive JavaScript behavior
 - Markdown rendering
 - Markdown local image root containment and remote image blocking
+- Raw text mode for HTML and Markdown
 - Built-in sample generation and import
 - Separate home-screen import entries for HTML/Markdown files and ZIP packages
 - Simulator UI smoke for Settings and built-in HTML, Markdown, and ZIP samples

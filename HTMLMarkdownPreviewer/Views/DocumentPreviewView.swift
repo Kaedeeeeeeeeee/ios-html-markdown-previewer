@@ -49,28 +49,14 @@ struct DocumentPreviewView: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                if document.entryDocumentType == .html {
+                if supportsPreviewModeMenu {
                     Menu {
-                        Button {
-                            setPreviewMode(.safePreview)
-                        } label: {
-                            Label("Safe Preview", systemImage: previewMode == .safePreview ? "checkmark.shield" : "lock.shield")
-                        }
-
-                        Button {
-                            isInteractiveConfirmationPresented = true
-                        } label: {
-                            Label("Interactive Mode", systemImage: previewMode == .interactive ? "checkmark.circle" : "bolt")
-                        }
-
-                        Button {
-                            setPreviewMode(.rawText)
-                        } label: {
-                            Label("Raw Text", systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
-                        }
+                        previewModeButtons
                     } label: {
                         Image(systemName: previewModeIcon)
                     }
+                    .accessibilityLabel("Preview Mode")
+                    .accessibilityIdentifier("preview-mode-menu")
                 }
 
                 ShareLink(item: store.entryFileURL(for: document)) {
@@ -134,6 +120,48 @@ struct DocumentPreviewView: View {
 
     private var previewModeIcon: String {
         previewMode.systemImage
+    }
+
+    private var supportsPreviewModeMenu: Bool {
+        document.entryDocumentType == .html || document.entryDocumentType == .markdown
+    }
+
+    @ViewBuilder
+    private var previewModeButtons: some View {
+        if document.entryDocumentType == .markdown {
+            Button {
+                setPreviewMode(.safePreview)
+            } label: {
+                Label(
+                    "Rendered Preview",
+                    systemImage: previewMode == .rawText ? "text.alignleft" : "checkmark.circle"
+                )
+            }
+
+            Button {
+                setPreviewMode(.rawText)
+            } label: {
+                Label("Raw Text", systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
+            }
+        } else {
+            Button {
+                setPreviewMode(.safePreview)
+            } label: {
+                Label("Safe Preview", systemImage: previewMode == .safePreview ? "checkmark.shield" : "lock.shield")
+            }
+
+            Button {
+                isInteractiveConfirmationPresented = true
+            } label: {
+                Label("Interactive Mode", systemImage: previewMode == .interactive ? "checkmark.circle" : "bolt")
+            }
+
+            Button {
+                setPreviewMode(.rawText)
+            } label: {
+                Label("Raw Text", systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
+            }
+        }
     }
 
     private var previewStatus: PreviewStatus? {

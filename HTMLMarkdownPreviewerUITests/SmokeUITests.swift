@@ -20,6 +20,8 @@ final class SmokeUITests: XCTestCase {
 
         openSample(identifier: "sample-markdown", app: app)
         XCTAssertTrue(app.staticTexts["Markdown Preview Sample"].waitForExistence(timeout: 10))
+        openRawTextMode(app: app)
+        XCTAssertTrue(app.staticTexts["Raw Text"].waitForExistence(timeout: 10))
         navigateHome(app: app)
 
         openSample(identifier: "sample-zipPackage", app: app)
@@ -58,6 +60,15 @@ final class SmokeUITests: XCTestCase {
         let sample = app.buttons[identifier]
         XCTAssertTrue(scrollUntilHittable(sample, app: app), "Missing sample button: \(identifier)")
         sample.tap()
+    }
+
+    private func openRawTextMode(app: XCUIApplication) {
+        let modeMenu = app.buttons["preview-mode-menu"]
+        XCTAssertTrue(modeMenu.waitForExistence(timeout: 10), "Missing preview mode menu")
+        modeMenu.tap()
+        let rawTextButton = app.buttons["Raw Text"]
+        XCTAssertTrue(rawTextButton.waitForExistence(timeout: 5), "Missing Raw Text menu item")
+        rawTextButton.tap()
     }
 
     private func assertLabelExists(_ label: String, app: XCUIApplication) {
