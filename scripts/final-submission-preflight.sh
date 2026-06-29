@@ -161,6 +161,8 @@ write_latest_evidence() {
     printf -- '- Archive device smoke report: `%s`\n' "$archive_smoke_report"
     printf -- '  - Commit check: %s\n' "$(commit_status "$archive_smoke_report" "$current_full" "$current_short")"
     printf -- '  - Status: %s\n' "$(report_field Status "$archive_smoke_report")"
+    printf -- '  - App Store/TestFlight submission evidence: %s\n' "$(report_field "App Store/TestFlight submission evidence" "$archive_smoke_report")"
+    printf -- '  - Submission evidence note: %s\n' "$(report_field "Submission evidence note" "$archive_smoke_report")"
     printf -- '  - Install: %s\n' "$(report_field Install "$archive_smoke_report")"
     printf -- '  - Launch: %s\n' "$(report_field Launch "$archive_smoke_report")"
     printf -- '  - Screenshot: %s\n' "$(report_field Screenshot "$archive_smoke_report")"

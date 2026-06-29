@@ -203,6 +203,9 @@ require_text "scripts/create-signed-archive.sh" "Apple Distribution" "signed arc
 require_text "scripts/create-signed-archive.sh" "get-task-allow=false" "signed archive helper rejects debug provisioning profiles"
 require_text "scripts/create-signed-archive.sh" "ProvisionedDevices" "signed archive helper rejects device-limited provisioning profiles"
 require_text "scripts/create-signed-archive.sh" "Apple Development" "signed archive helper rejects Apple Development signing by default"
+require_text "scripts/run-archive-device-smoke.sh" "App Store/TestFlight submission evidence" "archive device smoke report labels submission evidence"
+require_text "scripts/run-archive-device-smoke.sh" "Submission evidence note" "archive device smoke report includes submission evidence note"
+require_text "scripts/prepare-final-smoke-run.sh" "Archive smoke App Store/TestFlight submission evidence" "final smoke draft carries archive smoke submission evidence"
 
 echo
 echo "== Archive device smoke helper =="

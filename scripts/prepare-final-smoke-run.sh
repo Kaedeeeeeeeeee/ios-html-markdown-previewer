@@ -238,12 +238,18 @@ archive_smoke_status="$(report_field Status "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_install="$(report_field Install "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_launch="$(report_field Launch "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_screenshot="$(report_field Screenshot "$ARCHIVE_SMOKE_REPORT")"
+archive_smoke_submission_evidence="$(report_field "App Store/TestFlight submission evidence" "$ARCHIVE_SMOKE_REPORT")"
+archive_smoke_submission_note="$(report_field "Submission evidence note" "$ARCHIVE_SMOKE_REPORT")"
+archive_smoke_signing_identity="$(report_field "Signing identity" "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_commit_check="$(archive_smoke_commit_status)"
 launch_screenshot_value="$(report_artifact_path "Launch screenshot" "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_status="${archive_smoke_status:-TBD}"
 archive_smoke_install="${archive_smoke_install:-TBD}"
 archive_smoke_launch="${archive_smoke_launch:-TBD}"
 archive_smoke_screenshot="${archive_smoke_screenshot:-TBD}"
+archive_smoke_submission_evidence="${archive_smoke_submission_evidence:-TBD}"
+archive_smoke_submission_note="${archive_smoke_submission_note:-TBD}"
+archive_smoke_signing_identity="${archive_smoke_signing_identity:-TBD}"
 archive_smoke_commit_check="${archive_smoke_commit_check:-TBD}"
 if [[ -z "$launch_screenshot_value" || ! -f "$launch_screenshot_value" ]]; then
   launch_screenshot_value="TBD"
@@ -291,6 +297,9 @@ Issue: #10
 - Archive smoke install: $archive_smoke_install
 - Archive smoke launch: $archive_smoke_launch
 - Archive smoke screenshot: $archive_smoke_screenshot
+- Archive smoke App Store/TestFlight submission evidence: $archive_smoke_submission_evidence
+- Archive smoke submission evidence note: $archive_smoke_submission_note
+- Archive smoke signing identity: $archive_smoke_signing_identity
 - Archive launch screenshot: \`$launch_screenshot_value\`
 - Final preflight report: \`$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md\`
 

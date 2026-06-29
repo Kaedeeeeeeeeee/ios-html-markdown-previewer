@@ -73,11 +73,46 @@ fi
 BUNDLE_ID="com.kaede.htmlmarkdownpreviewer"
 APP_VERSION="unknown"
 BUILD_NUMBER="unknown"
+SIGNING_IDENTITY="unknown"
+TEAM_IDENTIFIER="unknown"
+PROFILE_NAME="unknown"
+PROFILE_GET_TASK_ALLOW="unknown"
+PROFILE_DEVICE_LIMITED="unknown"
+SUBMISSION_EVIDENCE="unknown"
+SUBMISSION_EVIDENCE_NOTE="Signing details were not available."
 
 if [[ -d "$APP_PATH" ]]; then
   BUNDLE_ID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist" 2>/dev/null || true)"
   APP_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP_PATH/Info.plist" 2>/dev/null || printf 'unknown')"
   BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Info.plist" 2>/dev/null || printf 'unknown')"
+  codesign_output="$(codesign -dvvv "$APP_PATH" 2>&1 || true)"
+  SIGNING_IDENTITY="$(awk -F= '/^Authority=/ { print $2; exit }' <<<"$codesign_output")"
+  TEAM_IDENTIFIER="$(awk -F= '/^TeamIdentifier=/ { print $2; exit }' <<<"$codesign_output")"
+  SIGNING_IDENTITY="${SIGNING_IDENTITY:-unknown}"
+  TEAM_IDENTIFIER="${TEAM_IDENTIFIER:-unknown}"
+
+  profile_path="$APP_PATH/embedded.mobileprovision"
+  if [[ -f "$profile_path" ]]; then
+    profile_plist="$(mktemp)"
+    if security cms -D -i "$profile_path" >"$profile_plist" 2>/dev/null; then
+      PROFILE_NAME="$(/usr/libexec/PlistBuddy -c 'Print :Name' "$profile_plist" 2>/dev/null || printf 'unknown')"
+      PROFILE_GET_TASK_ALLOW="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:get-task-allow' "$profile_plist" 2>/dev/null || printf 'unknown')"
+      if /usr/libexec/PlistBuddy -c 'Print :ProvisionedDevices:0' "$profile_plist" >/dev/null 2>&1; then
+        PROFILE_DEVICE_LIMITED="true"
+      else
+        PROFILE_DEVICE_LIMITED="false"
+      fi
+    fi
+    rm -f "$profile_plist"
+  fi
+
+  if [[ "$SIGNING_IDENTITY" == Apple\ Distribution:* && "$PROFILE_GET_TASK_ALLOW" == "false" && "$PROFILE_DEVICE_LIMITED" == "false" ]]; then
+    SUBMISSION_EVIDENCE="yes"
+    SUBMISSION_EVIDENCE_NOTE="Archive appears distribution-signed and can be considered for App Store/TestFlight smoke evidence."
+  else
+    SUBMISSION_EVIDENCE="no"
+    SUBMISSION_EVIDENCE_NOTE="Archive is not distribution-signed App Store/TestFlight evidence; use this report as local device smoke only."
+  fi
 elif [[ "$DRY_RUN" == false ]]; then
   printf 'Archived app not found: %s\n' "$APP_PATH" >&2
   printf 'Create an archive first with `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh`.\n' >&2
@@ -191,6 +226,13 @@ generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
   printf -- '- Bundle ID: `%s`\n' "$BUNDLE_ID"
   printf -- '- App version: %s\n' "$APP_VERSION"
   printf -- '- Build number: %s\n' "$BUILD_NUMBER"
+  printf -- '- Signing identity: %s\n' "$SIGNING_IDENTITY"
+  printf -- '- Team identifier: %s\n' "$TEAM_IDENTIFIER"
+  printf -- '- Provisioning profile: %s\n' "$PROFILE_NAME"
+  printf -- '- Profile get-task-allow: %s\n' "$PROFILE_GET_TASK_ALLOW"
+  printf -- '- Profile device-limited: %s\n' "$PROFILE_DEVICE_LIMITED"
+  printf -- '- App Store/TestFlight submission evidence: %s\n' "$SUBMISSION_EVIDENCE"
+  printf -- '- Submission evidence note: %s\n' "$SUBMISSION_EVIDENCE_NOTE"
   printf -- '- Install: %s\n' "$install_status"
   printf -- '- Launch: %s\n' "$launch_status"
   printf -- '- Screenshot: %s\n' "$screenshot_status"
