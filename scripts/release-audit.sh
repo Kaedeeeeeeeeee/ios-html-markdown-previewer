@@ -61,6 +61,7 @@ require_file "project.yml"
 require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
 require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
+require_file "scripts/check-github-actions-execution.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/portable-release-materials-audit.sh"
@@ -448,6 +449,7 @@ for path in \
   "docs/privacy-policy.md" \
   "docs/support.md" \
   "docs/export-compliance.md" \
+  "docs/github-actions-troubleshooting.md" \
   "docs/physical-device-validation.md" \
   "docs/physical-device-validation-result-template.md" \
   "docs/usability-testing/script.md" \
@@ -470,6 +472,9 @@ require_text "docs/app-store-connect-handoff.md" "prepare-app-store-connect-run\
 require_text "docs/app-store-connect-handoff.md" "prepare-final-smoke-run\\.sh" "App Store Connect handoff uses the final smoke run helper"
 require_text "docs/app-store-submission-runbook.md" "DerivedData/AppStoreConnectRun" "submission runbook points to generated App Store Connect result"
 require_text "docs/app-store-submission-runbook.md" "DerivedData/FinalSmokeRun" "submission runbook points to generated final smoke result"
+require_text "docs/app-store-submission-runbook.md" "check-github-actions-execution\\.sh" "submission runbook points to Actions execution diagnostics"
+require_text "docs/github-actions-troubleshooting.md" "steps: \\[\\]" "GitHub Actions troubleshooting documents zero-step blocker"
+require_text "docs/github-actions-troubleshooting.md" "Budgets and alerts" "GitHub Actions troubleshooting covers billing budget checks"
 require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"
 require_text "docs/final-archive-smoke-test-template.md" "Data Not Collected" "final smoke template covers App Store privacy label check"
 require_text "docs/physical-device-validation-result-template.md" "External Open Matrix" "physical-device result template includes source matrix"
@@ -693,8 +698,10 @@ expected = {
     "HTMLPreviewerReleasePacket/PublicPages/support.md",
     "HTMLPreviewerReleasePacket/Compliance/privacy-required-reasons.md",
     "HTMLPreviewerReleasePacket/Compliance/export-compliance.md",
+    "HTMLPreviewerReleasePacket/Operations/github-actions-troubleshooting.md",
     "HTMLPreviewerReleasePacket/AppMetadata/PrivacyInfo.xcprivacy",
     "HTMLPreviewerReleasePacket/AppMetadata/AppIcon-1024x1024@1x.png",
+    "HTMLPreviewerReleasePacket/Scripts/check-github-actions-execution.sh",
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
@@ -724,12 +731,13 @@ fi
 if python3 - \
   "$ROOT_DIR/DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip" \
   "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" \
-  "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" <<'PY'
+  "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" \
+  "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" <<'PY'
 import pathlib
 import subprocess
 import sys
 
-zip_path, physical_root, smoke_root = sys.argv[1:]
+zip_path, physical_root, smoke_root, actions_root = sys.argv[1:]
 raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
 found = set(raw.splitlines())
 
@@ -742,6 +750,10 @@ if physical_files:
 smoke_files = sorted(pathlib.Path(smoke_root).glob("**/archive-device-smoke-report.md"))
 if smoke_files:
     checks.append("HTMLPreviewerReleasePacket/FinalSmoke/ArchiveDeviceSmoke/archive-device-smoke-report.md")
+
+actions_files = sorted(pathlib.Path(actions_root).glob("**/github-actions-diagnostics.md"))
+if actions_files:
+    checks.append("HTMLPreviewerReleasePacket/Operations/GitHubActionsDiagnostics/github-actions-diagnostics.md")
 
 missing = [path for path in checks if path not in found]
 if missing:

@@ -105,6 +105,7 @@ for path in [
     "HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy",
     "HTMLMarkdownPreviewer/Localizable.xcstrings",
     "HTMLMarkdownPreviewerUITests/SmokeUITests.swift",
+    "scripts/check-github-actions-execution.sh",
 ]:
     require_file(path)
 
@@ -251,6 +252,7 @@ for path in [
     "docs/privacy-policy.md",
     "docs/support.md",
     "docs/export-compliance.md",
+    "docs/github-actions-troubleshooting.md",
     "docs/privacy-required-reasons.md",
     "docs/physical-device-validation.md",
     "docs/physical-device-validation-result-template.md",
@@ -269,6 +271,9 @@ require_text("docs/app-store-listing.md", r"Data collected: None", "listing stat
 require_text("docs/app-store-connect-handoff.md", r"Commercial model: paid download", "handoff states paid download model")
 require_text("docs/app-store-connect-handoff.md", r"Data collected: none", "handoff states no collected data")
 require_text("docs/app-store-connect-handoff.md", r"ITSAppUsesNonExemptEncryption=false", "handoff covers export compliance")
+require_text("docs/app-store-submission-runbook.md", r"check-github-actions-execution\.sh", "submission runbook points to Actions diagnostics")
+require_text("docs/github-actions-troubleshooting.md", r"steps: \[\]", "Actions troubleshooting documents zero-step blocker")
+require_text("docs/github-actions-troubleshooting.md", r"Budgets and alerts", "Actions troubleshooting covers budget checks")
 require_text("docs/privacy-policy.md", r"HTML Previewer does not collect personal data", "privacy policy states no personal data collection")
 require_text("docs/support.md", r"HTML Previewer Support", "support page is present")
 require_text("docs/usability-testing/first-round-result-template.md", r"Do not store the participant's real name", "usability template avoids direct participant identifiers")

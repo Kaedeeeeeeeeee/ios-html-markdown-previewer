@@ -70,6 +70,12 @@ Public App Store page verification:
 scripts/verify-public-pages.sh
 ```
 
+GitHub Actions execution diagnostic:
+
+```sh
+scripts/check-github-actions-execution.sh
+```
+
 Portable release materials audit:
 
 ```sh
@@ -142,6 +148,7 @@ scripts/final-submission-preflight.sh
 - Release checklist: `docs/release-checklist.md`
 - Final archive/TestFlight smoke template: `docs/final-archive-smoke-test-template.md`
 - Release packet staging: `scripts/prepare-release-packet.sh`
+- GitHub Actions execution diagnostic: `scripts/check-github-actions-execution.sh`
 - Portable release materials audit: `scripts/portable-release-materials-audit.sh`
 - Local release audit: `scripts/release-audit.sh`
 - Public App Store page verification: `scripts/verify-public-pages.sh`

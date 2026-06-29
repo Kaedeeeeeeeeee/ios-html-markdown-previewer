@@ -299,6 +299,7 @@ Issue: #10
 | Gate | Expected evidence | Pass/Fail | Notes |
 |---|---|---|---|
 | Final GitHub Actions run is green | Portable Release Materials, Release Audit, Public App Store Pages, Release Device Build And Archive, Automated Tests |  | $github_actions_run_value |
+| Actions execution diagnostic resolved if needed | \`DerivedData/GitHubActionsDiagnostics/.../github-actions-diagnostics.md\` |  | Only required if Actions previously failed before steps started |
 | Local release audit passed | \`scripts/release-audit.sh\` output |  | Check \`DerivedData/FinalSubmissionPreflight/logs/release-audit.log\` |
 | Public pages verification passed | \`scripts/verify-public-pages.sh\` output |  | Check \`DerivedData/FinalSubmissionPreflight/logs/public-app-store-pages.log\` |
 | Release device build preflight passed | \`scripts/release-device-build.sh\` output |  | Check \`DerivedData/FinalSubmissionPreflight/logs/generic-ios-release-build.log\` |

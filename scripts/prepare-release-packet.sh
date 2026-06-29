@@ -58,6 +58,7 @@ APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRu
 FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
 PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
+GITHUB_ACTIONS_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 PREFLIGHT_REPORT="$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md"
 ARCHIVE_SMOKE_COMMIT_CHECK="$(report_field "Archive smoke commit check" "$FINAL_SMOKE_RESULT")"
 ARCHIVE_SMOKE_COMMIT_CHECK="${ARCHIVE_SMOKE_COMMIT_CHECK:-commit freshness not recorded}"
@@ -111,6 +112,9 @@ Key files:
 - Compliance/export-compliance.md
 - AppMetadata/PrivacyInfo.xcprivacy
 - AppMetadata/AppIcon-1024x1024@1x.png
+- Operations/github-actions-troubleshooting.md
+- Operations/GitHubActionsDiagnostics/ (when staged)
+- Scripts/check-github-actions-execution.sh
 - Scripts/create-signed-archive.sh
 - Scripts/final-submission-preflight.sh
 - Scripts/prepare-app-store-connect-run.sh
@@ -183,6 +187,11 @@ fi
   else
     printf '| Archive device smoke report | `FinalSmoke/ArchiveDeviceSmoke/archive-device-smoke-report.md` | Not staged locally |\n'
   fi
+  if [[ -n "$GITHUB_ACTIONS_DIAGNOSTIC_REPORT" && -f "$GITHUB_ACTIONS_DIAGNOSTIC_REPORT" ]]; then
+    printf '| GitHub Actions execution diagnostic | `Operations/GitHubActionsDiagnostics/github-actions-diagnostics.md` | Included, still requires green hosted CI rerun |\n'
+  else
+    printf '| GitHub Actions execution diagnostic | `Operations/GitHubActionsDiagnostics/github-actions-diagnostics.md` | Not staged locally |\n'
+  fi
   printf '| Usability test packet | `UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip` | Included, still requires external participant run |\n'
   printf '\n## External Gates Still Required\n\n'
   printf -- '- Complete physical-device external-open validation on an unlocked real iPhone and fill `PhysicalDevice/physical-device-validation-result-draft.md`.\n'
@@ -213,11 +222,17 @@ copy_file "$ROOT_DIR/docs/support.md" "$PACKET_DIR/PublicPages/support.md"
 copy_file "$ROOT_DIR/docs/privacy-required-reasons.md" "$PACKET_DIR/Compliance/privacy-required-reasons.md"
 copy_file "$ROOT_DIR/docs/export-compliance.md" "$PACKET_DIR/Compliance/export-compliance.md"
 
+copy_file "$ROOT_DIR/docs/github-actions-troubleshooting.md" "$PACKET_DIR/Operations/github-actions-troubleshooting.md"
+if [[ -n "$GITHUB_ACTIONS_DIAGNOSTIC_REPORT" && -f "$GITHUB_ACTIONS_DIAGNOSTIC_REPORT" ]]; then
+  copy_dir "$(dirname "$GITHUB_ACTIONS_DIAGNOSTIC_REPORT")" "$PACKET_DIR/Operations/GitHubActionsDiagnostics"
+fi
+
 copy_file "$ROOT_DIR/HTMLMarkdownPreviewer/PrivacyInfo.xcprivacy" "$PACKET_DIR/AppMetadata/PrivacyInfo.xcprivacy"
 copy_file "$ROOT_DIR/HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1024x1024@1x.png" "$PACKET_DIR/AppMetadata/AppIcon-1024x1024@1x.png"
 
 copy_dir "$ROOT_DIR/docs/app-store-screenshots" "$PACKET_DIR/Screenshots"
 
+copy_file "$ROOT_DIR/scripts/check-github-actions-execution.sh" "$PACKET_DIR/Scripts/check-github-actions-execution.sh"
 copy_file "$ROOT_DIR/scripts/create-signed-archive.sh" "$PACKET_DIR/Scripts/create-signed-archive.sh"
 copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts/final-submission-preflight.sh"
 copy_file "$ROOT_DIR/scripts/archive-preflight.sh" "$PACKET_DIR/Scripts/archive-preflight.sh"

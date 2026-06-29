@@ -15,6 +15,7 @@
 - Cross-platform release materials can be audited with `scripts/portable-release-materials-audit.sh`.
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
+- GitHub Actions execution-layer failures can be diagnosed with `scripts/check-github-actions-execution.sh` and `docs/github-actions-troubleshooting.md`.
 - App Store handoff materials, including generated App Store Connect and final smoke result drafts, final preflight evidence with commit checks, locally staged physical-device/archive-smoke evidence, and a packet-relative evidence index when available, can be staged with `scripts/prepare-release-packet.sh`.
 - App Store Connect setup result drafts can be generated with `scripts/prepare-app-store-connect-run.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
@@ -53,6 +54,7 @@
 - Run `scripts/release-audit.sh` on the final commit.
 - Run `scripts/verify-public-pages.sh` on the final commit.
 - Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence.
+- If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with issue #10.
 - Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.
 - Run `scripts/prepare-usability-test-packet.sh` and use it for the first external usability round.
 - Run `scripts/serve-validation-samples.sh` when staging sample files for Safari download and device-side sharing.
