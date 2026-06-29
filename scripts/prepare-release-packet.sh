@@ -56,6 +56,7 @@ Key files:
 - AppMetadata/AppIcon-1024x1024@1x.png
 - Scripts/create-signed-archive.sh
 - Scripts/final-submission-preflight.sh
+- Scripts/prepare-app-store-connect-run.sh
 - Scripts/prepare-final-smoke-run.sh
 - Scripts/prepare-physical-device-validation-run.sh
 - Scripts/run-archive-device-smoke.sh
@@ -100,6 +101,7 @@ copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts
 copy_file "$ROOT_DIR/scripts/archive-preflight.sh" "$PACKET_DIR/Scripts/archive-preflight.sh"
 copy_file "$ROOT_DIR/scripts/release-audit.sh" "$PACKET_DIR/Scripts/release-audit.sh"
 copy_file "$ROOT_DIR/scripts/release-device-build.sh" "$PACKET_DIR/Scripts/release-device-build.sh"
+copy_file "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" "$PACKET_DIR/Scripts/prepare-app-store-connect-run.sh"
 copy_file "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" "$PACKET_DIR/Scripts/prepare-final-smoke-run.sh"
 copy_file "$ROOT_DIR/scripts/prepare-physical-device-validation-run.sh" "$PACKET_DIR/Scripts/prepare-physical-device-validation-run.sh"
 copy_file "$ROOT_DIR/scripts/run-archive-device-smoke.sh" "$PACKET_DIR/Scripts/run-archive-device-smoke.sh"

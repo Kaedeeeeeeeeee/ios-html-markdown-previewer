@@ -52,23 +52,28 @@ Apple references:
 1. Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence. This covers release audit, public page verification, release packet staging, usability packet staging, validation sample staging, signed-archive dry-run, generic iOS Release build, and archive preflight.
 2. Confirm the GitHub Actions iOS CI workflow is passing for the final commit, including Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
 3. Keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
-4. Create a signed archive from the final commit:
+4. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
+   ```sh
+   scripts/prepare-app-store-connect-run.sh
+   ```
+   Keep the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` with submission evidence.
+5. Create a signed archive from the final commit:
    ```sh
    DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
    ```
    Set `PROVISIONING_PROFILE_SPECIFIER=<profile name>` only if the account owner uses manual signing.
    The script validates the resulting archive for App Store/TestFlight distribution signing and rejects development, device-limited, enterprise, wildcard, or debug provisioning profiles. Use `ALLOW_DEVELOPMENT_SIGNING=YES` only for local device smoke builds that will not be uploaded or counted as App Store/TestFlight evidence.
-5. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
-6. Wait for App Store Connect processing to finish and select the processed build.
-7. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
+6. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
+7. Wait for App Store Connect processing to finish and select the processed build.
+8. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
    ```sh
    scripts/run-archive-device-smoke.sh --device <device-id-or-name>
    ```
-8. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
+9. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
    ```sh
    scripts/prepare-final-smoke-run.sh --device <physical-iPhone> --build-source "signed archive / TestFlight"
    ```
-9. Smoke test:
+10. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.
@@ -82,6 +87,7 @@ Apple references:
 Close #10 only after:
 
 - App Store Connect paid-download setup is complete.
+- App Store Connect setup evidence is recorded from the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` draft.
 - Privacy labels are filled and match the app behavior.
 - Screenshots are accepted by App Store Connect.
 - Physical-device external-open validation from #1 is complete.

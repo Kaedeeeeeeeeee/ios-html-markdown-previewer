@@ -12,6 +12,7 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 - `scripts/final-submission-preflight.sh` passes locally and has generated `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md`.
 - `scripts/verify-public-pages.sh` passes locally.
 - `scripts/prepare-release-packet.sh` has generated `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`.
+- `scripts/prepare-app-store-connect-run.sh` has generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md`.
 - `scripts/serve-validation-samples.sh --prepare-only` passes locally.
 - `scripts/prepare-usability-test-packet.sh` has generated `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`.
 - `scripts/release-device-build.sh` passes locally.
@@ -135,11 +136,13 @@ Before selecting the build:
 1. Confirm final GitHub Actions run is green.
 2. Run `scripts/final-submission-preflight.sh` and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md`.
 3. Confirm the generated release packet exists at `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`.
-4. Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` and confirm it completes without `ALLOW_DEVELOPMENT_SIGNING=YES`.
-5. Upload the distribution-signed archive from Xcode Organizer and select the processed build in App Store Connect.
-6. Install the processed build through TestFlight or run the archived build on a physical device. If using the archived build path, capture install/launch evidence with `scripts/run-archive-device-smoke.sh --device <device-id-or-name>`.
-7. Generate the final smoke result draft with `scripts/prepare-final-smoke-run.sh --device <physical-iPhone>`.
-8. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft.
+4. Generate the App Store Connect setup result draft with `scripts/prepare-app-store-connect-run.sh`.
+5. Fill `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` while entering app record, pricing, privacy, screenshots, age rating, export compliance, and build selection.
+6. Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` and confirm it completes without `ALLOW_DEVELOPMENT_SIGNING=YES`.
+7. Upload the distribution-signed archive from Xcode Organizer and select the processed build in App Store Connect.
+8. Install the processed build through TestFlight or run the archived build on a physical device. If using the archived build path, capture install/launch evidence with `scripts/run-archive-device-smoke.sh --device <device-id-or-name>`.
+9. Generate the final smoke result draft with `scripts/prepare-final-smoke-run.sh --device <physical-iPhone>`.
+10. Smoke test the built-in HTML, Markdown, and ZIP samples and record the result with the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft.
 
 Review note summary:
 

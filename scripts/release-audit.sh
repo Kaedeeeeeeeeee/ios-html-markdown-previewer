@@ -64,6 +64,7 @@ require_file "scripts/archive-preflight.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/prepare-release-packet.sh"
+require_file "scripts/prepare-app-store-connect-run.sh"
 require_file "scripts/prepare-final-smoke-run.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
 require_file "scripts/prepare-physical-device-validation-run.sh"
@@ -242,6 +243,27 @@ if grep -Fq "Archive smoke report" /tmp/html-previewer-final-smoke-run-dry-run.l
   ok "final smoke run helper links archive smoke evidence"
 else
   fail "final smoke run helper dry-run is missing archive smoke evidence"
+fi
+
+echo
+echo "== App Store Connect run helper =="
+if "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" --dry-run >/tmp/html-previewer-app-store-connect-run-dry-run.log; then
+  ok "App Store Connect run helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-app-store-connect-run-dry-run.log >&2 || true
+  fail "App Store Connect run helper dry-run failed"
+fi
+if grep -Fq "app-store-connect-result.md" /tmp/html-previewer-app-store-connect-run-dry-run.log; then
+  ok "App Store Connect run helper creates a result draft"
+else
+  fail "App Store Connect run helper dry-run is missing the result draft"
+fi
+if grep -Fq "paid download" /tmp/html-previewer-app-store-connect-run-dry-run.log &&
+  grep -Fq "Data Not Collected" /tmp/html-previewer-app-store-connect-run-dry-run.log &&
+  grep -Fq "no IAP" /tmp/html-previewer-app-store-connect-run-dry-run.log; then
+  ok "App Store Connect run helper covers commercial and privacy gates"
+else
+  fail "App Store Connect run helper dry-run is missing commercial or privacy gates"
 fi
 
 echo
@@ -438,7 +460,9 @@ require_text "docs/app-store-connect-handoff.md" "Commercial model: paid downloa
 require_text "docs/app-store-connect-handoff.md" "Data collected: none" "App Store Connect handoff states no data collected"
 require_text "docs/app-store-connect-handoff.md" "Unrestricted web access.*No" "App Store Connect handoff covers unrestricted web access"
 require_text "docs/app-store-connect-handoff.md" "ITSAppUsesNonExemptEncryption=false" "App Store Connect handoff covers export compliance"
+require_text "docs/app-store-connect-handoff.md" "prepare-app-store-connect-run\\.sh" "App Store Connect handoff uses the App Store Connect run helper"
 require_text "docs/app-store-connect-handoff.md" "prepare-final-smoke-run\\.sh" "App Store Connect handoff uses the final smoke run helper"
+require_text "docs/app-store-submission-runbook.md" "DerivedData/AppStoreConnectRun" "submission runbook points to generated App Store Connect result"
 require_text "docs/app-store-submission-runbook.md" "DerivedData/FinalSmokeRun" "submission runbook points to generated final smoke result"
 require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"
 require_text "docs/final-archive-smoke-test-template.md" "Data Not Collected" "final smoke template covers App Store privacy label check"
@@ -664,6 +688,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-app-store-connect-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-final-smoke-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-physical-device-validation-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/run-archive-device-smoke.sh",

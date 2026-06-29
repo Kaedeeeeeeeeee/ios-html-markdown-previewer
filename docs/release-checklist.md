@@ -15,6 +15,7 @@
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
 - App Store handoff materials can be staged with `scripts/prepare-release-packet.sh`.
+- App Store Connect setup result drafts can be generated with `scripts/prepare-app-store-connect-run.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
 - Distribution-signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials. Development signing is opt-in only for local device smoke and is not App Store/TestFlight submission evidence.
@@ -39,6 +40,7 @@
 - Record the run with `docs/physical-device-validation-result-template.md` and attach or summarize it in issue #1.
 - Create App Store Connect record as paid download.
 - Use `docs/app-store-connect-handoff.md` to fill and confirm app record, pricing, privacy, age rating, export compliance, screenshots, and review notes.
+- Run `scripts/prepare-app-store-connect-run.sh` while entering App Store Connect fields and keep the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` result draft.
 - Confirm privacy policy URL and support URL are publicly reachable HTTPS pages.
 - Confirm no IAP products are configured for MVP.
 - Fill privacy labels as "Data Not Collected".

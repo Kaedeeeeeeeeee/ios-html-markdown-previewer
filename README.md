@@ -76,6 +76,12 @@ Release packet staging:
 scripts/prepare-release-packet.sh
 ```
 
+App Store Connect setup run draft:
+
+```sh
+scripts/prepare-app-store-connect-run.sh
+```
+
 Physical-device validation sample staging:
 
 ```sh
@@ -124,6 +130,7 @@ scripts/final-submission-preflight.sh
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`
 - Generic iOS archive preflight: `scripts/archive-preflight.sh`
 - Distribution-signed Release archive helper: `scripts/create-signed-archive.sh`
+- App Store Connect setup run draft: `scripts/prepare-app-store-connect-run.sh`
 - Archive physical-device smoke helper: `scripts/run-archive-device-smoke.sh`
 - Final archive/TestFlight smoke run draft: `scripts/prepare-final-smoke-run.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
