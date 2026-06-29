@@ -18,7 +18,7 @@
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.
 - Distribution-signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials. Development signing is opt-in only for local device smoke and is not App Store/TestFlight submission evidence.
-- Archived app physical-device install/launch smoke evidence can be captured with `scripts/run-archive-device-smoke.sh`.
+- Archived app physical-device install, launch, and launch-screenshot smoke evidence can be captured with `scripts/run-archive-device-smoke.sh`.
 - Physical-device validation samples can be delivered to Safari with `scripts/serve-validation-samples.sh`.
 - Physical-device validation run drafts can be generated with `scripts/prepare-physical-device-validation-run.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.

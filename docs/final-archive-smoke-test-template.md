@@ -28,7 +28,7 @@ Issue: #10
 | Public pages verification passed | `scripts/verify-public-pages.sh` output |  |  |
 | Release device build preflight passed | `scripts/release-device-build.sh` output |  |  |
 | Archive preflight passed | `scripts/archive-preflight.sh` output |  |  |
-| Archived app install/launch evidence captured | `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` report, when using an archived build |  |  |
+| Archived app install/launch evidence captured | `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` report and launch screenshot, when using an archived build |  |  |
 | Physical-device external-open validation completed | Linked #1 result |  |  |
 | App Store Connect record configured | Paid download, no IAP, privacy labels, age rating, export compliance |  |  |
 

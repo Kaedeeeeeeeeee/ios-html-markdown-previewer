@@ -13,8 +13,9 @@ usage() {
   cat <<'EOF'
 Usage: scripts/run-archive-device-smoke.sh --device <device-id-or-name> [options]
 
-Installs the archived app on a physical device, attempts to launch it, and
-writes a Markdown smoke report plus devicectl JSON/log artifacts.
+Installs the archived app on a physical device, attempts to launch it, captures
+a launch screenshot when possible, and writes a Markdown smoke report plus
+devicectl JSON/log artifacts.
 
 Environment:
   ARCHIVE_PATH   Optional .xcarchive path. Defaults to DerivedData/SignedArchive/HTMLPreviewer.xcarchive.
@@ -95,6 +96,9 @@ install_json="$run_dir/install.json"
 install_log="$run_dir/install.log"
 launch_json="$run_dir/launch.json"
 launch_log="$run_dir/launch.log"
+screenshot_png="$run_dir/launch-screenshot.png"
+screenshot_json="$run_dir/screenshot.json"
+screenshot_log="$run_dir/screenshot.log"
 report_path="$run_dir/archive-device-smoke-report.md"
 
 git_value() {
@@ -107,6 +111,8 @@ if [[ "$DRY_RUN" == true ]]; then
   if [[ "$SKIP_LAUNCH" == false ]]; then
     printf 'Would launch app:\n'
     printf '  xcrun devicectl device process launch --device %q --json-output %q --terminate-existing %q\n' "$DEVICE_ID" "$launch_json" "$BUNDLE_ID"
+    printf 'Would capture launch screenshot:\n'
+    printf '  xcrun devicectl device capture screenshot --device %q --destination %q --json-output %q\n' "$DEVICE_ID" "$screenshot_png" "$screenshot_json"
   fi
   printf 'Would write smoke report: %s\n' "$report_path"
   exit 0
@@ -116,6 +122,7 @@ mkdir -p "$run_dir"
 
 install_status="failed"
 launch_status="skipped"
+screenshot_status="skipped"
 overall_status="failed"
 
 set +e
@@ -150,6 +157,22 @@ elif [[ "$install_status" == "passed" && "$SKIP_LAUNCH" == true ]]; then
   overall_status="partial"
 fi
 
+if [[ "$launch_status" == "passed" ]]; then
+  set +e
+  xcrun devicectl device capture screenshot \
+    --device "$DEVICE_ID" \
+    --destination "$screenshot_png" \
+    --json-output "$screenshot_json" >"$screenshot_log" 2>&1
+  screenshot_exit=$?
+  set -e
+
+  if [[ "$screenshot_exit" -eq 0 && -s "$screenshot_png" ]]; then
+    screenshot_status="passed"
+  else
+    screenshot_status="failed"
+  fi
+fi
+
 locked_note=""
 if [[ -f "$launch_log" ]] && grep -Fq "Locked" "$launch_log"; then
   locked_note="Launch failed because the device was locked. Unlock the device and rerun this script."
@@ -170,6 +193,7 @@ generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
   printf -- '- Build number: %s\n' "$BUILD_NUMBER"
   printf -- '- Install: %s\n' "$install_status"
   printf -- '- Launch: %s\n' "$launch_status"
+  printf -- '- Screenshot: %s\n' "$screenshot_status"
   if [[ -n "$locked_note" ]]; then
     printf -- '- Note: %s\n' "$locked_note"
   fi
@@ -178,6 +202,9 @@ generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
   printf -- '- Install log: `%s`\n' "$install_log"
   printf -- '- Launch JSON: `%s`\n' "$launch_json"
   printf -- '- Launch log: `%s`\n' "$launch_log"
+  printf -- '- Launch screenshot: `%s`\n' "$screenshot_png"
+  printf -- '- Screenshot JSON: `%s`\n' "$screenshot_json"
+  printf -- '- Screenshot log: `%s`\n' "$screenshot_log"
   printf '\n## Manual Smoke Still Required\n\n'
   printf -- '- Open HTML Sample.\n'
   printf -- '- Open Markdown Sample.\n'

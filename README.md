@@ -61,6 +61,9 @@ Archive physical-device smoke helper:
 scripts/run-archive-device-smoke.sh --device <device-id-or-name>
 ```
 
+The helper records install, launch, and launch-screenshot artifacts under
+`DerivedData/PhysicalDeviceSmoke/`.
+
 Public App Store page verification:
 
 ```sh
