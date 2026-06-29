@@ -65,6 +65,7 @@ require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
+require_file "scripts/prepare-physical-device-validation-run.sh"
 require_file "scripts/prepare-validation-samples.sh"
 require_file "scripts/release-device-build.sh"
 require_file "scripts/run-archive-device-smoke.sh"
@@ -216,6 +217,25 @@ if grep -Fq "devicectl device process launch" /tmp/html-previewer-archive-device
   ok "archive device smoke helper launches through devicectl"
 else
   fail "archive device smoke helper dry-run is missing devicectl launch"
+fi
+
+echo
+echo "== Physical-device validation run helper =="
+if "$ROOT_DIR/scripts/prepare-physical-device-validation-run.sh" --device TEST-DEVICE --dry-run >/tmp/html-previewer-physical-validation-run-dry-run.log; then
+  ok "physical-device validation run helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-physical-validation-run-dry-run.log >&2 || true
+  fail "physical-device validation run helper dry-run failed"
+fi
+if grep -Fq "physical-device-validation-result.md" /tmp/html-previewer-physical-validation-run-dry-run.log; then
+  ok "physical-device validation run helper creates a result draft"
+else
+  fail "physical-device validation run helper dry-run is missing the result draft"
+fi
+if grep -Fq "HTMLPreviewerValidationSamples.zip" /tmp/html-previewer-physical-validation-run-dry-run.log; then
+  ok "physical-device validation run helper stages the validation sample package"
+else
+  fail "physical-device validation run helper dry-run is missing the validation sample package"
 fi
 
 echo
@@ -617,6 +637,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-physical-device-validation-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/run-archive-device-smoke.sh",
     "HTMLPreviewerReleasePacket/Scripts/serve-validation-samples.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-usability-test-packet.sh",

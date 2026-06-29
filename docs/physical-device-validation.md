@@ -15,6 +15,17 @@ This validation must run on a physical iPhone because simulator source-app behav
 Copy `docs/physical-device-validation-result-template.md` before each run and keep the completed result with the release evidence. Suggested path:
 `docs/physical-device-validation-results/YYYY-MM-DD-device-build.md`.
 
+To create a pre-filled validation run folder with the current commit, app
+version, sample package, and device list snapshot, run:
+
+```sh
+scripts/prepare-physical-device-validation-run.sh --device <physical-iPhone>
+```
+
+This creates a draft result under `DerivedData/PhysicalDeviceValidationRun/`.
+Complete the draft during the physical-device session, then keep it with the
+release evidence or copy it into `docs/physical-device-validation-results/`.
+
 ## Test Files
 
 Use the files in `docs/usability-testing/samples/`:

@@ -79,6 +79,12 @@ Physical-device validation sample staging:
 scripts/prepare-validation-samples.sh
 ```
 
+Physical-device validation run draft:
+
+```sh
+scripts/prepare-physical-device-validation-run.sh --device <physical-iPhone>
+```
+
 Physical-device validation sample browser delivery:
 
 ```sh
@@ -111,6 +117,7 @@ scripts/final-submission-preflight.sh
 - Distribution-signed Release archive helper: `scripts/create-signed-archive.sh`
 - Archive physical-device smoke helper: `scripts/run-archive-device-smoke.sh`
 - Physical-device validation sample staging: `scripts/prepare-validation-samples.sh`
+- Physical-device validation run draft: `scripts/prepare-physical-device-validation-run.sh`
 - Physical-device validation browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
 - Final submission preflight: `scripts/final-submission-preflight.sh`

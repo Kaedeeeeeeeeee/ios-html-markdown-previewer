@@ -20,6 +20,7 @@
 - Distribution-signed Release archive creation is scripted with `scripts/create-signed-archive.sh` and dry-run audited without Apple credentials. Development signing is opt-in only for local device smoke and is not App Store/TestFlight submission evidence.
 - Archived app physical-device install/launch smoke evidence can be captured with `scripts/run-archive-device-smoke.sh`.
 - Physical-device validation samples can be delivered to Safari with `scripts/serve-validation-samples.sh`.
+- Physical-device validation run drafts can be generated with `scripts/prepare-physical-device-validation-run.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.
 - Final local submission gates can be run with `scripts/final-submission-preflight.sh`.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
@@ -33,6 +34,7 @@
 
 - Verify document type open/share flow on a physical iPhone.
 - Verify Files, Mail, AirDrop, iCloud Drive, and at least one messaging app source.
+- Run `scripts/prepare-physical-device-validation-run.sh --device <physical-iPhone>` before the physical-device source matrix to prefill the result draft and sample packet.
 - Record the run with `docs/physical-device-validation-result-template.md` and attach or summarize it in issue #1.
 - Create App Store Connect record as paid download.
 - Use `docs/app-store-connect-handoff.md` to fill and confirm app record, pricing, privacy, age rating, export compliance, screenshots, and review notes.
