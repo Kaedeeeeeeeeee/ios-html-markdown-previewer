@@ -3,6 +3,8 @@ import SwiftUI
 struct MarkdownPreviewView: View {
     let document: MarkdownDocument
 
+    @State private var blockedLink: BlockedMarkdownLink?
+
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 14) {
@@ -14,6 +16,63 @@ struct MarkdownPreviewView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(Color(.systemBackground))
+        .environment(\.openURL, OpenURLAction { url in
+            blockedLink = MarkdownLinkPolicy.blockedLink(for: url)
+            return .handled
+        })
+        .alert(item: $blockedLink) { link in
+            Alert(
+                title: Text(link.title),
+                message: Text(link.message),
+                primaryButton: .default(Text("Copy Link")) {
+                    UIPasteboard.general.string = link.url.absoluteString
+                },
+                secondaryButton: .cancel(Text("OK"))
+            )
+        }
+    }
+}
+
+struct BlockedMarkdownLink: Identifiable, Equatable {
+    enum Reason: Equatable {
+        case externalWebURL
+        case unsupportedURL
+    }
+
+    let url: URL
+    let reason: Reason
+
+    var id: String {
+        "\(reason)-\(url.absoluteString)"
+    }
+
+    var title: String {
+        switch reason {
+        case .externalWebURL:
+            "External Link Blocked"
+        case .unsupportedURL:
+            "Link Not Opened"
+        }
+    }
+
+    var message: String {
+        switch reason {
+        case .externalWebURL:
+            "Markdown preview keeps web links from opening another app."
+        case .unsupportedURL:
+            "This link type is not supported in Markdown preview."
+        }
+    }
+}
+
+enum MarkdownLinkPolicy {
+    static func blockedLink(for url: URL) -> BlockedMarkdownLink {
+        if let scheme = url.scheme?.lowercased(),
+           scheme == "http" || scheme == "https" {
+            return BlockedMarkdownLink(url: url, reason: .externalWebURL)
+        }
+
+        return BlockedMarkdownLink(url: url, reason: .unsupportedURL)
     }
 }
 
@@ -168,4 +227,3 @@ private struct MarkdownImageView: View {
         )
     )
 }
-

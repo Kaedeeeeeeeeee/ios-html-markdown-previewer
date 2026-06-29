@@ -88,6 +88,20 @@ final class MarkdownRenderServiceTests: XCTestCase {
         }
     }
 
+    func testMarkdownLinkPolicyBlocksExternalWebURLs() throws {
+        let link = MarkdownLinkPolicy.blockedLink(for: URL(string: "https://example.com/report")!)
+
+        XCTAssertEqual(link.reason, .externalWebURL)
+        XCTAssertEqual(link.title, "External Link Blocked")
+    }
+
+    func testMarkdownLinkPolicyTreatsRelativeLinksAsUnsupported() throws {
+        let link = MarkdownLinkPolicy.blockedLink(for: URL(fileURLWithPath: "notes.md"))
+
+        XCTAssertEqual(link.reason, .unsupportedURL)
+        XCTAssertEqual(link.title, "Link Not Opened")
+    }
+
     func testBlocksRemoteImagesAndResolvesLocalImagesAgainstBaseURL() throws {
         let baseURL = try makeTemporaryDirectory()
         let document = MarkdownRenderService().render(
