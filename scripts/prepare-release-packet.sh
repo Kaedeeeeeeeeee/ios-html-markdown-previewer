@@ -27,6 +27,14 @@ latest_file() {
   find "$search_root" -name "$filename" -print 2>/dev/null | sort | tail -n 1
 }
 
+report_field() {
+  local label="$1"
+  local path="$2"
+  if [[ -f "$path" ]]; then
+    awk -v prefix="- $label: " 'index($0, prefix) == 1 { print substr($0, length(prefix) + 1); exit }' "$path"
+  fi
+}
+
 "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only >/dev/null
 "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" >/dev/null
@@ -37,6 +45,8 @@ FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-a
 PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
 PREFLIGHT_REPORT="$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md"
+ARCHIVE_SMOKE_COMMIT_CHECK="$(report_field "Archive smoke commit check" "$FINAL_SMOKE_RESULT")"
+ARCHIVE_SMOKE_COMMIT_CHECK="${ARCHIVE_SMOKE_COMMIT_CHECK:-commit freshness not recorded}"
 
 if [[ -z "$APP_STORE_CONNECT_RESULT" || ! -f "$APP_STORE_CONNECT_RESULT" ]]; then
   printf 'Missing generated App Store Connect result draft.\n' >&2
@@ -69,6 +79,7 @@ Key files:
 - FinalSmoke/final-archive-smoke-result-draft.md
 - FinalSmoke/ArchiveDeviceSmoke/ (when archive smoke evidence exists)
 - Evidence/README.txt
+- Evidence/release-evidence-index.md
 - Evidence/submission-readiness-report.md (when final preflight already ran)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
@@ -118,6 +129,9 @@ When a preflight report already exists, this packet includes it as:
 
 - Evidence/submission-readiness-report.md
 
+Use Evidence/release-evidence-index.md as the portable entry point for copied
+evidence paths inside the packet.
+
 The final-submission-preflight script also refreshes this release packet with
 the current report after all local gates finish.
 EOF
@@ -125,6 +139,38 @@ EOF
 if [[ -f "$PREFLIGHT_REPORT" ]]; then
   copy_file "$PREFLIGHT_REPORT" "$PACKET_DIR/Evidence/submission-readiness-report.md"
 fi
+
+{
+  printf '# Release Evidence Index\n\n'
+  printf -- '- Generated from commit: %s\n' "$(git -C "$ROOT_DIR" rev-parse --short HEAD 2>/dev/null || printf 'unknown')"
+  printf -- '- Release packet: `HTMLPreviewerReleasePacket.zip`\n'
+  printf -- '- Source reports may contain local absolute paths from the machine that generated them. Use the packet-relative paths below when reviewing this packet outside the source checkout.\n'
+  printf '\n## Packet Evidence\n\n'
+  printf '| Evidence | Packet-relative path | Status |\n'
+  printf '|---|---|---|\n'
+  printf '| Final preflight report | `Evidence/submission-readiness-report.md` | %s |\n' "$(if [[ -f "$PREFLIGHT_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
+  printf '| App Store Connect setup draft | `AppStoreConnect/app-store-connect-result-draft.md` | Included |\n'
+  printf '| Final archive/TestFlight smoke draft | `FinalSmoke/final-archive-smoke-result-draft.md` | Included |\n'
+  if [[ -n "$PHYSICAL_DEVICE_RESULT" && -f "$PHYSICAL_DEVICE_RESULT" ]]; then
+    printf '| Physical-device validation draft | `PhysicalDevice/physical-device-validation-result-draft.md` | Included, still requires manual matrix completion |\n'
+  else
+    printf '| Physical-device validation draft | `PhysicalDevice/physical-device-validation-result-draft.md` | Not staged locally |\n'
+  fi
+  printf '| Physical-device validation samples | `PhysicalDevice/HTMLPreviewerValidationSamples.zip` | Included |\n'
+  printf '| Browser delivery page | `PhysicalDevice/validation-download-index.html` | Included |\n'
+  if [[ -n "$ARCHIVE_SMOKE_REPORT" && -f "$ARCHIVE_SMOKE_REPORT" ]]; then
+    printf '| Archive device smoke report | `FinalSmoke/ArchiveDeviceSmoke/archive-device-smoke-report.md` | Included; %s |\n' "$ARCHIVE_SMOKE_COMMIT_CHECK"
+    printf '| Archive device smoke logs | `FinalSmoke/ArchiveDeviceSmoke/` | Included when produced by `scripts/run-archive-device-smoke.sh` |\n'
+  else
+    printf '| Archive device smoke report | `FinalSmoke/ArchiveDeviceSmoke/archive-device-smoke-report.md` | Not staged locally |\n'
+  fi
+  printf '| Usability test packet | `UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip` | Included, still requires external participant run |\n'
+  printf '\n## External Gates Still Required\n\n'
+  printf -- '- Complete physical-device external-open validation on an unlocked real iPhone and fill `PhysicalDevice/physical-device-validation-result-draft.md`.\n'
+  printf -- '- Complete App Store Connect paid-download setup and fill `AppStoreConnect/app-store-connect-result-draft.md`.\n'
+  printf -- '- Upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using `FinalSmoke/final-archive-smoke-result-draft.md`.\n'
+  printf -- '- Run the first external usability round and record the result under the issue #11 materials.\n'
+} > "$PACKET_DIR/Evidence/release-evidence-index.md"
 
 copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation.md"
 copy_file "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-template.md"

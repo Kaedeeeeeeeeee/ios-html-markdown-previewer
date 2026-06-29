@@ -82,7 +82,8 @@ drafts under `AppStoreConnect/` and `FinalSmoke/`. After
 current preflight report under `Evidence/`, including the working-tree state
 and latest evidence commit checks. When local physical-device validation or
 archive-smoke evidence has been staged, the packet also copies those evidence
-files under `PhysicalDevice/` and `FinalSmoke/ArchiveDeviceSmoke/`.
+files under `PhysicalDevice/` and `FinalSmoke/ArchiveDeviceSmoke/`, with a
+packet-relative index at `Evidence/release-evidence-index.md`.
 
 App Store Connect setup run draft:
 
