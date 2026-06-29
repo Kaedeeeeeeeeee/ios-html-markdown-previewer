@@ -68,6 +68,7 @@ require_file "scripts/portable-release-materials-audit.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-submission-gate-status.sh"
 require_file "scripts/validate-completed-release-results.sh"
+require_file "scripts/prepare-submission-owner-handoff.sh"
 require_file "scripts/prepare-app-store-connect-run.sh"
 require_file "scripts/prepare-final-smoke-run.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
@@ -314,6 +315,20 @@ else
 fi
 
 echo
+echo "== Submission owner handoff helper =="
+if "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" --dry-run >/tmp/html-previewer-submission-owner-handoff-dry-run.log; then
+  ok "submission owner handoff helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-submission-owner-handoff-dry-run.log >&2 || true
+  fail "submission owner handoff helper dry-run failed"
+fi
+if grep -Fq "submission-owner-handoff.md" /tmp/html-previewer-submission-owner-handoff-dry-run.log; then
+  ok "submission owner handoff helper creates a report"
+else
+  fail "submission owner handoff helper dry-run is missing the report"
+fi
+
+echo
 echo "== Physical-device validation run helper =="
 if "$ROOT_DIR/scripts/prepare-physical-device-validation-run.sh" --device TEST-DEVICE --dry-run >/tmp/html-previewer-physical-validation-run-dry-run.log; then
   ok "physical-device validation run helper dry-run succeeds"
@@ -538,6 +553,7 @@ require_text "docs/app-store-submission-runbook.md" "DerivedData/AppStoreConnect
 require_text "docs/app-store-submission-runbook.md" "DerivedData/FinalSmokeRun" "submission runbook points to generated final smoke result"
 require_text "docs/app-store-submission-runbook.md" "check-github-actions-execution\\.sh" "submission runbook points to Actions execution diagnostics"
 require_text "docs/app-store-submission-runbook.md" "validate-completed-release-results\\.sh" "submission runbook points to completed result validation"
+require_text "docs/app-store-submission-runbook.md" "prepare-submission-owner-handoff\\.sh" "submission runbook points to owner handoff"
 require_text "docs/github-actions-troubleshooting.md" "steps: \\[\\]" "GitHub Actions troubleshooting documents zero-step blocker"
 require_text "docs/github-actions-troubleshooting.md" "Budgets and alerts" "GitHub Actions troubleshooting covers billing budget checks"
 require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"
@@ -825,6 +841,39 @@ then
 else
   fail "completed release results validation report is missing required result drafts"
 fi
+if "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" >/tmp/html-previewer-submission-owner-handoff.log; then
+  ok "submission owner handoff report can be generated"
+else
+  cat /tmp/html-previewer-submission-owner-handoff.log >&2 || true
+  fail "submission owner handoff report generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md" <<'PY'
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+required = [
+    "# Submission Owner Handoff",
+    "GitHub account owner",
+    "App Store Connect account owner",
+    "Signing/upload owner",
+    "Physical-device tester",
+    "Final smoke tester",
+    "Usability moderator",
+    "Release operator",
+    "Do not treat a development-signed archive as App Store/TestFlight upload evidence.",
+]
+missing = [marker for marker in required if marker not in text]
+if missing:
+    print("missing owner handoff markers: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "submission owner handoff report covers required external owners"
+else
+  fail "submission owner handoff report is missing required owner markers"
+fi
 
 echo
 echo "== Release packet =="
@@ -853,6 +902,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Evidence/checksums-sha256.txt",
     "HTMLPreviewerReleasePacket/Evidence/completed-release-results-validation.md",
     "HTMLPreviewerReleasePacket/Evidence/submission-gate-status-report.md",
+    "HTMLPreviewerReleasePacket/Evidence/submission-owner-handoff.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
@@ -876,6 +926,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-submission-gate-status.sh",
     "HTMLPreviewerReleasePacket/Scripts/validate-completed-release-results.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-submission-owner-handoff.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/portable-release-materials-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",

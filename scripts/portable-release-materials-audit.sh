@@ -108,6 +108,7 @@ for path in [
     "scripts/check-github-actions-execution.sh",
     "scripts/prepare-submission-gate-status.sh",
     "scripts/validate-completed-release-results.sh",
+    "scripts/prepare-submission-owner-handoff.sh",
     "scripts/prepare-usability-session-run.sh",
 ]:
     require_file(path)
@@ -277,6 +278,7 @@ require_text("docs/app-store-connect-handoff.md", r"ITSAppUsesNonExemptEncryptio
 require_text("docs/app-store-submission-runbook.md", r"check-github-actions-execution\.sh", "submission runbook points to Actions diagnostics")
 require_text("docs/app-store-submission-runbook.md", r"prepare-submission-gate-status\.sh", "submission runbook points to submission gate status report")
 require_text("docs/app-store-submission-runbook.md", r"validate-completed-release-results\.sh", "submission runbook points to completed result validation")
+require_text("docs/app-store-submission-runbook.md", r"prepare-submission-owner-handoff\.sh", "submission runbook points to owner handoff")
 require_text("docs/github-actions-troubleshooting.md", r"steps: \[\]", "Actions troubleshooting documents zero-step blocker")
 require_text("docs/github-actions-troubleshooting.md", r"Budgets and alerts", "Actions troubleshooting covers budget checks")
 require_text("docs/privacy-policy.md", r"HTML Previewer does not collect personal data", "privacy policy states no personal data collection")

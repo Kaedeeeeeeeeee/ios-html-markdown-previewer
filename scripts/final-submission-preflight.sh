@@ -127,6 +127,7 @@ write_latest_evidence() {
   local usability_session_result
   local archive_smoke_report
   local completed_results_validation_report
+  local submission_owner_handoff_report
   local current_full
   local current_short
 
@@ -136,6 +137,7 @@ write_latest_evidence() {
   usability_session_result="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
   completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
+  submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
   current_full="$(git_value rev-parse HEAD)"
   current_short="$(git_value rev-parse --short HEAD)"
 
@@ -188,6 +190,14 @@ write_latest_evidence() {
   else
     printf -- '- Completed release results validation: not generated yet\n'
   fi
+
+  if [[ -f "$submission_owner_handoff_report" ]]; then
+    printf -- '- Submission owner handoff: `%s`\n' "$submission_owner_handoff_report"
+    printf -- '  - Status: %s\n' "$(report_field "Submission gate status" "$submission_owner_handoff_report")"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$submission_owner_handoff_report" "$current_full" "$current_short")"
+  else
+    printf -- '- Submission owner handoff: not generated yet\n'
+  fi
 }
 
 write_report() {
@@ -231,6 +241,7 @@ write_report() {
     printf -- '- Release packet: `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`\n'
     printf -- '- Submission gate status: `DerivedData/SubmissionGateStatus/submission-gate-status-report.md`\n'
     printf -- '- Completed release results validation: `DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md`\n'
+    printf -- '- Submission owner handoff: `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md`\n'
     printf -- '- Usability test packet: `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`\n'
     printf -- '- Usability session draft: `DerivedData/UsabilitySessionRun/`\n'
     printf -- '- Validation samples: `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`\n'
@@ -242,6 +253,7 @@ write_report() {
     write_latest_evidence
 
     printf '\n## Manual Gates Still Required\n\n'
+    printf -- '- Owner handoff: Use `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md` to assign the remaining GitHub account owner, App Store Connect account owner, tester, moderator, and release-operator actions.\n'
     printf -- '- #1: Run `scripts/prepare-physical-device-validation-run.sh --device <physical-iPhone>`, complete the physical-device external-open matrix on a real iPhone, and keep the generated result draft with release evidence.\n'
     printf -- '- #11: Run `scripts/prepare-usability-session-run.sh`, complete the first usability round with at least one external participant, and keep the generated result draft with release evidence.\n'
     printf -- '- #10: If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with release evidence.\n'
@@ -262,6 +274,7 @@ refresh_release_packet_report() {
   local checksum_path="$packet_dir/Evidence/checksums-sha256.txt"
   local gate_status_report="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
   local completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
+  local submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -275,6 +288,9 @@ refresh_release_packet_report() {
   if [[ -f "$completed_results_validation_report" ]]; then
     cp "$completed_results_validation_report" "$packet_dir/Evidence/completed-release-results-validation.md"
   fi
+  if [[ -f "$submission_owner_handoff_report" ]]; then
+    cp "$submission_owner_handoff_report" "$packet_dir/Evidence/submission-owner-handoff.md"
+  fi
   if [[ -f "$index_path" ]]; then
     awk '
       /^\| Final preflight report \|/ {
@@ -287,6 +303,10 @@ refresh_release_packet_report() {
       }
       /^\| Submission gate status report \|/ {
         print "| Submission gate status report | `Evidence/submission-gate-status-report.md` | Included |"
+        next
+      }
+      /^\| Submission owner handoff \|/ {
+        print "| Submission owner handoff | `Evidence/submission-owner-handoff.md` | Included |"
         next
       }
       { print }
@@ -343,6 +363,8 @@ run_step "Validation sample browser delivery staging" "$ROOT_DIR/scripts/serve-v
 run_step "App Store Connect result draft staging" "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh"
 run_step "Final smoke result draft staging" "$ROOT_DIR/scripts/prepare-final-smoke-run.sh"
 run_step "Completed release results validation report" "$ROOT_DIR/scripts/validate-completed-release-results.sh"
+run_step "Submission gate status report" "$ROOT_DIR/scripts/prepare-submission-gate-status.sh"
+run_step "Submission owner handoff report" "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh"
 run_step "Release packet staging" "$ROOT_DIR/scripts/prepare-release-packet.sh"
 run_step "Signed archive dry-run" env DEVELOPMENT_TEAM=ABCDE12345 "$ROOT_DIR/scripts/create-signed-archive.sh" --dry-run
 
@@ -356,6 +378,7 @@ fi
 
 write_report "passed"
 "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" >/dev/null
+"$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" >/dev/null
 refresh_release_packet_report
 printf 'Final submission preflight passed.\n'
 printf 'Wrote preflight report: %s\n' "$REPORT_PATH"

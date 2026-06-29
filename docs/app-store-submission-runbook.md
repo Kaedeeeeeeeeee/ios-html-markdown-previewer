@@ -25,6 +25,7 @@ Use this runbook after physical-device validation passes and a completed result 
 - GitHub Actions troubleshooting note: `docs/github-actions-troubleshooting.md`
 - Submission gate status report: `scripts/prepare-submission-gate-status.sh`
 - Completed manual result validator: `scripts/validate-completed-release-results.sh`
+- Submission owner handoff report: `scripts/prepare-submission-owner-handoff.sh`
 - Physical-device sample browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
 - First-round usability session result draft: `scripts/prepare-usability-session-run.sh`
@@ -67,28 +68,33 @@ Apple references:
    scripts/prepare-submission-gate-status.sh --check-github
    ```
    Keep `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` with release evidence. A `blocked` or `pending` status means at least one App Store submission gate still needs owner/tester action.
-6. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
+6. Generate the owner-facing handoff report and use it to assign the remaining GitHub account owner, App Store Connect account owner, physical-device tester, final-smoke tester, usability moderator, and release-operator actions:
+   ```sh
+   scripts/prepare-submission-owner-handoff.sh
+   ```
+   Keep `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md` with release evidence.
+7. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
    ```sh
    scripts/prepare-app-store-connect-run.sh
    ```
    Keep the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` with submission evidence.
-7. Create a signed archive from the final commit:
+8. Create a signed archive from the final commit:
    ```sh
    DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
    ```
    Set `PROVISIONING_PROFILE_SPECIFIER=<profile name>` only if the account owner uses manual signing.
    The script validates the resulting archive for App Store/TestFlight distribution signing and rejects development, device-limited, enterprise, wildcard, or debug provisioning profiles. Use `ALLOW_DEVELOPMENT_SIGNING=YES` only for local device smoke builds that will not be uploaded or counted as App Store/TestFlight evidence.
-8. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
-9. Wait for App Store Connect processing to finish and select the processed build.
-10. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
+9. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
+10. Wait for App Store Connect processing to finish and select the processed build.
+11. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
    ```sh
    scripts/run-archive-device-smoke.sh --device <device-id-or-name>
    ```
-11. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
+12. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
    ```sh
    scripts/prepare-final-smoke-run.sh --device <physical-iPhone> --build-source "signed archive / TestFlight"
    ```
-12. Smoke test:
+13. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.
@@ -96,12 +102,12 @@ Apple references:
    - Verify Safe Preview blocks external resources by default.
    - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
    - Verify recent file reopen and delete.
-13. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, or unresolved P0/P1 follow-ups:
+14. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, or unresolved P0/P1 follow-ups:
    ```sh
    scripts/validate-completed-release-results.sh --fail-on-invalid
    ```
    Use `--fail-on-incomplete` only when every manual gate is expected to be complete.
-14. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
+15. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
    ```sh
    scripts/prepare-submission-gate-status.sh --check-github --fail-on-not-ready
    ```

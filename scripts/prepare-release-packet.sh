@@ -56,6 +56,7 @@ report_field() {
 "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" >/dev/null
 "$ROOT_DIR/scripts/validate-completed-release-results.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" >/dev/null
+"$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" >/dev/null
 
 APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
 FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
@@ -65,6 +66,7 @@ ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" 
 GITHUB_ACTIONS_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 SUBMISSION_GATE_STATUS_REPORT="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
 COMPLETED_RESULTS_VALIDATION_REPORT="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
+SUBMISSION_OWNER_HANDOFF_REPORT="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
 PREFLIGHT_REPORT="$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md"
 ARCHIVE_SMOKE_COMMIT_CHECK="$(report_field "Archive smoke commit check" "$FINAL_SMOKE_RESULT")"
 ARCHIVE_SMOKE_COMMIT_CHECK="${ARCHIVE_SMOKE_COMMIT_CHECK:-commit freshness not recorded}"
@@ -105,6 +107,7 @@ Key files:
 - Evidence/submission-readiness-report.md (when final preflight already ran)
 - Evidence/submission-gate-status-report.md
 - Evidence/completed-release-results-validation.md
+- Evidence/submission-owner-handoff.md
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/physical-device-validation-result-draft.md (when staged)
@@ -129,6 +132,7 @@ Key files:
 - Scripts/final-submission-preflight.sh
 - Scripts/prepare-submission-gate-status.sh
 - Scripts/validate-completed-release-results.sh
+- Scripts/prepare-submission-owner-handoff.sh
 - Scripts/prepare-app-store-connect-run.sh
 - Scripts/prepare-final-smoke-run.sh
 - Scripts/prepare-physical-device-validation-run.sh
@@ -164,6 +168,7 @@ When a preflight report already exists, this packet includes it as:
 - Evidence/submission-readiness-report.md
 - Evidence/completed-release-results-validation.md
 - Evidence/submission-gate-status-report.md
+- Evidence/submission-owner-handoff.md
 
 Use Evidence/release-evidence-index.md as the portable entry point for copied
 evidence paths inside the packet.
@@ -181,6 +186,9 @@ fi
 if [[ -f "$SUBMISSION_GATE_STATUS_REPORT" ]]; then
   copy_file "$SUBMISSION_GATE_STATUS_REPORT" "$PACKET_DIR/Evidence/submission-gate-status-report.md"
 fi
+if [[ -f "$SUBMISSION_OWNER_HANDOFF_REPORT" ]]; then
+  copy_file "$SUBMISSION_OWNER_HANDOFF_REPORT" "$PACKET_DIR/Evidence/submission-owner-handoff.md"
+fi
 
 {
   printf '# Release Evidence Index\n\n'
@@ -193,6 +201,7 @@ fi
   printf '| Final preflight report | `Evidence/submission-readiness-report.md` | %s |\n' "$(if [[ -f "$PREFLIGHT_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
   printf '| Completed release results validation | `Evidence/completed-release-results-validation.md` | %s |\n' "$(if [[ -f "$COMPLETED_RESULTS_VALIDATION_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
   printf '| Submission gate status report | `Evidence/submission-gate-status-report.md` | %s |\n' "$(if [[ -f "$SUBMISSION_GATE_STATUS_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
+  printf '| Submission owner handoff | `Evidence/submission-owner-handoff.md` | %s |\n' "$(if [[ -f "$SUBMISSION_OWNER_HANDOFF_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
   printf '| Packet checksums | `Evidence/checksums-sha256.txt` | Generated during packet staging |\n'
   printf '| App Store Connect setup draft | `AppStoreConnect/app-store-connect-result-draft.md` | Included |\n'
   printf '| Final archive/TestFlight smoke draft | `FinalSmoke/final-archive-smoke-result-draft.md` | Included |\n'
@@ -229,6 +238,7 @@ fi
   printf -- '- Complete App Store Connect paid-download setup and fill `AppStoreConnect/app-store-connect-result-draft.md`.\n'
   printf -- '- Upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using `FinalSmoke/final-archive-smoke-result-draft.md`.\n'
   printf -- '- Run the first external usability round and fill `UsabilityTesting/first-round-usability-result-draft.md`.\n'
+  printf -- '- Use `Evidence/submission-owner-handoff.md` to assign the remaining account-owner, tester, and release-operator actions.\n'
   printf -- '- After filling manual results, run `Scripts/validate-completed-release-results.sh --fail-on-invalid` before treating any close/continue fields as evidence.\n'
 } > "$PACKET_DIR/Evidence/release-evidence-index.md"
 
@@ -273,6 +283,7 @@ copy_file "$ROOT_DIR/scripts/create-signed-archive.sh" "$PACKET_DIR/Scripts/crea
 copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts/final-submission-preflight.sh"
 copy_file "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" "$PACKET_DIR/Scripts/prepare-submission-gate-status.sh"
 copy_file "$ROOT_DIR/scripts/validate-completed-release-results.sh" "$PACKET_DIR/Scripts/validate-completed-release-results.sh"
+copy_file "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" "$PACKET_DIR/Scripts/prepare-submission-owner-handoff.sh"
 copy_file "$ROOT_DIR/scripts/archive-preflight.sh" "$PACKET_DIR/Scripts/archive-preflight.sh"
 copy_file "$ROOT_DIR/scripts/portable-release-materials-audit.sh" "$PACKET_DIR/Scripts/portable-release-materials-audit.sh"
 copy_file "$ROOT_DIR/scripts/release-audit.sh" "$PACKET_DIR/Scripts/release-audit.sh"
