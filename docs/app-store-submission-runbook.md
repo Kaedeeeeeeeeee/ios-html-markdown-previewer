@@ -66,39 +66,44 @@ Apple references:
    scripts/check-github-actions-execution.sh --run-id <run-id> --attempt <attempt-number>
    ```
    Keep the generated `DerivedData/GitHubActionsDiagnostics/.../github-actions-diagnostics.md` report with issue #10 and resolve the account, billing, or policy blocker before submission.
-4. Keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
-5. Generate the submission gate status report:
+4. When running local simulator tests through XcodeBuildMCP or Xcode, preserve supplemental local evidence with:
+   ```sh
+   scripts/prepare-local-automated-test-report.sh --status SUCCEEDED --passed-count <passed> --failed-count <failed> --skipped-count <skipped> --duration-ms <duration-ms> --build-log <path> --xcresult <path>
+   ```
+   This report is useful release evidence but does not replace the hosted GitHub Actions CI gate.
+5. Keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
+6. Generate the submission gate status report:
    ```sh
    scripts/prepare-submission-gate-status.sh --check-github
    ```
    Keep `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` with release evidence. A `blocked` or `pending` status means at least one App Store submission gate still needs owner/tester action.
-6. Generate the owner-facing handoff report and use it to assign the remaining GitHub account owner, App Store Connect account owner, physical-device tester, final-smoke tester, usability moderator, and release-operator actions:
+7. Generate the owner-facing handoff report and use it to assign the remaining GitHub account owner, App Store Connect account owner, physical-device tester, final-smoke tester, usability moderator, and release-operator actions:
    ```sh
    scripts/prepare-submission-owner-handoff.sh
    ```
    Keep `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md` with release evidence.
-7. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
+8. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
    ```sh
    scripts/prepare-app-store-connect-run.sh
    ```
    Keep the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` with submission evidence.
-8. Create a signed archive from the final commit:
+9. Create a signed archive from the final commit:
    ```sh
    DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
    ```
    Set `PROVISIONING_PROFILE_SPECIFIER=<profile name>` only if the account owner uses manual signing.
    The script validates the resulting archive for App Store/TestFlight distribution signing and rejects development, device-limited, enterprise, wildcard, or debug provisioning profiles. Use `ALLOW_DEVELOPMENT_SIGNING=YES` only for local device smoke builds that will not be uploaded or counted as App Store/TestFlight evidence.
-9. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
-10. Wait for App Store Connect processing to finish and select the processed build.
-11. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
+10. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
+11. Wait for App Store Connect processing to finish and select the processed build.
+12. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
    ```sh
    scripts/run-archive-device-smoke.sh --device <device-id-or-name>
    ```
-12. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
+13. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
    ```sh
    scripts/prepare-final-smoke-run.sh --device <physical-iPhone> --build-source "signed archive / TestFlight"
    ```
-13. Smoke test:
+14. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.
@@ -106,12 +111,12 @@ Apple references:
    - Verify Safe Preview blocks external resources by default.
    - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
    - Verify recent file reopen and delete.
-14. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, missing Files local pass coverage, weak final-smoke build evidence, or unresolved P0/P1 follow-ups:
+15. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, missing Files local pass coverage, weak final-smoke build evidence, or unresolved P0/P1 follow-ups:
    ```sh
    scripts/validate-completed-release-results.sh --fail-on-invalid
    ```
    Use `--fail-on-incomplete` only when every manual gate is expected to be complete.
-15. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
+16. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
    ```sh
    scripts/prepare-submission-gate-status.sh --check-github --fail-on-not-ready
    ```

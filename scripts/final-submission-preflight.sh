@@ -126,6 +126,7 @@ write_latest_evidence() {
   local physical_device_result
   local usability_session_result
   local archive_smoke_report
+  local local_automated_test_report
   local completed_results_validation_report
   local submission_owner_handoff_report
   local current_full
@@ -136,6 +137,7 @@ write_latest_evidence() {
   physical_device_result="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
   usability_session_result="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
+  local_automated_test_report="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
   completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
   current_full="$(git_value rev-parse HEAD)"
@@ -181,6 +183,17 @@ write_latest_evidence() {
     printf -- '  - Screenshot: %s\n' "$(report_field Screenshot "$archive_smoke_report")"
   else
     printf -- '- Archive device smoke report: not generated yet\n'
+  fi
+
+  if [[ -n "$local_automated_test_report" ]]; then
+    printf -- '- Local automated simulator test report: `%s`\n' "$local_automated_test_report"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$local_automated_test_report" "$current_full" "$current_short")"
+    printf -- '  - Status: %s\n' "$(report_field Status "$local_automated_test_report")"
+    printf -- '  - Passed tests: %s\n' "$(report_field "Passed tests" "$local_automated_test_report")"
+    printf -- '  - Failed tests: %s\n' "$(report_field "Failed tests" "$local_automated_test_report")"
+    printf -- '  - Hosted CI substitute: %s\n' "$(report_field "Hosted CI substitute" "$local_automated_test_report")"
+  else
+    printf -- '- Local automated simulator test report: not generated yet\n'
   fi
 
   if [[ -f "$completed_results_validation_report" ]]; then
@@ -249,6 +262,7 @@ write_report() {
     printf -- '- Browser delivery page: `DerivedData/ValidationSamples/index.html`\n'
     printf -- '- App Store Connect draft: `DerivedData/AppStoreConnectRun/`\n'
     printf -- '- Final smoke draft: `DerivedData/FinalSmokeRun/`\n'
+    printf -- '- Local automated test report: `DerivedData/LocalAutomatedTests/`\n'
     printf -- '- Preflight logs: `DerivedData/FinalSubmissionPreflight/logs/`\n'
 
     write_latest_evidence
@@ -276,6 +290,7 @@ refresh_release_packet_report() {
   local gate_status_report="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
   local completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   local submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
+  local local_automated_test_report
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -291,6 +306,12 @@ refresh_release_packet_report() {
   fi
   if [[ -f "$submission_owner_handoff_report" ]]; then
     cp "$submission_owner_handoff_report" "$packet_dir/Evidence/submission-owner-handoff.md"
+  fi
+  local_automated_test_report="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
+  if [[ -n "$local_automated_test_report" && -f "$local_automated_test_report" ]]; then
+    rm -rf "$packet_dir/Evidence/LocalAutomatedTests"
+    mkdir -p "$packet_dir/Evidence"
+    cp -R "$(dirname "$local_automated_test_report")" "$packet_dir/Evidence/LocalAutomatedTests"
   fi
   if [[ -f "$index_path" ]]; then
     awk '
@@ -308,6 +329,10 @@ refresh_release_packet_report() {
       }
       /^\| Submission owner handoff \|/ {
         print "| Submission owner handoff | `Evidence/submission-owner-handoff.md` | Included |"
+        next
+      }
+      /^\| Local automated simulator test report \|/ {
+        print "| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Included as supplemental local evidence; hosted CI still required |"
         next
       }
       { print }

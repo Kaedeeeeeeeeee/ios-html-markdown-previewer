@@ -38,6 +38,9 @@ write_checksums() {
 latest_file() {
   local search_root="$1"
   local filename="$2"
+  if [[ ! -d "$search_root" ]]; then
+    return 0
+  fi
   find "$search_root" -name "$filename" -print 2>/dev/null | sort | tail -n 1
 }
 
@@ -64,6 +67,7 @@ PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValid
 USABILITY_SESSION_RESULT="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
 GITHUB_ACTIONS_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
+LOCAL_AUTOMATED_TEST_REPORT="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
 SUBMISSION_GATE_STATUS_REPORT="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
 COMPLETED_RESULTS_VALIDATION_REPORT="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
 SUBMISSION_OWNER_HANDOFF_REPORT="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
@@ -108,6 +112,7 @@ Key files:
 - Evidence/submission-gate-status-report.md
 - Evidence/completed-release-results-validation.md
 - Evidence/submission-owner-handoff.md
+- Evidence/LocalAutomatedTests/ (when staged)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/physical-device-validation-result-draft.md (when staged)
@@ -128,6 +133,7 @@ Key files:
 - Operations/github-actions-troubleshooting.md
 - Operations/GitHubActionsDiagnostics/ (when staged)
 - Scripts/check-github-actions-execution.sh
+- Scripts/prepare-local-automated-test-report.sh
 - Scripts/create-signed-archive.sh
 - Scripts/final-submission-preflight.sh
 - Scripts/prepare-submission-gate-status.sh
@@ -169,6 +175,7 @@ When a preflight report already exists, this packet includes it as:
 - Evidence/completed-release-results-validation.md
 - Evidence/submission-gate-status-report.md
 - Evidence/submission-owner-handoff.md
+- Evidence/LocalAutomatedTests/local-automated-test-report.md
 
 Use Evidence/release-evidence-index.md as the portable entry point for copied
 evidence paths inside the packet.
@@ -189,6 +196,9 @@ fi
 if [[ -f "$SUBMISSION_OWNER_HANDOFF_REPORT" ]]; then
   copy_file "$SUBMISSION_OWNER_HANDOFF_REPORT" "$PACKET_DIR/Evidence/submission-owner-handoff.md"
 fi
+if [[ -n "$LOCAL_AUTOMATED_TEST_REPORT" && -f "$LOCAL_AUTOMATED_TEST_REPORT" ]]; then
+  copy_dir "$(dirname "$LOCAL_AUTOMATED_TEST_REPORT")" "$PACKET_DIR/Evidence/LocalAutomatedTests"
+fi
 
 {
   printf '# Release Evidence Index\n\n'
@@ -202,6 +212,11 @@ fi
   printf '| Completed release results validation | `Evidence/completed-release-results-validation.md` | %s |\n' "$(if [[ -f "$COMPLETED_RESULTS_VALIDATION_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
   printf '| Submission gate status report | `Evidence/submission-gate-status-report.md` | %s |\n' "$(if [[ -f "$SUBMISSION_GATE_STATUS_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
   printf '| Submission owner handoff | `Evidence/submission-owner-handoff.md` | %s |\n' "$(if [[ -f "$SUBMISSION_OWNER_HANDOFF_REPORT" ]]; then printf 'Included'; else printf 'Not generated before packet staging'; fi)"
+  if [[ -n "$LOCAL_AUTOMATED_TEST_REPORT" && -f "$LOCAL_AUTOMATED_TEST_REPORT" ]]; then
+    printf '| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Included as supplemental local evidence; hosted CI still required |\n'
+  else
+    printf '| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Not staged locally |\n'
+  fi
   printf '| Packet checksums | `Evidence/checksums-sha256.txt` | Generated during packet staging |\n'
   printf '| App Store Connect setup draft | `AppStoreConnect/app-store-connect-result-draft.md` | Included |\n'
   printf '| Final archive/TestFlight smoke draft | `FinalSmoke/final-archive-smoke-result-draft.md` | Included |\n'
@@ -279,6 +294,7 @@ copy_file "$ROOT_DIR/HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/Ap
 copy_dir "$ROOT_DIR/docs/app-store-screenshots" "$PACKET_DIR/Screenshots"
 
 copy_file "$ROOT_DIR/scripts/check-github-actions-execution.sh" "$PACKET_DIR/Scripts/check-github-actions-execution.sh"
+copy_file "$ROOT_DIR/scripts/prepare-local-automated-test-report.sh" "$PACKET_DIR/Scripts/prepare-local-automated-test-report.sh"
 copy_file "$ROOT_DIR/scripts/create-signed-archive.sh" "$PACKET_DIR/Scripts/create-signed-archive.sh"
 copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts/final-submission-preflight.sh"
 copy_file "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" "$PACKET_DIR/Scripts/prepare-submission-gate-status.sh"

@@ -24,6 +24,7 @@ jobs:
           bash -n scripts/portable-release-materials-audit.sh
           bash -n scripts/prepare-app-store-connect-run.sh
           bash -n scripts/prepare-final-smoke-run.sh
+          bash -n scripts/prepare-local-automated-test-report.sh
           bash -n scripts/prepare-physical-device-validation-run.sh
           bash -n scripts/prepare-release-packet.sh
           bash -n scripts/prepare-usability-test-packet.sh
@@ -57,6 +58,7 @@ jobs:
           bash -n scripts/portable-release-materials-audit.sh
           bash -n scripts/prepare-app-store-connect-run.sh
           bash -n scripts/prepare-final-smoke-run.sh
+          bash -n scripts/prepare-local-automated-test-report.sh
           bash -n scripts/prepare-physical-device-validation-run.sh
           bash -n scripts/prepare-release-packet.sh
           bash -n scripts/prepare-usability-test-packet.sh

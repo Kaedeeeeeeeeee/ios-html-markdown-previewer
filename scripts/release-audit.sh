@@ -62,6 +62,7 @@ require_file "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj"
 require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
 require_file "scripts/check-github-actions-execution.sh"
+require_file "scripts/prepare-local-automated-test-report.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/portable-release-materials-audit.sh"
@@ -554,6 +555,7 @@ require_text "docs/app-store-submission-runbook.md" "DerivedData/FinalSmokeRun" 
 require_text "docs/app-store-submission-runbook.md" "physical-device validation draft staging" "submission runbook says final preflight stages physical-device validation drafts"
 require_text "docs/app-store-submission-runbook.md" "check-github-actions-execution\\.sh" "submission runbook points to Actions execution diagnostics"
 require_text "docs/app-store-submission-runbook.md" "attempt <attempt-number>" "submission runbook documents Actions rerun attempt diagnostics"
+require_text "docs/app-store-submission-runbook.md" "prepare-local-automated-test-report\\.sh" "submission runbook points to local automated test evidence"
 require_text "docs/app-store-submission-runbook.md" "validate-completed-release-results\\.sh" "submission runbook points to completed result validation"
 require_text "docs/app-store-submission-runbook.md" "prepare-submission-owner-handoff\\.sh" "submission runbook points to owner handoff"
 require_text "scripts/verify-public-pages.sh" "gist\\.githubusercontent\\.com/.*/raw/privacy-policy\\.md" "public page verifier uses stable privacy raw file URL"
@@ -936,6 +938,7 @@ expected = {
     "HTMLPreviewerReleasePacket/AppMetadata/PrivacyInfo.xcprivacy",
     "HTMLPreviewerReleasePacket/AppMetadata/AppIcon-1024x1024@1x.png",
     "HTMLPreviewerReleasePacket/Scripts/check-github-actions-execution.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-local-automated-test-report.sh",
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-submission-gate-status.sh",
@@ -992,6 +995,10 @@ if smoke_files:
 actions_files = sorted(pathlib.Path(actions_root).glob("**/github-actions-diagnostics.md"))
 if actions_files:
     checks.append("HTMLPreviewerReleasePacket/Operations/GitHubActionsDiagnostics/github-actions-diagnostics.md")
+
+local_test_files = sorted(pathlib.Path(zip_path).parents[1].glob("LocalAutomatedTests/**/local-automated-test-report.md"))
+if local_test_files:
+    checks.append("HTMLPreviewerReleasePacket/Evidence/LocalAutomatedTests/local-automated-test-report.md")
 
 missing = [path for path in checks if path not in found]
 if missing:
