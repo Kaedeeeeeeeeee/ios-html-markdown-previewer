@@ -225,6 +225,8 @@ Use:
 
 Mark each cell as Pass, Fail, Not available, or Not tested. Include exact source-app wording if HTML Previewer appears under a different menu label.
 
+For release completion, the Files local row must be Pass for all five supported extensions. Use Not available only for source apps that are actually unavailable in the test setup, and record the caveat.
+
 | Source | .html | .htm | .md | .markdown | .zip | Notes |
 |---|---|---|---|---|---|---|
 | Files local |  |  |  |  |  |  |

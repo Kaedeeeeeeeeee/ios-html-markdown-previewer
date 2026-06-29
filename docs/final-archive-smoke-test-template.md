@@ -19,6 +19,8 @@ Issue: #10
 - iOS version:
 - Install method:
 
+Build source must be a signed archive or TestFlight build for release completion. A development-signed local archive can be used for local smoke only and does not count as App Store/TestFlight submission evidence.
+
 ## Pre-Smoke Gates
 
 | Gate | Expected evidence | Pass/Fail | Notes |

@@ -102,7 +102,7 @@ Apple references:
    - Verify Safe Preview blocks external resources by default.
    - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
    - Verify recent file reopen and delete.
-14. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, or unresolved P0/P1 follow-ups:
+14. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, missing Files local pass coverage, weak final-smoke build evidence, or unresolved P0/P1 follow-ups:
    ```sh
    scripts/validate-completed-release-results.sh --fail-on-invalid
    ```

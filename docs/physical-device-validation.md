@@ -74,6 +74,8 @@ Use this extension mapping for the source matrix:
 
 ## Source Matrix
 
+For release completion, the Files local row must be Pass for `.html`, `.htm`, `.md`, `.markdown`, and `.zip`. Use Not available only for source apps that are actually unavailable in the test setup, and record the caveat in Notes.
+
 | Source | .html | .htm | .md | .markdown | .zip | Notes |
 |---|---|---|---|---|---|---|
 | Files local |  |  |  |  |  |  |

@@ -219,6 +219,76 @@ def unresolved_field_notes(text, field_labels):
     return notes
 
 
+def required_field_value_notes(text, rules):
+    notes = []
+    for label, allowed_values in rules:
+        value = report_field(text, label)
+        normalized = normalize(value).strip("`")
+        if placeholderish(value):
+            notes.append(f"{label} is unresolved")
+        elif normalized not in allowed_values:
+            allowed = ", ".join(sorted(allowed_values))
+            notes.append(f"{label} has unsupported value: {value} (expected {allowed})")
+    return notes
+
+
+def required_field_pattern_notes(text, rules):
+    notes = []
+    for label, pattern, expectation in rules:
+        value = report_field(text, label)
+        if placeholderish(value):
+            notes.append(f"{label} is unresolved")
+        elif not re.search(pattern, value, re.IGNORECASE):
+            notes.append(f"{label} is not valid for release evidence: {value} (expected {expectation})")
+    return notes
+
+
+def table_row_maps(text, section):
+    sections = table_rows_by_section(text)
+    rows = {}
+    for table in parse_tables(sections.get(section, [])):
+        headers = split_row(table[0])
+        if not headers:
+            continue
+        normalized_headers = [normalize(header) for header in headers]
+        for row in table[2:]:
+            cells = split_row(row)
+            if not cells or not any(cell.strip() for cell in cells):
+                continue
+            key = normalize(cells[0])
+            rows[key] = {
+                normalized_headers[index]: cells[index] if index < len(cells) else ""
+                for index in range(len(normalized_headers))
+            }
+    return rows
+
+
+def required_table_cell_notes(text, rules):
+    notes = []
+    for rule in rules:
+        section = rule["section"]
+        rows = table_row_maps(text, section)
+        row_key = normalize(rule["row"])
+        if row_key not in rows:
+            notes.append(f"{section} is missing required row '{rule['row']}'")
+            continue
+        row = rows[row_key]
+        allowed_values = rule["allowed_values"]
+        for column in rule["columns"]:
+            column_key = normalize(column)
+            if column_key not in row:
+                notes.append(f"{section} row '{rule['row']}' is missing required column {column}")
+                continue
+            value = row[column_key]
+            normalized = normalize(value).strip("`")
+            if placeholderish(value):
+                notes.append(f"{section} row '{rule['row']}' has unresolved {column}")
+            elif normalized not in allowed_values:
+                allowed = ", ".join(sorted(allowed_values))
+                notes.append(f"{section} row '{rule['row']}' has unsupported {column}: {value} (expected {allowed})")
+    return notes
+
+
 def validate_tables(text, spec):
     notes = []
     sections = table_rows_by_section(text)
@@ -329,6 +399,46 @@ def run_self_test():
     if not any("Messaging app" in note and ".zip" in note and "unsupported" in note for note in matrix_notes):
         failures.append("Not tested in an external-open matrix cell must be rejected")
 
+    required_matrix_notes = required_table_cell_notes(
+        matrix_sample,
+        [{
+            "section": "External Open Matrix",
+            "row": "Files local",
+            "columns": [".html", ".zip"],
+            "allowed_values": PASS_ONLY,
+        }],
+    )
+    if required_matrix_notes:
+        failures.append("Required Files local pass cells must be accepted")
+
+    weak_required_matrix = """## External Open Matrix
+| Source | .html | .zip | Notes |
+|---|---|---|---|
+| Files local | Pass | Not available | evidence |
+"""
+    weak_required_notes = required_table_cell_notes(
+        weak_required_matrix,
+        [{
+            "section": "External Open Matrix",
+            "row": "Files local",
+            "columns": [".html", ".zip"],
+            "allowed_values": PASS_ONLY,
+        }],
+    )
+    if not any("Files local" in note and ".zip" in note and "unsupported" in note for note in weak_required_notes):
+        failures.append("Required Files local cells must reject Not available")
+
+    field_notes = required_field_value_notes("- Can submit for review: no", [("Can submit for review", {"yes"})])
+    if not any("Can submit for review" in note and "unsupported" in note for note in field_notes):
+        failures.append("Required affirmative fields must reject no")
+
+    pattern_notes = required_field_pattern_notes(
+        "- Build source: local archive",
+        [("Build source", r"(signed archive|testflight|apple distribution|distribution-signed|distribution signed|processed build)", "signed archive or TestFlight")],
+    )
+    if not any("Build source" in note and "not valid" in note for note in pattern_notes):
+        failures.append("Final smoke build source must reject generic local archive")
+
     if failures:
         for failure in failures:
             print(f"SELF-TEST FAIL: {failure}", file=sys.stderr)
@@ -369,6 +479,14 @@ RESULTS = [
             "Import And Preview Checks": [(r"Pass/Fail", PASS_ONLY)],
             "Safety And Error Path Checks": [(r"Pass/Fail", PASS_ONLY)],
         },
+        "required_table_cells": [
+            {
+                "section": "External Open Matrix",
+                "row": "Files local",
+                "columns": [".html", ".htm", ".md", ".markdown", ".zip"],
+                "allowed_values": PASS_ONLY,
+            },
+        ],
         "p0_sections": ["Blocking Failures"],
     },
     {
@@ -400,6 +518,9 @@ RESULTS = [
             "Export Compliance": [(r"Pass/Fail", PASS_ONLY)],
             "Build Selection": [(r"Pass/Fail", PASS_ONLY)],
         },
+        "required_field_values": [
+            ("Can submit for review", {"yes"}),
+        ],
         "p0_sections": ["Blocking Submission Issues"],
     },
     {
@@ -430,6 +551,33 @@ RESULTS = [
             "Settings And Release Claims": [(r"Pass/Fail", PASS_ONLY)],
             "App Store Connect Checks": [(r"Pass/Fail", PASS_ONLY)],
         },
+        "required_field_patterns": [
+            (
+                "Build source",
+                r"(signed archive|testflight|apple distribution|distribution-signed|distribution signed|processed build)",
+                "signed archive or TestFlight",
+            ),
+        ],
+        "required_table_cells": [
+            {
+                "section": "Pre-Smoke Gates",
+                "row": "Final GitHub Actions run is green",
+                "columns": ["Pass/Fail"],
+                "allowed_values": PASS_ONLY,
+            },
+            {
+                "section": "Pre-Smoke Gates",
+                "row": "Physical-device external-open validation completed",
+                "columns": ["Pass/Fail"],
+                "allowed_values": PASS_ONLY,
+            },
+            {
+                "section": "Pre-Smoke Gates",
+                "row": "App Store Connect record configured",
+                "columns": ["Pass/Fail"],
+                "allowed_values": PASS_ONLY,
+            },
+        ],
         "p0_sections": ["Blocking Failures"],
     },
     {
@@ -499,6 +647,9 @@ for spec in RESULTS:
     if status == "complete":
         notes.extend(unresolved_field_notes(text, spec["required_fields"]))
         notes.extend(validate_tables(text, spec["table_spec"]))
+        notes.extend(required_field_value_notes(text, spec.get("required_field_values", [])))
+        notes.extend(required_field_pattern_notes(text, spec.get("required_field_patterns", [])))
+        notes.extend(required_table_cell_notes(text, spec.get("required_table_cells", [])))
         notes.extend(p0_p1_followup_notes(text, spec["p0_sections"]))
         if not commit_ok:
             notes.append(commit_note)

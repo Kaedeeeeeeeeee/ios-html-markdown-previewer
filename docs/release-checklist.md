@@ -17,7 +17,7 @@
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
 - GitHub Actions execution-layer failures can be diagnosed with `scripts/check-github-actions-execution.sh` and `docs/github-actions-troubleshooting.md`.
 - App Store submission gate status can be summarized with `scripts/prepare-submission-gate-status.sh`.
-- Completed manual result drafts can be checked for placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, and unresolved P0/P1 follow-ups with `scripts/validate-completed-release-results.sh`.
+- Completed manual result drafts can be checked for placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, missing Files local pass coverage, weak final-smoke build evidence, and unresolved P0/P1 follow-ups with `scripts/validate-completed-release-results.sh`.
 - Remaining external owner actions can be summarized with `scripts/prepare-submission-owner-handoff.sh`.
 - App Store handoff materials, including generated App Store Connect and final smoke result drafts, final preflight evidence with commit checks, locally staged physical-device/archive-smoke evidence, and a packet-relative evidence index when available, can be staged with `scripts/prepare-release-packet.sh`.
 - App Store Connect setup result drafts can be generated with `scripts/prepare-app-store-connect-run.sh`.
@@ -60,6 +60,7 @@
 - Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence.
 - Use `DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md` to assign the remaining GitHub account owner, App Store Connect account owner, physical-device tester, final-smoke tester, usability moderator, and release-operator actions.
 - After #1, #10, and #11 result drafts are manually filled, run `scripts/validate-completed-release-results.sh --fail-on-invalid`; use `--fail-on-incomplete` only when every manual gate is expected to be complete.
+- Treat validation failures for Files local coverage, final-smoke build source, or required pre-smoke gates as release stops rather than documentation warnings.
 - Run `scripts/prepare-submission-gate-status.sh --check-github` on the final commit and keep `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` with submission evidence.
 - If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with issue #10.
 - Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.

@@ -303,6 +303,8 @@ Issue: #10
 - Archive launch screenshot: \`$launch_screenshot_value\`
 - Final preflight report: \`$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md\`
 
+Build source must be a signed archive or TestFlight build for release completion. A development-signed local archive can be used for local smoke only and does not count as App Store/TestFlight submission evidence.
+
 ## Pre-Smoke Gates
 
 | Gate | Expected evidence | Pass/Fail | Notes |

@@ -558,8 +558,10 @@ require_text "docs/github-actions-troubleshooting.md" "steps: \\[\\]" "GitHub Ac
 require_text "docs/github-actions-troubleshooting.md" "Budgets and alerts" "GitHub Actions troubleshooting covers billing budget checks"
 require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"
 require_text "docs/final-archive-smoke-test-template.md" "Data Not Collected" "final smoke template covers App Store privacy label check"
+require_text "docs/final-archive-smoke-test-template.md" "Build source must be a signed archive or TestFlight build" "final smoke template rejects development-signed build evidence"
 require_text "docs/physical-device-validation-result-template.md" "External Open Matrix" "physical-device result template includes source matrix"
 require_text "docs/physical-device-validation-result-template.md" "Can close #1" "physical-device result template includes issue close decision"
+require_text "docs/physical-device-validation.md" "Files local row must be Pass" "physical-device guide documents required Files local coverage"
 require_text "docs/usability-testing/first-round-result-template.md" "Can close #11" "usability result template includes issue close decision"
 require_text "docs/usability-testing/first-round-result-template.md" "Do not store the participant's real name" "usability result template avoids direct participant identifiers"
 require_text "docs/privacy-policy.md" "HTML Previewer does not collect personal data" "privacy policy states no personal data collection"
@@ -817,6 +819,12 @@ if "$ROOT_DIR/scripts/validate-completed-release-results.sh" >/tmp/html-previewe
 else
   cat /tmp/html-previewer-completed-results-validation.log >&2 || true
   fail "completed release results validation report generation failed"
+fi
+if "$ROOT_DIR/scripts/validate-completed-release-results.sh" --self-test >/tmp/html-previewer-completed-results-validation-self-test.log; then
+  ok "completed release results validation self-test passes"
+else
+  cat /tmp/html-previewer-completed-results-validation-self-test.log >&2 || true
+  fail "completed release results validation self-test failed"
 fi
 if python3 - "$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md" <<'PY'
 import pathlib
