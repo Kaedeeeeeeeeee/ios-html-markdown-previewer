@@ -7,6 +7,7 @@ REPORT_PATH="$OUTPUT_ROOT/completed-release-results-validation.md"
 FAIL_ON_INVALID=false
 FAIL_ON_INCOMPLETE=false
 DRY_RUN=false
+SELF_TEST=false
 
 usage() {
   cat <<'EOF'
@@ -20,10 +21,13 @@ complete.
 Options:
   --fail-on-invalid     Exit 1 if a result is marked complete but still has
                         placeholders, empty required result cells, stale commit
-                        evidence, or unresolved P0/P1 follow-up rows.
+                        evidence, failed/not-tested required cells, or
+                        unresolved P0/P1 follow-up rows.
   --fail-on-incomplete  Exit 1 unless every tracked manual result is complete
                         and valid. Implies --fail-on-invalid.
   --dry-run             Print planned report path without writing files.
+  --self-test           Run validator rule self-tests without reading release
+                        result drafts or writing a report.
   -h, --help            Show this help.
 EOF
 }
@@ -41,6 +45,10 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     --dry-run)
       DRY_RUN=true
+      shift
+      ;;
+    --self-test)
+      SELF_TEST=true
       shift
       ;;
     -h|--help)
@@ -63,7 +71,7 @@ if [[ "$DRY_RUN" == true ]]; then
   exit 0
 fi
 
-python3 - "$ROOT_DIR" "$REPORT_PATH" "$FAIL_ON_INVALID" "$FAIL_ON_INCOMPLETE" <<'PY'
+python3 - "$ROOT_DIR" "$REPORT_PATH" "$FAIL_ON_INVALID" "$FAIL_ON_INCOMPLETE" "$SELF_TEST" <<'PY'
 import datetime as _dt
 import pathlib
 import re
@@ -74,6 +82,7 @@ root = pathlib.Path(sys.argv[1])
 report_path = pathlib.Path(sys.argv[2])
 fail_on_invalid = sys.argv[3] == "true"
 fail_on_incomplete = sys.argv[4] == "true"
+self_test = sys.argv[5] == "true"
 
 
 def git_value(*args):
@@ -228,14 +237,16 @@ def validate_tables(text, spec):
                 if first == "p0/p1/p2":
                     notes.append(f"{section} still contains the P0/P1/P2 placeholder row")
                     continue
-                for header_pattern, required_values in rules:
+                for rule in rules:
+                    header_pattern = rule[0]
+                    allowed_values = rule[1] if len(rule) > 1 else None
                     for index, header in enumerate(headers):
                         if re.search(header_pattern, header, re.IGNORECASE):
                             value = cells[index] if index < len(cells) else ""
                             if placeholderish(value):
                                 notes.append(f"{section} row '{cells[0]}' has unresolved {header}")
-                            elif required_values and normalize(value) not in required_values:
-                                allowed = ", ".join(sorted(required_values))
+                            elif allowed_values and normalize(value).strip("`") not in allowed_values:
+                                allowed = ", ".join(sorted(allowed_values))
                                 notes.append(f"{section} row '{cells[0]}' has unsupported {header}: {value} (expected {allowed})")
     return notes
 
@@ -272,6 +283,64 @@ def p0_p1_followup_notes(text, section_names):
     return notes
 
 
+PASS_ONLY = {"pass", "passed"}
+PASS_OR_NOT_AVAILABLE = {"pass", "passed", "not available"}
+PASS_OR_NOT_APPLICABLE = {"pass", "passed", "n/a", "na", "not applicable"}
+ASC_ACCEPTED = {"accepted", "accepted in app store connect", "pass", "passed", "yes"}
+
+
+def run_self_test():
+    failures = []
+
+    pass_only_sample = """## Checks
+| Check | Pass/Fail | Notes |
+|---|---|---|
+| Good row | Pass | evidence |
+| Failed row | Fail | evidence |
+| Untested row | Not tested | evidence |
+"""
+    pass_notes = validate_tables(pass_only_sample, {"Checks": [(r"Pass/Fail", PASS_ONLY)]})
+    if not any("Failed row" in note and "unsupported" in note for note in pass_notes):
+        failures.append("Fail in a Pass/Fail column must be rejected")
+    if not any("Untested row" in note and "unsupported" in note for note in pass_notes):
+        failures.append("Not tested in a Pass/Fail column must be rejected")
+
+    clean_pass_sample = """## Checks
+| Check | Pass/Fail | Notes |
+|---|---|---|
+| Good row | Pass | evidence |
+"""
+    clean_notes = validate_tables(clean_pass_sample, {"Checks": [(r"Pass/Fail", PASS_ONLY)]})
+    if clean_notes:
+        failures.append("Pass in a Pass/Fail column must be accepted")
+
+    matrix_sample = """## External Open Matrix
+| Source | .html | .zip | Notes |
+|---|---|---|---|
+| Files local | Pass | Pass | evidence |
+| Messaging app | Not available | Not tested | evidence |
+"""
+    matrix_notes = validate_tables(
+        matrix_sample,
+        {"External Open Matrix": [(r"^\.(html|zip)$", PASS_OR_NOT_AVAILABLE)]},
+    )
+    if any("Messaging app" in note and ".html" in note for note in matrix_notes):
+        failures.append("Not available in an external-open matrix cell must be accepted")
+    if not any("Messaging app" in note and ".zip" in note and "unsupported" in note for note in matrix_notes):
+        failures.append("Not tested in an external-open matrix cell must be rejected")
+
+    if failures:
+        for failure in failures:
+            print(f"SELF-TEST FAIL: {failure}", file=sys.stderr)
+        raise SystemExit(1)
+
+    print("Completed release results validation self-test passed.")
+
+
+if self_test:
+    run_self_test()
+    raise SystemExit(0)
+
 RESULTS = [
     {
         "name": "Physical-device external-open result",
@@ -296,9 +365,9 @@ RESULTS = [
             "Can continue App Store submission",
         ],
         "table_spec": {
-            "External Open Matrix": [(r"^\.(html|htm|md|markdown|zip)$", None)],
-            "Import And Preview Checks": [(r"Pass/Fail", None)],
-            "Safety And Error Path Checks": [(r"Pass/Fail", None)],
+            "External Open Matrix": [(r"^\.(html|htm|md|markdown|zip)$", PASS_OR_NOT_AVAILABLE)],
+            "Import And Preview Checks": [(r"Pass/Fail", PASS_ONLY)],
+            "Safety And Error Path Checks": [(r"Pass/Fail", PASS_ONLY)],
         },
         "p0_sections": ["Blocking Failures"],
     },
@@ -322,14 +391,14 @@ RESULTS = [
             "Can submit for review",
         ],
         "table_spec": {
-            "App Record": [(r"Entered value", None), (r"Pass/Fail", None)],
-            "Pricing And Availability": [(r"Entered value", None), (r"Pass/Fail", None)],
-            "Metadata And Review Notes": [(r"Pass/Fail", None)],
-            "Screenshots": [(r"Accepted in App Store Connect", None)],
-            "Privacy": [(r"Pass/Fail", None)],
-            "Age Rating": [(r"Entered answer", None), (r"Pass/Fail", None)],
-            "Export Compliance": [(r"Pass/Fail", None)],
-            "Build Selection": [(r"Pass/Fail", None)],
+            "App Record": [(r"Entered value", None), (r"Pass/Fail", PASS_ONLY)],
+            "Pricing And Availability": [(r"Entered value", None), (r"Pass/Fail", PASS_ONLY)],
+            "Metadata And Review Notes": [(r"Pass/Fail", PASS_ONLY)],
+            "Screenshots": [(r"Accepted in App Store Connect", ASC_ACCEPTED)],
+            "Privacy": [(r"Pass/Fail", PASS_ONLY)],
+            "Age Rating": [(r"Entered answer", None), (r"Pass/Fail", PASS_ONLY)],
+            "Export Compliance": [(r"Pass/Fail", PASS_ONLY)],
+            "Build Selection": [(r"Pass/Fail", PASS_ONLY)],
         },
         "p0_sections": ["Blocking Submission Issues"],
     },
@@ -356,10 +425,10 @@ RESULTS = [
             "Can submit for review",
         ],
         "table_spec": {
-            "Pre-Smoke Gates": [(r"Pass/Fail", None)],
-            "App Launch And Built-In Samples": [(r"Pass/Fail", None)],
-            "Settings And Release Claims": [(r"Pass/Fail", None)],
-            "App Store Connect Checks": [(r"Pass/Fail", None)],
+            "Pre-Smoke Gates": [(r"Pass/Fail", PASS_OR_NOT_APPLICABLE)],
+            "App Launch And Built-In Samples": [(r"Pass/Fail", PASS_ONLY)],
+            "Settings And Release Claims": [(r"Pass/Fail", PASS_ONLY)],
+            "App Store Connect Checks": [(r"Pass/Fail", PASS_ONLY)],
         },
         "p0_sections": ["Blocking Failures"],
     },
@@ -388,9 +457,9 @@ RESULTS = [
             "Can continue App Store submission",
         ],
         "table_spec": {
-            "Setup Evidence": [(r"Pass/Fail", None)],
-            "Task Results": [(r"Result", None)],
-            "Source-App Notes": [(r"Result", None)],
+            "Setup Evidence": [(r"Pass/Fail", PASS_ONLY)],
+            "Task Results": [(r"Result", PASS_ONLY)],
+            "Source-App Notes": [(r"Result", PASS_OR_NOT_AVAILABLE)],
         },
         "p0_sections": ["Findings"],
     },
@@ -493,10 +562,10 @@ with report_path.open("w", encoding="utf-8") as handle:
             f"{md_escape(row['notes'])} |\n"
         )
     handle.write("\n## Status Semantics\n\n")
-    handle.write("- `complete`: all close/continue fields are affirmative, required result cells are filled, P0/P1 rows have follow-up issues, and commit evidence matches the current commit.\n")
+    handle.write("- `complete`: all close/continue fields are affirmative, required result cells are filled with allowed pass/availability values, P0/P1 rows have follow-up issues, and commit evidence matches the current commit.\n")
     handle.write("- `draft`: a generated template exists, but close/continue fields still need manual completion.\n")
     handle.write("- `failed`: the result explicitly records a failed or negative release decision.\n")
-    handle.write("- `invalid`: a result is marked complete but still contains placeholders, stale commit evidence, empty required result cells, or unresolved P0/P1 follow-up rows.\n")
+    handle.write("- `invalid`: a result is marked complete but still contains placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, or unresolved P0/P1 follow-up rows.\n")
     handle.write("- `missing`: no generated result draft was found for that gate.\n")
     handle.write("\n## Strict Checks\n\n")
     handle.write("Run `scripts/validate-completed-release-results.sh --fail-on-invalid` after manually filling result drafts to catch false-positive completion.\n")

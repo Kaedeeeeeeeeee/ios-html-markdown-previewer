@@ -306,6 +306,12 @@ if grep -Fq "completed-release-results-validation.md" /tmp/html-previewer-comple
 else
   fail "completed release results validation helper dry-run is missing the report"
 fi
+if "$ROOT_DIR/scripts/validate-completed-release-results.sh" --self-test >/tmp/html-previewer-completed-results-validation-self-test.log; then
+  ok "completed release results validation helper self-test succeeds"
+else
+  cat /tmp/html-previewer-completed-results-validation-self-test.log >&2 || true
+  fail "completed release results validation helper self-test failed"
+fi
 
 echo
 echo "== Physical-device validation run helper =="
