@@ -218,6 +218,11 @@ if grep -Fq "devicectl device process launch" /tmp/html-previewer-archive-device
 else
   fail "archive device smoke helper dry-run is missing devicectl launch"
 fi
+if grep -Fq "devicectl device capture screenshot" /tmp/html-previewer-archive-device-smoke-dry-run.log; then
+  ok "archive device smoke helper captures a launch screenshot"
+else
+  fail "archive device smoke helper dry-run is missing devicectl screenshot capture"
+fi
 
 echo
 echo "== Physical-device validation run helper =="
