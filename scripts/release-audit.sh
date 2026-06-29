@@ -322,6 +322,24 @@ require_file "HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1
 check_png_dimensions "HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1024x1024@1x.png" 1024 1024
 
 echo
+echo "== Accessibility =="
+require_text "HTMLMarkdownPreviewer/AppView.swift" "accessibilityLabel.*sample.title.*sample.subtitle" "built-in sample rows expose combined VoiceOver labels"
+require_text "HTMLMarkdownPreviewer/AppView.swift" "accessibilityLabel.*document.displayName.*typeText.*dateText" "recent document rows expose type, size, and date VoiceOver labels"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityLabel\\(\"Preview Mode\"\\)" "preview mode control has a VoiceOver label"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityHint\\(\"Choose rendered, safe, interactive, or raw text preview\\.\"\\)" "preview mode control has a VoiceOver hint"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityIdentifier\\(\"preview-mode-menu\"\\)" "preview mode control has a UI test identifier"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityLabel\\(\"Share File\"\\)" "share control has a VoiceOver label"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityIdentifier\\(\"share-file-button\"\\)" "share control has a UI test identifier"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityLabel\\(\"File Details\"\\)" "details control has a VoiceOver label"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityIdentifier\\(\"file-details-button\"\\)" "details control has a UI test identifier"
+require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibilityLabel.*status.title.*status.message" "preview status bar exposes a combined VoiceOver label"
+require_text "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift" "accessibilityIdentifier\\(\"document-details-screen\"\\)" "document details sheet has a UI test identifier"
+require_text "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift" "accessibilityIdentifier\\(\"document-details-done-button\"\\)" "document details Done button has a UI test identifier"
+require_text "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift" "accessibilityLabel.*title.*value" "document details rows expose combined VoiceOver labels"
+require_text "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift" "Markdown image" "Markdown images without alt text get a fallback VoiceOver label"
+require_text "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift" "accessibilityLabel.*title.*detail" "Markdown image placeholders expose combined VoiceOver labels"
+
+echo
 echo "== App Store materials =="
 for path in \
   "docs/app-store-listing.md" \
