@@ -66,6 +66,7 @@ require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/portable-release-materials-audit.sh"
 require_file "scripts/prepare-release-packet.sh"
+require_file "scripts/prepare-submission-gate-status.sh"
 require_file "scripts/prepare-app-store-connect-run.sh"
 require_file "scripts/prepare-final-smoke-run.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
@@ -275,6 +276,20 @@ if grep -Fq "paid download" /tmp/html-previewer-app-store-connect-run-dry-run.lo
   ok "App Store Connect run helper covers commercial and privacy gates"
 else
   fail "App Store Connect run helper dry-run is missing commercial or privacy gates"
+fi
+
+echo
+echo "== Submission gate status helper =="
+if "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" --dry-run >/tmp/html-previewer-submission-gate-status-dry-run.log; then
+  ok "submission gate status helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-submission-gate-status-dry-run.log >&2 || true
+  fail "submission gate status helper dry-run failed"
+fi
+if grep -Fq "submission-gate-status-report.md" /tmp/html-previewer-submission-gate-status-dry-run.log; then
+  ok "submission gate status helper creates a status report"
+else
+  fail "submission gate status helper dry-run is missing the status report"
 fi
 
 echo
@@ -725,6 +740,38 @@ then
 else
   fail "usability session run is missing expected artifacts"
 fi
+if "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" >/tmp/html-previewer-submission-gate-status.log; then
+  ok "submission gate status report can be generated"
+else
+  cat /tmp/html-previewer-submission-gate-status.log >&2 || true
+  fail "submission gate status report generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md" <<'PY'
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+required = [
+    "# Submission Gate Status Report",
+    "Final local preflight",
+    "GitHub Actions iOS CI",
+    "Physical-device external-open matrix",
+    "App Store Connect paid-download setup",
+    "Distribution archive or TestFlight upload evidence",
+    "Final archive/TestFlight smoke",
+    "First external usability round",
+]
+missing = [marker for marker in required if marker not in text]
+if missing:
+    print("missing submission gate markers: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "submission gate status report covers required App Store gates"
+else
+  fail "submission gate status report is missing required gates"
+fi
 
 echo
 echo "== Release packet =="
@@ -751,6 +798,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Evidence/README.txt",
     "HTMLPreviewerReleasePacket/Evidence/release-evidence-index.md",
     "HTMLPreviewerReleasePacket/Evidence/checksums-sha256.txt",
+    "HTMLPreviewerReleasePacket/Evidence/submission-gate-status-report.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
@@ -772,6 +820,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/check-github-actions-execution.sh",
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
+    "HTMLPreviewerReleasePacket/Scripts/prepare-submission-gate-status.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/portable-release-materials-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",

@@ -219,6 +219,7 @@ write_report() {
 
     printf '\n## Generated Artifacts\n\n'
     printf -- '- Release packet: `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`\n'
+    printf -- '- Submission gate status: `DerivedData/SubmissionGateStatus/submission-gate-status-report.md`\n'
     printf -- '- Usability test packet: `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`\n'
     printf -- '- Usability session draft: `DerivedData/UsabilitySessionRun/`\n'
     printf -- '- Validation samples: `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`\n'
@@ -247,6 +248,7 @@ refresh_release_packet_report() {
   local index_path="$packet_dir/Evidence/release-evidence-index.md"
   local tmp_index_path="$packet_dir/Evidence/release-evidence-index.md.tmp"
   local checksum_path="$packet_dir/Evidence/checksums-sha256.txt"
+  local gate_status_report="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -254,10 +256,17 @@ refresh_release_packet_report() {
 
   mkdir -p "$packet_dir/Evidence"
   cp "$REPORT_PATH" "$packet_dir/Evidence/submission-readiness-report.md"
+  if [[ -f "$gate_status_report" ]]; then
+    cp "$gate_status_report" "$packet_dir/Evidence/submission-gate-status-report.md"
+  fi
   if [[ -f "$index_path" ]]; then
     awk '
       /^\| Final preflight report \|/ {
         print "| Final preflight report | `Evidence/submission-readiness-report.md` | Included |"
+        next
+      }
+      /^\| Submission gate status report \|/ {
+        print "| Submission gate status report | `Evidence/submission-gate-status-report.md` | Included |"
         next
       }
       { print }
@@ -325,6 +334,7 @@ else
 fi
 
 write_report "passed"
+"$ROOT_DIR/scripts/prepare-submission-gate-status.sh" >/dev/null
 refresh_release_packet_report
 printf 'Final submission preflight passed.\n'
 printf 'Wrote preflight report: %s\n' "$REPORT_PATH"

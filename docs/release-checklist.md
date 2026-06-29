@@ -16,6 +16,7 @@
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
 - GitHub Actions execution-layer failures can be diagnosed with `scripts/check-github-actions-execution.sh` and `docs/github-actions-troubleshooting.md`.
+- App Store submission gate status can be summarized with `scripts/prepare-submission-gate-status.sh`.
 - App Store handoff materials, including generated App Store Connect and final smoke result drafts, final preflight evidence with commit checks, locally staged physical-device/archive-smoke evidence, and a packet-relative evidence index when available, can be staged with `scripts/prepare-release-packet.sh`.
 - App Store Connect setup result drafts can be generated with `scripts/prepare-app-store-connect-run.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
@@ -55,6 +56,7 @@
 - Run `scripts/release-audit.sh` on the final commit.
 - Run `scripts/verify-public-pages.sh` on the final commit.
 - Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence.
+- Run `scripts/prepare-submission-gate-status.sh --check-github` on the final commit and keep `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` with submission evidence.
 - If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with issue #10.
 - Run `scripts/prepare-release-packet.sh` on the final commit and keep the generated packet with submission evidence.
 - Run `scripts/prepare-usability-test-packet.sh` and use it for the first external usability round.
@@ -69,6 +71,7 @@
 - Run a smoke test using built-in samples on the final archive or TestFlight build.
 - Record final archive/TestFlight smoke with the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft and attach or summarize it in issue #10.
 - Run the first usability round, record it with the generated `DerivedData/UsabilitySessionRun/.../first-round-usability-result.md` draft, and file or fix every P0/P1 finding before closing #11.
+- Run `scripts/prepare-submission-gate-status.sh --check-github --fail-on-not-ready` only after all manual and external gates are expected to be complete; it should pass before the release is treated as submission-ready.
 
 Use `docs/physical-device-validation.md` for the external-open matrix and `docs/app-store-submission-runbook.md` for the App Store Connect handoff.
 

@@ -23,6 +23,7 @@ Use this runbook after physical-device validation passes and a completed result 
 - Archive physical-device smoke helper: `scripts/run-archive-device-smoke.sh`
 - GitHub Actions execution diagnostic: `scripts/check-github-actions-execution.sh`
 - GitHub Actions troubleshooting note: `docs/github-actions-troubleshooting.md`
+- Submission gate status report: `scripts/prepare-submission-gate-status.sh`
 - Physical-device sample browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
 - First-round usability session result draft: `scripts/prepare-usability-session-run.sh`
@@ -60,28 +61,33 @@ Apple references:
    ```
    Keep the generated `DerivedData/GitHubActionsDiagnostics/.../github-actions-diagnostics.md` report with issue #10 and resolve the account, billing, or policy blocker before submission.
 4. Keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
-5. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
+5. Generate the submission gate status report:
+   ```sh
+   scripts/prepare-submission-gate-status.sh --check-github
+   ```
+   Keep `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` with release evidence. A `blocked` or `pending` status means at least one App Store submission gate still needs owner/tester action.
+6. Prepare the App Store Connect setup result draft and fill it while entering the app record, pricing, privacy, screenshots, age rating, export compliance, and build selection:
    ```sh
    scripts/prepare-app-store-connect-run.sh
    ```
    Keep the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` with submission evidence.
-6. Create a signed archive from the final commit:
+7. Create a signed archive from the final commit:
    ```sh
    DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
    ```
    Set `PROVISIONING_PROFILE_SPECIFIER=<profile name>` only if the account owner uses manual signing.
    The script validates the resulting archive for App Store/TestFlight distribution signing and rejects development, device-limited, enterprise, wildcard, or debug provisioning profiles. Use `ALLOW_DEVELOPMENT_SIGNING=YES` only for local device smoke builds that will not be uploaded or counted as App Store/TestFlight evidence.
-7. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
-8. Wait for App Store Connect processing to finish and select the processed build.
-9. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
+8. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
+9. Wait for App Store Connect processing to finish and select the processed build.
+10. Install the processed build through TestFlight or run the archived build on a physical device. For archived app install/launch evidence, unlock the target device and run:
    ```sh
    scripts/run-archive-device-smoke.sh --device <device-id-or-name>
    ```
-10. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
+11. Prepare the final smoke result draft, attaching or summarizing the device smoke report and launch screenshot from `DerivedData/PhysicalDeviceSmoke/` when applicable:
    ```sh
    scripts/prepare-final-smoke-run.sh --device <physical-iPhone> --build-source "signed archive / TestFlight"
    ```
-11. Smoke test:
+12. Smoke test:
    - Open the app home screen.
    - Open HTML Sample.
    - Open Markdown Sample.
@@ -89,6 +95,11 @@ Apple references:
    - Verify Safe Preview blocks external resources by default.
    - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
    - Verify recent file reopen and delete.
+13. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
+   ```sh
+   scripts/prepare-submission-gate-status.sh --check-github --fail-on-not-ready
+   ```
+   Treat a non-zero exit as a release stop.
 
 ## Usability Session
 
@@ -109,6 +120,7 @@ Close #10 only after:
 
 - App Store Connect paid-download setup is complete.
 - App Store Connect setup evidence is recorded from the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` draft.
+- `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` reports `Status: ready`.
 - Final GitHub Actions run is green; if Actions previously failed before steps started, the diagnostic report is recorded and the account, billing, or policy blocker is resolved.
 - Privacy labels are filled and match the app behavior.
 - Screenshots are accepted by App Store Connect.
