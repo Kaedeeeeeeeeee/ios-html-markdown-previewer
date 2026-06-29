@@ -192,6 +192,11 @@ if grep -Fq "HTMLPreviewer.xcarchive" /tmp/html-previewer-signed-archive-dry-run
 else
   fail "signed archive helper dry-run is missing the expected archive name"
 fi
+require_text "scripts/create-signed-archive.sh" "ALLOW_DEVELOPMENT_SIGNING" "signed archive helper keeps development signing opt-in"
+require_text "scripts/create-signed-archive.sh" "Apple Distribution" "signed archive helper validates Apple Distribution signing"
+require_text "scripts/create-signed-archive.sh" "get-task-allow=false" "signed archive helper rejects debug provisioning profiles"
+require_text "scripts/create-signed-archive.sh" "ProvisionedDevices" "signed archive helper rejects device-limited provisioning profiles"
+require_text "scripts/create-signed-archive.sh" "Apple Development" "signed archive helper rejects Apple Development signing by default"
 
 echo
 echo "== Privacy manifest =="

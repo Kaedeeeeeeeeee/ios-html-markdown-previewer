@@ -59,6 +59,8 @@ Key files:
 
 Before submission, complete the physical-device and final archive/TestFlight
 result templates and summarize them in the linked GitHub issues.
+Only a distribution-signed archive produced without ALLOW_DEVELOPMENT_SIGNING=YES
+counts as App Store/TestFlight upload evidence.
 EOF
 
 copy_file "$ROOT_DIR/docs/app-store-listing.md" "$PACKET_DIR/AppStore/app-store-listing.md"

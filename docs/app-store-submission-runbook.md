@@ -56,6 +56,7 @@ Apple references:
    DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh
    ```
    Set `PROVISIONING_PROFILE_SPECIFIER=<profile name>` only if the account owner uses manual signing.
+   The script validates the resulting archive for App Store/TestFlight distribution signing and rejects development, device-limited, enterprise, wildcard, or debug provisioning profiles. Use `ALLOW_DEVELOPMENT_SIGNING=YES` only for local device smoke builds that will not be uploaded or counted as App Store/TestFlight evidence.
 5. Open the generated archive in Xcode Organizer and upload it to App Store Connect.
 6. Wait for App Store Connect processing to finish and select the processed build.
 7. Install the processed build through TestFlight or run the archived build on a physical device.
