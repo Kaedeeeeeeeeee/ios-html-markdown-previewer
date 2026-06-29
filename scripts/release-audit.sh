@@ -717,6 +717,37 @@ then
 else
   fail "release packet is missing expected handoff files"
 fi
+if python3 - \
+  "$ROOT_DIR/DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip" \
+  "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" \
+  "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" <<'PY'
+import pathlib
+import subprocess
+import sys
+
+zip_path, physical_root, smoke_root = sys.argv[1:]
+raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
+found = set(raw.splitlines())
+
+checks = []
+physical_files = sorted(pathlib.Path(physical_root).glob("**/physical-device-validation-result.md"))
+if physical_files:
+    checks.append("HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-draft.md")
+
+smoke_files = sorted(pathlib.Path(smoke_root).glob("**/archive-device-smoke-report.md"))
+if smoke_files:
+    checks.append("HTMLPreviewerReleasePacket/FinalSmoke/ArchiveDeviceSmoke/archive-device-smoke-report.md")
+
+missing = [path for path in checks if path not in found]
+if missing:
+    print("missing optional release evidence copies: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "release packet copies available local evidence drafts"
+else
+  fail "release packet is missing available local evidence drafts"
+fi
 
 echo
 echo "== StoreKit, accounts, and ads absence =="

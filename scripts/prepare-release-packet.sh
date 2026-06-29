@@ -34,6 +34,8 @@ latest_file() {
 
 APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
 FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
+PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
+ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
 PREFLIGHT_REPORT="$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md"
 
 if [[ -z "$APP_STORE_CONNECT_RESULT" || ! -f "$APP_STORE_CONNECT_RESULT" ]]; then
@@ -65,10 +67,12 @@ Key files:
 - AppStore/final-archive-smoke-test-template.md
 - AppStoreConnect/app-store-connect-result-draft.md
 - FinalSmoke/final-archive-smoke-result-draft.md
+- FinalSmoke/ArchiveDeviceSmoke/ (when archive smoke evidence exists)
 - Evidence/README.txt
 - Evidence/submission-readiness-report.md (when final preflight already ran)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
+- PhysicalDevice/physical-device-validation-result-draft.md (when staged)
 - PhysicalDevice/HTMLPreviewerValidationSamples.zip
 - PhysicalDevice/validation-download-index.html
 - UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip
@@ -101,6 +105,9 @@ copy_file "$ROOT_DIR/docs/final-archive-smoke-test-template.md" "$PACKET_DIR/App
 
 copy_file "$APP_STORE_CONNECT_RESULT" "$PACKET_DIR/AppStoreConnect/app-store-connect-result-draft.md"
 copy_file "$FINAL_SMOKE_RESULT" "$PACKET_DIR/FinalSmoke/final-archive-smoke-result-draft.md"
+if [[ -n "$ARCHIVE_SMOKE_REPORT" && -f "$ARCHIVE_SMOKE_REPORT" ]]; then
+  copy_dir "$(dirname "$ARCHIVE_SMOKE_REPORT")" "$PACKET_DIR/FinalSmoke/ArchiveDeviceSmoke"
+fi
 
 mkdir -p "$PACKET_DIR/Evidence"
 cat > "$PACKET_DIR/Evidence/README.txt" <<EOF
@@ -121,6 +128,9 @@ fi
 
 copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation.md"
 copy_file "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-template.md"
+if [[ -n "$PHYSICAL_DEVICE_RESULT" && -f "$PHYSICAL_DEVICE_RESULT" ]]; then
+  copy_file "$PHYSICAL_DEVICE_RESULT" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-draft.md"
+fi
 copy_file "$ROOT_DIR/DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip" "$PACKET_DIR/PhysicalDevice/HTMLPreviewerValidationSamples.zip"
 copy_file "$ROOT_DIR/DerivedData/ValidationSamples/index.html" "$PACKET_DIR/PhysicalDevice/validation-download-index.html"
 copy_file "$ROOT_DIR/DerivedData/ValidationSamples/README-browser-delivery.txt" "$PACKET_DIR/PhysicalDevice/README-browser-delivery.txt"

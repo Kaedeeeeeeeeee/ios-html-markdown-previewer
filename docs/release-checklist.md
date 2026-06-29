@@ -14,7 +14,7 @@
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
-- App Store handoff materials, including generated App Store Connect and final smoke result drafts plus final preflight evidence with commit checks when available, can be staged with `scripts/prepare-release-packet.sh`.
+- App Store handoff materials, including generated App Store Connect and final smoke result drafts, final preflight evidence with commit checks, and locally staged physical-device/archive-smoke evidence when available, can be staged with `scripts/prepare-release-packet.sh`.
 - App Store Connect setup result drafts can be generated with `scripts/prepare-app-store-connect-run.sh`.
 - Generic iOS Release device build can be verified without signing with `scripts/release-device-build.sh`.
 - Generic iOS archive creation and metadata can be preflighted without signing with `scripts/archive-preflight.sh`.

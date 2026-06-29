@@ -80,7 +80,9 @@ The release packet includes generated App Store Connect and final smoke result
 drafts under `AppStoreConnect/` and `FinalSmoke/`. After
 `scripts/final-submission-preflight.sh` runs, the packet also includes the
 current preflight report under `Evidence/`, including the working-tree state
-and latest evidence commit checks.
+and latest evidence commit checks. When local physical-device validation or
+archive-smoke evidence has been staged, the packet also copies those evidence
+files under `PhysicalDevice/` and `FinalSmoke/ArchiveDeviceSmoke/`.
 
 App Store Connect setup run draft:
 
