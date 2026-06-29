@@ -244,6 +244,11 @@ if grep -Fq "Archive smoke report" /tmp/html-previewer-final-smoke-run-dry-run.l
 else
   fail "final smoke run helper dry-run is missing archive smoke evidence"
 fi
+if grep -Fq "Archive smoke commit check" /tmp/html-previewer-final-smoke-run-dry-run.log; then
+  ok "final smoke run helper labels archive smoke commit freshness"
+else
+  fail "final smoke run helper dry-run is missing archive smoke commit freshness"
+fi
 
 echo
 echo "== App Store Connect run helper =="

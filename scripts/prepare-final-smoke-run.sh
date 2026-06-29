@@ -149,6 +149,54 @@ report_field() {
   fi
 }
 
+report_commit() {
+  local path="$1"
+  local full_commit
+  local parenthesized_commit
+  local short_commit
+
+  full_commit="$(report_field "Full commit" "$path")"
+  if [[ -n "$full_commit" ]]; then
+    printf '%s' "$full_commit"
+    return 0
+  fi
+
+  parenthesized_commit="$(awk -F'[()]' '/^- Commit: / { print $2; exit }' "$path" 2>/dev/null || true)"
+  if [[ -n "$parenthesized_commit" ]]; then
+    printf '%s' "$parenthesized_commit"
+    return 0
+  fi
+
+  short_commit="$(report_field "Commit" "$path")"
+  printf '%s' "$short_commit"
+}
+
+short_commit_value() {
+  local value="$1"
+  printf '%.7s' "$value"
+}
+
+archive_smoke_commit_status() {
+  local evidence_commit
+
+  if [[ -z "$ARCHIVE_SMOKE_REPORT" || ! -f "$ARCHIVE_SMOKE_REPORT" ]]; then
+    printf 'TBD'
+    return 0
+  fi
+
+  evidence_commit="$(report_commit "$ARCHIVE_SMOKE_REPORT")"
+  if [[ -z "$evidence_commit" ]]; then
+    printf 'unknown'
+    return 0
+  fi
+
+  if [[ "$evidence_commit" == "$commit_full" || "$evidence_commit" == "$commit_short" || "$commit_full" == "$evidence_commit"* ]]; then
+    printf 'matches current commit (%s)' "$commit_short"
+  else
+    printf 'stale: archive smoke commit %s does not match current %s' "$(short_commit_value "$evidence_commit")" "$commit_short"
+  fi
+}
+
 report_artifact_path() {
   local label="$1"
   local path="$2"
@@ -190,11 +238,13 @@ archive_smoke_status="$(report_field Status "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_install="$(report_field Install "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_launch="$(report_field Launch "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_screenshot="$(report_field Screenshot "$ARCHIVE_SMOKE_REPORT")"
+archive_smoke_commit_check="$(archive_smoke_commit_status)"
 launch_screenshot_value="$(report_artifact_path "Launch screenshot" "$ARCHIVE_SMOKE_REPORT")"
 archive_smoke_status="${archive_smoke_status:-TBD}"
 archive_smoke_install="${archive_smoke_install:-TBD}"
 archive_smoke_launch="${archive_smoke_launch:-TBD}"
 archive_smoke_screenshot="${archive_smoke_screenshot:-TBD}"
+archive_smoke_commit_check="${archive_smoke_commit_check:-TBD}"
 if [[ -z "$launch_screenshot_value" || ! -f "$launch_screenshot_value" ]]; then
   launch_screenshot_value="TBD"
 fi
@@ -209,6 +259,7 @@ if [[ "$DRY_RUN" == true ]]; then
   printf -- '- Result draft: %s\n' "$result_path"
   printf -- '- README: %s\n' "$readme_path"
   printf -- '- Archive smoke report: %s\n' "$archive_smoke_report_value"
+  printf -- '- Archive smoke commit check: %s\n' "$archive_smoke_commit_check"
   exit 0
 fi
 
@@ -236,6 +287,7 @@ Issue: #10
 - Install method: $install_method_value
 - Archive smoke report: \`$archive_smoke_report_value\`
 - Archive smoke status: $archive_smoke_status
+- Archive smoke commit check: $archive_smoke_commit_check
 - Archive smoke install: $archive_smoke_install
 - Archive smoke launch: $archive_smoke_launch
 - Archive smoke screenshot: $archive_smoke_screenshot

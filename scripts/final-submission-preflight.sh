@@ -48,6 +48,14 @@ git_value() {
   git -C "$ROOT_DIR" "$@" 2>/dev/null || printf 'unknown'
 }
 
+working_tree_state() {
+  if [[ -n "$(git -C "$ROOT_DIR" status --porcelain 2>/dev/null || true)" ]]; then
+    printf 'dirty'
+  else
+    printf 'clean'
+  fi
+}
+
 latest_file() {
   local search_root="$1"
   local filename="$2"
@@ -66,38 +74,92 @@ report_field() {
   fi
 }
 
+report_commit() {
+  local path="$1"
+  local full_commit
+  local parenthesized_commit
+  local short_commit
+
+  full_commit="$(report_field "Full commit" "$path")"
+  if [[ -n "$full_commit" ]]; then
+    printf '%s' "$full_commit"
+    return 0
+  fi
+
+  parenthesized_commit="$(awk -F'[()]' '/^- Commit: / { print $2; exit }' "$path" 2>/dev/null || true)"
+  if [[ -n "$parenthesized_commit" ]]; then
+    printf '%s' "$parenthesized_commit"
+    return 0
+  fi
+
+  short_commit="$(report_field "Commit" "$path")"
+  printf '%s' "$short_commit"
+}
+
+short_commit() {
+  local value="$1"
+  printf '%.7s' "$value"
+}
+
+commit_status() {
+  local path="$1"
+  local current_full="$2"
+  local current_short="$3"
+  local evidence_commit
+
+  evidence_commit="$(report_commit "$path")"
+  if [[ -z "$evidence_commit" ]]; then
+    printf 'unknown'
+    return 0
+  fi
+
+  if [[ "$evidence_commit" == "$current_full" || "$evidence_commit" == "$current_short" || "$current_full" == "$evidence_commit"* ]]; then
+    printf 'matches current commit (%s)' "$current_short"
+  else
+    printf 'stale: evidence commit %s does not match current %s' "$(short_commit "$evidence_commit")" "$current_short"
+  fi
+}
+
 write_latest_evidence() {
   local app_store_connect_result
   local final_smoke_result
   local physical_device_result
   local archive_smoke_report
+  local current_full
+  local current_short
 
   app_store_connect_result="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
   final_smoke_result="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
   physical_device_result="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
+  current_full="$(git_value rev-parse HEAD)"
+  current_short="$(git_value rev-parse --short HEAD)"
 
   printf '\n## Latest Local Evidence\n\n'
   if [[ -n "$app_store_connect_result" ]]; then
     printf -- '- App Store Connect result draft: `%s`\n' "$app_store_connect_result"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$app_store_connect_result" "$current_full" "$current_short")"
   else
     printf -- '- App Store Connect result draft: not generated yet\n'
   fi
 
   if [[ -n "$final_smoke_result" ]]; then
     printf -- '- Final smoke result draft: `%s`\n' "$final_smoke_result"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$final_smoke_result" "$current_full" "$current_short")"
   else
     printf -- '- Final smoke result draft: not generated yet\n'
   fi
 
   if [[ -n "$physical_device_result" ]]; then
     printf -- '- Physical-device validation draft: `%s`\n' "$physical_device_result"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$physical_device_result" "$current_full" "$current_short")"
   else
     printf -- '- Physical-device validation draft: not generated yet\n'
   fi
 
   if [[ -n "$archive_smoke_report" ]]; then
     printf -- '- Archive device smoke report: `%s`\n' "$archive_smoke_report"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$archive_smoke_report" "$current_full" "$current_short")"
     printf -- '  - Status: %s\n' "$(report_field Status "$archive_smoke_report")"
     printf -- '  - Install: %s\n' "$(report_field Install "$archive_smoke_report")"
     printf -- '  - Launch: %s\n' "$(report_field Launch "$archive_smoke_report")"
@@ -120,6 +182,7 @@ write_report() {
     printf -- '- Branch: %s\n' "$(git_value branch --show-current)"
     printf -- '- Commit: %s\n' "$(git_value rev-parse --short HEAD)"
     printf -- '- Full commit: %s\n' "$(git_value rev-parse HEAD)"
+    printf -- '- Working tree: %s\n' "$(working_tree_state)"
     printf '\n## Passed Local Gates\n\n'
     if [[ "${#PASSED_STEPS[@]}" -eq 0 ]]; then
       printf -- '- None yet\n'
