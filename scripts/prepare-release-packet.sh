@@ -84,6 +84,7 @@ Key files:
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/physical-device-validation-result-draft.md (when staged)
+- PhysicalDevice/LatestValidationRun/ (when staged)
 - PhysicalDevice/HTMLPreviewerValidationSamples.zip
 - PhysicalDevice/validation-download-index.html
 - UsabilityTesting/HTMLPreviewerUsabilityTestPacket.zip
@@ -153,8 +154,10 @@ fi
   printf '| Final archive/TestFlight smoke draft | `FinalSmoke/final-archive-smoke-result-draft.md` | Included |\n'
   if [[ -n "$PHYSICAL_DEVICE_RESULT" && -f "$PHYSICAL_DEVICE_RESULT" ]]; then
     printf '| Physical-device validation draft | `PhysicalDevice/physical-device-validation-result-draft.md` | Included, still requires manual matrix completion |\n'
+    printf '| Physical-device validation run folder | `PhysicalDevice/LatestValidationRun/` | Included with device list snapshot and staged samples |\n'
   else
     printf '| Physical-device validation draft | `PhysicalDevice/physical-device-validation-result-draft.md` | Not staged locally |\n'
+    printf '| Physical-device validation run folder | `PhysicalDevice/LatestValidationRun/` | Not staged locally |\n'
   fi
   printf '| Physical-device validation samples | `PhysicalDevice/HTMLPreviewerValidationSamples.zip` | Included |\n'
   printf '| Browser delivery page | `PhysicalDevice/validation-download-index.html` | Included |\n'
@@ -176,6 +179,7 @@ copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDe
 copy_file "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-template.md"
 if [[ -n "$PHYSICAL_DEVICE_RESULT" && -f "$PHYSICAL_DEVICE_RESULT" ]]; then
   copy_file "$PHYSICAL_DEVICE_RESULT" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-draft.md"
+  copy_dir "$(dirname "$PHYSICAL_DEVICE_RESULT")" "$PACKET_DIR/PhysicalDevice/LatestValidationRun"
 fi
 copy_file "$ROOT_DIR/DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip" "$PACKET_DIR/PhysicalDevice/HTMLPreviewerValidationSamples.zip"
 copy_file "$ROOT_DIR/DerivedData/ValidationSamples/index.html" "$PACKET_DIR/PhysicalDevice/validation-download-index.html"

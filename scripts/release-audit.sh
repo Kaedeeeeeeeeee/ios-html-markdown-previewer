@@ -734,6 +734,7 @@ checks = []
 physical_files = sorted(pathlib.Path(physical_root).glob("**/physical-device-validation-result.md"))
 if physical_files:
     checks.append("HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-draft.md")
+    checks.append("HTMLPreviewerReleasePacket/PhysicalDevice/LatestValidationRun/devicectl-devices.txt")
 
 smoke_files = sorted(pathlib.Path(smoke_root).glob("**/archive-device-smoke-report.md"))
 if smoke_files:
