@@ -298,7 +298,7 @@ Issue: #10
 
 | Gate | Expected evidence | Pass/Fail | Notes |
 |---|---|---|---|
-| Final GitHub Actions run is green | Release Audit, Public App Store Pages, Release Device Build And Archive, Automated Tests |  | $github_actions_run_value |
+| Final GitHub Actions run is green | Portable Release Materials, Release Audit, Public App Store Pages, Release Device Build And Archive, Automated Tests |  | $github_actions_run_value |
 | Local release audit passed | \`scripts/release-audit.sh\` output |  | Check \`DerivedData/FinalSubmissionPreflight/logs/release-audit.log\` |
 | Public pages verification passed | \`scripts/verify-public-pages.sh\` output |  | Check \`DerivedData/FinalSubmissionPreflight/logs/public-app-store-pages.log\` |
 | Release device build preflight passed | \`scripts/release-device-build.sh\` output |  | Check \`DerivedData/FinalSubmissionPreflight/logs/generic-ios-release-build.log\` |

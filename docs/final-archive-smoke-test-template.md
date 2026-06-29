@@ -23,7 +23,7 @@ Issue: #10
 
 | Gate | Expected evidence | Pass/Fail | Notes |
 |---|---|---|---|
-| Final GitHub Actions run is green | Release Audit, Public App Store Pages, Release Device Build And Archive, Automated Tests |  |  |
+| Final GitHub Actions run is green | Portable Release Materials, Release Audit, Public App Store Pages, Release Device Build And Archive, Automated Tests |  |  |
 | Local release audit passed | `scripts/release-audit.sh` output |  |  |
 | Public pages verification passed | `scripts/verify-public-pages.sh` output |  |  |
 | Release device build preflight passed | `scripts/release-device-build.sh` output |  |  |

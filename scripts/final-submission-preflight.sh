@@ -292,6 +292,7 @@ run_step() {
 rm -rf "$OUTPUT_ROOT"
 mkdir -p "$LOG_DIR"
 
+run_step "Portable release materials audit" "$ROOT_DIR/scripts/portable-release-materials-audit.sh"
 run_step "Release audit" "$ROOT_DIR/scripts/release-audit.sh"
 run_step "Public App Store pages" "$ROOT_DIR/scripts/verify-public-pages.sh"
 run_step "Usability test packet staging" "$ROOT_DIR/scripts/prepare-usability-test-packet.sh"

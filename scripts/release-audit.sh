@@ -63,6 +63,7 @@ require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
+require_file "scripts/portable-release-materials-audit.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-app-store-connect-run.sh"
 require_file "scripts/prepare-final-smoke-run.sh"
@@ -697,6 +698,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
+    "HTMLPreviewerReleasePacket/Scripts/portable-release-materials-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-app-store-connect-run.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-final-smoke-run.sh",

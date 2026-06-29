@@ -70,6 +70,12 @@ Public App Store page verification:
 scripts/verify-public-pages.sh
 ```
 
+Portable release materials audit:
+
+```sh
+scripts/portable-release-materials-audit.sh
+```
+
 Release packet staging:
 
 ```sh
@@ -136,6 +142,7 @@ scripts/final-submission-preflight.sh
 - Release checklist: `docs/release-checklist.md`
 - Final archive/TestFlight smoke template: `docs/final-archive-smoke-test-template.md`
 - Release packet staging: `scripts/prepare-release-packet.sh`
+- Portable release materials audit: `scripts/portable-release-materials-audit.sh`
 - Local release audit: `scripts/release-audit.sh`
 - Public App Store page verification: `scripts/verify-public-pages.sh`
 - Generic iOS Release build preflight: `scripts/release-device-build.sh`

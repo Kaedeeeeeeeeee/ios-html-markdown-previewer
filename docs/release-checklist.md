@@ -12,6 +12,7 @@
 - Privacy policy and support page drafts are in `docs/privacy-policy.md` and `docs/support.md`.
 - iPhone and iPad screenshot sets are captured in `docs/app-store-screenshots/`.
 - Screenshot capture can be regenerated with `scripts/capture-release-screenshots.sh`.
+- Cross-platform release materials can be audited with `scripts/portable-release-materials-audit.sh`.
 - Local release materials can be audited with `scripts/release-audit.sh`.
 - Public App Store privacy/support URLs can be verified with `scripts/verify-public-pages.sh`.
 - App Store handoff materials, including generated App Store Connect and final smoke result drafts, final preflight evidence with commit checks, locally staged physical-device/archive-smoke evidence, and a packet-relative evidence index when available, can be staged with `scripts/prepare-release-packet.sh`.
@@ -25,6 +26,7 @@
 - Physical-device validation run drafts can be generated with `scripts/prepare-physical-device-validation-run.sh`.
 - First-round usability materials can be staged with `scripts/prepare-usability-test-packet.sh`.
 - Final local submission gates can be run with `scripts/final-submission-preflight.sh`.
+- GitHub Actions runs a portable release materials audit on Ubuntu on push and pull request.
 - GitHub Actions runs release audit and simulator tests on push and pull request.
 - GitHub Actions verifies the public privacy/support URLs on push and pull request.
 - GitHub Actions runs a generic iOS Release device build and archive preflight on push and pull request.
@@ -47,6 +49,7 @@
 - Confirm export compliance in App Store Connect matches `ITSAppUsesNonExemptEncryption=false`.
 - Add review notes from `docs/app-store-listing.md`.
 - Run full simulator test suite on the final commit.
+- Run `scripts/portable-release-materials-audit.sh` on the final commit.
 - Run `scripts/release-audit.sh` on the final commit.
 - Run `scripts/verify-public-pages.sh` on the final commit.
 - Run `scripts/final-submission-preflight.sh` on the final commit and keep `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md` with submission evidence.

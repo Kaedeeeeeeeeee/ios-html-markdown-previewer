@@ -7,6 +7,38 @@ on:
   pull_request:
 
 jobs:
+  portable-release-materials:
+    name: Portable Release Materials
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Validate shell scripts
+        run: |
+          bash -n scripts/capture-release-screenshots.sh
+          bash -n scripts/archive-preflight.sh
+          bash -n scripts/create-signed-archive.sh
+          bash -n scripts/final-submission-preflight.sh
+          bash -n scripts/portable-release-materials-audit.sh
+          bash -n scripts/prepare-app-store-connect-run.sh
+          bash -n scripts/prepare-final-smoke-run.sh
+          bash -n scripts/prepare-physical-device-validation-run.sh
+          bash -n scripts/prepare-release-packet.sh
+          bash -n scripts/prepare-usability-test-packet.sh
+          bash -n scripts/prepare-validation-samples.sh
+          bash -n scripts/release-device-build.sh
+          bash -n scripts/release-audit.sh
+          bash -n scripts/run-archive-device-smoke.sh
+          bash -n scripts/serve-validation-samples.sh
+          bash -n scripts/verify-public-pages.sh
+
+      - name: Run portable release materials audit
+        run: scripts/portable-release-materials-audit.sh
+
+      - name: Verify public privacy and support pages
+        run: scripts/verify-public-pages.sh
+
   release-audit:
     name: Release Audit
     runs-on: macos-15
@@ -20,11 +52,16 @@ jobs:
           bash -n scripts/archive-preflight.sh
           bash -n scripts/create-signed-archive.sh
           bash -n scripts/final-submission-preflight.sh
+          bash -n scripts/portable-release-materials-audit.sh
+          bash -n scripts/prepare-app-store-connect-run.sh
+          bash -n scripts/prepare-final-smoke-run.sh
+          bash -n scripts/prepare-physical-device-validation-run.sh
           bash -n scripts/prepare-release-packet.sh
           bash -n scripts/prepare-usability-test-packet.sh
           bash -n scripts/prepare-validation-samples.sh
           bash -n scripts/release-device-build.sh
           bash -n scripts/release-audit.sh
+          bash -n scripts/run-archive-device-smoke.sh
           bash -n scripts/serve-validation-samples.sh
           bash -n scripts/verify-public-pages.sh
 

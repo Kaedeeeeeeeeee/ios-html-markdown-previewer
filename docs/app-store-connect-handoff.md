@@ -7,7 +7,8 @@ Use this handoff when creating the App Store Connect record and preparing the fi
 ## Preconditions
 
 - Physical-device external-open validation from #1 has passed or all blocking failures are fixed.
-- The final commit passes GitHub Actions jobs: Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
+- The final commit passes GitHub Actions jobs: Portable Release Materials, Release Audit, Public App Store Pages, Release Device Build And Archive, and Automated Tests.
+- `scripts/portable-release-materials-audit.sh` passes locally.
 - `scripts/release-audit.sh` passes locally.
 - `scripts/final-submission-preflight.sh` passes locally and has generated `DerivedData/FinalSubmissionPreflight/submission-readiness-report.md`.
 - `scripts/verify-public-pages.sh` passes locally.
