@@ -285,28 +285,34 @@ required_keys = {
 strings = data.get("strings", {})
 missing = sorted(required_keys - strings.keys())
 empty_values = []
+required_locales = {"en", "zh-Hans", "zh-Hant", "ja"}
 for key in required_keys & strings.keys():
-    value = (
-        strings[key]
-        .get("localizations", {})
-        .get("en", {})
-        .get("stringUnit", {})
-        .get("value", "")
-    )
-    if not value.strip():
-        empty_values.append(key)
+    localizations = strings[key].get("localizations", {})
+    missing_locales = sorted(required_locales - localizations.keys())
+    if missing_locales:
+        empty_values.append(f"{key} missing locales: {', '.join(missing_locales)}")
+        continue
+
+    for locale in sorted(required_locales):
+        value = (
+            localizations[locale]
+            .get("stringUnit", {})
+            .get("value", "")
+        )
+        if not value.strip():
+            empty_values.append(f"{key} has empty {locale} value")
 
 if missing or empty_values:
     if missing:
         print("missing localization keys: " + ", ".join(missing), file=sys.stderr)
     if empty_values:
-        print("empty English localization values: " + ", ".join(sorted(empty_values)), file=sys.stderr)
+        print("locale coverage issues: " + "; ".join(sorted(empty_values)), file=sys.stderr)
     raise SystemExit(1)
 PY
 then
-  ok "Localizable.xcstrings is valid and critical error and safety copy has localization keys"
+  ok "Localizable.xcstrings is valid and critical error and safety copy has en, zh-Hans, zh-Hant, and ja values"
 else
-  fail "Localizable.xcstrings is invalid or critical error/safety keys are missing"
+  fail "Localizable.xcstrings is invalid or critical error/safety locale coverage is incomplete"
 fi
 
 echo

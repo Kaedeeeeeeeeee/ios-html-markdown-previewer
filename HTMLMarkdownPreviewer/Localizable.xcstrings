@@ -1,325 +1,847 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "action.cancel" : {
-      "comment" : "Cancel button label.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
+  "sourceLanguage": "en",
+  "strings": {
+    "action.cancel": {
+      "comment": "Cancel button label.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
           }
         }
       }
     },
-    "action.copyLink" : {
-      "comment" : "Copies a blocked link to the clipboard.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copy Link"
+    "action.copyLink": {
+      "comment": "Copies a blocked link to the clipboard.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy Link"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制链接"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "複製連結"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクをコピー"
           }
         }
       }
     },
-    "action.ok" : {
-      "comment" : "Dismisses an alert.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
+    "action.ok": {
+      "comment": "Dismisses an alert.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
     },
-    "error.cannotClearImportedFiles.title" : {
-      "comment" : "Alert title shown when clearing imported files fails.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cannot Clear Imported Files"
+    "error.cannotClearImportedFiles.title": {
+      "comment": "Alert title shown when clearing imported files fails.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannot Clear Imported Files"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法清除导入文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法清除匯入檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込んだファイルを消去できません"
           }
         }
       }
     },
-    "error.cannotOpenFile.title" : {
-      "comment" : "Alert or error title shown when a file cannot be opened.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cannot Open File"
+    "error.cannotOpenFile.title": {
+      "comment": "Alert or error title shown when a file cannot be opened.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannot Open File"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法開啟檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを開けません"
           }
         }
       }
     },
-    "error.cannotOpenHTML.title" : {
-      "comment" : "Error title shown when HTML preview setup fails.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cannot Open HTML"
+    "error.cannotOpenHTML.title": {
+      "comment": "Error title shown when HTML preview setup fails.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannot Open HTML"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开 HTML"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法開啟 HTML"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTML を開けません"
           }
         }
       }
     },
-    "error.previewUnavailable.title" : {
-      "comment" : "Error title shown when an entry type cannot be previewed.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preview Unavailable"
+    "error.previewUnavailable.title": {
+      "comment": "Error title shown when an entry type cannot be previewed.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview Unavailable"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法预览"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法預覽"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プレビューできません"
           }
         }
       }
     },
-    "error.text.unsupportedEncoding" : {
-      "comment" : "Shown when a text file cannot be decoded. The placeholder is the filename.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cannot decode %@ as text. Export it as UTF-8 or UTF-16 and try again."
+    "error.text.unsupportedEncoding": {
+      "comment": "Shown when a text file cannot be decoded. The placeholder is the filename.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannot decode %@ as text. Export it as UTF-8 or UTF-16 and try again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法将 %@ 解码为文本。请导出为 UTF-8 或 UTF-16 后重试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法將 %@ 解碼為文字。請匯出為 UTF-8 或 UTF-16 後再試一次。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ をテキストとしてデコードできません。UTF-8 または UTF-16 で書き出してからもう一度試してください。"
           }
         }
       }
     },
-    "error.unsupportedEntryType" : {
-      "comment" : "Description shown when the selected entry type cannot be previewed.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This entry type is not supported yet."
+    "error.unsupportedEntryType": {
+      "comment": "Description shown when the selected entry type cannot be previewed.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This entry type is not supported yet."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不支持预览此入口类型。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫不支援預覽此入口類型。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このエントリー形式はまだプレビューできません。"
           }
         }
       }
     },
-    "error.unsupportedFileType" : {
-      "comment" : "Shown when the imported file type is not supported by the MVP.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Current version supports HTML, Markdown, and ZIP files."
+    "error.unsupportedFileType": {
+      "comment": "Shown when the imported file type is not supported by the MVP.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current version supports HTML, Markdown, and ZIP files."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前版本支持 HTML、Markdown 和 ZIP 文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目前版本支援 HTML、Markdown 和 ZIP 檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在のバージョンは HTML、Markdown、ZIP ファイルに対応しています。"
           }
         }
       }
     },
-    "error.zip.archiveTooLarge" : {
-      "comment" : "Shown when a ZIP archive exceeds the maximum input size.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ZIP package is over the 100 MB limit."
+    "error.zip.archiveTooLarge": {
+      "comment": "Shown when a ZIP archive exceeds the maximum input size.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ZIP package is over the 100 MB limit."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 包超过 100 MB 限制。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 套件超過 100 MB 限制。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP パッケージが 100 MB の上限を超えています。"
           }
         }
       }
     },
-    "error.zip.expandedSizeTooLarge" : {
-      "comment" : "Shown when a ZIP archive would exceed the maximum expanded size.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ZIP package expands beyond the 300 MB limit."
+    "error.zip.expandedSizeTooLarge": {
+      "comment": "Shown when a ZIP archive would exceed the maximum expanded size.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ZIP package expands beyond the 300 MB limit."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 包解压后超过 300 MB 限制。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 套件解壓縮後超過 300 MB 限制。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP パッケージの展開後サイズが 300 MB を超えます。"
           }
         }
       }
     },
-    "error.zip.invalidArchive" : {
-      "comment" : "Shown when a ZIP archive is unreadable or invalid.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ZIP package could not be read."
+    "error.zip.invalidArchive": {
+      "comment": "Shown when a ZIP archive is unreadable or invalid.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ZIP package could not be read."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法读取此 ZIP 包。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法讀取此 ZIP 套件。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この ZIP パッケージを読み取れません。"
           }
         }
       }
     },
-    "error.zip.missingEntryFile" : {
-      "comment" : "Shown when a ZIP archive has no HTML or Markdown entry file.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No previewable HTML or Markdown entry was found in this ZIP package."
+    "error.zip.missingEntryFile": {
+      "comment": "Shown when a ZIP archive has no HTML or Markdown entry file.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No previewable HTML or Markdown entry was found in this ZIP package."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 ZIP 包中未找到可预览的 HTML 或 Markdown 入口文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此 ZIP 套件中找不到可預覽的 HTML 或 Markdown 入口檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この ZIP パッケージにはプレビュー可能な HTML または Markdown の入口ファイルがありません。"
           }
         }
       }
     },
-    "error.zip.singleFileTooLarge" : {
-      "comment" : "Shown when one file inside a ZIP exceeds the maximum supported size.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ZIP package contains a file over the 100 MB limit."
+    "error.zip.singleFileTooLarge": {
+      "comment": "Shown when one file inside a ZIP exceeds the maximum supported size.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ZIP package contains a file over the 100 MB limit."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 包中有文件超过 100 MB 限制。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 套件中有檔案超過 100 MB 限制。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP パッケージ内に 100 MB の上限を超えるファイルがあります。"
           }
         }
       }
     },
-    "error.zip.tooManyFiles" : {
-      "comment" : "Shown when a ZIP archive contains too many files.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ZIP package contains too many files."
+    "error.zip.tooManyFiles": {
+      "comment": "Shown when a ZIP archive contains too many files.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ZIP package contains too many files."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 包包含的文件数量过多。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 套件包含的檔案數量過多。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP パッケージ内のファイル数が多すぎます。"
           }
         }
       }
     },
-    "error.zip.unsafeOrConflictingPath" : {
-      "comment" : "Shown when a ZIP archive contains unsafe, duplicate, or case-conflicting paths.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ZIP package contains unsafe or conflicting paths."
+    "error.zip.unsafeOrConflictingPath": {
+      "comment": "Shown when a ZIP archive contains unsafe, duplicate, or case-conflicting paths.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ZIP package contains unsafe or conflicting paths."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 包包含不安全或冲突的路径。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP 套件包含不安全或衝突的路徑。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP パッケージに安全でないパスまたは競合するパスが含まれています。"
           }
         }
       }
     },
-    "security.html.interactive.confirmation" : {
-      "comment" : "Warning shown before enabling trusted interactive HTML mode.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Only use interactive mode for HTML files you trust."
+    "security.html.interactive.confirmation": {
+      "comment": "Warning shown before enabling trusted interactive HTML mode.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only use interactive mode for HTML files you trust."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅对你信任的 HTML 文件使用互动模式。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "僅對你信任的 HTML 檔案使用互動模式。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "信頼できる HTML ファイルにのみインタラクティブモードを使用してください。"
           }
         }
       }
     },
-    "security.html.interactive.status" : {
-      "comment" : "Status message shown while viewing HTML in interactive mode.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Page scripts can run. External navigation remains blocked."
+    "security.html.interactive.status": {
+      "comment": "Status message shown while viewing HTML in interactive mode.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page scripts can run. External navigation remains blocked."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "页面脚本可以运行。外部跳转仍会被阻止。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "頁面腳本可以執行。外部跳轉仍會被阻止。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ページ内スクリプトを実行できます。外部ナビゲーションは引き続きブロックされます。"
           }
         }
       }
     },
-    "security.html.interactive.title" : {
-      "comment" : "Confirmation dialog title before enabling interactive HTML mode.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use Interactive Mode?"
+    "security.html.interactive.title": {
+      "comment": "Confirmation dialog title before enabling interactive HTML mode.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Interactive Mode?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用互动模式？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用互動模式？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インタラクティブモードを使用しますか？"
           }
         }
       }
     },
-    "security.html.interactive.use" : {
-      "comment" : "Button label for enabling interactive HTML mode.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use Interactive Mode"
+    "security.html.interactive.use": {
+      "comment": "Button label for enabling interactive HTML mode.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Interactive Mode"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用互动模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用互動模式"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インタラクティブモードを使用"
           }
         }
       }
     },
-    "security.html.safe.singleFile.message" : {
-      "comment" : "Safe Preview status message for single HTML files.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scripts and external network resources are blocked. Relative assets are best effort for single files."
+    "security.html.safe.singleFile.message": {
+      "comment": "Safe Preview status message for single HTML files.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scripts and external network resources are blocked. Relative assets are best effort for single files."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "脚本和外部网络资源已被阻止。单文件导入的相对资源为尽力支持。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腳本和外部網路資源已被阻止。單檔匯入的相對資源為盡力支援。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スクリプトと外部ネットワークリソースはブロックされます。単一ファイル読み込みの相対リソースはベストエフォートです。"
           }
         }
       }
     },
-    "security.html.safe.zip.message" : {
-      "comment" : "Safe Preview status message for ZIP packages.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scripts and external network resources are blocked."
+    "security.html.safe.zip.message": {
+      "comment": "Safe Preview status message for ZIP packages.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scripts and external network resources are blocked."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "脚本和外部网络资源已被阻止。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腳本和外部網路資源已被阻止。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スクリプトと外部ネットワークリソースはブロックされます。"
           }
         }
       }
     },
-    "security.markdown.externalLink.message" : {
-      "comment" : "Message shown when a Markdown web link tap is blocked.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Markdown preview keeps web links from opening another app."
+    "security.markdown.externalLink.message": {
+      "comment": "Message shown when a Markdown web link tap is blocked.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markdown preview keeps web links from opening another app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markdown 预览会阻止网页链接打开其他 App。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markdown 預覽會阻止網頁連結開啟其他 App。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markdown プレビューでは、Web リンクが別のアプリを開くことを防ぎます。"
           }
         }
       }
     },
-    "security.markdown.externalLink.title" : {
-      "comment" : "Alert title shown when a Markdown web link tap is blocked.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "External Link Blocked"
+    "security.markdown.externalLink.title": {
+      "comment": "Alert title shown when a Markdown web link tap is blocked.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "External Link Blocked"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部链接已被阻止"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部連結已被阻止"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部リンクをブロックしました"
           }
         }
       }
     },
-    "security.markdown.unsupportedLink.message" : {
-      "comment" : "Message shown when a Markdown link type is unsupported.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This link type is not supported in Markdown preview."
+    "security.markdown.unsupportedLink.message": {
+      "comment": "Message shown when a Markdown link type is unsupported.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This link type is not supported in Markdown preview."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markdown 预览暂不支持这种链接类型。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markdown 預覽暫不支援這種連結類型。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このリンク形式は Markdown プレビューではサポートされていません。"
           }
         }
       }
     },
-    "security.markdown.unsupportedLink.title" : {
-      "comment" : "Alert title shown when a Markdown link type is unsupported.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Link Not Opened"
+    "security.markdown.unsupportedLink.title": {
+      "comment": "Alert title shown when a Markdown link type is unsupported.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link Not Opened"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "链接未打开"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "連結未開啟"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクを開きませんでした"
           }
         }
       }
     },
-    "security.preview.rawText.message" : {
-      "comment" : "Status message shown while raw source text is visible.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Showing the file source."
+    "security.preview.rawText.message": {
+      "comment": "Status message shown while raw source text is visible.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Showing the file source."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在显示文件源码。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在顯示檔案原始碼。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルのソースを表示しています。"
           }
         }
       }
     },
-    "settings.clearImportedFiles.confirmation" : {
-      "comment" : "Confirmation message before deleting all imported files and recent metadata.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This removes imported copies, extracted ZIP contents, and recent-file metadata from this app."
+    "settings.clearImportedFiles.confirmation": {
+      "comment": "Confirmation message before deleting all imported files and recent metadata.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This removes imported copies, extracted ZIP contents, and recent-file metadata from this app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这会移除此 App 中的导入副本、解压后的 ZIP 内容和最近文件记录。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這會移除此 App 中的匯入副本、解壓縮後的 ZIP 內容和最近檔案記錄。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このアプリ内の読み込み済みコピー、展開済み ZIP 内容、最近使ったファイルのメタデータを削除します。"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

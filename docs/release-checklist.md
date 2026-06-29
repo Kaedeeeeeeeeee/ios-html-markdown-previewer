@@ -4,7 +4,7 @@
 
 - Final app icon is included in `Assets.xcassets`.
 - Privacy manifest is included in the app target.
-- Critical error and safety copy is present in `Localizable.xcstrings`.
+- Critical error and safety copy is present in `Localizable.xcstrings` for English, Simplified Chinese, Traditional Chinese, and Japanese.
 - Required reason API usage is documented in `docs/privacy-required-reasons.md`.
 - Export compliance metadata is documented in `docs/export-compliance.md`.
 - App Store listing draft and review notes are in `docs/app-store-listing.md`.
@@ -62,7 +62,7 @@ Use `docs/physical-device-validation.md` for the external-open matrix and `docs/
 - File type detection
 - External URL detection for file details
 - UTF-8/UTF-16 text decoding for Markdown, Raw Text, and external URL detection
-- Critical error and safety localization key coverage
+- Critical error and safety localization coverage for English, Simplified Chinese, Traditional Chinese, and Japanese
 - ZIP path traversal rejection
 - ZIP duplicate/case-conflict rejection
 - ZIP archive, file count, single-file, and expanded-size limits
