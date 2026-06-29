@@ -87,6 +87,6 @@ Close #10 only after:
 - Physical-device external-open validation from #1 is complete.
 - Physical-device validation evidence is recorded from `docs/physical-device-validation-result-template.md`.
 - Final archive or TestFlight smoke test passes.
-- Final archive or TestFlight smoke evidence is recorded from `docs/final-archive-smoke-test-template.md`.
+- Final archive or TestFlight smoke evidence is recorded from the generated `DerivedData/FinalSmokeRun/.../final-archive-smoke-result.md` draft.
 
 Do not treat the release as submission-ready until #11 also has a completed first-round usability result and every P0/P1 finding is filed or fixed.
