@@ -76,6 +76,9 @@ Release packet staging:
 scripts/prepare-release-packet.sh
 ```
 
+The release packet includes generated App Store Connect and final smoke result
+drafts under `AppStoreConnect/` and `FinalSmoke/`.
+
 App Store Connect setup run draft:
 
 ```sh

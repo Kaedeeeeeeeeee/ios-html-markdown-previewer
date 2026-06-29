@@ -21,8 +21,29 @@ copy_dir() {
   cp -R "$source" "$destination"
 }
 
+latest_file() {
+  local search_root="$1"
+  local filename="$2"
+  find "$search_root" -name "$filename" -print 2>/dev/null | sort | tail -n 1
+}
+
 "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only >/dev/null
 "$ROOT_DIR/scripts/prepare-usability-test-packet.sh" >/dev/null
+"$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" >/dev/null
+"$ROOT_DIR/scripts/prepare-final-smoke-run.sh" >/dev/null
+
+APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
+FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
+
+if [[ -z "$APP_STORE_CONNECT_RESULT" || ! -f "$APP_STORE_CONNECT_RESULT" ]]; then
+  printf 'Missing generated App Store Connect result draft.\n' >&2
+  exit 1
+fi
+
+if [[ -z "$FINAL_SMOKE_RESULT" || ! -f "$FINAL_SMOKE_RESULT" ]]; then
+  printf 'Missing generated final smoke result draft.\n' >&2
+  exit 1
+fi
 
 rm -rf "$PACKET_DIR" "$ZIP_PATH"
 mkdir -p "$PACKET_DIR"
@@ -41,6 +62,8 @@ Key files:
 - AppStore/app-store-submission-runbook.md
 - AppStore/release-checklist.md
 - AppStore/final-archive-smoke-test-template.md
+- AppStoreConnect/app-store-connect-result-draft.md
+- FinalSmoke/final-archive-smoke-result-draft.md
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/HTMLPreviewerValidationSamples.zip
@@ -72,6 +95,9 @@ copy_file "$ROOT_DIR/docs/app-store-connect-handoff.md" "$PACKET_DIR/AppStore/ap
 copy_file "$ROOT_DIR/docs/app-store-submission-runbook.md" "$PACKET_DIR/AppStore/app-store-submission-runbook.md"
 copy_file "$ROOT_DIR/docs/release-checklist.md" "$PACKET_DIR/AppStore/release-checklist.md"
 copy_file "$ROOT_DIR/docs/final-archive-smoke-test-template.md" "$PACKET_DIR/AppStore/final-archive-smoke-test-template.md"
+
+copy_file "$APP_STORE_CONNECT_RESULT" "$PACKET_DIR/AppStoreConnect/app-store-connect-result-draft.md"
+copy_file "$FINAL_SMOKE_RESULT" "$PACKET_DIR/FinalSmoke/final-archive-smoke-result-draft.md"
 
 copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation.md"
 copy_file "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-template.md"
