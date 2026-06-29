@@ -555,6 +555,8 @@ require_text "docs/app-store-submission-runbook.md" "physical-device validation 
 require_text "docs/app-store-submission-runbook.md" "check-github-actions-execution\\.sh" "submission runbook points to Actions execution diagnostics"
 require_text "docs/app-store-submission-runbook.md" "validate-completed-release-results\\.sh" "submission runbook points to completed result validation"
 require_text "docs/app-store-submission-runbook.md" "prepare-submission-owner-handoff\\.sh" "submission runbook points to owner handoff"
+require_text "scripts/verify-public-pages.sh" "gist\\.githubusercontent\\.com/.*/raw/privacy-policy\\.md" "public page verifier uses stable privacy raw file URL"
+require_text "scripts/verify-public-pages.sh" "gist\\.githubusercontent\\.com/.*/raw/support\\.md" "public page verifier uses stable support raw file URL"
 require_text "docs/github-actions-troubleshooting.md" "steps: \\[\\]" "GitHub Actions troubleshooting documents zero-step blocker"
 require_text "docs/github-actions-troubleshooting.md" "Budgets and alerts" "GitHub Actions troubleshooting covers billing budget checks"
 require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"

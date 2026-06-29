@@ -279,6 +279,8 @@ require_text("docs/app-store-submission-runbook.md", r"check-github-actions-exec
 require_text("docs/app-store-submission-runbook.md", r"prepare-submission-gate-status\.sh", "submission runbook points to submission gate status report")
 require_text("docs/app-store-submission-runbook.md", r"validate-completed-release-results\.sh", "submission runbook points to completed result validation")
 require_text("docs/app-store-submission-runbook.md", r"prepare-submission-owner-handoff\.sh", "submission runbook points to owner handoff")
+require_text("scripts/verify-public-pages.sh", r"gist\.githubusercontent\.com/.*/raw/privacy-policy\.md", "public page verifier uses stable privacy raw file URL")
+require_text("scripts/verify-public-pages.sh", r"gist\.githubusercontent\.com/.*/raw/support\.md", "public page verifier uses stable support raw file URL")
 require_text("docs/github-actions-troubleshooting.md", r"steps: \[\]", "Actions troubleshooting documents zero-step blocker")
 require_text("docs/github-actions-troubleshooting.md", r"Budgets and alerts", "Actions troubleshooting covers budget checks")
 require_text("docs/privacy-policy.md", r"HTML Previewer does not collect personal data", "privacy policy states no personal data collection")
