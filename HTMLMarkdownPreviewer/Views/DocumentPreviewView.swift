@@ -56,18 +56,23 @@ struct DocumentPreviewView: View {
                         Image(systemName: previewModeIcon)
                     }
                     .accessibilityLabel("Preview Mode")
+                    .accessibilityHint("Choose rendered, safe, interactive, or raw text preview.")
                     .accessibilityIdentifier("preview-mode-menu")
                 }
 
                 ShareLink(item: store.entryFileURL(for: document)) {
                     Image(systemName: "square.and.arrow.up")
                 }
+                .accessibilityLabel("Share File")
+                .accessibilityIdentifier("share-file-button")
 
                 Button {
                     isDetailsPresented = true
                 } label: {
                     Image(systemName: "info.circle")
                 }
+                .accessibilityLabel("File Details")
+                .accessibilityIdentifier("file-details-button")
             }
         }
         .onAppear(perform: loadPreview)
@@ -285,6 +290,8 @@ private struct PreviewStatusBar: View {
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(.regularMaterial)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(status.title): \(status.message)")
     }
 }
 

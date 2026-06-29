@@ -63,6 +63,7 @@ Use `docs/physical-device-validation.md` for the external-open matrix and `docs/
 - External URL detection for file details
 - UTF-8/UTF-16 text decoding for Markdown, Raw Text, and external URL detection
 - Critical error and safety localization coverage for English, Simplified Chinese, Traditional Chinese, and Japanese
+- VoiceOver labels for recent rows, sample rows, preview controls, status banners, details rows, and Markdown image placeholders
 - ZIP path traversal rejection
 - ZIP duplicate/case-conflict rejection
 - ZIP archive, file count, single-file, and expanded-size limits

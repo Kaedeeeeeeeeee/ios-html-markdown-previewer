@@ -11,39 +11,40 @@ struct DocumentDetailsView: View {
         NavigationStack {
             List {
                 Section("File") {
-                    LabeledContent("Name", value: document.originalFilename)
-                    LabeledContent("Type", value: document.type.displayName)
-                    LabeledContent("Entry Type", value: document.entryDocumentType.displayName)
-                    LabeledContent("Size", value: ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file))
+                    detailsRow("Name", value: document.originalFilename)
+                    detailsRow("Type", value: document.type.displayName)
+                    detailsRow("Entry Type", value: document.entryDocumentType.displayName)
+                    detailsRow("Size", value: ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file))
                 }
 
                 Section("Import") {
-                    LabeledContent("Source", value: document.importSource.displayName)
-                    LabeledContent("Imported", value: formatted(document.importedAt))
+                    detailsRow("Source", value: document.importSource.displayName)
+                    detailsRow("Imported", value: formatted(document.importedAt))
                     if let lastOpenedAt = document.lastOpenedAt {
-                        LabeledContent("Last Opened", value: formatted(lastOpenedAt))
+                        detailsRow("Last Opened", value: formatted(lastOpenedAt))
                     }
-                    LabeledContent("Local Copy", value: "Stored in App")
+                    detailsRow("Local Copy", value: "Stored in App")
                 }
 
                 Section("Preview") {
-                    LabeledContent("Mode", value: previewMode.displayName)
-                    LabeledContent("External URLs", value: externalURLText)
-                    LabeledContent("Entry Path", value: document.entryFileRelativePath)
-                    LabeledContent("Root Path", value: document.localRootRelativePath)
+                    detailsRow("Mode", value: previewMode.displayName)
+                    detailsRow("External URLs", value: externalURLText)
+                    detailsRow("Entry Path", value: document.entryFileRelativePath)
+                    detailsRow("Root Path", value: document.localRootRelativePath)
                 }
 
                 if document.type == .zipPackage {
                     Section("ZIP") {
                         if let extractedFileCount = document.extractedFileCount {
-                            LabeledContent("Files", value: "\(extractedFileCount)")
+                            detailsRow("Files", value: "\(extractedFileCount)")
                         }
                         if let totalUncompressedBytes = document.totalUncompressedBytes {
-                            LabeledContent("Expanded", value: ByteCountFormatter.string(fromByteCount: Int64(totalUncompressedBytes), countStyle: .file))
+                            detailsRow("Expanded", value: ByteCountFormatter.string(fromByteCount: Int64(totalUncompressedBytes), countStyle: .file))
                         }
                     }
                 }
             }
+            .accessibilityIdentifier("document-details-screen")
             .navigationTitle("Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -51,9 +52,22 @@ struct DocumentDetailsView: View {
                     Button("Done") {
                         dismiss()
                     }
+                    .accessibilityIdentifier("document-details-done-button")
                 }
             }
         }
+    }
+
+    private func detailsRow(_ title: String, value: String) -> some View {
+        LabeledContent {
+            Text(value)
+                .multilineTextAlignment(.trailing)
+                .textSelection(.enabled)
+        } label: {
+            Text(title)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title): \(value)")
     }
 
     private func formatted(_ date: Date) -> String {

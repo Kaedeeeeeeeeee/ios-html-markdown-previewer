@@ -278,6 +278,8 @@ private struct SampleRow: View {
             Image(systemName: sample.documentType.systemImage)
                 .foregroundStyle(.secondary)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(sample.title): \(sample.subtitle)")
     }
 }
 
@@ -303,6 +305,8 @@ private struct DocumentRow: View {
             Image(systemName: document.type.systemImage)
                 .foregroundStyle(.secondary)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(document.displayName), \(typeText), \(ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file)), \(dateText)")
     }
 
     private var typeText: String {

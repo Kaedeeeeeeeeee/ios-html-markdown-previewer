@@ -184,7 +184,7 @@ private struct MarkdownImageView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .accessibilityLabel(image.altText)
+                    .accessibilityLabel(image.altText.isEmpty ? "Markdown image" : image.altText)
             } else {
                 placeholder("Local image unavailable", detail: image.source)
             }
@@ -208,6 +208,8 @@ private struct MarkdownImageView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 8))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title): \(detail)")
     }
 }
 
