@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ARCHIVE_PATH="${ARCHIVE_PATH:-$ROOT_DIR/DerivedData/SignedArchive/HTMLPreviewer.xcarchive}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-$ROOT_DIR/DerivedData/SignedArchiveDiagnostics}"
 CODE_SIGN_STYLE="${CODE_SIGN_STYLE:-Automatic}"
 ALLOW_PROVISIONING_UPDATES="${ALLOW_PROVISIONING_UPDATES:-YES}"
 ALLOW_DEVELOPMENT_SIGNING="${ALLOW_DEVELOPMENT_SIGNING:-NO}"
@@ -17,6 +18,7 @@ Creates a signed Release archive for App Store Connect/TestFlight handoff.
 Environment:
   DEVELOPMENT_TEAM                 Required Apple Developer Team ID.
   ARCHIVE_PATH                     Optional .xcarchive output path.
+  OUTPUT_ROOT                      Optional diagnostic output root.
   CODE_SIGN_STYLE                  Optional signing style, defaults to Automatic.
   CODE_SIGN_IDENTITY               Optional signing identity override.
   PROVISIONING_PROFILE_SPECIFIER   Optional profile name for manual signing.
@@ -97,6 +99,66 @@ if [[ "$ALLOW_PROVISIONING_UPDATES" == "YES" ]]; then
   cmd+=(-allowProvisioningUpdates)
 fi
 
+git_value() {
+  git -C "$ROOT_DIR" "$@" 2>/dev/null || printf 'unknown'
+}
+
+working_tree_state() {
+  if [[ -n "$(git -C "$ROOT_DIR" status --porcelain 2>/dev/null || true)" ]]; then
+    printf 'dirty'
+  else
+    printf 'clean'
+  fi
+}
+
+write_archive_diagnostic() {
+  local status="$1"
+  local exit_code="$2"
+  local summary="$3"
+  local error_summary=""
+  local submission_evidence="no"
+  local evidence_note="This diagnostic records signing/archive readiness only; a successful Apple Distribution archive or processed TestFlight build is still required for submission evidence."
+
+  if [[ -f "$build_log" ]]; then
+    error_summary="$(grep -E "error:|No Accounts|No profiles|Provisioning profile|Signing|CodeSign" "$build_log" | tail -n 30 || true)"
+  fi
+  if [[ "$status" == "passed" && "$ALLOW_DEVELOPMENT_SIGNING" == "NO" ]]; then
+    submission_evidence="yes"
+    evidence_note="Archive passed Apple Distribution signing validation; upload/select the processed build and run final smoke before submission."
+  elif [[ "$status" == "passed" ]]; then
+    evidence_note="Archive passed development-signing validation for local device smoke only; it is not App Store/TestFlight upload evidence."
+  fi
+
+  {
+    printf '# Signed Archive Diagnostic Report\n\n'
+    printf -- '- Status: %s\n' "$status"
+    printf -- '- Generated: %s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    printf -- '- Branch: %s\n' "$(git_value branch --show-current)"
+    printf -- '- Commit: %s\n' "$(git_value rev-parse --short HEAD)"
+    printf -- '- Full commit: %s\n' "$(git_value rev-parse HEAD)"
+    printf -- '- Working tree: %s\n' "$(working_tree_state)"
+    printf -- '- Summary: %s\n' "$summary"
+    printf -- '- Exit code: %s\n' "$exit_code"
+    printf -- '- Archive path: %s\n' "$ARCHIVE_PATH"
+    printf -- '- Development team: %s\n' "$DEVELOPMENT_TEAM"
+    printf -- '- Code sign style: %s\n' "$CODE_SIGN_STYLE"
+    printf -- '- Allow provisioning updates: %s\n' "$ALLOW_PROVISIONING_UPDATES"
+    printf -- '- Allow development signing: %s\n' "$ALLOW_DEVELOPMENT_SIGNING"
+    printf -- '- App Store/TestFlight submission evidence: %s\n' "$submission_evidence"
+    printf -- '- Evidence note: %s\n' "$evidence_note"
+    printf -- '- Build log: %s\n' "$build_log"
+    printf '\n## Command\n\n```sh\n'
+    printf '%q ' "${cmd[@]}"
+    printf '\n```\n'
+    printf '\n## Error Summary\n\n'
+    if [[ -n "$error_summary" ]]; then
+      printf '```text\n%s\n```\n' "$error_summary"
+    else
+      printf -- '- No matching signing/archive error lines were captured.\n'
+    fi
+  } >"$report_path"
+}
+
 if [[ "$DRY_RUN" == true ]]; then
   printf 'Dry run signed archive command:\n'
   printf '%q ' "${cmd[@]}"
@@ -104,8 +166,23 @@ if [[ "$DRY_RUN" == true ]]; then
   exit 0
 fi
 
+timestamp="$(date -u '+%Y%m%dT%H%M%SZ')"
+run_dir="$OUTPUT_ROOT/$timestamp-signed-archive"
+build_log="$run_dir/xcodebuild-archive.log"
+report_path="$run_dir/signed-archive-diagnostic-report.md"
+mkdir -p "$run_dir"
+
 rm -rf "$ARCHIVE_PATH"
-"${cmd[@]}"
+set +e
+"${cmd[@]}" 2>&1 | tee "$build_log"
+archive_exit="${PIPESTATUS[0]}"
+set -e
+
+if [[ "$archive_exit" -ne 0 ]]; then
+  write_archive_diagnostic "failed" "$archive_exit" "xcodebuild archive failed"
+  printf 'Signed archive diagnostic report: %s\n' "$report_path" >&2
+  exit "$archive_exit"
+fi
 
 APP_PATH="$ARCHIVE_PATH/Products/Applications/HTMLMarkdownPreviewer.app"
 
@@ -239,6 +316,8 @@ if errors:
     raise SystemExit(1)
 PY
 
+write_archive_diagnostic "passed" 0 "Archive created and signing validation passed"
+
 if [[ "$ALLOW_DEVELOPMENT_SIGNING" == "YES" ]]; then
   printf 'Development-signed archive created and validated for local device smoke only: %s\n' "$ARCHIVE_PATH"
   printf 'This archive is not App Store/TestFlight submission evidence. Re-run without ALLOW_DEVELOPMENT_SIGNING=YES for upload readiness.\n'
@@ -246,3 +325,4 @@ else
   printf 'Distribution-signed archive created and validated: %s\n' "$ARCHIVE_PATH"
   printf 'Next: upload it through Xcode Organizer or App Store Connect tooling, then run the final archive/TestFlight smoke test.\n'
 fi
+printf 'Signed archive diagnostic report: %s\n' "$report_path"

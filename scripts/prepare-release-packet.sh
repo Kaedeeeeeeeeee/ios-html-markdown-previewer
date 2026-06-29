@@ -68,6 +68,7 @@ USABILITY_SESSION_RESULT="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionR
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
 GITHUB_ACTIONS_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 LOCAL_AUTOMATED_TEST_REPORT="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
+SIGNED_ARCHIVE_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
 SUBMISSION_GATE_STATUS_REPORT="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
 COMPLETED_RESULTS_VALIDATION_REPORT="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
 SUBMISSION_OWNER_HANDOFF_REPORT="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
@@ -113,6 +114,7 @@ Key files:
 - Evidence/completed-release-results-validation.md
 - Evidence/submission-owner-handoff.md
 - Evidence/LocalAutomatedTests/ (when staged)
+- Evidence/SignedArchiveDiagnostics/ (when staged)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/physical-device-validation-result-draft.md (when staged)
@@ -199,6 +201,9 @@ fi
 if [[ -n "$LOCAL_AUTOMATED_TEST_REPORT" && -f "$LOCAL_AUTOMATED_TEST_REPORT" ]]; then
   copy_dir "$(dirname "$LOCAL_AUTOMATED_TEST_REPORT")" "$PACKET_DIR/Evidence/LocalAutomatedTests"
 fi
+if [[ -n "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" && -f "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" ]]; then
+  copy_dir "$(dirname "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT")" "$PACKET_DIR/Evidence/SignedArchiveDiagnostics"
+fi
 
 {
   printf '# Release Evidence Index\n\n'
@@ -216,6 +221,11 @@ fi
     printf '| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Included as supplemental local evidence; hosted CI still required |\n'
   else
     printf '| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Not staged locally |\n'
+  fi
+  if [[ -n "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" && -f "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" ]]; then
+    printf '| Signed archive diagnostic | `Evidence/SignedArchiveDiagnostics/signed-archive-diagnostic-report.md` | Included, still requires App Store/TestFlight evidence if failed or development-signed |\n'
+  else
+    printf '| Signed archive diagnostic | `Evidence/SignedArchiveDiagnostics/signed-archive-diagnostic-report.md` | Not staged locally |\n'
   fi
   printf '| Packet checksums | `Evidence/checksums-sha256.txt` | Generated during packet staging |\n'
   printf '| App Store Connect setup draft | `AppStoreConnect/app-store-connect-result-draft.md` | Included |\n'

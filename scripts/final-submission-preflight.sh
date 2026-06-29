@@ -127,6 +127,7 @@ write_latest_evidence() {
   local usability_session_result
   local archive_smoke_report
   local local_automated_test_report
+  local signed_archive_diagnostic_report
   local completed_results_validation_report
   local submission_owner_handoff_report
   local current_full
@@ -138,6 +139,7 @@ write_latest_evidence() {
   usability_session_result="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
   local_automated_test_report="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
+  signed_archive_diagnostic_report="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
   completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
   current_full="$(git_value rev-parse HEAD)"
@@ -194,6 +196,16 @@ write_latest_evidence() {
     printf -- '  - Hosted CI substitute: %s\n' "$(report_field "Hosted CI substitute" "$local_automated_test_report")"
   else
     printf -- '- Local automated simulator test report: not generated yet\n'
+  fi
+
+  if [[ -n "$signed_archive_diagnostic_report" ]]; then
+    printf -- '- Signed archive diagnostic report: `%s`\n' "$signed_archive_diagnostic_report"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$signed_archive_diagnostic_report" "$current_full" "$current_short")"
+    printf -- '  - Status: %s\n' "$(report_field Status "$signed_archive_diagnostic_report")"
+    printf -- '  - Summary: %s\n' "$(report_field Summary "$signed_archive_diagnostic_report")"
+    printf -- '  - App Store/TestFlight submission evidence: %s\n' "$(report_field "App Store/TestFlight submission evidence" "$signed_archive_diagnostic_report")"
+  else
+    printf -- '- Signed archive diagnostic report: not generated yet\n'
   fi
 
   if [[ -f "$completed_results_validation_report" ]]; then
@@ -263,6 +275,7 @@ write_report() {
     printf -- '- App Store Connect draft: `DerivedData/AppStoreConnectRun/`\n'
     printf -- '- Final smoke draft: `DerivedData/FinalSmokeRun/`\n'
     printf -- '- Local automated test report: `DerivedData/LocalAutomatedTests/`\n'
+    printf -- '- Signed archive diagnostics: `DerivedData/SignedArchiveDiagnostics/`\n'
     printf -- '- Preflight logs: `DerivedData/FinalSubmissionPreflight/logs/`\n'
 
     write_latest_evidence
@@ -291,6 +304,7 @@ refresh_release_packet_report() {
   local completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   local submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
   local local_automated_test_report
+  local signed_archive_diagnostic_report
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -313,6 +327,12 @@ refresh_release_packet_report() {
     mkdir -p "$packet_dir/Evidence"
     cp -R "$(dirname "$local_automated_test_report")" "$packet_dir/Evidence/LocalAutomatedTests"
   fi
+  signed_archive_diagnostic_report="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
+  if [[ -n "$signed_archive_diagnostic_report" && -f "$signed_archive_diagnostic_report" ]]; then
+    rm -rf "$packet_dir/Evidence/SignedArchiveDiagnostics"
+    mkdir -p "$packet_dir/Evidence"
+    cp -R "$(dirname "$signed_archive_diagnostic_report")" "$packet_dir/Evidence/SignedArchiveDiagnostics"
+  fi
   if [[ -f "$index_path" ]]; then
     awk '
       /^\| Final preflight report \|/ {
@@ -333,6 +353,10 @@ refresh_release_packet_report() {
       }
       /^\| Local automated simulator test report \|/ {
         print "| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Included as supplemental local evidence; hosted CI still required |"
+        next
+      }
+      /^\| Signed archive diagnostic \|/ {
+        print "| Signed archive diagnostic | `Evidence/SignedArchiveDiagnostics/signed-archive-diagnostic-report.md` | Included, still requires App Store/TestFlight evidence if failed or development-signed |"
         next
       }
       { print }

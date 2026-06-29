@@ -194,6 +194,7 @@ FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-a
 PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
 USABILITY_RESULT="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
+SIGNED_ARCHIVE_DIAGNOSTIC="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
 GITHUB_DIAGNOSTIC="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 COMPLETED_RESULTS_VALIDATION_REPORT="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
 
@@ -294,6 +295,17 @@ if [[ -f "$ARCHIVE_SMOKE_REPORT" ]] && commit_matches_current "$ARCHIVE_SMOKE_RE
     add_gate "Distribution archive or TestFlight upload evidence" "#10" "pending" "$ARCHIVE_SMOKE_REPORT; App Store/TestFlight evidence: ${archive_submission:-unknown}" "Create an Apple Distribution archive or processed TestFlight build; development-signed smoke is local-only."
   else
     add_gate "Distribution archive or TestFlight upload evidence" "#10" "pending" "$ARCHIVE_SMOKE_REPORT; status: ${archive_status:-unknown}" "Create and smoke-test the final uploadable build."
+  fi
+elif [[ -f "$SIGNED_ARCHIVE_DIAGNOSTIC" ]] && commit_matches_current "$SIGNED_ARCHIVE_DIAGNOSTIC"; then
+  signed_archive_status="$(report_field Status "$SIGNED_ARCHIVE_DIAGNOSTIC")"
+  signed_archive_summary="$(report_field Summary "$SIGNED_ARCHIVE_DIAGNOSTIC")"
+  signed_archive_submission="$(report_field "App Store/TestFlight submission evidence" "$SIGNED_ARCHIVE_DIAGNOSTIC")"
+  if is_passed_value "$signed_archive_status" && [[ "$(lower_value "$signed_archive_submission")" == "yes" ]]; then
+    add_gate "Distribution archive or TestFlight upload evidence" "#10" "pending" "$SIGNED_ARCHIVE_DIAGNOSTIC; $(commit_note "$SIGNED_ARCHIVE_DIAGNOSTIC")" "Upload/select the processed build, then capture final archive/TestFlight smoke evidence."
+  elif [[ "$(lower_value "$signed_archive_status")" == "failed" ]]; then
+    add_gate "Distribution archive or TestFlight upload evidence" "#10" "blocked" "$SIGNED_ARCHIVE_DIAGNOSTIC; summary: ${signed_archive_summary:-unknown}; $(commit_note "$SIGNED_ARCHIVE_DIAGNOSTIC")" "Configure Xcode Apple account/provisioning profile or App Store Distribution signing, then rerun scripts/create-signed-archive.sh."
+  else
+    add_gate "Distribution archive or TestFlight upload evidence" "#10" "pending" "$SIGNED_ARCHIVE_DIAGNOSTIC; status: ${signed_archive_status:-unknown}; $(commit_note "$SIGNED_ARCHIVE_DIAGNOSTIC")" "Create an Apple Distribution archive or processed TestFlight build, then capture smoke evidence."
   fi
 else
   add_gate "Distribution archive or TestFlight upload evidence" "#10" "missing" "${ARCHIVE_SMOKE_REPORT:-not generated}" "Run scripts/create-signed-archive.sh with Apple Distribution signing, upload/select build, then capture smoke evidence."

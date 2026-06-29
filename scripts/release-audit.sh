@@ -208,6 +208,8 @@ require_text "scripts/create-signed-archive.sh" "Apple Distribution" "signed arc
 require_text "scripts/create-signed-archive.sh" "get-task-allow=false" "signed archive helper rejects debug provisioning profiles"
 require_text "scripts/create-signed-archive.sh" "ProvisionedDevices" "signed archive helper rejects device-limited provisioning profiles"
 require_text "scripts/create-signed-archive.sh" "Apple Development" "signed archive helper rejects Apple Development signing by default"
+require_text "scripts/create-signed-archive.sh" "SignedArchiveDiagnostics" "signed archive helper writes diagnostic evidence"
+require_text "scripts/create-signed-archive.sh" "signed-archive-diagnostic-report\\.md" "signed archive helper writes a Markdown diagnostic report"
 require_text "scripts/run-archive-device-smoke.sh" "App Store/TestFlight submission evidence" "archive device smoke report labels submission evidence"
 require_text "scripts/run-archive-device-smoke.sh" "Submission evidence note" "archive device smoke report includes submission evidence note"
 require_text "scripts/prepare-final-smoke-run.sh" "Archive smoke App Store/TestFlight submission evidence" "final smoke draft carries archive smoke submission evidence"
@@ -973,12 +975,13 @@ if python3 - \
   "$ROOT_DIR/DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip" \
   "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" \
   "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" \
-  "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" <<'PY'
+  "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" \
+  "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" <<'PY'
 import pathlib
 import subprocess
 import sys
 
-zip_path, physical_root, smoke_root, actions_root = sys.argv[1:]
+zip_path, physical_root, smoke_root, actions_root, signed_archive_root = sys.argv[1:]
 raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
 found = set(raw.splitlines())
 
@@ -999,6 +1002,10 @@ if actions_files:
 local_test_files = sorted(pathlib.Path(zip_path).parents[1].glob("LocalAutomatedTests/**/local-automated-test-report.md"))
 if local_test_files:
     checks.append("HTMLPreviewerReleasePacket/Evidence/LocalAutomatedTests/local-automated-test-report.md")
+
+signed_archive_files = sorted(pathlib.Path(signed_archive_root).glob("**/signed-archive-diagnostic-report.md"))
+if signed_archive_files:
+    checks.append("HTMLPreviewerReleasePacket/Evidence/SignedArchiveDiagnostics/signed-archive-diagnostic-report.md")
 
 missing = [path for path in checks if path not in found]
 if missing:

@@ -104,6 +104,7 @@ FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-a
 PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
 USABILITY_RESULT="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
+SIGNED_ARCHIVE_DIAGNOSTIC="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
 GITHUB_DIAGNOSTIC="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 
 GATE_STATUS="$(report_field Status "$SUBMISSION_GATE_STATUS_REPORT")"
@@ -111,6 +112,7 @@ PREFLIGHT_STATUS="$(report_field Status "$PREFLIGHT_REPORT")"
 COMPLETED_RESULTS_STATUS="$(report_field Status "$COMPLETED_RESULTS_VALIDATION_REPORT")"
 ARCHIVE_SUBMISSION_EVIDENCE="$(report_field "App Store/TestFlight submission evidence" "$ARCHIVE_SMOKE_REPORT")"
 ARCHIVE_SUBMISSION_NOTE="$(report_field "Submission evidence note" "$ARCHIVE_SMOKE_REPORT")"
+SIGNED_ARCHIVE_STATUS="$(report_field Status "$SIGNED_ARCHIVE_DIAGNOSTIC")"
 latest_actions_summary="$(latest_actions_run)"
 
 if [[ "$DRY_RUN" == true ]]; then
@@ -140,7 +142,7 @@ mkdir -p "$OUTPUT_ROOT"
   printf '|---|---:|---|---|---|---|\n'
   printf '| GitHub account owner | #10 | Resolve the hosted Actions execution-layer failure where jobs finish with zero recorded steps. Check repository Actions policy, account/org billing budgets, and parent org/enterprise policies. | `%s` | Latest `main` run for `%s` is `completed/success` and has normal step logs. | `scripts/check-github-actions-execution.sh --run-id <run-id>` then `scripts/prepare-submission-gate-status.sh --check-github` |\n' "$(md_escape "$(path_or_missing "$GITHUB_DIAGNOSTIC")")" "$CURRENT_SHORT"
   printf '| App Store Connect account owner | #10 | Complete app record, paid-download pricing, availability, privacy labels, age rating, export compliance, screenshots, review notes, and processed build selection. | `%s` | Result draft records `Overall status: passed` and `Can continue final archive/TestFlight smoke: yes`; no completed-result validator findings. | `scripts/validate-completed-release-results.sh --fail-on-invalid` |\n' "$(md_escape "$(path_or_missing "$APP_STORE_CONNECT_RESULT")")"
-  printf '| Signing/upload owner | #10 | Create an Apple Distribution archive or processed TestFlight build. Development-signed local smoke cannot count as upload evidence. | `%s` | Archive/TestFlight evidence records App Store/TestFlight submission evidence as `yes`. | `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` then upload/select build |\n' "$(md_escape "$(path_or_missing "$ARCHIVE_SMOKE_REPORT")")"
+  printf '| Signing/upload owner | #10 | Create an Apple Distribution archive or processed TestFlight build. Development-signed local smoke cannot count as upload evidence. If signing diagnostics show No Accounts or no matching profiles, configure Xcode Accounts and provisioning first. | `%s`; diagnostic: `%s` | Archive/TestFlight evidence records App Store/TestFlight submission evidence as `yes`. | `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` then upload/select build |\n' "$(md_escape "$(path_or_missing "$ARCHIVE_SMOKE_REPORT")")" "$(md_escape "$(path_or_missing "$SIGNED_ARCHIVE_DIAGNOSTIC")")"
   printf '| Physical-device tester | #1 | Complete Files, iCloud Drive, Mail, AirDrop, messaging app, and Safari source matrix on a real iPhone. | `%s` | Result draft records `Overall status: passed`, `Can close #1: yes`, and `Can continue App Store submission: yes`; all P0/P1 findings filed or fixed. | `scripts/validate-completed-release-results.sh --fail-on-invalid` |\n' "$(md_escape "$(path_or_missing "$PHYSICAL_DEVICE_RESULT")")"
   printf '| Final smoke tester | #10 | Run built-in HTML, Markdown, ZIP, Safe Preview, Settings, recent reopen, and delete smoke on the final archive/TestFlight build. | `%s` | Final smoke result records `Overall status: passed` and `Can submit for review: yes`. | `scripts/validate-completed-release-results.sh --fail-on-invalid` |\n' "$(md_escape "$(path_or_missing "$FINAL_SMOKE_RESULT")")"
   printf '| Usability moderator | #11 | Run at least one external participant session using anonymous participant code; avoid personal identifiers in notes. | `%s` | Result draft records all P0/P1 findings filed or fixed, `Can close #11: yes`, and `Can continue App Store submission: yes`. | `scripts/validate-completed-release-results.sh --fail-on-invalid` |\n' "$(md_escape "$(path_or_missing "$USABILITY_RESULT")")"
@@ -157,6 +159,7 @@ mkdir -p "$OUTPUT_ROOT"
   printf '| Physical-device validation draft | `%s` | %s |\n' "$(md_escape "$(path_or_missing "$PHYSICAL_DEVICE_RESULT")")" "$(if [[ -f "$PHYSICAL_DEVICE_RESULT" ]]; then printf 'draft'; else printf 'not generated'; fi)"
   printf '| App Store Connect result draft | `%s` | %s |\n' "$(md_escape "$(path_or_missing "$APP_STORE_CONNECT_RESULT")")" "$(if [[ -f "$APP_STORE_CONNECT_RESULT" ]]; then printf 'draft'; else printf 'not generated'; fi)"
   printf '| Archive device smoke report | `%s` | App Store/TestFlight evidence: %s |\n' "$(md_escape "$(path_or_missing "$ARCHIVE_SMOKE_REPORT")")" "${ARCHIVE_SUBMISSION_EVIDENCE:-not recorded}"
+  printf '| Signed archive diagnostic | `%s` | %s |\n' "$(md_escape "$(path_or_missing "$SIGNED_ARCHIVE_DIAGNOSTIC")")" "${SIGNED_ARCHIVE_STATUS:-not generated}"
   printf '| Final archive/TestFlight smoke draft | `%s` | %s |\n' "$(md_escape "$(path_or_missing "$FINAL_SMOKE_RESULT")")" "$(if [[ -f "$FINAL_SMOKE_RESULT" ]]; then printf 'draft'; else printf 'not generated'; fi)"
   printf '| First-round usability result draft | `%s` | %s |\n' "$(md_escape "$(path_or_missing "$USABILITY_RESULT")")" "$(if [[ -f "$USABILITY_RESULT" ]]; then printf 'draft'; else printf 'not generated'; fi)"
 
