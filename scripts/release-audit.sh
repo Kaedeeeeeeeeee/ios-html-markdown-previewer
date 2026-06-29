@@ -67,6 +67,7 @@ require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/portable-release-materials-audit.sh"
 require_file "scripts/prepare-release-packet.sh"
 require_file "scripts/prepare-submission-gate-status.sh"
+require_file "scripts/validate-completed-release-results.sh"
 require_file "scripts/prepare-app-store-connect-run.sh"
 require_file "scripts/prepare-final-smoke-run.sh"
 require_file "scripts/prepare-usability-test-packet.sh"
@@ -293,6 +294,20 @@ else
 fi
 
 echo
+echo "== Completed release results validation helper =="
+if "$ROOT_DIR/scripts/validate-completed-release-results.sh" --dry-run >/tmp/html-previewer-completed-results-validation-dry-run.log; then
+  ok "completed release results validation helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-completed-results-validation-dry-run.log >&2 || true
+  fail "completed release results validation helper dry-run failed"
+fi
+if grep -Fq "completed-release-results-validation.md" /tmp/html-previewer-completed-results-validation-dry-run.log; then
+  ok "completed release results validation helper creates a report"
+else
+  fail "completed release results validation helper dry-run is missing the report"
+fi
+
+echo
 echo "== Physical-device validation run helper =="
 if "$ROOT_DIR/scripts/prepare-physical-device-validation-run.sh" --device TEST-DEVICE --dry-run >/tmp/html-previewer-physical-validation-run-dry-run.log; then
   ok "physical-device validation run helper dry-run succeeds"
@@ -516,6 +531,7 @@ require_text "docs/app-store-connect-handoff.md" "prepare-final-smoke-run\\.sh" 
 require_text "docs/app-store-submission-runbook.md" "DerivedData/AppStoreConnectRun" "submission runbook points to generated App Store Connect result"
 require_text "docs/app-store-submission-runbook.md" "DerivedData/FinalSmokeRun" "submission runbook points to generated final smoke result"
 require_text "docs/app-store-submission-runbook.md" "check-github-actions-execution\\.sh" "submission runbook points to Actions execution diagnostics"
+require_text "docs/app-store-submission-runbook.md" "validate-completed-release-results\\.sh" "submission runbook points to completed result validation"
 require_text "docs/github-actions-troubleshooting.md" "steps: \\[\\]" "GitHub Actions troubleshooting documents zero-step blocker"
 require_text "docs/github-actions-troubleshooting.md" "Budgets and alerts" "GitHub Actions troubleshooting covers billing budget checks"
 require_text "docs/final-archive-smoke-test-template.md" "Can submit for review" "final smoke template includes submission decision"
@@ -755,6 +771,7 @@ text = path.read_text(encoding="utf-8")
 required = [
     "# Submission Gate Status Report",
     "Final local preflight",
+    "Completed manual result validation",
     "GitHub Actions iOS CI",
     "Physical-device external-open matrix",
     "App Store Connect paid-download setup",
@@ -771,6 +788,36 @@ then
   ok "submission gate status report covers required App Store gates"
 else
   fail "submission gate status report is missing required gates"
+fi
+
+if "$ROOT_DIR/scripts/validate-completed-release-results.sh" >/tmp/html-previewer-completed-results-validation.log; then
+  ok "completed release results validation report can be generated"
+else
+  cat /tmp/html-previewer-completed-results-validation.log >&2 || true
+  fail "completed release results validation report generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md" <<'PY'
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+required = [
+    "# Completed Release Results Validation",
+    "Physical-device external-open result",
+    "App Store Connect setup result",
+    "Final archive/TestFlight smoke result",
+    "First external usability result",
+]
+missing = [marker for marker in required if marker not in text]
+if missing:
+    print("missing completed result validation markers: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "completed release results validation report covers required manual result drafts"
+else
+  fail "completed release results validation report is missing required result drafts"
 fi
 
 echo
@@ -798,6 +845,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Evidence/README.txt",
     "HTMLPreviewerReleasePacket/Evidence/release-evidence-index.md",
     "HTMLPreviewerReleasePacket/Evidence/checksums-sha256.txt",
+    "HTMLPreviewerReleasePacket/Evidence/completed-release-results-validation.md",
     "HTMLPreviewerReleasePacket/Evidence/submission-gate-status-report.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
@@ -821,6 +869,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-submission-gate-status.sh",
+    "HTMLPreviewerReleasePacket/Scripts/validate-completed-release-results.sh",
     "HTMLPreviewerReleasePacket/Scripts/archive-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/portable-release-materials-audit.sh",
     "HTMLPreviewerReleasePacket/Scripts/release-audit.sh",

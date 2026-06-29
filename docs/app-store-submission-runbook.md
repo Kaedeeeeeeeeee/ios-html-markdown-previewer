@@ -24,6 +24,7 @@ Use this runbook after physical-device validation passes and a completed result 
 - GitHub Actions execution diagnostic: `scripts/check-github-actions-execution.sh`
 - GitHub Actions troubleshooting note: `docs/github-actions-troubleshooting.md`
 - Submission gate status report: `scripts/prepare-submission-gate-status.sh`
+- Completed manual result validator: `scripts/validate-completed-release-results.sh`
 - Physical-device sample browser delivery: `scripts/serve-validation-samples.sh`
 - First-round usability test packet: `scripts/prepare-usability-test-packet.sh`
 - First-round usability session result draft: `scripts/prepare-usability-session-run.sh`
@@ -95,7 +96,12 @@ Apple references:
    - Verify Safe Preview blocks external resources by default.
    - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
    - Verify recent file reopen and delete.
-13. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
+13. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, or unresolved P0/P1 follow-ups:
+   ```sh
+   scripts/validate-completed-release-results.sh --fail-on-invalid
+   ```
+   Use `--fail-on-incomplete` only when every manual gate is expected to be complete.
+14. After App Store Connect setup, final smoke, #1, #11, and hosted CI are complete, run:
    ```sh
    scripts/prepare-submission-gate-status.sh --check-github --fail-on-not-ready
    ```
@@ -120,6 +126,7 @@ Close #10 only after:
 
 - App Store Connect paid-download setup is complete.
 - App Store Connect setup evidence is recorded from the generated `DerivedData/AppStoreConnectRun/.../app-store-connect-result.md` draft.
+- `DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md` reports `Status: complete`.
 - `DerivedData/SubmissionGateStatus/submission-gate-status-report.md` reports `Status: ready`.
 - Final GitHub Actions run is green; if Actions previously failed before steps started, the diagnostic report is recorded and the account, billing, or policy blocker is resolved.
 - Privacy labels are filled and match the app behavior.

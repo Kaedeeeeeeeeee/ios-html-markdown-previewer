@@ -126,6 +126,7 @@ write_latest_evidence() {
   local physical_device_result
   local usability_session_result
   local archive_smoke_report
+  local completed_results_validation_report
   local current_full
   local current_short
 
@@ -134,6 +135,7 @@ write_latest_evidence() {
   physical_device_result="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" "physical-device-validation-result.md")"
   usability_session_result="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
+  completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   current_full="$(git_value rev-parse HEAD)"
   current_short="$(git_value rev-parse --short HEAD)"
 
@@ -178,6 +180,14 @@ write_latest_evidence() {
   else
     printf -- '- Archive device smoke report: not generated yet\n'
   fi
+
+  if [[ -f "$completed_results_validation_report" ]]; then
+    printf -- '- Completed release results validation: `%s`\n' "$completed_results_validation_report"
+    printf -- '  - Status: %s\n' "$(report_field Status "$completed_results_validation_report")"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$completed_results_validation_report" "$current_full" "$current_short")"
+  else
+    printf -- '- Completed release results validation: not generated yet\n'
+  fi
 }
 
 write_report() {
@@ -220,6 +230,7 @@ write_report() {
     printf '\n## Generated Artifacts\n\n'
     printf -- '- Release packet: `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip`\n'
     printf -- '- Submission gate status: `DerivedData/SubmissionGateStatus/submission-gate-status-report.md`\n'
+    printf -- '- Completed release results validation: `DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md`\n'
     printf -- '- Usability test packet: `DerivedData/UsabilityTestPacket/HTMLPreviewerUsabilityTestPacket.zip`\n'
     printf -- '- Usability session draft: `DerivedData/UsabilitySessionRun/`\n'
     printf -- '- Validation samples: `DerivedData/ValidationSamples/HTMLPreviewerValidationSamples.zip`\n'
@@ -238,6 +249,7 @@ write_report() {
     printf -- '- #10: Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` with the account owner Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as upload evidence.\n'
     printf -- '- #10: If using an archived build for smoke, run `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` on an unlocked physical device and keep the generated report.\n'
     printf -- '- #10: Run `scripts/prepare-final-smoke-run.sh`, upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using the generated result draft.\n'
+    printf -- '- #10/#1/#11: After filling manual result drafts, run `scripts/validate-completed-release-results.sh --fail-on-invalid`; use `--fail-on-incomplete` only when every manual gate is expected to be complete.\n'
   } >"$REPORT_PATH"
 }
 
@@ -249,6 +261,7 @@ refresh_release_packet_report() {
   local tmp_index_path="$packet_dir/Evidence/release-evidence-index.md.tmp"
   local checksum_path="$packet_dir/Evidence/checksums-sha256.txt"
   local gate_status_report="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
+  local completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
     return 0
@@ -259,10 +272,17 @@ refresh_release_packet_report() {
   if [[ -f "$gate_status_report" ]]; then
     cp "$gate_status_report" "$packet_dir/Evidence/submission-gate-status-report.md"
   fi
+  if [[ -f "$completed_results_validation_report" ]]; then
+    cp "$completed_results_validation_report" "$packet_dir/Evidence/completed-release-results-validation.md"
+  fi
   if [[ -f "$index_path" ]]; then
     awk '
       /^\| Final preflight report \|/ {
         print "| Final preflight report | `Evidence/submission-readiness-report.md` | Included |"
+        next
+      }
+      /^\| Completed release results validation \|/ {
+        print "| Completed release results validation | `Evidence/completed-release-results-validation.md` | Included |"
         next
       }
       /^\| Submission gate status report \|/ {
@@ -322,6 +342,7 @@ run_step "Usability session result draft staging" "$ROOT_DIR/scripts/prepare-usa
 run_step "Validation sample browser delivery staging" "$ROOT_DIR/scripts/serve-validation-samples.sh" --prepare-only
 run_step "App Store Connect result draft staging" "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh"
 run_step "Final smoke result draft staging" "$ROOT_DIR/scripts/prepare-final-smoke-run.sh"
+run_step "Completed release results validation report" "$ROOT_DIR/scripts/validate-completed-release-results.sh"
 run_step "Release packet staging" "$ROOT_DIR/scripts/prepare-release-packet.sh"
 run_step "Signed archive dry-run" env DEVELOPMENT_TEAM=ABCDE12345 "$ROOT_DIR/scripts/create-signed-archive.sh" --dry-run
 

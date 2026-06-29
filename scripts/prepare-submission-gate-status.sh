@@ -195,6 +195,7 @@ PHYSICAL_DEVICE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceValid
 USABILITY_RESULT="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
 ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
 GITHUB_DIAGNOSTIC="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
+COMPLETED_RESULTS_VALIDATION_REPORT="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
 
 if [[ "$DRY_RUN" == true ]]; then
   printf 'Would prepare submission gate status report:\n'
@@ -221,6 +222,26 @@ if [[ -f "$RELEASE_PACKET" ]]; then
   add_gate "Release packet" "#10" "passed" "$RELEASE_PACKET" "Keep this packet with submission evidence."
 else
   add_gate "Release packet" "#10" "missing" "$RELEASE_PACKET" "Run scripts/prepare-release-packet.sh."
+fi
+
+if [[ -f "$COMPLETED_RESULTS_VALIDATION_REPORT" ]] && commit_matches_current "$COMPLETED_RESULTS_VALIDATION_REPORT"; then
+  completed_results_status="$(report_field Status "$COMPLETED_RESULTS_VALIDATION_REPORT")"
+  case "$completed_results_status" in
+    complete)
+      add_gate "Completed manual result validation" "#1/#10/#11" "passed" "$COMPLETED_RESULTS_VALIDATION_REPORT; $(commit_note "$COMPLETED_RESULTS_VALIDATION_REPORT")" "Keep this report with release evidence."
+      ;;
+    invalid)
+      add_gate "Completed manual result validation" "#1/#10/#11" "blocked" "$COMPLETED_RESULTS_VALIDATION_REPORT; status: invalid; $(commit_note "$COMPLETED_RESULTS_VALIDATION_REPORT")" "Fix placeholders, stale commits, empty required result cells, or unresolved P0/P1 follow-ups in completed result drafts."
+      ;;
+    failed)
+      add_gate "Completed manual result validation" "#1/#10/#11" "pending" "$COMPLETED_RESULTS_VALIDATION_REPORT; status: failed; $(commit_note "$COMPLETED_RESULTS_VALIDATION_REPORT")" "Resolve the failed manual validation result before submission."
+      ;;
+    *)
+      add_gate "Completed manual result validation" "#1/#10/#11" "pending" "$COMPLETED_RESULTS_VALIDATION_REPORT; status: ${completed_results_status:-unknown}; $(commit_note "$COMPLETED_RESULTS_VALIDATION_REPORT")" "Run scripts/validate-completed-release-results.sh --fail-on-invalid after manual results are filled."
+      ;;
+  esac
+else
+  add_gate "Completed manual result validation" "#1/#10/#11" "missing" "$COMPLETED_RESULTS_VALIDATION_REPORT" "Run scripts/validate-completed-release-results.sh after staging manual result drafts."
 fi
 
 github_summary="$(latest_github_actions_summary)"
