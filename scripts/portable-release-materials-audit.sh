@@ -107,6 +107,7 @@ for path in [
     "HTMLMarkdownPreviewerUITests/SmokeUITests.swift",
     "scripts/check-github-actions-execution.sh",
     "scripts/prepare-local-automated-test-report.sh",
+    "scripts/check-signing-readiness.sh",
     "scripts/prepare-submission-gate-status.sh",
     "scripts/validate-completed-release-results.sh",
     "scripts/prepare-submission-owner-handoff.sh",
@@ -279,6 +280,7 @@ require_text("docs/app-store-connect-handoff.md", r"ITSAppUsesNonExemptEncryptio
 require_text("docs/app-store-submission-runbook.md", r"check-github-actions-execution\.sh", "submission runbook points to Actions diagnostics")
 require_text("docs/app-store-submission-runbook.md", r"--attempt <attempt-number>", "submission runbook documents Actions rerun attempt diagnostics")
 require_text("docs/app-store-submission-runbook.md", r"prepare-local-automated-test-report\.sh", "submission runbook points to local automated test evidence")
+require_text("docs/app-store-submission-runbook.md", r"check-signing-readiness\.sh", "submission runbook points to signing readiness evidence")
 require_text("docs/app-store-submission-runbook.md", r"prepare-submission-gate-status\.sh", "submission runbook points to submission gate status report")
 require_text("docs/app-store-submission-runbook.md", r"validate-completed-release-results\.sh", "submission runbook points to completed result validation")
 require_text("docs/app-store-submission-runbook.md", r"prepare-submission-owner-handoff\.sh", "submission runbook points to owner handoff")
@@ -291,6 +293,8 @@ require_text("docs/privacy-policy.md", r"HTML Previewer does not collect persona
 require_text("docs/support.md", r"HTML Previewer Support", "support page is present")
 require_text("docs/usability-testing/README.md", r"prepare-usability-session-run\.sh", "usability README points to the session run helper")
 require_text("docs/usability-testing/first-round-result-template.md", r"Do not store the participant's real name", "usability template avoids direct participant identifiers")
+require_text("scripts/check-signing-readiness.sh", r"App Store/TestFlight archive readiness", "signing readiness helper reports distribution archive readiness")
+require_text("scripts/check-signing-readiness.sh", r"Requested team id does not match any installed signing identity", "signing readiness helper flags team id mismatches")
 
 print("\n== Sample Packages ==")
 for path in [

@@ -63,6 +63,7 @@ require_file "HTMLMarkdownPreviewerUITests/SmokeUITests.swift"
 require_file "scripts/archive-preflight.sh"
 require_file "scripts/check-github-actions-execution.sh"
 require_file "scripts/prepare-local-automated-test-report.sh"
+require_file "scripts/check-signing-readiness.sh"
 require_file "scripts/create-signed-archive.sh"
 require_file "scripts/final-submission-preflight.sh"
 require_file "scripts/portable-release-materials-audit.sh"
@@ -179,6 +180,24 @@ else
   fail "Info.plist document types or app metadata are invalid"
 fi
 require_file "docs/export-compliance.md"
+
+echo
+echo "== Signing readiness helper =="
+if DEVELOPMENT_TEAM=ABCDE12345 "$ROOT_DIR/scripts/check-signing-readiness.sh" --dry-run >/tmp/html-previewer-signing-readiness-dry-run.log; then
+  ok "signing readiness helper dry-run succeeds"
+else
+  cat /tmp/html-previewer-signing-readiness-dry-run.log >&2 || true
+  fail "signing readiness helper dry-run failed"
+fi
+if grep -Fq "signing-readiness-report.md" /tmp/html-previewer-signing-readiness-dry-run.log; then
+  ok "signing readiness helper creates a readiness report"
+else
+  fail "signing readiness helper dry-run is missing the report"
+fi
+require_text "scripts/check-signing-readiness.sh" "Apple Distribution identity available" "signing readiness helper checks Apple Distribution identities"
+require_text "scripts/check-signing-readiness.sh" "Matching App Store provisioning profile" "signing readiness helper checks matching App Store provisioning profiles"
+require_text "scripts/check-signing-readiness.sh" "Requested team id does not match any installed signing identity" "signing readiness helper flags team id mismatches"
+require_text "scripts/check-signing-readiness.sh" "Latest signed archive is development-signed local smoke evidence" "signing readiness helper distinguishes development archive evidence"
 
 echo
 echo "== Signed archive helper =="
@@ -558,6 +577,7 @@ require_text "docs/app-store-submission-runbook.md" "physical-device validation 
 require_text "docs/app-store-submission-runbook.md" "check-github-actions-execution\\.sh" "submission runbook points to Actions execution diagnostics"
 require_text "docs/app-store-submission-runbook.md" "attempt <attempt-number>" "submission runbook documents Actions rerun attempt diagnostics"
 require_text "docs/app-store-submission-runbook.md" "prepare-local-automated-test-report\\.sh" "submission runbook points to local automated test evidence"
+require_text "docs/app-store-submission-runbook.md" "check-signing-readiness\\.sh" "submission runbook points to signing readiness evidence"
 require_text "docs/app-store-submission-runbook.md" "validate-completed-release-results\\.sh" "submission runbook points to completed result validation"
 require_text "docs/app-store-submission-runbook.md" "prepare-submission-owner-handoff\\.sh" "submission runbook points to owner handoff"
 require_text "scripts/verify-public-pages.sh" "gist\\.githubusercontent\\.com/.*/raw/privacy-policy\\.md" "public page verifier uses stable privacy raw file URL"
@@ -830,6 +850,39 @@ else
   cat /tmp/html-previewer-completed-results-validation.log >&2 || true
   fail "completed release results validation report generation failed"
 fi
+if "$ROOT_DIR/scripts/check-signing-readiness.sh" >/tmp/html-previewer-signing-readiness.log; then
+  ok "signing readiness report can be generated"
+else
+  cat /tmp/html-previewer-signing-readiness.log >&2 || true
+  fail "signing readiness report generation failed"
+fi
+if python3 - "$ROOT_DIR/DerivedData/SigningReadiness" <<'PY'
+import pathlib
+import sys
+
+root = pathlib.Path(sys.argv[1])
+reports = sorted(root.glob("**/signing-readiness-report.md"))
+if not reports:
+    print("missing signing readiness report", file=sys.stderr)
+    raise SystemExit(1)
+text = reports[-1].read_text(encoding="utf-8")
+required = [
+    "# Signing Readiness Report",
+    "App Store/TestFlight archive readiness",
+    "Local device smoke readiness",
+    "Apple Distribution identity available",
+    "Matching App Store provisioning profile",
+]
+missing = [marker for marker in required if marker not in text]
+if missing:
+    print("missing signing readiness markers: " + ", ".join(missing), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "signing readiness report covers signing and provisioning gates"
+else
+  fail "signing readiness report is missing required markers"
+fi
 if "$ROOT_DIR/scripts/validate-completed-release-results.sh" --self-test >/tmp/html-previewer-completed-results-validation-self-test.log; then
   ok "completed release results validation self-test passes"
 else
@@ -921,6 +974,7 @@ expected = {
     "HTMLPreviewerReleasePacket/Evidence/completed-release-results-validation.md",
     "HTMLPreviewerReleasePacket/Evidence/submission-gate-status-report.md",
     "HTMLPreviewerReleasePacket/Evidence/submission-owner-handoff.md",
+    "HTMLPreviewerReleasePacket/Evidence/SigningReadiness/signing-readiness-report.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
@@ -941,6 +995,7 @@ expected = {
     "HTMLPreviewerReleasePacket/AppMetadata/AppIcon-1024x1024@1x.png",
     "HTMLPreviewerReleasePacket/Scripts/check-github-actions-execution.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-local-automated-test-report.sh",
+    "HTMLPreviewerReleasePacket/Scripts/check-signing-readiness.sh",
     "HTMLPreviewerReleasePacket/Scripts/create-signed-archive.sh",
     "HTMLPreviewerReleasePacket/Scripts/final-submission-preflight.sh",
     "HTMLPreviewerReleasePacket/Scripts/prepare-submission-gate-status.sh",
@@ -976,12 +1031,13 @@ if python3 - \
   "$ROOT_DIR/DerivedData/PhysicalDeviceValidationRun" \
   "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" \
   "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" \
+  "$ROOT_DIR/DerivedData/SigningReadiness" \
   "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" <<'PY'
 import pathlib
 import subprocess
 import sys
 
-zip_path, physical_root, smoke_root, actions_root, signed_archive_root = sys.argv[1:]
+zip_path, physical_root, smoke_root, actions_root, signing_root, signed_archive_root = sys.argv[1:]
 raw = subprocess.check_output(["unzip", "-Z1", zip_path], text=True)
 found = set(raw.splitlines())
 
@@ -998,6 +1054,10 @@ if smoke_files:
 actions_files = sorted(pathlib.Path(actions_root).glob("**/github-actions-diagnostics.md"))
 if actions_files:
     checks.append("HTMLPreviewerReleasePacket/Operations/GitHubActionsDiagnostics/github-actions-diagnostics.md")
+
+signing_files = sorted(pathlib.Path(signing_root).glob("**/signing-readiness-report.md"))
+if signing_files:
+    checks.append("HTMLPreviewerReleasePacket/Evidence/SigningReadiness/signing-readiness-report.md")
 
 local_test_files = sorted(pathlib.Path(zip_path).parents[1].glob("LocalAutomatedTests/**/local-automated-test-report.md"))
 if local_test_files:

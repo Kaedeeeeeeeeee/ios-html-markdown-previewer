@@ -127,6 +127,7 @@ write_latest_evidence() {
   local usability_session_result
   local archive_smoke_report
   local local_automated_test_report
+  local signing_readiness_report
   local signed_archive_diagnostic_report
   local completed_results_validation_report
   local submission_owner_handoff_report
@@ -139,6 +140,7 @@ write_latest_evidence() {
   usability_session_result="$(latest_file "$ROOT_DIR/DerivedData/UsabilitySessionRun" "first-round-usability-result.md")"
   archive_smoke_report="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" "archive-device-smoke-report.md")"
   local_automated_test_report="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
+  signing_readiness_report="$(latest_file "$ROOT_DIR/DerivedData/SigningReadiness" "signing-readiness-report.md")"
   signed_archive_diagnostic_report="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
   completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
@@ -196,6 +198,16 @@ write_latest_evidence() {
     printf -- '  - Hosted CI substitute: %s\n' "$(report_field "Hosted CI substitute" "$local_automated_test_report")"
   else
     printf -- '- Local automated simulator test report: not generated yet\n'
+  fi
+
+  if [[ -n "$signing_readiness_report" ]]; then
+    printf -- '- Signing readiness report: `%s`\n' "$signing_readiness_report"
+    printf -- '  - Commit check: %s\n' "$(commit_status "$signing_readiness_report" "$current_full" "$current_short")"
+    printf -- '  - Status: %s\n' "$(report_field Status "$signing_readiness_report")"
+    printf -- '  - App Store/TestFlight archive readiness: %s\n' "$(report_field "App Store/TestFlight archive readiness" "$signing_readiness_report")"
+    printf -- '  - Local device smoke readiness: %s\n' "$(report_field "Local device smoke readiness" "$signing_readiness_report")"
+  else
+    printf -- '- Signing readiness report: not generated yet\n'
   fi
 
   if [[ -n "$signed_archive_diagnostic_report" ]]; then
@@ -275,6 +287,7 @@ write_report() {
     printf -- '- App Store Connect draft: `DerivedData/AppStoreConnectRun/`\n'
     printf -- '- Final smoke draft: `DerivedData/FinalSmokeRun/`\n'
     printf -- '- Local automated test report: `DerivedData/LocalAutomatedTests/`\n'
+    printf -- '- Signing readiness report: `DerivedData/SigningReadiness/`\n'
     printf -- '- Signed archive diagnostics: `DerivedData/SignedArchiveDiagnostics/`\n'
     printf -- '- Preflight logs: `DerivedData/FinalSubmissionPreflight/logs/`\n'
 
@@ -286,6 +299,7 @@ write_report() {
     printf -- '- #11: Run `scripts/prepare-usability-session-run.sh`, complete the first usability round with at least one external participant, and keep the generated result draft with release evidence.\n'
     printf -- '- #10: If GitHub Actions fails before workflow steps start, run `scripts/check-github-actions-execution.sh` and keep the generated diagnostic report with release evidence.\n'
     printf -- '- #10: Run `scripts/prepare-app-store-connect-run.sh`, then complete the App Store Connect paid-download setup and record the generated result draft.\n'
+    printf -- '- #10: Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/check-signing-readiness.sh --fail-on-not-ready` before creating upload evidence; development-signing readiness is local-smoke only.\n'
     printf -- '- #10: Run `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` with the account owner Apple Distribution signing setup. Do not count `ALLOW_DEVELOPMENT_SIGNING=YES` archives as upload evidence.\n'
     printf -- '- #10: If using an archived build for smoke, run `scripts/run-archive-device-smoke.sh --device <device-id-or-name>` on an unlocked physical device and keep the generated report.\n'
     printf -- '- #10: Run `scripts/prepare-final-smoke-run.sh`, upload/select the processed App Store Connect build, then complete final archive/TestFlight smoke using the generated result draft.\n'
@@ -304,6 +318,7 @@ refresh_release_packet_report() {
   local completed_results_validation_report="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
   local submission_owner_handoff_report="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
   local local_automated_test_report
+  local signing_readiness_report
   local signed_archive_diagnostic_report
 
   if [[ ! -d "$packet_dir" || ! -f "$REPORT_PATH" ]]; then
@@ -326,6 +341,12 @@ refresh_release_packet_report() {
     rm -rf "$packet_dir/Evidence/LocalAutomatedTests"
     mkdir -p "$packet_dir/Evidence"
     cp -R "$(dirname "$local_automated_test_report")" "$packet_dir/Evidence/LocalAutomatedTests"
+  fi
+  signing_readiness_report="$(latest_file "$ROOT_DIR/DerivedData/SigningReadiness" "signing-readiness-report.md")"
+  if [[ -n "$signing_readiness_report" && -f "$signing_readiness_report" ]]; then
+    rm -rf "$packet_dir/Evidence/SigningReadiness"
+    mkdir -p "$packet_dir/Evidence"
+    cp -R "$(dirname "$signing_readiness_report")" "$packet_dir/Evidence/SigningReadiness"
   fi
   signed_archive_diagnostic_report="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
   if [[ -n "$signed_archive_diagnostic_report" && -f "$signed_archive_diagnostic_report" ]]; then
@@ -353,6 +374,10 @@ refresh_release_packet_report() {
       }
       /^\| Local automated simulator test report \|/ {
         print "| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Included as supplemental local evidence; hosted CI still required |"
+        next
+      }
+      /^\| Signing readiness report \|/ {
+        print "| Signing readiness report | `Evidence/SigningReadiness/signing-readiness-report.md` | Included; distinguishes development smoke signing from App Store/TestFlight readiness |"
         next
       }
       /^\| Signed archive diagnostic \|/ {
@@ -414,6 +439,7 @@ run_step "Validation sample browser delivery staging" "$ROOT_DIR/scripts/serve-v
 run_step "App Store Connect result draft staging" "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh"
 run_step "Final smoke result draft staging" "$ROOT_DIR/scripts/prepare-final-smoke-run.sh"
 run_step "Completed release results validation report" "$ROOT_DIR/scripts/validate-completed-release-results.sh"
+run_step "Signing readiness report" "$ROOT_DIR/scripts/check-signing-readiness.sh"
 run_step "Submission gate status report" "$ROOT_DIR/scripts/prepare-submission-gate-status.sh"
 run_step "Submission owner handoff report" "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh"
 run_step "Release packet staging" "$ROOT_DIR/scripts/prepare-release-packet.sh"

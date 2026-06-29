@@ -58,6 +58,7 @@ report_field() {
 "$ROOT_DIR/scripts/prepare-app-store-connect-run.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" >/dev/null
 "$ROOT_DIR/scripts/validate-completed-release-results.sh" >/dev/null
+"$ROOT_DIR/scripts/check-signing-readiness.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" >/dev/null
 "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" >/dev/null
 
@@ -69,6 +70,7 @@ ARCHIVE_SMOKE_REPORT="$(latest_file "$ROOT_DIR/DerivedData/PhysicalDeviceSmoke" 
 GITHUB_ACTIONS_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/GitHubActionsDiagnostics" "github-actions-diagnostics.md")"
 LOCAL_AUTOMATED_TEST_REPORT="$(latest_file "$ROOT_DIR/DerivedData/LocalAutomatedTests" "local-automated-test-report.md")"
 SIGNED_ARCHIVE_DIAGNOSTIC_REPORT="$(latest_file "$ROOT_DIR/DerivedData/SignedArchiveDiagnostics" "signed-archive-diagnostic-report.md")"
+SIGNING_READINESS_REPORT="$(latest_file "$ROOT_DIR/DerivedData/SigningReadiness" "signing-readiness-report.md")"
 SUBMISSION_GATE_STATUS_REPORT="$ROOT_DIR/DerivedData/SubmissionGateStatus/submission-gate-status-report.md"
 COMPLETED_RESULTS_VALIDATION_REPORT="$ROOT_DIR/DerivedData/CompletedReleaseResultsValidation/completed-release-results-validation.md"
 SUBMISSION_OWNER_HANDOFF_REPORT="$ROOT_DIR/DerivedData/SubmissionOwnerHandoff/submission-owner-handoff.md"
@@ -114,6 +116,7 @@ Key files:
 - Evidence/completed-release-results-validation.md
 - Evidence/submission-owner-handoff.md
 - Evidence/LocalAutomatedTests/ (when staged)
+- Evidence/SigningReadiness/ (when staged)
 - Evidence/SignedArchiveDiagnostics/ (when staged)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
@@ -136,6 +139,7 @@ Key files:
 - Operations/GitHubActionsDiagnostics/ (when staged)
 - Scripts/check-github-actions-execution.sh
 - Scripts/prepare-local-automated-test-report.sh
+- Scripts/check-signing-readiness.sh
 - Scripts/create-signed-archive.sh
 - Scripts/final-submission-preflight.sh
 - Scripts/prepare-submission-gate-status.sh
@@ -178,6 +182,7 @@ When a preflight report already exists, this packet includes it as:
 - Evidence/submission-gate-status-report.md
 - Evidence/submission-owner-handoff.md
 - Evidence/LocalAutomatedTests/local-automated-test-report.md
+- Evidence/SigningReadiness/signing-readiness-report.md
 
 Use Evidence/release-evidence-index.md as the portable entry point for copied
 evidence paths inside the packet.
@@ -201,6 +206,9 @@ fi
 if [[ -n "$LOCAL_AUTOMATED_TEST_REPORT" && -f "$LOCAL_AUTOMATED_TEST_REPORT" ]]; then
   copy_dir "$(dirname "$LOCAL_AUTOMATED_TEST_REPORT")" "$PACKET_DIR/Evidence/LocalAutomatedTests"
 fi
+if [[ -n "$SIGNING_READINESS_REPORT" && -f "$SIGNING_READINESS_REPORT" ]]; then
+  copy_dir "$(dirname "$SIGNING_READINESS_REPORT")" "$PACKET_DIR/Evidence/SigningReadiness"
+fi
 if [[ -n "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" && -f "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" ]]; then
   copy_dir "$(dirname "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT")" "$PACKET_DIR/Evidence/SignedArchiveDiagnostics"
 fi
@@ -221,6 +229,11 @@ fi
     printf '| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Included as supplemental local evidence; hosted CI still required |\n'
   else
     printf '| Local automated simulator test report | `Evidence/LocalAutomatedTests/local-automated-test-report.md` | Not staged locally |\n'
+  fi
+  if [[ -n "$SIGNING_READINESS_REPORT" && -f "$SIGNING_READINESS_REPORT" ]]; then
+    printf '| Signing readiness report | `Evidence/SigningReadiness/signing-readiness-report.md` | Included; distinguishes development smoke signing from App Store/TestFlight readiness |\n'
+  else
+    printf '| Signing readiness report | `Evidence/SigningReadiness/signing-readiness-report.md` | Not staged locally |\n'
   fi
   if [[ -n "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" && -f "$SIGNED_ARCHIVE_DIAGNOSTIC_REPORT" ]]; then
     printf '| Signed archive diagnostic | `Evidence/SignedArchiveDiagnostics/signed-archive-diagnostic-report.md` | Included, still requires App Store/TestFlight evidence if failed or development-signed |\n'
@@ -305,6 +318,7 @@ copy_dir "$ROOT_DIR/docs/app-store-screenshots" "$PACKET_DIR/Screenshots"
 
 copy_file "$ROOT_DIR/scripts/check-github-actions-execution.sh" "$PACKET_DIR/Scripts/check-github-actions-execution.sh"
 copy_file "$ROOT_DIR/scripts/prepare-local-automated-test-report.sh" "$PACKET_DIR/Scripts/prepare-local-automated-test-report.sh"
+copy_file "$ROOT_DIR/scripts/check-signing-readiness.sh" "$PACKET_DIR/Scripts/check-signing-readiness.sh"
 copy_file "$ROOT_DIR/scripts/create-signed-archive.sh" "$PACKET_DIR/Scripts/create-signed-archive.sh"
 copy_file "$ROOT_DIR/scripts/final-submission-preflight.sh" "$PACKET_DIR/Scripts/final-submission-preflight.sh"
 copy_file "$ROOT_DIR/scripts/prepare-submission-gate-status.sh" "$PACKET_DIR/Scripts/prepare-submission-gate-status.sh"
