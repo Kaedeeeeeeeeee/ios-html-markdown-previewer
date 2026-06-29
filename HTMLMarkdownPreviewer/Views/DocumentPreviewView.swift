@@ -1,17 +1,17 @@
 import SwiftUI
 
 struct DocumentPreviewView: View {
-    let document: PreviewDocument
     let store: DocumentLibraryStore
 
+    @State private var document: PreviewDocument
     @State private var state: PreviewContentState = .loading
     @State private var previewMode: PreviewMode
     @State private var isInteractiveConfirmationPresented = false
     @State private var isDetailsPresented = false
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
-        self.document = document
         self.store = store
+        self._document = State(initialValue: document)
         self._previewMode = State(initialValue: document.preferredPreviewMode)
     }
 
@@ -198,7 +198,20 @@ struct DocumentPreviewView: View {
     }
 
     private func setPreviewMode(_ mode: PreviewMode) {
+        guard previewMode != mode else {
+            return
+        }
+
         previewMode = mode
+        persistPreviewMode(mode)
+    }
+
+    private func persistPreviewMode(_ mode: PreviewMode) {
+        do {
+            document = try store.updatePreferredPreviewMode(mode, for: document)
+        } catch {
+            state = .failed(error.localizedDescription)
+        }
     }
 
     private func readAccessRootURL(for document: PreviewDocument) -> URL {

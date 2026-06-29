@@ -56,8 +56,15 @@ final class DocumentLibraryStore {
     }
 
     func markOpened(_ document: PreviewDocument, at date: Date = Date()) throws -> PreviewDocument {
-        var updatedDocument = document
+        var updatedDocument = latestStoredDocument(for: document)
         updatedDocument.lastOpenedAt = date
+        try save(updatedDocument)
+        return updatedDocument
+    }
+
+    func updatePreferredPreviewMode(_ mode: PreviewMode, for document: PreviewDocument) throws -> PreviewDocument {
+        var updatedDocument = latestStoredDocument(for: document)
+        updatedDocument.preferredPreviewMode = mode
         try save(updatedDocument)
         return updatedDocument
     }
@@ -97,6 +104,15 @@ final class DocumentLibraryStore {
 
     private func metadataURL(for document: PreviewDocument) -> URL {
         documentRootURL(for: document).appendingPathComponent(metadataFilename)
+    }
+
+    private func latestStoredDocument(for document: PreviewDocument) -> PreviewDocument {
+        guard let data = try? Data(contentsOf: metadataURL(for: document)),
+              let storedDocument = try? JSONDecoder().decode(PreviewDocument.self, from: data) else {
+            return document
+        }
+
+        return storedDocument
     }
 
     private func appending(relativePath: String, to baseURL: URL) -> URL {

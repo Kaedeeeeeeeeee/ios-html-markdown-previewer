@@ -139,6 +139,32 @@ final class DocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(try store.loadDocuments().first?.lastOpenedAt, Date(timeIntervalSince1970: 300))
     }
 
+    func testUpdatePreferredPreviewModePersistsMetadata() throws {
+        let rootURL = try makeTemporaryDirectory()
+        let store = DocumentLibraryStore(rootURL: rootURL)
+        let document = makeDocument(id: fixedID, preferredPreviewMode: .safePreview)
+        try store.save(document)
+
+        let updatedDocument = try store.updatePreferredPreviewMode(.rawText, for: document)
+
+        XCTAssertEqual(updatedDocument.preferredPreviewMode, .rawText)
+        XCTAssertEqual(try store.loadDocuments().first?.preferredPreviewMode, .rawText)
+    }
+
+    func testMarkOpenedPreservesStoredPreferredPreviewMode() throws {
+        let rootURL = try makeTemporaryDirectory()
+        let store = DocumentLibraryStore(rootURL: rootURL)
+        let staleDocument = makeDocument(id: fixedID, preferredPreviewMode: .safePreview)
+        try store.save(staleDocument)
+        _ = try store.updatePreferredPreviewMode(.rawText, for: staleDocument)
+
+        let openedDocument = try store.markOpened(staleDocument, at: Date(timeIntervalSince1970: 400))
+
+        XCTAssertEqual(openedDocument.preferredPreviewMode, .rawText)
+        XCTAssertEqual(openedDocument.lastOpenedAt, Date(timeIntervalSince1970: 400))
+        XCTAssertEqual(try store.loadDocuments().first?.preferredPreviewMode, .rawText)
+    }
+
     func testDeleteRemovesDocumentRoot() throws {
         let rootURL = try makeTemporaryDirectory()
         let store = DocumentLibraryStore(rootURL: rootURL)
@@ -188,7 +214,8 @@ final class DocumentImportServiceTests: XCTestCase {
     private func makeDocument(
         id: UUID,
         displayName: String = "Document",
-        importedAt: Date = Date(timeIntervalSince1970: 100)
+        importedAt: Date = Date(timeIntervalSince1970: 100),
+        preferredPreviewMode: PreviewMode = .safePreview
     ) -> PreviewDocument {
         PreviewDocument(
             id: id,
@@ -200,7 +227,8 @@ final class DocumentImportServiceTests: XCTestCase {
             importedAt: importedAt,
             localRootRelativePath: "Imports/\(id.uuidString)",
             entryFileRelativePath: "original/\(displayName).md",
-            fileSize: 128
+            fileSize: 128,
+            preferredPreviewMode: preferredPreviewMode
         )
     }
 

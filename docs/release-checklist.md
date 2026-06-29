@@ -68,6 +68,7 @@ Use `docs/physical-device-validation.md` for the external-open matrix and `docs/
 - ZIP archive, file count, single-file, and expanded-size limits
 - ZIP failed-import cleanup
 - Metadata persistence
+- Preferred preview mode persistence
 - Delete cleanup
 - Settings clear-imported-files cleanup
 - Safe HTML external resource blocking
