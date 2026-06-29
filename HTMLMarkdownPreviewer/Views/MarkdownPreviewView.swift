@@ -24,10 +24,10 @@ struct MarkdownPreviewView: View {
             Alert(
                 title: Text(link.title),
                 message: Text(link.message),
-                primaryButton: .default(Text("Copy Link")) {
+                primaryButton: .default(Text(AppStrings.Actions.copyLink)) {
                     UIPasteboard.general.string = link.url.absoluteString
                 },
-                secondaryButton: .cancel(Text("OK"))
+                secondaryButton: .cancel(Text(AppStrings.Actions.ok))
             )
         }
     }
@@ -49,18 +49,18 @@ struct BlockedMarkdownLink: Identifiable, Equatable {
     var title: String {
         switch reason {
         case .externalWebURL:
-            "External Link Blocked"
+            AppStrings.Security.externalMarkdownLinkTitle
         case .unsupportedURL:
-            "Link Not Opened"
+            AppStrings.Security.unsupportedMarkdownLinkTitle
         }
     }
 
     var message: String {
         switch reason {
         case .externalWebURL:
-            "Markdown preview keeps web links from opening another app."
+            AppStrings.Security.externalMarkdownLinkMessage
         case .unsupportedURL:
-            "This link type is not supported in Markdown preview."
+            AppStrings.Security.unsupportedMarkdownLinkMessage
         }
     }
 }

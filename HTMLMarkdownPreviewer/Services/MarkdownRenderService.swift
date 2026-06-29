@@ -201,7 +201,7 @@ enum TextFileReaderError: Error, Equatable, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unsupportedEncoding(let filename):
-            "Cannot decode \(filename) as text. Export it as UTF-8 or UTF-16 and try again."
+            AppStrings.Errors.unsupportedEncoding(filename: filename)
         }
     }
 }

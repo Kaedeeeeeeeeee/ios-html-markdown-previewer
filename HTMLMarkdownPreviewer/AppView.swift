@@ -118,8 +118,8 @@ struct AppView: View {
             reloadDocuments()
             handleLaunchArgumentsIfNeeded()
         }
-        .alert("Cannot Open File", isPresented: isErrorPresented) {
-            Button("OK", role: .cancel) {}
+        .alert(AppStrings.Errors.cannotOpenFileTitle, isPresented: isErrorPresented) {
+            Button(AppStrings.Actions.ok, role: .cancel) {}
         } message: {
             Text(errorMessage ?? "")
         }
@@ -235,26 +235,26 @@ struct AppView: View {
         if let importError = error as? DocumentImportError {
             switch importError {
             case .unsupportedFileType:
-                return "Current version supports HTML, Markdown, and ZIP files."
+                return AppStrings.Errors.unsupportedFileType
             }
         }
 
         if let zipError = error as? ZipImportError {
             switch zipError {
             case .invalidArchive:
-                return "The ZIP package could not be read."
+                return AppStrings.Errors.zipInvalidArchive
             case .unsafePath, .unsupportedEntry, .duplicatePath, .caseConflictingPath:
-                return "The ZIP package contains unsafe or conflicting paths."
+                return AppStrings.Errors.zipUnsafeOrConflictingPath
             case .archiveTooLarge:
-                return "The ZIP package is over the 100 MB limit."
+                return AppStrings.Errors.zipArchiveTooLarge
             case .tooManyFiles:
-                return "The ZIP package contains too many files."
+                return AppStrings.Errors.zipTooManyFiles
             case .singleFileTooLarge:
-                return "The ZIP package contains a file over the 100 MB limit."
+                return AppStrings.Errors.zipSingleFileTooLarge
             case .expandedSizeTooLarge:
-                return "The ZIP package expands beyond the 300 MB limit."
+                return AppStrings.Errors.zipExpandedSizeTooLarge
             case .missingEntryFile:
-                return "No previewable HTML or Markdown entry was found in this ZIP package."
+                return AppStrings.Errors.zipMissingEntryFile
             }
         }
 

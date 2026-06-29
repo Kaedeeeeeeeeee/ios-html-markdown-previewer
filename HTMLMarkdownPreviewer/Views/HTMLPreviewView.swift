@@ -21,7 +21,7 @@ struct HTMLPreviewView: View {
                 .id("\(fileURL.path)-\(mode)")
             } else if let errorMessage {
                 ContentUnavailableView(
-                    "Cannot Open HTML",
+                    AppStrings.Errors.cannotOpenHTMLTitle,
                     systemImage: "exclamationmark.triangle",
                     description: Text(errorMessage)
                 )

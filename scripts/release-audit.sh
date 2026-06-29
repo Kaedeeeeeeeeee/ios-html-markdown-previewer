@@ -247,6 +247,69 @@ fi
 require_file "docs/privacy-required-reasons.md"
 
 echo
+echo "== Localization =="
+require_file "HTMLMarkdownPreviewer/Localizable.xcstrings"
+if python3 - "$ROOT_DIR/HTMLMarkdownPreviewer/Localizable.xcstrings" <<'PY'
+import json
+import sys
+
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as handle:
+    data = json.load(handle)
+
+required_keys = {
+    "error.cannotOpenFile.title",
+    "error.cannotOpenHTML.title",
+    "error.unsupportedFileType",
+    "error.unsupportedEntryType",
+    "error.text.unsupportedEncoding",
+    "error.zip.invalidArchive",
+    "error.zip.unsafeOrConflictingPath",
+    "error.zip.archiveTooLarge",
+    "error.zip.tooManyFiles",
+    "error.zip.singleFileTooLarge",
+    "error.zip.expandedSizeTooLarge",
+    "error.zip.missingEntryFile",
+    "security.html.interactive.confirmation",
+    "security.html.interactive.status",
+    "security.html.safe.singleFile.message",
+    "security.html.safe.zip.message",
+    "security.markdown.externalLink.title",
+    "security.markdown.externalLink.message",
+    "security.markdown.unsupportedLink.title",
+    "security.markdown.unsupportedLink.message",
+    "security.preview.rawText.message",
+    "settings.clearImportedFiles.confirmation",
+}
+
+strings = data.get("strings", {})
+missing = sorted(required_keys - strings.keys())
+empty_values = []
+for key in required_keys & strings.keys():
+    value = (
+        strings[key]
+        .get("localizations", {})
+        .get("en", {})
+        .get("stringUnit", {})
+        .get("value", "")
+    )
+    if not value.strip():
+        empty_values.append(key)
+
+if missing or empty_values:
+    if missing:
+        print("missing localization keys: " + ", ".join(missing), file=sys.stderr)
+    if empty_values:
+        print("empty English localization values: " + ", ".join(sorted(empty_values)), file=sys.stderr)
+    raise SystemExit(1)
+PY
+then
+  ok "Localizable.xcstrings is valid and critical error and safety copy has localization keys"
+else
+  fail "Localizable.xcstrings is invalid or critical error/safety keys are missing"
+fi
+
+echo
 echo "== App icon =="
 require_file "HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/Contents.json"
 require_file "HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1024x1024@1x.png"

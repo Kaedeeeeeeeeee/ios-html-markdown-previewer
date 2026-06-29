@@ -1,0 +1,325 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "action.cancel" : {
+      "comment" : "Cancel button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "action.copyLink" : {
+      "comment" : "Copies a blocked link to the clipboard.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Link"
+          }
+        }
+      }
+    },
+    "action.ok" : {
+      "comment" : "Dismisses an alert.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "error.cannotClearImportedFiles.title" : {
+      "comment" : "Alert title shown when clearing imported files fails.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot Clear Imported Files"
+          }
+        }
+      }
+    },
+    "error.cannotOpenFile.title" : {
+      "comment" : "Alert or error title shown when a file cannot be opened.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot Open File"
+          }
+        }
+      }
+    },
+    "error.cannotOpenHTML.title" : {
+      "comment" : "Error title shown when HTML preview setup fails.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot Open HTML"
+          }
+        }
+      }
+    },
+    "error.previewUnavailable.title" : {
+      "comment" : "Error title shown when an entry type cannot be previewed.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview Unavailable"
+          }
+        }
+      }
+    },
+    "error.text.unsupportedEncoding" : {
+      "comment" : "Shown when a text file cannot be decoded. The placeholder is the filename.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot decode %@ as text. Export it as UTF-8 or UTF-16 and try again."
+          }
+        }
+      }
+    },
+    "error.unsupportedEntryType" : {
+      "comment" : "Description shown when the selected entry type cannot be previewed.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This entry type is not supported yet."
+          }
+        }
+      }
+    },
+    "error.unsupportedFileType" : {
+      "comment" : "Shown when the imported file type is not supported by the MVP.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current version supports HTML, Markdown, and ZIP files."
+          }
+        }
+      }
+    },
+    "error.zip.archiveTooLarge" : {
+      "comment" : "Shown when a ZIP archive exceeds the maximum input size.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ZIP package is over the 100 MB limit."
+          }
+        }
+      }
+    },
+    "error.zip.expandedSizeTooLarge" : {
+      "comment" : "Shown when a ZIP archive would exceed the maximum expanded size.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ZIP package expands beyond the 300 MB limit."
+          }
+        }
+      }
+    },
+    "error.zip.invalidArchive" : {
+      "comment" : "Shown when a ZIP archive is unreadable or invalid.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ZIP package could not be read."
+          }
+        }
+      }
+    },
+    "error.zip.missingEntryFile" : {
+      "comment" : "Shown when a ZIP archive has no HTML or Markdown entry file.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No previewable HTML or Markdown entry was found in this ZIP package."
+          }
+        }
+      }
+    },
+    "error.zip.singleFileTooLarge" : {
+      "comment" : "Shown when one file inside a ZIP exceeds the maximum supported size.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ZIP package contains a file over the 100 MB limit."
+          }
+        }
+      }
+    },
+    "error.zip.tooManyFiles" : {
+      "comment" : "Shown when a ZIP archive contains too many files.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ZIP package contains too many files."
+          }
+        }
+      }
+    },
+    "error.zip.unsafeOrConflictingPath" : {
+      "comment" : "Shown when a ZIP archive contains unsafe, duplicate, or case-conflicting paths.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ZIP package contains unsafe or conflicting paths."
+          }
+        }
+      }
+    },
+    "security.html.interactive.confirmation" : {
+      "comment" : "Warning shown before enabling trusted interactive HTML mode.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only use interactive mode for HTML files you trust."
+          }
+        }
+      }
+    },
+    "security.html.interactive.status" : {
+      "comment" : "Status message shown while viewing HTML in interactive mode.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page scripts can run. External navigation remains blocked."
+          }
+        }
+      }
+    },
+    "security.html.interactive.title" : {
+      "comment" : "Confirmation dialog title before enabling interactive HTML mode.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Interactive Mode?"
+          }
+        }
+      }
+    },
+    "security.html.interactive.use" : {
+      "comment" : "Button label for enabling interactive HTML mode.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Interactive Mode"
+          }
+        }
+      }
+    },
+    "security.html.safe.singleFile.message" : {
+      "comment" : "Safe Preview status message for single HTML files.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scripts and external network resources are blocked. Relative assets are best effort for single files."
+          }
+        }
+      }
+    },
+    "security.html.safe.zip.message" : {
+      "comment" : "Safe Preview status message for ZIP packages.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scripts and external network resources are blocked."
+          }
+        }
+      }
+    },
+    "security.markdown.externalLink.message" : {
+      "comment" : "Message shown when a Markdown web link tap is blocked.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Markdown preview keeps web links from opening another app."
+          }
+        }
+      }
+    },
+    "security.markdown.externalLink.title" : {
+      "comment" : "Alert title shown when a Markdown web link tap is blocked.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "External Link Blocked"
+          }
+        }
+      }
+    },
+    "security.markdown.unsupportedLink.message" : {
+      "comment" : "Message shown when a Markdown link type is unsupported.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This link type is not supported in Markdown preview."
+          }
+        }
+      }
+    },
+    "security.markdown.unsupportedLink.title" : {
+      "comment" : "Alert title shown when a Markdown link type is unsupported.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link Not Opened"
+          }
+        }
+      }
+    },
+    "security.preview.rawText.message" : {
+      "comment" : "Status message shown while raw source text is visible.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Showing the file source."
+          }
+        }
+      }
+    },
+    "settings.clearImportedFiles.confirmation" : {
+      "comment" : "Confirmation message before deleting all imported files and recent metadata.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This removes imported copies, extracted ZIP contents, and recent-file metadata from this app."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

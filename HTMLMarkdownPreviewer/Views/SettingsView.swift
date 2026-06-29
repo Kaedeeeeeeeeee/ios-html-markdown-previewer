@@ -60,12 +60,12 @@ struct SettingsView: View {
             Button("Clear Imported Files", role: .destructive) {
                 clearImports()
             }
-            Button("Cancel", role: .cancel) {}
+            Button(AppStrings.Actions.cancel, role: .cancel) {}
         } message: {
-            Text("This removes imported copies, extracted ZIP contents, and recent-file metadata from this app.")
+            Text(AppStrings.Settings.clearImportedFilesConfirmation)
         }
-        .alert("Cannot Clear Imported Files", isPresented: isClearErrorPresented) {
-            Button("OK", role: .cancel) {}
+        .alert(AppStrings.Errors.cannotClearImportedFilesTitle, isPresented: isClearErrorPresented) {
+            Button(AppStrings.Actions.ok, role: .cancel) {}
         } message: {
             Text(clearErrorMessage ?? "")
         }

@@ -28,13 +28,13 @@ struct DocumentPreviewView: View {
                 RawTextPreview(text: text)
             case .unsupported:
                 ContentUnavailableView(
-                    "Preview Unavailable",
+                    AppStrings.Errors.previewUnavailableTitle,
                     systemImage: "doc.badge.questionmark",
-                    description: Text("This entry type is not supported yet.")
+                    description: Text(AppStrings.Errors.unsupportedEntryType)
                 )
             case .failed(let message):
                 ContentUnavailableView(
-                    "Cannot Open File",
+                    AppStrings.Errors.cannotOpenFileTitle,
                     systemImage: "exclamationmark.triangle",
                     description: Text(message)
                 )
@@ -74,13 +74,13 @@ struct DocumentPreviewView: View {
         .onChange(of: previewMode) {
             loadPreview()
         }
-        .confirmationDialog("Use Interactive Mode?", isPresented: $isInteractiveConfirmationPresented) {
-            Button("Use Interactive Mode") {
+        .confirmationDialog(AppStrings.Security.interactiveModeTitle, isPresented: $isInteractiveConfirmationPresented) {
+            Button(AppStrings.Security.useInteractiveMode) {
                 setPreviewMode(.interactive)
             }
-            Button("Cancel", role: .cancel) {}
+            Button(AppStrings.Actions.cancel, role: .cancel) {}
         } message: {
-            Text("Only use interactive mode for HTML files you trust.")
+            Text(AppStrings.Security.interactiveModeConfirmation)
         }
         .sheet(isPresented: $isDetailsPresented) {
             DocumentDetailsView(document: document, store: store, previewMode: previewMode)
@@ -168,7 +168,7 @@ struct DocumentPreviewView: View {
         if previewMode == .rawText {
             return PreviewStatus(
                 title: PreviewMode.rawText.displayName,
-                message: "Showing the file source.",
+                message: AppStrings.Security.rawTextStatus,
                 systemImage: PreviewMode.rawText.systemImage
             )
         }
@@ -182,14 +182,14 @@ struct DocumentPreviewView: View {
             return PreviewStatus(
                 title: PreviewMode.safePreview.displayName,
                 message: document.type == .zipPackage
-                    ? "Scripts and external network resources are blocked."
-                    : "Scripts and external network resources are blocked. Relative assets are best effort for single files.",
+                    ? AppStrings.Security.safeHTMLZipStatus
+                    : AppStrings.Security.safeHTMLSingleFileStatus,
                 systemImage: PreviewMode.safePreview.systemImage
             )
         case .interactive:
             return PreviewStatus(
                 title: PreviewMode.interactive.displayName,
-                message: "Page scripts can run. External navigation remains blocked.",
+                message: AppStrings.Security.interactiveHTMLStatus,
                 systemImage: PreviewMode.interactive.systemImage
             )
         case .rawText:
