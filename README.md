@@ -77,7 +77,9 @@ scripts/prepare-release-packet.sh
 ```
 
 The release packet includes generated App Store Connect and final smoke result
-drafts under `AppStoreConnect/` and `FinalSmoke/`.
+drafts under `AppStoreConnect/` and `FinalSmoke/`. After
+`scripts/final-submission-preflight.sh` runs, the packet also includes the
+current preflight report under `Evidence/`.
 
 App Store Connect setup run draft:
 

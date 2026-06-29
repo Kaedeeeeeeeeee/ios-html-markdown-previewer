@@ -34,6 +34,7 @@ latest_file() {
 
 APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
 FINAL_SMOKE_RESULT="$(latest_file "$ROOT_DIR/DerivedData/FinalSmokeRun" "final-archive-smoke-result.md")"
+PREFLIGHT_REPORT="$ROOT_DIR/DerivedData/FinalSubmissionPreflight/submission-readiness-report.md"
 
 if [[ -z "$APP_STORE_CONNECT_RESULT" || ! -f "$APP_STORE_CONNECT_RESULT" ]]; then
   printf 'Missing generated App Store Connect result draft.\n' >&2
@@ -64,6 +65,8 @@ Key files:
 - AppStore/final-archive-smoke-test-template.md
 - AppStoreConnect/app-store-connect-result-draft.md
 - FinalSmoke/final-archive-smoke-result-draft.md
+- Evidence/README.txt
+- Evidence/submission-readiness-report.md (when final preflight already ran)
 - PhysicalDevice/physical-device-validation.md
 - PhysicalDevice/physical-device-validation-result-template.md
 - PhysicalDevice/HTMLPreviewerValidationSamples.zip
@@ -98,6 +101,23 @@ copy_file "$ROOT_DIR/docs/final-archive-smoke-test-template.md" "$PACKET_DIR/App
 
 copy_file "$APP_STORE_CONNECT_RESULT" "$PACKET_DIR/AppStoreConnect/app-store-connect-result-draft.md"
 copy_file "$FINAL_SMOKE_RESULT" "$PACKET_DIR/FinalSmoke/final-archive-smoke-result-draft.md"
+
+mkdir -p "$PACKET_DIR/Evidence"
+cat > "$PACKET_DIR/Evidence/README.txt" <<EOF
+Submission evidence
+
+Run scripts/final-submission-preflight.sh on the final commit before upload.
+When a preflight report already exists, this packet includes it as:
+
+- Evidence/submission-readiness-report.md
+
+The final-submission-preflight script also refreshes this release packet with
+the current report after all local gates finish.
+EOF
+
+if [[ -f "$PREFLIGHT_REPORT" ]]; then
+  copy_file "$PREFLIGHT_REPORT" "$PACKET_DIR/Evidence/submission-readiness-report.md"
+fi
 
 copy_file "$ROOT_DIR/docs/physical-device-validation.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation.md"
 copy_file "$ROOT_DIR/docs/physical-device-validation-result-template.md" "$PACKET_DIR/PhysicalDevice/physical-device-validation-result-template.md"

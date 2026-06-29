@@ -671,6 +671,7 @@ expected = {
     "HTMLPreviewerReleasePacket/AppStore/final-archive-smoke-test-template.md",
     "HTMLPreviewerReleasePacket/AppStoreConnect/app-store-connect-result-draft.md",
     "HTMLPreviewerReleasePacket/FinalSmoke/final-archive-smoke-result-draft.md",
+    "HTMLPreviewerReleasePacket/Evidence/README.txt",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/physical-device-validation-result-template.md",
     "HTMLPreviewerReleasePacket/PhysicalDevice/HTMLPreviewerValidationSamples.zip",
