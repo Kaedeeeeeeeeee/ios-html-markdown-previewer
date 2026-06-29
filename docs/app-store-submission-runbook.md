@@ -61,6 +61,10 @@ Apple references:
    ```sh
    scripts/check-github-actions-execution.sh
    ```
+   For debug reruns, preserve a specific attempt with:
+   ```sh
+   scripts/check-github-actions-execution.sh --run-id <run-id> --attempt <attempt-number>
+   ```
    Keep the generated `DerivedData/GitHubActionsDiagnostics/.../github-actions-diagnostics.md` report with issue #10 and resolve the account, billing, or policy blocker before submission.
 4. Keep `DerivedData/ReleasePacket/HTMLPreviewerReleasePacket.zip` with submission evidence.
 5. Generate the submission gate status report:

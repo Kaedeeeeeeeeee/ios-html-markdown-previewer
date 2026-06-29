@@ -6,6 +6,7 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-$ROOT_DIR/DerivedData/GitHubActionsDiagnostics}"
 REPO="${REPO:-}"
 BRANCH="${BRANCH:-}"
 RUN_ID="${RUN_ID:-}"
+ATTEMPT="${ATTEMPT:-}"
 FAIL_ON_BLOCKED=false
 
 usage() {
@@ -21,12 +22,14 @@ Environment:
   REPO         Optional GitHub repository in owner/name form.
   BRANCH       Optional branch. Defaults to current git branch.
   RUN_ID       Optional workflow run id.
+  ATTEMPT      Optional workflow run attempt number.
   OUTPUT_ROOT  Optional output root. Defaults to DerivedData/GitHubActionsDiagnostics.
 
 Options:
   --repo OWNER/NAME     GitHub repository.
   --branch NAME         Branch to inspect when --run-id is not provided.
   --run-id ID           Workflow run id to inspect.
+  --attempt NUMBER      Specific workflow run attempt to inspect.
   --fail-on-blocked     Exit non-zero when every job has zero recorded steps.
   -h, --help            Show this help.
 EOF
@@ -44,6 +47,10 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     --run-id)
       RUN_ID="${2:-}"
+      shift 2
+      ;;
+    --attempt)
+      ATTEMPT="${2:-}"
       shift 2
       ;;
     --fail-on-blocked)
@@ -119,9 +126,13 @@ failed_log_output="$run_dir/failed-log-output.txt"
 report_path="$run_dir/github-actions-diagnostics.md"
 blocker_state="$run_dir/blocker-state.txt"
 
-gh run view "$RUN_ID" \
-  --repo "$REPO" \
-  --json status,conclusion,event,createdAt,startedAt,updatedAt,headSha,headBranch,jobs,url \
+run_view_args=(gh run view "$RUN_ID" --repo "$REPO")
+if [[ -n "$ATTEMPT" ]]; then
+  run_view_args+=(--attempt "$ATTEMPT")
+fi
+
+"${run_view_args[@]}" \
+  --json attempt,number,workflowName,status,conclusion,event,createdAt,startedAt,updatedAt,headSha,headBranch,jobs,url \
   >"$run_json"
 
 gh api "repos/$REPO/actions/permissions" >"$permissions_json" 2>"$run_dir/repository-actions-permissions-error.txt" || true
@@ -135,7 +146,7 @@ else
   billing_status="unavailable"
 fi
 
-if gh run view "$RUN_ID" --repo "$REPO" --log-failed >"$failed_log_output" 2>&1; then
+if "${run_view_args[@]}" --log-failed >"$failed_log_output" 2>&1; then
   failed_log_status="available"
 else
   failed_log_status="unavailable"
@@ -220,7 +231,10 @@ lines = [
     f"- Generated: {generated}",
     f"- Repository: `{repo}`",
     f"- Branch: `{branch or run.get('headBranch') or 'unknown'}`",
+    f"- Workflow: `{run.get('workflowName', 'unknown')}`",
     f"- Run id: `{run_id}`",
+    f"- Run number: `{run.get('number', 'unknown')}`",
+    f"- Attempt: `{run.get('attempt', 'unknown')}`",
     f"- Run URL: {run.get('url', 'unknown')}",
     f"- Event: {run.get('event', 'unknown')}",
     f"- Head SHA: `{run.get('headSha', 'unknown')}`",
@@ -300,7 +314,7 @@ lines.extend(
         "2. Open account or organization Billing -> Budgets and alerts. Confirm GitHub Actions metered usage is not blocked by an exhausted or stop-usage budget.",
         "3. If the repository belongs to an organization or enterprise, confirm parent Actions policies allow this repository and public reusable actions.",
         f"4. After changing billing or policy settings, rerun: `gh run rerun {run_id} --debug`.",
-        f"5. Rerun this diagnostic script and attach the generated report to issue #10.",
+        f"5. Rerun this diagnostic script, optionally with `--attempt <new-attempt>`, and attach the generated report to issue #10.",
     ]
 )
 

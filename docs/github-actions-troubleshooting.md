@@ -31,6 +31,12 @@ To inspect a specific run:
 scripts/check-github-actions-execution.sh --run-id <run-id>
 ```
 
+To preserve evidence for a specific debug rerun attempt:
+
+```sh
+scripts/check-github-actions-execution.sh --run-id <run-id> --attempt <attempt-number>
+```
+
 The script writes a report under:
 
 ```text
