@@ -17,13 +17,17 @@ jobs:
       ASC_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
       ASC_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
       ASC_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
-      ARCHIVE_PATH: ${{ runner.temp }}/HTMLPreviewer.xcarchive
-      DERIVED_DATA_PATH: ${{ runner.temp }}/DerivedData
-      EXPORT_PATH: ${{ runner.temp }}/AppStoreUpload
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Prepare build paths
+        run: |
+          set -euo pipefail
+          echo "ARCHIVE_PATH=$RUNNER_TEMP/HTMLPreviewer.xcarchive" >> "$GITHUB_ENV"
+          echo "DERIVED_DATA_PATH=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
+          echo "EXPORT_PATH=$RUNNER_TEMP/AppStoreUpload" >> "$GITHUB_ENV"
 
       - name: Select Xcode 26.6
         run: |
