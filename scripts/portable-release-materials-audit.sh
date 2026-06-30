@@ -115,7 +115,7 @@ for path in [
 ]:
     require_file(path)
 
-require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*1\b", "project.yml build number is 1")
+require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*2\b", "project.yml build number is 2")
 require_text("project.yml", r"MARKETING_VERSION:\s*1\.0\b", "project.yml marketing version is 1.0")
 require_text("project.yml", r"deploymentTarget:\s*\n\s+iOS:\s*\"17\.0\"", "project.yml minimum iOS is 17.0")
 require_text("project.yml", r"PRODUCT_BUNDLE_IDENTIFIER:\s*com\.kaede\.htmlmarkdownpreviewer", "project.yml bundle identifier is correct")
@@ -124,7 +124,7 @@ require_text("project.yml", r"ZIPFoundation:[\s\S]*from:\s*0\.9\.20", "ZIPFounda
 require_text("project.yml", r"SwiftMarkdown:[\s\S]*from:\s*0\.8\.0", "Swift Markdown dependency version is declared")
 
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.0;", "generated Xcode project marketing version is 1.0")
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 1;", "generated Xcode project build number is 1")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 2;", "generated Xcode project build number is 2")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"PRODUCT_BUNDLE_IDENTIFIER = com\.kaede\.htmlmarkdownpreviewer;", "generated Xcode project bundle identifier is correct")
 
 print("\n== Info.plist ==")
