@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ARCHIVE_PATH="${ARCHIVE_PATH:-$ROOT_DIR/DerivedData/SignedArchive/HTMLPreviewer.xcarchive}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-$ROOT_DIR/DerivedData/SignedArchiveDiagnostics}"
-CODE_SIGN_STYLE="${CODE_SIGN_STYLE:-Automatic}"
+CODE_SIGN_STYLE="${CODE_SIGN_STYLE:-}"
 ALLOW_PROVISIONING_UPDATES="${ALLOW_PROVISIONING_UPDATES:-YES}"
 ALLOW_DEVELOPMENT_SIGNING="${ALLOW_DEVELOPMENT_SIGNING:-NO}"
 DRY_RUN=false
@@ -19,7 +19,8 @@ Environment:
   DEVELOPMENT_TEAM                 Required Apple Developer Team ID.
   ARCHIVE_PATH                     Optional .xcarchive output path.
   OUTPUT_ROOT                      Optional diagnostic output root.
-  CODE_SIGN_STYLE                  Optional signing style, defaults to Automatic.
+  CODE_SIGN_STYLE                  Optional signing style override. Defaults to
+                                   the project target settings.
   CODE_SIGN_IDENTITY               Optional signing identity override.
   PROVISIONING_PROFILE_SPECIFIER   Optional profile name for manual signing.
   ALLOW_PROVISIONING_UPDATES       YES or NO, defaults to YES.
@@ -83,9 +84,12 @@ cmd=(
   -derivedDataPath "$ROOT_DIR/DerivedData"
   -skipPackagePluginValidation
   "DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM"
-  "CODE_SIGN_STYLE=$CODE_SIGN_STYLE"
   CODE_SIGNING_ALLOWED=YES
 )
+
+if [[ -n "${CODE_SIGN_STYLE:-}" ]]; then
+  cmd+=("CODE_SIGN_STYLE=$CODE_SIGN_STYLE")
+fi
 
 if [[ -n "${CODE_SIGN_IDENTITY:-}" ]]; then
   cmd+=("CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY")
@@ -141,7 +145,7 @@ write_archive_diagnostic() {
     printf -- '- Exit code: %s\n' "$exit_code"
     printf -- '- Archive path: %s\n' "$ARCHIVE_PATH"
     printf -- '- Development team: %s\n' "$DEVELOPMENT_TEAM"
-    printf -- '- Code sign style: %s\n' "$CODE_SIGN_STYLE"
+    printf -- '- Code sign style: %s\n' "${CODE_SIGN_STYLE:-project settings}"
     printf -- '- Allow provisioning updates: %s\n' "$ALLOW_PROVISIONING_UPDATES"
     printf -- '- Allow development signing: %s\n' "$ALLOW_DEVELOPMENT_SIGNING"
     printf -- '- App Store/TestFlight submission evidence: %s\n' "$submission_evidence"

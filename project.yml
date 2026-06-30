@@ -33,6 +33,12 @@ targets:
         INFOPLIST_FILE: HTMLMarkdownPreviewer/Info.plist
         CODE_SIGN_STYLE: Automatic
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Release:
+          CODE_SIGN_IDENTITY: Apple Distribution
+          CODE_SIGN_STYLE: Manual
+          DEVELOPMENT_TEAM: Y4FV6WUU4V
+          PROVISIONING_PROFILE_SPECIFIER: HTML Markdown Previewer App Store
   HTMLMarkdownPreviewerTests:
     type: bundle.unit-test
     platform: iOS

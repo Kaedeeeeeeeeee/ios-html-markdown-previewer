@@ -325,9 +325,6 @@
 					A9A868ACC1C46BDB5C8002DE = {
 						TestTargetID = EB510A767CD0E925C35FE12E;
 					};
-					EB510A767CD0E925C35FE12E = {
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 68D598FA479A07D8FEF075CC /* Build configuration list for PBXProject "HTMLMarkdownPreviewer" */;
@@ -336,6 +333,9 @@
 			knownRegions = (
 				Base,
 				en,
+				ja,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = B9BBD02288CC47F14E8966CC;
 			minimizedProjectReferenceProxies = 1;
@@ -460,8 +460,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = Y4FV6WUU4V;
 				INFOPLIST_FILE = HTMLMarkdownPreviewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -469,6 +470,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaede.htmlmarkdownpreviewer;
+				PROVISIONING_PROFILE_SPECIFIER = "HTML Markdown Previewer App Store";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
