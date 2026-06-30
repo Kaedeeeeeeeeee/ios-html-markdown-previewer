@@ -1,0 +1,125 @@
+name: App Store Upload
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  upload:
+    name: Archive and Upload Build
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
+      APPLE_TEAM_ID: Y4FV6WUU4V
+      ASC_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+      ASC_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+      ASC_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+      ARCHIVE_PATH: ${{ runner.temp }}/HTMLPreviewer.xcarchive
+      DERIVED_DATA_PATH: ${{ runner.temp }}/DerivedData
+      EXPORT_PATH: ${{ runner.temp }}/AppStoreUpload
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Select Xcode 26.6
+        run: |
+          set -euo pipefail
+          sudo xcode-select -s /Applications/Xcode_26.6_Release_Candidate_2.app/Contents/Developer
+          sw_vers
+          xcodebuild -version
+          xcodebuild -showsdks | grep -E 'iphoneos|iphonesimulator'
+
+      - name: Install App Store Connect API key
+        run: |
+          set -euo pipefail
+          if [[ -z "$ASC_API_KEY_ID" || -z "$ASC_API_ISSUER_ID" || -z "$ASC_API_KEY_BASE64" ]]; then
+            echo "Missing App Store Connect API key secrets." >&2
+            exit 2
+          fi
+          mkdir -p "$RUNNER_TEMP/private_keys"
+          API_KEY_PATH="$RUNNER_TEMP/private_keys/AuthKey_${ASC_API_KEY_ID}.p8"
+          printf '%s' "$ASC_API_KEY_BASE64" | base64 -D -o "$API_KEY_PATH"
+          chmod 600 "$API_KEY_PATH"
+          echo "ASC_API_KEY_PATH=$API_KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Resolve Swift packages
+        run: |
+          set -euo pipefail
+          xcodebuild -resolvePackageDependencies \
+            -project HTMLMarkdownPreviewer.xcodeproj \
+            -scheme HTMLMarkdownPreviewer \
+            -derivedDataPath "$DERIVED_DATA_PATH"
+
+      - name: Archive with automatic App Store signing
+        run: |
+          set -euo pipefail
+          xcodebuild archive \
+            -project HTMLMarkdownPreviewer.xcodeproj \
+            -scheme HTMLMarkdownPreviewer \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$ARCHIVE_PATH" \
+            -derivedDataPath "$DERIVED_DATA_PATH" \
+            -skipPackagePluginValidation \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_API_KEY_PATH" \
+            -authenticationKeyID "$ASC_API_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_API_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CODE_SIGN_STYLE=Automatic \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER= \
+            CODE_SIGNING_ALLOWED=YES
+
+      - name: Inspect archive metadata
+        run: |
+          set -euo pipefail
+          APP_INFO="$ARCHIVE_PATH/Products/Applications/HTMLMarkdownPreviewer.app/Info.plist"
+          plutil -p "$APP_INFO" | grep -E 'BuildMachineOSBuild|CFBundleShortVersionString|CFBundleVersion|DTPlatformVersion|DTSDKName|DTXcode|DTXcodeBuild|MinimumOSVersion'
+
+      - name: Upload archive to App Store Connect
+        run: |
+          set -euo pipefail
+          EXPORT_OPTIONS="$RUNNER_TEMP/ExportOptions-upload.plist"
+          cat > "$EXPORT_OPTIONS" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>destination</key>
+            <string>upload</string>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>teamID</key>
+            <string>Y4FV6WUU4V</string>
+            <key>uploadSymbols</key>
+            <true/>
+          </dict>
+          </plist>
+          PLIST
+
+          xcodebuild -exportArchive \
+            -archivePath "$ARCHIVE_PATH" \
+            -exportPath "$EXPORT_PATH" \
+            -exportOptionsPlist "$EXPORT_OPTIONS" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_API_KEY_PATH" \
+            -authenticationKeyID "$ASC_API_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_API_ISSUER_ID"
+
+      - name: Upload export logs
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: app-store-upload-logs
+          path: |
+            ${{ runner.temp }}/AppStoreUpload
+            ${{ runner.temp }}/ExportOptions-upload.plist
