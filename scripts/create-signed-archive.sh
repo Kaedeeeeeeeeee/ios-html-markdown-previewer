@@ -186,8 +186,18 @@ fi
 
 APP_PATH="$ARCHIVE_PATH/Products/Applications/HTMLMarkdownPreviewer.app"
 
+set +e
 codesign --verify --strict "$APP_PATH"
+codesign_exit="$?"
+set -e
 
+if [[ "$codesign_exit" -ne 0 ]]; then
+  write_archive_diagnostic "failed" "$codesign_exit" "codesign verification failed"
+  printf 'Signed archive diagnostic report: %s\n' "$report_path" >&2
+  exit "$codesign_exit"
+fi
+
+set +e
 python3 - "$ARCHIVE_PATH" "$APP_PATH" <<'PY'
 import os
 import plistlib
@@ -315,6 +325,14 @@ if errors:
         print(error, file=sys.stderr)
     raise SystemExit(1)
 PY
+validation_exit="$?"
+set -e
+
+if [[ "$validation_exit" -ne 0 ]]; then
+  write_archive_diagnostic "failed" "$validation_exit" "archive signing validation failed"
+  printf 'Signed archive diagnostic report: %s\n' "$report_path" >&2
+  exit "$validation_exit"
+fi
 
 write_archive_diagnostic "passed" 0 "Archive created and signing validation passed"
 
