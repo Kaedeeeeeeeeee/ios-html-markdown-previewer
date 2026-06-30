@@ -65,10 +65,10 @@ final class SmokeUITests: XCTestCase {
     private func openRawTextMode(app: XCUIApplication) {
         let modeMenu = app.buttons["preview-mode-menu"]
         XCTAssertTrue(modeMenu.waitForExistence(timeout: 10), "Missing preview mode menu")
-        modeMenu.tap()
+        tapElement(modeMenu, app: app)
         let rawTextButton = app.buttons["Raw Text"]
         XCTAssertTrue(rawTextButton.waitForExistence(timeout: 5), "Missing Raw Text menu item")
-        rawTextButton.tap()
+        tapElement(rawTextButton, app: app)
     }
 
     private func assertLabelExists(_ label: String, app: XCUIApplication) {
@@ -123,5 +123,23 @@ final class SmokeUITests: XCTestCase {
         XCTAssertTrue(backButton.waitForExistence(timeout: 10))
         backButton.tap()
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 5))
+    }
+
+    private func tapElement(
+        _ element: XCUIElement,
+        app: XCUIApplication,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertTrue(element.waitForExistence(timeout: 10), "Missing tappable element", file: file, line: line)
+        if element.isHittable {
+            element.tap()
+            return
+        }
+
+        let frame = element.frame
+        XCTAssertFalse(frame.isEmpty, "Element has an empty frame", file: file, line: line)
+        let normalized = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        normalized.tap()
     }
 }
