@@ -117,6 +117,21 @@ SIGNING_READINESS_STATUS="$(report_field Status "$SIGNING_READINESS")"
 SIGNING_ARCHIVE_READINESS="$(report_field "App Store/TestFlight archive readiness" "$SIGNING_READINESS")"
 SIGNED_ARCHIVE_STATUS="$(report_field Status "$SIGNED_ARCHIVE_DIAGNOSTIC")"
 latest_actions_summary="$(latest_actions_run)"
+LATEST_ACTIONS_RUN_ID=""
+LATEST_ACTIONS_SHA=""
+LATEST_ACTIONS_STATUS=""
+LATEST_ACTIONS_CONCLUSION=""
+LATEST_ACTIONS_URL=""
+GITHUB_ACTIONS_CURRENT_GREEN=false
+
+if [[ -n "$latest_actions_summary" ]]; then
+  IFS=$'\t' read -r LATEST_ACTIONS_RUN_ID LATEST_ACTIONS_SHA LATEST_ACTIONS_STATUS LATEST_ACTIONS_CONCLUSION LATEST_ACTIONS_URL <<<"$latest_actions_summary"
+  if [[ "$LATEST_ACTIONS_SHA" == "$CURRENT_FULL" &&
+    "$LATEST_ACTIONS_STATUS" == "completed" &&
+    "$LATEST_ACTIONS_CONCLUSION" == "success" ]]; then
+    GITHUB_ACTIONS_CURRENT_GREEN=true
+  fi
+fi
 
 if [[ "$DRY_RUN" == true ]]; then
   printf 'Would prepare submission owner handoff report:\n'
@@ -143,7 +158,9 @@ mkdir -p "$OUTPUT_ROOT"
   printf '\n## Owner Action Table\n\n'
   printf '| Owner | Issue | Required action | Starting evidence | Done when | Follow-up command |\n'
   printf '|---|---:|---|---|---|---|\n'
-  printf '| GitHub account owner | #10 | Resolve the hosted Actions execution-layer failure where jobs finish with zero recorded steps. Check repository Actions policy, account/org billing budgets, and parent org/enterprise policies. | `%s` | Latest `main` run for `%s` is `completed/success` and has normal step logs. | `scripts/check-github-actions-execution.sh --run-id <run-id>` then `scripts/prepare-submission-gate-status.sh --check-github` |\n' "$(md_escape "$(path_or_missing "$GITHUB_DIAGNOSTIC")")" "$CURRENT_SHORT"
+  if [[ "$GITHUB_ACTIONS_CURRENT_GREEN" != true ]]; then
+    printf '| GitHub account owner | #10 | Resolve hosted Actions for the current commit. If jobs finish with zero recorded steps, check repository Actions policy, account/org billing budgets, and parent org/enterprise policies. | `%s` | Latest `main` run for `%s` is `completed/success` and has normal step logs. | `scripts/check-github-actions-execution.sh --run-id <run-id>` then `scripts/prepare-submission-gate-status.sh --check-github` |\n' "$(md_escape "$(path_or_missing "$GITHUB_DIAGNOSTIC")")" "$CURRENT_SHORT"
+  fi
   printf '| App Store Connect account owner | #10 | Complete app record, paid-download pricing, availability, privacy labels, age rating, export compliance, screenshots, review notes, and processed build selection. | `%s` | Result draft records `Overall status: passed` and `Can continue final archive/TestFlight smoke: yes`; no completed-result validator findings. | `scripts/validate-completed-release-results.sh --fail-on-invalid` |\n' "$(md_escape "$(path_or_missing "$APP_STORE_CONNECT_RESULT")")"
   printf '| Signing/upload owner | #10 | Create an Apple Distribution archive or processed TestFlight build. Development-signed local smoke cannot count as upload evidence. If signing readiness shows no matching profile or team mismatch, configure Xcode Accounts and provisioning first. | readiness: `%s`; diagnostic: `%s`; smoke: `%s` | Signing readiness records App Store/TestFlight archive readiness as `ready`, and archive/TestFlight evidence records App Store/TestFlight submission evidence as `yes`. | `DEVELOPMENT_TEAM=<Apple Team ID> scripts/check-signing-readiness.sh --fail-on-not-ready` then `DEVELOPMENT_TEAM=<Apple Team ID> scripts/create-signed-archive.sh` |\n' "$(md_escape "$(path_or_missing "$SIGNING_READINESS")")" "$(md_escape "$(path_or_missing "$SIGNED_ARCHIVE_DIAGNOSTIC")")" "$(md_escape "$(path_or_missing "$ARCHIVE_SMOKE_REPORT")")"
   printf '| Physical-device tester | #1 | Complete Files, iCloud Drive, Mail, AirDrop, messaging app, and Safari source matrix on a real iPhone. | `%s` | Result draft records `Overall status: passed`, `Can close #1: yes`, and `Can continue App Store submission: yes`; all P0/P1 findings filed or fixed. | `scripts/validate-completed-release-results.sh --fail-on-invalid` |\n' "$(md_escape "$(path_or_missing "$PHYSICAL_DEVICE_RESULT")")"
@@ -168,12 +185,11 @@ mkdir -p "$OUTPUT_ROOT"
   printf '| First-round usability result draft | `%s` | %s |\n' "$(md_escape "$(path_or_missing "$USABILITY_RESULT")")" "$(if [[ -f "$USABILITY_RESULT" ]]; then printf 'draft'; else printf 'not generated'; fi)"
 
   printf '\n## Latest Hosted CI\n\n'
-  if [[ -n "$latest_actions_summary" ]]; then
-    IFS=$'\t' read -r run_id run_sha run_status run_conclusion run_url <<<"$latest_actions_summary"
-    printf -- '- Run id: %s\n' "$run_id"
-    printf -- '- Run SHA: %s\n' "$run_sha"
-    printf -- '- Status/conclusion: %s/%s\n' "$run_status" "${run_conclusion:-none}"
-    printf -- '- URL: %s\n' "$run_url"
+  if [[ -n "$LATEST_ACTIONS_RUN_ID" ]]; then
+    printf -- '- Run id: %s\n' "$LATEST_ACTIONS_RUN_ID"
+    printf -- '- Run SHA: %s\n' "$LATEST_ACTIONS_SHA"
+    printf -- '- Status/conclusion: %s/%s\n' "$LATEST_ACTIONS_STATUS" "${LATEST_ACTIONS_CONCLUSION:-none}"
+    printf -- '- URL: %s\n' "$LATEST_ACTIONS_URL"
   else
     printf -- '- Latest hosted CI run could not be read through gh in this environment.\n'
   fi
@@ -187,13 +203,22 @@ mkdir -p "$OUTPUT_ROOT"
   printf -- '- Result drafts marked complete but containing placeholders, failed/not-tested required cells, stale commit evidence, or unresolved P0/P1 rows must be fixed first.\n'
 
   printf '\n## Suggested Order\n\n'
-  printf '1. GitHub account owner resolves the zero-step Actions blocker and reruns CI.\n'
-  printf '2. Physical-device tester completes #1 external-open validation.\n'
-  printf '3. App Store Connect account owner completes paid-download setup and selects the processed build.\n'
-  printf '4. Signing/upload owner provides Apple Distribution or TestFlight evidence.\n'
-  printf '5. Final smoke tester completes final archive/TestFlight smoke.\n'
-  printf '6. Usability moderator completes the first external participant session.\n'
-  printf '7. Release operator runs completed-result validation and strict submission gate status, then summarizes results in #1, #10, and #11.\n'
+  order_step=1
+  if [[ "$GITHUB_ACTIONS_CURRENT_GREEN" != true ]]; then
+    printf '%s. GitHub account owner resolves hosted Actions for the current commit and reruns CI.\n' "$order_step"
+    order_step=$((order_step + 1))
+  fi
+  printf '%s. Physical-device tester completes #1 external-open validation.\n' "$order_step"
+  order_step=$((order_step + 1))
+  printf '%s. App Store Connect account owner completes paid-download setup and selects the processed build.\n' "$order_step"
+  order_step=$((order_step + 1))
+  printf '%s. Signing/upload owner provides Apple Distribution or TestFlight evidence.\n' "$order_step"
+  order_step=$((order_step + 1))
+  printf '%s. Final smoke tester completes final archive/TestFlight smoke.\n' "$order_step"
+  order_step=$((order_step + 1))
+  printf '%s. Usability moderator completes the first external participant session.\n' "$order_step"
+  order_step=$((order_step + 1))
+  printf '%s. Release operator runs completed-result validation and strict submission gate status, then summarizes results in #1, #10, and #11.\n' "$order_step"
 } > "$REPORT_PATH"
 
 printf 'Prepared submission owner handoff report: %s\n' "$REPORT_PATH"
