@@ -59,7 +59,7 @@ report_field() {
 "$ROOT_DIR/scripts/prepare-final-smoke-run.sh" >/dev/null
 "$ROOT_DIR/scripts/validate-completed-release-results.sh" >/dev/null
 "$ROOT_DIR/scripts/check-signing-readiness.sh" >/dev/null
-"$ROOT_DIR/scripts/prepare-submission-gate-status.sh" >/dev/null
+"$ROOT_DIR/scripts/prepare-submission-gate-status.sh" --check-github >/dev/null
 "$ROOT_DIR/scripts/prepare-submission-owner-handoff.sh" >/dev/null
 
 APP_STORE_CONNECT_RESULT="$(latest_file "$ROOT_DIR/DerivedData/AppStoreConnectRun" "app-store-connect-result.md")"
