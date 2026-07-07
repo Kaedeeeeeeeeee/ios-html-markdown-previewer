@@ -182,6 +182,12 @@ def create_review_submission
               type: "apps",
               id: APP_ID
             }
+          },
+          appStoreVersionForReview: {
+            data: {
+              type: "appStoreVersions",
+              id: APP_STORE_VERSION_ID
+            }
           }
         }
       }
@@ -191,11 +197,49 @@ def create_review_submission
   puts "Created review submission #{id}."
   id
 rescue AscError => e
+  existing = find_existing_review_submission
+  return existing if existing
+
   match = JSON.generate(e.body).match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)
   raise unless match
 
-  id = match[0]
-  puts "Using existing in-progress review submission #{id}."
+  puts "Using existing in-progress review submission #{match[0]}."
+  match[0]
+end
+
+def find_existing_review_submission
+  submissions = []
+  [
+    ["/v1/apps/#{APP_ID}/reviewSubmissions", {
+      "limit" => "20",
+      "fields[reviewSubmissions]" => "platform,state,submitted"
+    }],
+    ["/v1/reviewSubmissions", {
+      "filter[app]" => APP_ID,
+      "limit" => "20",
+      "fields[reviewSubmissions]" => "platform,state,submitted"
+    }]
+  ].each do |path, query|
+    begin
+      submissions = request(:get, path, query: query).fetch("data", [])
+      break if submissions.any?
+    rescue AscError
+      next
+    end
+  end
+
+  candidate = submissions.find do |submission|
+    attrs = submission.fetch("attributes", {})
+    attrs["platform"] == PLATFORM &&
+      attrs["submitted"] != true &&
+      ["READY_FOR_REVIEW", "UNRESOLVED_ISSUES", nil].include?(attrs["state"])
+  end
+
+  return nil unless candidate
+
+  id = candidate.fetch("id")
+  attrs = candidate.fetch("attributes", {})
+  puts "Using existing review submission #{id}: state=#{attrs["state"]} submitted=#{attrs["submitted"]}."
   id
 end
 
@@ -242,6 +286,14 @@ def submit_review_submission(submission_id)
         id: submission_id,
         attributes: {
           submitted: true
+        },
+        relationships: {
+          appStoreVersionForReview: {
+            data: {
+              type: "appStoreVersions",
+              id: APP_STORE_VERSION_ID
+            }
+          }
         }
       }
     }
