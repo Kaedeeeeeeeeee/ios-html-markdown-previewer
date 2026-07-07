@@ -166,47 +166,147 @@ def attach_build_to_version(build_id)
   puts "Attached build #{build_id} to App Store version #{APP_STORE_VERSION_ID}."
 end
 
-SUBMITTED_APP_STORE_STATES = %w[
+OPEN_REVIEW_SUBMISSION_STATES = %w[
+  READY_FOR_REVIEW
+  UNRESOLVED_ISSUES
+].freeze
+
+PENDING_REVIEW_SUBMISSION_STATES = %w[
   WAITING_FOR_REVIEW
   IN_REVIEW
-  WAITING_FOR_EXPORT_COMPLIANCE
-  PENDING_DEVELOPER_RELEASE
-  PENDING_APPLE_RELEASE
-  PROCESSING_FOR_APP_STORE
-  READY_FOR_SALE
-  READY_FOR_DISTRIBUTION
 ].freeze
+
+BLOCKING_REVIEW_SUBMISSION_STATES = (OPEN_REVIEW_SUBMISSION_STATES + %w[CANCELING]).freeze
 
 def fetch_app_store_version
   request(
     :get,
     "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}",
     query: {
-      "fields[appStoreVersions]" => "versionString,appStoreState,platform"
+      "include" => "app",
+      "fields[appStoreVersions]" => "versionString,appStoreState,platform,app"
     }
   ).fetch("data")
 end
 
-def app_store_version_state(label)
+def app_store_version_context(label)
   version = fetch_app_store_version
   attrs = version.fetch("attributes", {})
+  app_id = version.dig("relationships", "app", "data", "id") || APP_ID
+  platform = attrs["platform"] || PLATFORM
   state = attrs.fetch("appStoreState")
-  puts "#{label}: App Store version #{attrs["versionString"]} platform=#{attrs["platform"]} appStoreState=#{state}."
-  state
+  puts "#{label}: App Store version #{attrs["versionString"]} app=#{app_id} platform=#{platform} appStoreState=#{state}."
+  {
+    app_id: app_id,
+    platform: platform,
+    app_store_state: state
+  }
 end
 
-def submitted_app_store_state?(state)
-  SUBMITTED_APP_STORE_STATES.include?(state)
+def asc_error_code?(error, code)
+  error.body.fetch("errors", []).any? { |item| item["code"] == code }
 end
 
-def create_app_store_version_submission
-  response = request(
-    :post,
-    "/v1/appStoreVersionSubmissions",
+def list_review_submissions(app_id, platform, states: OPEN_REVIEW_SUBMISSION_STATES)
+  query = {
+    "filter[app]" => app_id,
+    "filter[platform]" => platform,
+    "limit" => "20",
+    "fields[reviewSubmissions]" => "platform,state,submittedDate"
+  }
+  query["filter[state]"] = states.join(",") if states && !states.empty?
+
+  request(:get, "/v1/reviewSubmissions", query: query).fetch("data", [])
+end
+
+def find_open_review_submission(app_id, platform)
+  submissions = list_review_submissions(app_id, platform)
+  submissions = list_review_submissions(app_id, platform, states: nil) if submissions.empty?
+
+  submissions.each do |submission|
+    attrs = submission.fetch("attributes", {})
+    puts "Review submission candidate #{submission.fetch("id")}: platform=#{attrs["platform"]} state=#{attrs["state"]}."
+  end
+
+  submissions.find do |submission|
+    attrs = submission.fetch("attributes", {})
+    attrs["platform"] == platform && OPEN_REVIEW_SUBMISSION_STATES.include?(attrs["state"])
+  end
+rescue AscError => e
+  puts "Warning: could not list review submissions: #{e.message}"
+  nil
+end
+
+def fetch_review_submission(submission_id)
+  request(
+    :get,
+    "/v1/reviewSubmissions/#{submission_id}",
+    query: {
+      "fields[reviewSubmissions]" => "platform,state,submittedDate"
+    }
+  ).fetch("data")
+end
+
+def wait_for_review_submission_to_unblock(submission_id)
+  12.times do |attempt|
+    submission = fetch_review_submission(submission_id)
+    state = submission.fetch("attributes", {}).fetch("state", nil)
+    puts "Review submission #{submission_id} state after cancel: #{state || "unknown"}."
+    return unless BLOCKING_REVIEW_SUBMISSION_STATES.include?(state)
+
+    sleep(10) unless attempt == 11
+  end
+end
+
+def cancel_review_submission(submission_id)
+  request(
+    :patch,
+    "/v1/reviewSubmissions/#{submission_id}",
     body: {
       data: {
-        type: "appStoreVersionSubmissions",
+        type: "reviewSubmissions",
+        id: submission_id,
+        attributes: {
+          canceled: true
+        }
+      }
+    }
+  )
+  puts "Canceled review submission #{submission_id}."
+  wait_for_review_submission_to_unblock(submission_id)
+rescue AscError => e
+  puts "Warning: could not cancel review submission #{submission_id}: #{e.message}"
+  raise
+end
+
+def list_submission_items(submission_id)
+  request(:get, "/v1/reviewSubmissions/#{submission_id}/items").fetch("data", [])
+end
+
+def submission_has_app_store_version?(submission_id)
+  items = list_submission_items(submission_id)
+  items.any? do |item|
+    item.dig("relationships", "appStoreVersion", "data", "id") == APP_STORE_VERSION_ID
+  end
+rescue AscError => e
+  puts "Warning: could not list items for review submission #{submission_id}: #{e.message}"
+  false
+end
+
+def add_version_to_submission(submission_id)
+  request(
+    :post,
+    "/v1/reviewSubmissionItems",
+    body: {
+      data: {
+        type: "reviewSubmissionItems",
         relationships: {
+          reviewSubmission: {
+            data: {
+              type: "reviewSubmissions",
+              id: submission_id
+            }
+          },
           appStoreVersion: {
             data: {
               type: "appStoreVersions",
@@ -217,37 +317,114 @@ def create_app_store_version_submission
       }
     }
   )
-  id = response.fetch("data").fetch("id")
-  puts "Created App Store version submission #{id}."
-end
-
-def wait_for_submitted_app_store_state
-  12.times do |attempt|
-    state = app_store_version_state(attempt.zero? ? "After submission" : "Rechecking submission state")
-    return state if submitted_app_store_state?(state)
-
-    sleep(10)
-  end
-
-  raise "App Store version #{APP_STORE_VERSION_ID} did not enter the review queue."
-end
-
-def submit_app_store_version
-  state = app_store_version_state("Before submission")
-  if submitted_app_store_state?(state)
-    puts "App Store version #{APP_STORE_VERSION_ID} is already submitted; continuing."
-    return
-  end
-
-  create_app_store_version_submission
-  wait_for_submitted_app_store_state
+  puts "Added App Store version #{APP_STORE_VERSION_ID} to review submission #{submission_id}."
 rescue AscError => e
-  state = app_store_version_state("After submission error")
-  if submitted_app_store_state?(state)
-    puts "App Store version #{APP_STORE_VERSION_ID} is already submitted after API status #{e.status}; continuing."
+  if [409, "409"].include?(e.status)
+    puts "Review submission item already exists or cannot be duplicated; continuing."
   else
     raise
   end
+end
+
+def create_review_submission(app_id, platform)
+  response = request(
+    :post,
+    "/v1/reviewSubmissions",
+    body: {
+      data: {
+        type: "reviewSubmissions",
+        attributes: {
+          platform: platform
+        },
+        relationships: {
+          app: {
+            data: {
+              type: "apps",
+              id: app_id
+            }
+          },
+          appStoreVersionForReview: {
+            data: {
+              type: "appStoreVersions",
+              id: APP_STORE_VERSION_ID
+            }
+          }
+        }
+      }
+    }
+  )
+  id = response.fetch("data").fetch("id")
+  puts "Created review submission #{id}."
+  id
+end
+
+def submit_review_submission(submission_id)
+  response = request(
+    :patch,
+    "/v1/reviewSubmissions/#{submission_id}",
+    body: {
+      data: {
+        type: "reviewSubmissions",
+        id: submission_id,
+        attributes: {
+          submitted: true
+        }
+      }
+    }
+  )
+  attrs = response.fetch("data").fetch("attributes", {})
+  state = attrs["state"]
+  puts "Submitted review submission #{submission_id}: state=#{state} submittedDate=#{attrs["submittedDate"] || "-"}."
+  state
+end
+
+def prepare_and_submit_existing_submission(submission_id)
+  add_version_to_submission(submission_id) unless submission_has_app_store_version?(submission_id)
+  submit_review_submission(submission_id)
+rescue AscError => e
+  if asc_error_code?(e, "ENTITY_ERROR.RELATIONSHIP.REQUIRED")
+    puts "Review submission #{submission_id} lacks the required App Store version relationship; canceling it."
+    cancel_review_submission(submission_id)
+    return nil
+  end
+
+  raise
+end
+
+def create_and_submit_review_submission(app_id, platform)
+  6.times do |attempt|
+    begin
+      submission_id = create_review_submission(app_id, platform)
+      add_version_to_submission(submission_id)
+      return submit_review_submission(submission_id)
+    rescue AscError => e
+      existing = find_open_review_submission(app_id, platform) if [409, "409"].include?(e.status)
+      state = prepare_and_submit_existing_submission(existing.fetch("id")) if existing
+      return state if state
+
+      raise unless [409, "409"].include?(e.status) && attempt < 5
+
+      puts "Review submission is still blocked by App Store Connect state; retrying."
+      sleep(10)
+    end
+  end
+end
+
+def ensure_review_submission_pending!(state)
+  return if PENDING_REVIEW_SUBMISSION_STATES.include?(state)
+
+  raise "Review submission did not enter Apple's review queue; final state was #{state || "unknown"}."
+end
+
+def submit_app_store_version
+  context = app_store_version_context("Before submission")
+  existing = find_open_review_submission(context.fetch(:app_id), context.fetch(:platform))
+  state = if existing
+            prepare_and_submit_existing_submission(existing.fetch("id"))
+          end
+  state ||= create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
+  ensure_review_submission_pending!(state)
+  app_store_version_context("After submission")
 end
 
 build = wait_for_valid_build
