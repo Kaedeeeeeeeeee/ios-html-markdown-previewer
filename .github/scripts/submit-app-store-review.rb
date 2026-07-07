@@ -544,13 +544,16 @@ def submit_app_store_version
   ensure_whats_new
   context = app_store_version_context("After metadata normalization")
   dump_readiness(context)
+  state = create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
+  ensure_review_submission_pending!(state)
+  app_store_version_context("After submission")
+rescue AscError => e
+  puts "Fresh review submission path failed; falling back to existing open submissions: #{e.message}"
   state = nil
   open_review_submissions(context.fetch(:app_id), context.fetch(:platform)).each do |existing|
     state = prepare_and_submit_existing_submission(existing.fetch("id"))
     break if state
   end
-
-  state ||= create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
   ensure_review_submission_pending!(state)
   app_store_version_context("After submission")
 end
