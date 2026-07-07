@@ -17,6 +17,10 @@ KEY_ID = ENV.fetch("ASC_API_KEY_ID")
 ISSUER_ID = ENV.fetch("ASC_API_ISSUER_ID")
 KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
 SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRIES", "4"))
+DEFAULT_WHATS_NEW = ENV.fetch(
+  "APP_STORE_CONNECT_WHATS_NEW",
+  "Fixed the iPad share sheet so sharing options are visible on iPad."
+)
 
 class AscError < StandardError
   attr_reader :status, :body
@@ -278,6 +282,39 @@ rescue AscError => e
   puts "Readiness: could not complete readiness dump: #{e.message}"
 end
 
+def ensure_whats_new
+  localizations = request(
+    :get,
+    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}/appStoreVersionLocalizations",
+    query: {
+      "limit" => "50",
+      "fields[appStoreVersionLocalizations]" => "locale,whatsNew"
+    }
+  ).fetch("data", [])
+
+  localizations.each do |localization|
+    attrs = localization.fetch("attributes", {})
+    next unless attrs["whatsNew"].to_s.empty?
+
+    request(
+      :patch,
+      "/v1/appStoreVersionLocalizations/#{localization.fetch("id")}",
+      body: {
+        data: {
+          type: "appStoreVersionLocalizations",
+          id: localization.fetch("id"),
+          attributes: {
+            whatsNew: DEFAULT_WHATS_NEW
+          }
+        }
+      }
+    )
+    puts "Updated missing What's New for #{attrs["locale"]}."
+  end
+rescue AscError => e
+  puts "Warning: could not update missing What's New text: #{e.message}"
+end
+
 def list_review_submissions(app_id, platform, states: OPEN_REVIEW_SUBMISSION_STATES)
   query = {
     "filter[app]" => app_id,
@@ -504,6 +541,8 @@ end
 
 def submit_app_store_version
   context = app_store_version_context("Before submission")
+  ensure_whats_new
+  context = app_store_version_context("After metadata normalization")
   dump_readiness(context)
   state = nil
   open_review_submissions(context.fetch(:app_id), context.fetch(:platform)).each do |existing|
