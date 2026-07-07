@@ -286,14 +286,6 @@ def submit_review_submission(submission_id)
         id: submission_id,
         attributes: {
           submitted: true
-        },
-        relationships: {
-          appStoreVersionForReview: {
-            data: {
-              type: "appStoreVersions",
-              id: APP_STORE_VERSION_ID
-            }
-          }
         }
       }
     }
