@@ -2,6 +2,20 @@ import XCTest
 
 @MainActor
 final class SmokeUITests: XCTestCase {
+    func testPreviewShareSheetShowsVisibleOptions() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=html"]
+        app.launch()
+
+        XCTAssertTrue(app.buttons["share-file-button"].waitForExistence(timeout: 10))
+        tapElement(app.buttons["share-file-button"], app: app)
+        XCTAssertTrue(
+            waitForAnyLabel(["Copy", "Save to Files", "More"], app: app),
+            "Share sheet did not show visible share options"
+        )
+    }
+
     func testBuiltInSamplesAndSettingsSmoke() throws {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -110,6 +124,18 @@ final class SmokeUITests: XCTestCase {
             RunLoop.current.run(until: Date().addingTimeInterval(1))
         }
         return settingsScreenExists(app: app)
+    }
+
+    private func waitForAnyLabel(_ labels: [String], app: XCUIApplication) -> Bool {
+        for _ in 0..<10 {
+            if labels.contains(where: { app.descendants(matching: .any)[$0].exists }) {
+                return true
+            }
+
+            RunLoop.current.run(until: Date().addingTimeInterval(0.5))
+        }
+
+        return false
     }
 
     private func settingsScreenExists(app: XCUIApplication) -> Bool {

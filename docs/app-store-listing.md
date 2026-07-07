@@ -8,11 +8,13 @@
 - No ads.
 - No account system.
 
-## Name And Subtitle
+## Localized Store Listings
 
-Name: HTML Previewer
+Use these locales in App Store Connect for the first localized release:
 
-Subtitle: Local HTML and Markdown viewer
+- `en-US`
+- `zh-Hans`
+- `ja`
 
 ## App Information URLs
 
@@ -20,11 +22,17 @@ Privacy Policy URL: https://gist.github.com/Kaedeeeeeeeeee/b3baa9048f37467e51bd9
 
 Support URL: https://gist.github.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5abd59c
 
-## Promotional Text
+## en-US
+
+Name: HTML Previewer
+
+Subtitle: Local HTML and Markdown viewer
+
+Promotional Text:
 
 Open local HTML, Markdown, and ZIP report packages on iPhone and iPad. Files stay on device, with safe HTML preview enabled by default.
 
-## Description
+Description:
 
 HTML Previewer is a focused local file viewer for HTML, Markdown, and ZIP report packages.
 
@@ -49,9 +57,87 @@ Privacy and business model:
 
 Safe HTML preview disables page JavaScript and blocks external network resources by default. Interactive mode is available for trusted files.
 
-## Keywords
+Keywords:
 
 HTML viewer, Markdown viewer, local HTML, offline report, file preview, ZIP report, MD viewer
+
+## zh-Hans
+
+Name: HTML 预览器
+
+Subtitle: 本地 HTML 与 Markdown 查看器
+
+Promotional Text:
+
+在 iPhone 和 iPad 上打开本地 HTML、Markdown 和 ZIP 报告包。文件保留在设备上，默认启用安全 HTML 预览。
+
+Description:
+
+HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Markdown 和 ZIP 报告包。
+
+当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 `.html`、`.htm`、`.md`、`.markdown` 或 `.zip` 文件时，可以直接在 iPhone 或 iPad 上查看。
+
+功能：
+- 默认启用安全模式的本地 HTML 预览
+- 常见 Markdown 文档阅读视图
+- 导入 ZIP 报告包并加载本地 CSS 与图片资源
+- 最近文件列表
+- 原始文本备用查看
+- 文件详情
+- 内置 HTML、Markdown、ZIP 示例
+
+隐私与商业模式：
+- 文件在设备本地处理
+- 不上传文件
+- 无账号
+- 无广告
+- 无订阅
+- 付费下载，无 App 内购买
+
+安全 HTML 预览默认禁用页面 JavaScript，并阻止外部网络资源。可信文件可以使用交互模式。
+
+Keywords:
+
+HTML查看器,Markdown查看器,本地HTML,离线报告,文件预览,ZIP报告,MD查看器
+
+## ja
+
+Name: HTMLプレビュー
+
+Subtitle: ローカルHTML/Markdownビューア
+
+Promotional Text:
+
+iPhoneとiPadでローカルのHTML、Markdown、ZIPレポートを開けます。ファイルは端末内に保存され、安全なHTMLプレビューが標準で有効です。
+
+Description:
+
+HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端末内で閲覧するためのシンプルなファイルビューアです。
+
+「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから `.html`、`.htm`、`.md`、`.markdown`、`.zip` ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
+
+主な機能:
+- 安全モードが標準で有効なローカルHTMLプレビュー
+- 一般的なMarkdown文書の閲覧ビュー
+- ローカルCSSや画像を含むZIPレポートパッケージの取り込み
+- 最近使ったファイル一覧
+- テキスト表示へのフォールバック
+- ファイル詳細
+- HTML、Markdown、ZIPの内蔵サンプル
+
+プライバシーと購入方式:
+- ファイルは端末内で処理
+- ファイルのアップロードなし
+- アカウント不要
+- 広告なし
+- サブスクリプションなし
+- 有料ダウンロード、App内課金なし
+
+安全なHTMLプレビューでは、ページのJavaScriptと外部ネットワークリソースを標準でブロックします。信頼できるファイルではインタラクティブモードを使用できます。
+
+Keywords:
+
+HTMLビューア,Markdownビューア,ローカルHTML,オフラインレポート,ファイルプレビュー,ZIPレポート,MDビューア
 
 ## Review Notes
 

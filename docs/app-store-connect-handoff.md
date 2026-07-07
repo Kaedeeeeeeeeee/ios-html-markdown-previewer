@@ -76,7 +76,16 @@ Fields that require account-owner input:
 
 ## Screenshots
 
-Upload screenshots from `docs/app-store-screenshots/`.
+Upload screenshots from the locale-specific folders under
+`docs/app-store-screenshots/`.
+
+| App Store Connect locale | Screenshot folder |
+|---|---|
+| `en-US` | `docs/app-store-screenshots/en-US/` |
+| `zh-Hans` | `docs/app-store-screenshots/zh-Hans/` |
+| `ja` | `docs/app-store-screenshots/ja/` |
+
+The root screenshot files are an `en-US` compatibility copy for release audits.
 
 | App Store Connect slot | Files |
 |---|---|

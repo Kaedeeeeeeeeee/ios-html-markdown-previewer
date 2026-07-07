@@ -10,9 +10,13 @@ jobs:
   upload:
     name: Archive and Upload Build
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
+      APP_STORE_CONNECT_APP_ID: "6785794966"
+      APP_STORE_CONNECT_VERSION_ID: "2729d4ec-07ba-4e36-adaf-429a9453462c"
+      APP_STORE_CONNECT_BUILD_NUMBER: "3"
+      APP_STORE_CONNECT_PLATFORM: IOS
       APPLE_TEAM_ID: Y4FV6WUU4V
       ASC_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
       ASC_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
@@ -118,6 +122,9 @@ jobs:
             -authenticationKeyPath "$ASC_API_KEY_PATH" \
             -authenticationKeyID "$ASC_API_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_API_ISSUER_ID"
+
+      - name: Select build and submit for review
+        run: ruby .github/scripts/submit-app-store-review.rb
 
       - name: Upload export logs
         if: always()

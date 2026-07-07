@@ -14,15 +14,15 @@ enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable,
     var displayName: String {
         switch self {
         case .html:
-            "HTML"
+            AppStrings.DocumentTypes.html
         case .markdown:
-            "Markdown"
+            AppStrings.DocumentTypes.markdown
         case .zipPackage:
-            "ZIP"
+            AppStrings.DocumentTypes.zip
         case .plainText:
-            "Text"
+            AppStrings.DocumentTypes.text
         case .unsupported:
-            "Unsupported"
+            AppStrings.DocumentTypes.unsupported
         }
     }
 

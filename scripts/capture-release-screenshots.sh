@@ -5,6 +5,8 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/HTMLMarkdownPreviewer.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/DerivedData"
 OUT_DIR="${OUT_DIR:-$ROOT_DIR/docs/app-store-screenshots}"
+SCREENSHOT_LOCALES="${SCREENSHOT_LOCALES:-en-US|en|en_US zh-Hans|zh-Hans|zh_Hans_CN ja|ja|ja_JP}"
+ROOT_SCREENSHOT_LOCALE="${ROOT_SCREENSHOT_LOCALE:-en-US}"
 BUNDLE_ID="com.kaede.htmlmarkdownpreviewer"
 SCHEME="HTMLMarkdownPreviewer"
 
@@ -77,32 +79,77 @@ PY
 
 capture() {
   local device="$1"
-  local output_name="$2"
-  shift 2
+  local output_dir="$2"
+  local output_name="$3"
+  local language="$4"
+  local apple_locale="$5"
+  shift 5
 
+  mkdir -p "$output_dir"
   xcrun simctl terminate "$device" "$BUNDLE_ID" >/dev/null 2>&1 || true
-  xcrun simctl launch --terminate-running-process "$device" "$BUNDLE_ID" "$@" >/dev/null
-  sleep "${SCREENSHOT_WAIT_SECONDS:-4}"
-  xcrun simctl io "$device" screenshot "$OUT_DIR/$output_name.png" >/dev/null
-  sips -g pixelWidth -g pixelHeight "$OUT_DIR/$output_name.png" | sed "s#^#$output_name: #"
+  xcrun simctl launch --terminate-running-process "$device" "$BUNDLE_ID" \
+    -AppleLanguages "($language)" \
+    -AppleLocale "$apple_locale" \
+    "$@" >/dev/null
+
+  wait_seconds="${SCREENSHOT_WAIT_SECONDS:-8}"
+  for argument in "$@"; do
+    if [[ "$argument" == --screenshot-sample=* ]]; then
+      wait_seconds="${SCREENSHOT_SAMPLE_WAIT_SECONDS:-20}"
+      break
+    fi
+  done
+  sleep "$wait_seconds"
+
+  xcrun simctl io "$device" screenshot "$output_dir/$output_name.png" >/dev/null
+  sips -g pixelWidth -g pixelHeight "$output_dir/$output_name.png" | sed "s#^#$output_name: #"
 }
 
 capture_set() {
   local device="$1"
   local prefix="$2"
+  local output_dir="$3"
+  local language="$4"
+  local apple_locale="$5"
 
   boot_and_install "$device"
-  capture "$device" "$prefix-01-home" --screenshot-reset-library
-  capture "$device" "$prefix-02-html-safe-preview" --screenshot-reset-library --screenshot-sample=html
-  capture "$device" "$prefix-03-markdown-preview" --screenshot-reset-library --screenshot-sample=markdown
-  capture "$device" "$prefix-04-zip-report-preview" --screenshot-reset-library --screenshot-sample=zipPackage
-  capture "$device" "$prefix-05-settings" --screenshot-reset-library --screenshot-settings
+  capture "$device" "$output_dir" "$prefix-01-home" "$language" "$apple_locale" --screenshot-reset-library
+  capture "$device" "$output_dir" "$prefix-02-html-safe-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=html
+  capture "$device" "$output_dir" "$prefix-03-markdown-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=markdown
+  capture "$device" "$output_dir" "$prefix-04-zip-report-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=zipPackage
+  capture "$device" "$output_dir" "$prefix-05-settings" "$language" "$apple_locale" --screenshot-reset-library --screenshot-settings
 }
 
-echo "Capturing iPhone screenshots on $IPHONE_DEVICE..."
-capture_set "$IPHONE_DEVICE" "iphone"
+mirror_root_locale() {
+  local store_locale="$1"
+  local locale_dir="$OUT_DIR/$store_locale"
 
-echo "Capturing iPad screenshots on $IPAD_DEVICE..."
-capture_set "$IPAD_DEVICE" "ipad"
+  if [[ "$store_locale" != "$ROOT_SCREENSHOT_LOCALE" ]]; then
+    return
+  fi
+
+  for screenshot in "$locale_dir"/*.png; do
+    cp "$screenshot" "$OUT_DIR/$(basename "$screenshot")"
+  done
+}
+
+for locale_definition in $SCREENSHOT_LOCALES; do
+  IFS='|' read -r store_locale language apple_locale <<< "$locale_definition"
+  if [[ -z "${store_locale:-}" || -z "${language:-}" || -z "${apple_locale:-}" ]]; then
+    printf 'Invalid SCREENSHOT_LOCALES entry: %s\n' "$locale_definition" >&2
+    exit 1
+  fi
+
+  locale_dir="$OUT_DIR/$store_locale"
+  mkdir -p "$locale_dir"
+
+  echo "Capturing $store_locale iPhone screenshots on $IPHONE_DEVICE..."
+  capture_set "$IPHONE_DEVICE" "iphone" "$locale_dir" "$language" "$apple_locale"
+
+  echo "Capturing $store_locale iPad screenshots on $IPAD_DEVICE..."
+  capture_set "$IPAD_DEVICE" "ipad" "$locale_dir" "$language" "$apple_locale"
+
+  mirror_root_locale "$store_locale"
+done
 
 echo "Screenshots written to $OUT_DIR"

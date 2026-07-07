@@ -39,7 +39,7 @@ Use this runbook after physical-device validation passes and a completed result 
 3. Confirm no in-app purchase products are configured for MVP.
 4. Enter the app record, pricing, listing, privacy, age rating, export compliance, support URL, privacy policy URL, and review notes using `docs/app-store-connect-handoff.md` and `docs/app-store-listing.md`.
 5. Confirm the public privacy policy and support gist URLs in `docs/app-store-listing.md` are reachable before submission.
-6. Upload screenshots from `docs/app-store-screenshots/`.
+6. Upload locale-specific screenshots from `docs/app-store-screenshots/en-US/`, `docs/app-store-screenshots/zh-Hans/`, and `docs/app-store-screenshots/ja/`.
 7. Set privacy labels to "Data Not Collected" to match the app behavior and privacy manifest.
 8. Confirm export compliance answers match `ITSAppUsesNonExemptEncryption=false`.
 9. Add the uploaded build after it finishes App Store Connect processing.

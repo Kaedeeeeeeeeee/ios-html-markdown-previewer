@@ -13,51 +13,51 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("HTML") {
-                    settingsRow("Default Mode", value: PreviewMode.safePreview.displayName)
-                    settingsRow("Safe JavaScript", value: "Disabled")
-                    settingsRow("Safe External Resources", value: "Blocked")
+                Section(AppStrings.Settings.htmlSection) {
+                    settingsRow(AppStrings.Settings.defaultMode, value: PreviewMode.safePreview.displayName)
+                    settingsRow(AppStrings.Settings.safeJavaScript, value: AppStrings.Settings.disabled)
+                    settingsRow(AppStrings.Settings.safeExternalResources, value: AppStrings.Settings.blocked)
                 }
 
-                Section("Storage") {
-                    settingsRow("Imported Files", value: "Stored in App")
+                Section(AppStrings.Settings.storageSection) {
+                    settingsRow(AppStrings.Settings.importedFiles, value: AppStrings.Settings.storedInApp)
 
                     Button(role: .destructive) {
                         isClearConfirmationPresented = true
                     } label: {
-                        Label("Clear Imported Files", systemImage: "trash")
+                        Label(AppStrings.Actions.clearImportedFiles, systemImage: "trash")
                     }
                     .foregroundStyle(.red)
                     .accessibilityIdentifier("clear-imported-files-button")
                 }
 
-                Section("ZIP Limits") {
-                    settingsRow("Archive", value: byteCount(zipLimits.maxArchiveBytes))
-                    settingsRow("Single File", value: byteCount(zipLimits.maxSingleFileBytes))
-                    settingsRow("Expanded", value: byteCount(zipLimits.maxTotalUncompressedBytes))
-                    settingsRow("Files", value: "\(zipLimits.maxFileCount)")
+                Section(AppStrings.Settings.zipLimitsSection) {
+                    settingsRow(AppStrings.Settings.archive, value: byteCount(zipLimits.maxArchiveBytes))
+                    settingsRow(AppStrings.Settings.singleFile, value: byteCount(zipLimits.maxSingleFileBytes))
+                    settingsRow(AppStrings.Settings.expanded, value: byteCount(zipLimits.maxTotalUncompressedBytes))
+                    settingsRow(AppStrings.Settings.files, value: "\(zipLimits.maxFileCount)")
                 }
 
-                Section("Privacy") {
-                    settingsRow("Processing", value: "On Device")
-                    settingsRow("Account", value: "None")
-                    settingsRow("Ads", value: "None")
+                Section(AppStrings.Settings.privacySection) {
+                    settingsRow(AppStrings.Settings.processing, value: AppStrings.Settings.onDevice)
+                    settingsRow(AppStrings.Settings.account, value: AppStrings.Settings.none)
+                    settingsRow(AppStrings.Settings.ads, value: AppStrings.Settings.none)
                 }
             }
             .accessibilityIdentifier("settings-screen")
-            .navigationTitle("Settings")
+            .navigationTitle(AppStrings.Settings.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button(AppStrings.Actions.done) {
                         dismiss()
                     }
                     .accessibilityIdentifier("settings-done-button")
                 }
             }
         }
-        .confirmationDialog("Clear Imported Files?", isPresented: $isClearConfirmationPresented) {
-            Button("Clear Imported Files", role: .destructive) {
+        .confirmationDialog(AppStrings.Settings.clearImportedFilesTitle, isPresented: $isClearConfirmationPresented) {
+            Button(AppStrings.Actions.clearImportedFiles, role: .destructive) {
                 clearImports()
             }
             Button(AppStrings.Actions.cancel, role: .cancel) {}
@@ -72,7 +72,7 @@ struct SettingsView: View {
     }
 
     private func byteCount(_ value: UInt64) -> String {
-        ByteCountFormatter.string(fromByteCount: Int64(value), countStyle: .file)
+        AppFormatters.byteCount(Int64(value))
     }
 
     private func settingsRow(_ title: String, value: String) -> some View {

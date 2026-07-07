@@ -13,13 +13,13 @@ enum ImportSource: String, CaseIterable, Codable, Hashable, Identifiable, Sendab
     var displayName: String {
         switch self {
         case .fileImporter:
-            "File Picker"
+            AppStrings.ImportSources.filePicker
         case .externalOpen:
-            "External Open"
+            AppStrings.ImportSources.externalOpen
         case .zipArchive:
-            "ZIP Archive"
+            AppStrings.ImportSources.zipArchive
         case .bundledSample:
-            "Built-in Sample"
+            AppStrings.ImportSources.builtInSample
         }
     }
 }

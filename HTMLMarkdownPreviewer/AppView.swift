@@ -26,19 +26,19 @@ struct AppView: View {
                     Button {
                         presentImporter(scope: .previewDocument)
                     } label: {
-                        Label("Open File", systemImage: "doc.badge.plus")
+                        Label(AppStrings.Actions.openFile, systemImage: "doc.badge.plus")
                     }
                     .accessibilityIdentifier("open-file-button")
 
                     Button {
                         presentImporter(scope: .zipPackage)
                     } label: {
-                        Label("Open ZIP Package", systemImage: "archivebox")
+                        Label(AppStrings.Actions.openZIPPackage, systemImage: "archivebox")
                     }
                     .accessibilityIdentifier("open-zip-package-button")
                 }
 
-                Section("Samples") {
+                Section(AppStrings.Home.samples) {
                     ForEach(BuiltInSample.allCases) { sample in
                         Button {
                             importSample(sample)
@@ -51,13 +51,13 @@ struct AppView: View {
 
                 if documents.isEmpty {
                     ContentUnavailableView(
-                        "No Recent Files",
+                        AppStrings.Home.noRecentFiles,
                         systemImage: "tray",
-                        description: Text("Open an HTML, Markdown, or ZIP file.")
+                        description: Text(AppStrings.Home.noRecentFilesDescription)
                     )
                     .listRowBackground(Color.clear)
                 } else {
-                    Section("Recent") {
+                    Section(AppStrings.Home.recent) {
                         ForEach(documents) { document in
                             NavigationLink(value: document) {
                                 DocumentRow(document: document)
@@ -68,7 +68,7 @@ struct AppView: View {
                     }
                 }
             }
-            .navigationTitle("HTML Previewer")
+            .navigationTitle(AppStrings.App.title)
             .navigationDestination(for: PreviewDocument.self) { document in
                 DocumentPreviewView(document: document, store: store)
                     .onAppear {
@@ -82,7 +82,7 @@ struct AppView: View {
                     } label: {
                         Image(systemName: "gearshape")
                     }
-                    .accessibilityLabel("Settings")
+                    .accessibilityLabel(AppStrings.Accessibility.settings)
                     .accessibilityIdentifier("settings-button")
                 }
 
@@ -294,7 +294,7 @@ private struct DocumentRow: View {
                     .lineLimit(1)
                 HStack(spacing: 8) {
                     Text(typeText)
-                    Text(ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file))
+                    Text(AppFormatters.byteCount(document.fileSize))
                     Text(dateText)
                 }
                 .font(.caption)
@@ -306,7 +306,7 @@ private struct DocumentRow: View {
                 .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(document.displayName), \(typeText), \(ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file)), \(dateText)")
+        .accessibilityLabel("\(document.displayName), \(typeText), \(AppFormatters.byteCount(document.fileSize)), \(dateText)")
     }
 
     private var typeText: String {
@@ -318,9 +318,7 @@ private struct DocumentRow: View {
     }
 
     private var dateText: String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .short
-        return formatter.localizedString(for: document.lastOpenedAt ?? document.importedAt, relativeTo: Date())
+        AppFormatters.relativeDate(document.lastOpenedAt ?? document.importedAt)
     }
 }
 

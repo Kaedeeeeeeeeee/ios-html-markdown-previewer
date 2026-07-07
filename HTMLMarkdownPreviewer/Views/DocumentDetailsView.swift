@@ -10,46 +10,49 @@ struct DocumentDetailsView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("File") {
-                    detailsRow("Name", value: document.originalFilename)
-                    detailsRow("Type", value: document.type.displayName)
-                    detailsRow("Entry Type", value: document.entryDocumentType.displayName)
-                    detailsRow("Size", value: ByteCountFormatter.string(fromByteCount: document.fileSize, countStyle: .file))
+                Section(AppStrings.Details.fileSection) {
+                    detailsRow(AppStrings.Details.name, value: document.originalFilename)
+                    detailsRow(AppStrings.Details.type, value: document.type.displayName)
+                    detailsRow(AppStrings.Details.entryType, value: document.entryDocumentType.displayName)
+                    detailsRow(AppStrings.Details.size, value: AppFormatters.byteCount(document.fileSize))
                 }
 
-                Section("Import") {
-                    detailsRow("Source", value: document.importSource.displayName)
-                    detailsRow("Imported", value: formatted(document.importedAt))
+                Section(AppStrings.Details.importSection) {
+                    detailsRow(AppStrings.Details.source, value: document.importSource.displayName)
+                    detailsRow(AppStrings.Details.imported, value: formatted(document.importedAt))
                     if let lastOpenedAt = document.lastOpenedAt {
-                        detailsRow("Last Opened", value: formatted(lastOpenedAt))
+                        detailsRow(AppStrings.Details.lastOpened, value: formatted(lastOpenedAt))
                     }
-                    detailsRow("Local Copy", value: "Stored in App")
+                    detailsRow(AppStrings.Details.localCopy, value: AppStrings.Settings.storedInApp)
                 }
 
-                Section("Preview") {
-                    detailsRow("Mode", value: previewMode.displayName)
-                    detailsRow("External URLs", value: externalURLText)
-                    detailsRow("Entry Path", value: document.entryFileRelativePath)
-                    detailsRow("Root Path", value: document.localRootRelativePath)
+                Section(AppStrings.Details.previewSection) {
+                    detailsRow(AppStrings.Details.mode, value: previewMode.displayName)
+                    detailsRow(AppStrings.Details.externalURLs, value: externalURLText)
+                    detailsRow(AppStrings.Details.entryPath, value: document.entryFileRelativePath)
+                    detailsRow(AppStrings.Details.rootPath, value: document.localRootRelativePath)
                 }
 
                 if document.type == .zipPackage {
-                    Section("ZIP") {
+                    Section(AppStrings.Details.zipSection) {
                         if let extractedFileCount = document.extractedFileCount {
-                            detailsRow("Files", value: "\(extractedFileCount)")
+                            detailsRow(AppStrings.Settings.files, value: "\(extractedFileCount)")
                         }
                         if let totalUncompressedBytes = document.totalUncompressedBytes {
-                            detailsRow("Expanded", value: ByteCountFormatter.string(fromByteCount: Int64(totalUncompressedBytes), countStyle: .file))
+                            detailsRow(
+                                AppStrings.Settings.expanded,
+                                value: AppFormatters.byteCount(Int64(totalUncompressedBytes))
+                            )
                         }
                     }
                 }
             }
             .accessibilityIdentifier("document-details-screen")
-            .navigationTitle("Details")
+            .navigationTitle(AppStrings.Details.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button(AppStrings.Actions.done) {
                         dismiss()
                     }
                     .accessibilityIdentifier("document-details-done-button")
@@ -71,19 +74,19 @@ struct DocumentDetailsView: View {
     }
 
     private func formatted(_ date: Date) -> String {
-        date.formatted(date: .abbreviated, time: .shortened)
+        AppFormatters.dateTime(date)
     }
 
     private var externalURLText: String {
         guard let count = document.externalURLCount else {
-            return "Not scanned"
+            return AppStrings.Details.notScanned
         }
 
         if count == 0 {
-            return "None detected"
+            return AppStrings.Details.noneDetected
         }
 
-        return "\(count) detected"
+        return AppStrings.Details.detectedExternalURLs(count)
     }
 }
 

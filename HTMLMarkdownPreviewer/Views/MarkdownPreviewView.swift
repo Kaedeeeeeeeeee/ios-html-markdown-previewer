@@ -184,14 +184,14 @@ private struct MarkdownImageView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .accessibilityLabel(image.altText.isEmpty ? "Markdown image" : image.altText)
+                    .accessibilityLabel(image.altText.isEmpty ? AppStrings.Accessibility.markdownImage : image.altText)
             } else {
-                placeholder("Local image unavailable", detail: image.source)
+                placeholder(AppStrings.MarkdownImages.localUnavailable, detail: image.source)
             }
         case .remoteBlocked(let source):
-            placeholder("Remote image blocked", detail: source)
+            placeholder(AppStrings.MarkdownImages.remoteBlocked, detail: source)
         case .unsupported(let source):
-            placeholder("Unsupported image", detail: source)
+            placeholder(AppStrings.MarkdownImages.unsupported, detail: source)
         }
     }
 

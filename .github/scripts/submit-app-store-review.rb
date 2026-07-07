@@ -1,0 +1,257 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "base64"
+require "json"
+require "net/http"
+require "openssl"
+require "time"
+require "uri"
+
+API_BASE = "https://api.appstoreconnect.apple.com"
+APP_ID = ENV.fetch("APP_STORE_CONNECT_APP_ID")
+APP_STORE_VERSION_ID = ENV.fetch("APP_STORE_CONNECT_VERSION_ID")
+BUILD_NUMBER = ENV.fetch("APP_STORE_CONNECT_BUILD_NUMBER")
+PLATFORM = ENV.fetch("APP_STORE_CONNECT_PLATFORM", "IOS")
+KEY_ID = ENV.fetch("ASC_API_KEY_ID")
+ISSUER_ID = ENV.fetch("ASC_API_ISSUER_ID")
+KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
+
+class AscError < StandardError
+  attr_reader :status, :body
+
+  def initialize(status, body)
+    @status = status
+    @body = body
+    super("App Store Connect API returned #{status}: #{JSON.pretty_generate(body)}")
+  end
+end
+
+def base64url(value)
+  Base64.urlsafe_encode64(value).delete("=")
+end
+
+def raw_ecdsa_signature(der_signature)
+  sequence = OpenSSL::ASN1.decode(der_signature)
+  sequence.value.map { |integer| integer.value.to_s(2).rjust(32, "\0")[-32, 32] }.join
+end
+
+def jwt_token
+  key = OpenSSL::PKey.read(File.read(KEY_PATH))
+  now = Time.now.to_i
+  header = { alg: "ES256", kid: KEY_ID, typ: "JWT" }
+  payload = { iss: ISSUER_ID, iat: now, exp: now + 20 * 60, aud: "appstoreconnect-v1" }
+  signing_input = [base64url(JSON.generate(header)), base64url(JSON.generate(payload))].join(".")
+  signature = raw_ecdsa_signature(key.sign(OpenSSL::Digest.new("SHA256"), signing_input))
+  [signing_input, base64url(signature)].join(".")
+end
+
+def request(method, path, query: nil, body: nil)
+  uri = URI("#{API_BASE}#{path}")
+  uri.query = URI.encode_www_form(query) if query
+
+  klass = {
+    get: Net::HTTP::Get,
+    post: Net::HTTP::Post,
+    patch: Net::HTTP::Patch
+  }.fetch(method)
+
+  attempts = 0
+  begin
+    attempts += 1
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.open_timeout = 20
+    http.read_timeout = 90
+
+    req = klass.new(uri)
+    req["Authorization"] = "Bearer #{jwt_token}"
+    req["Content-Type"] = "application/json"
+    req.body = JSON.generate(body) if body
+
+    response = http.request(req)
+    parsed = response.body.to_s.empty? ? {} : JSON.parse(response.body)
+    return parsed if response.is_a?(Net::HTTPSuccess)
+
+    if response.code.to_i == 429 && attempts < 5
+      sleep(15 * attempts)
+      retry
+    end
+
+    raise AscError.new(response.code, parsed)
+  rescue JSON::ParserError
+    raise AscError.new("invalid-json", { raw: response&.body.to_s })
+  end
+end
+
+def fetch_builds
+  queries = [
+    ["/v1/apps/#{APP_ID}/builds", {
+      "limit" => "50",
+      "sort" => "-uploadedDate",
+      "fields[builds]" => "version,processingState,uploadedDate,expired,usesNonExemptEncryption"
+    }],
+    ["/v1/builds", {
+      "filter[app]" => APP_ID,
+      "filter[version]" => BUILD_NUMBER,
+      "limit" => "50",
+      "sort" => "-uploadedDate",
+      "fields[builds]" => "version,processingState,uploadedDate,expired,usesNonExemptEncryption"
+    }]
+  ]
+
+  last_error = nil
+  queries.each do |path, query|
+    return request(:get, path, query: query).fetch("data", [])
+  rescue AscError => e
+    last_error = e
+  end
+  raise last_error
+end
+
+def wait_for_valid_build
+  60.times do |attempt|
+    builds = fetch_builds.select do |build|
+      build.fetch("attributes", {}).fetch("version", nil) == BUILD_NUMBER &&
+        build.fetch("attributes", {}).fetch("expired", false) != true
+    end
+
+    build = builds.first
+    if build
+      attrs = build.fetch("attributes", {})
+      puts "Found build #{BUILD_NUMBER}: id=#{build.fetch("id")} processingState=#{attrs["processingState"]}"
+      return build if attrs["processingState"] == "VALID"
+    else
+      puts "Build #{BUILD_NUMBER} is not visible in App Store Connect yet."
+    end
+
+    sleep(attempt < 10 ? 30 : 60)
+  end
+
+  raise "Timed out waiting for App Store Connect build #{BUILD_NUMBER} to become VALID"
+end
+
+def patch_build_encryption(build_id)
+  request(
+    :patch,
+    "/v1/builds/#{build_id}",
+    body: {
+      data: {
+        type: "builds",
+        id: build_id,
+        attributes: {
+          usesNonExemptEncryption: false
+        }
+      }
+    }
+  )
+  puts "Marked build #{build_id} usesNonExemptEncryption=false."
+rescue AscError => e
+  puts "Warning: could not update build encryption flag: #{e.message}"
+end
+
+def attach_build_to_version(build_id)
+  request(
+    :patch,
+    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}/relationships/build",
+    body: {
+      data: {
+        type: "builds",
+        id: build_id
+      }
+    }
+  )
+  puts "Attached build #{build_id} to App Store version #{APP_STORE_VERSION_ID}."
+end
+
+def create_review_submission
+  response = request(
+    :post,
+    "/v1/reviewSubmissions",
+    body: {
+      data: {
+        type: "reviewSubmissions",
+        attributes: {
+          platform: PLATFORM
+        },
+        relationships: {
+          app: {
+            data: {
+              type: "apps",
+              id: APP_ID
+            }
+          }
+        }
+      }
+    }
+  )
+  id = response.fetch("data").fetch("id")
+  puts "Created review submission #{id}."
+  id
+rescue AscError => e
+  match = JSON.generate(e.body).match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)
+  raise unless match
+
+  id = match[0]
+  puts "Using existing in-progress review submission #{id}."
+  id
+end
+
+def add_version_to_submission(submission_id)
+  request(
+    :post,
+    "/v1/reviewSubmissionItems",
+    body: {
+      data: {
+        type: "reviewSubmissionItems",
+        relationships: {
+          reviewSubmission: {
+            data: {
+              type: "reviewSubmissions",
+              id: submission_id
+            }
+          },
+          appStoreVersion: {
+            data: {
+              type: "appStoreVersions",
+              id: APP_STORE_VERSION_ID
+            }
+          }
+        }
+      }
+    }
+  )
+  puts "Added App Store version #{APP_STORE_VERSION_ID} to review submission #{submission_id}."
+rescue AscError => e
+  if [409, "409"].include?(e.status)
+    puts "Review submission item already exists or cannot be duplicated; continuing."
+  else
+    raise
+  end
+end
+
+def submit_review_submission(submission_id)
+  response = request(
+    :patch,
+    "/v1/reviewSubmissions/#{submission_id}",
+    body: {
+      data: {
+        type: "reviewSubmissions",
+        id: submission_id,
+        attributes: {
+          submitted: true
+        }
+      }
+    }
+  )
+  attrs = response.fetch("data").fetch("attributes", {})
+  puts "Submitted review submission #{submission_id}: state=#{attrs["state"]} submitted=#{attrs["submitted"]}."
+end
+
+build = wait_for_valid_build
+build_id = build.fetch("id")
+patch_build_encryption(build_id)
+attach_build_to_version(build_id)
+submission_id = create_review_submission
+add_version_to_submission(submission_id)
+submit_review_submission(submission_id)

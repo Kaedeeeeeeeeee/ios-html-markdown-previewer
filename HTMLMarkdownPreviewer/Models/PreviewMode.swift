@@ -12,11 +12,11 @@ enum PreviewMode: String, CaseIterable, Codable, Hashable, Identifiable, Sendabl
     var displayName: String {
         switch self {
         case .safePreview:
-            "Safe Preview"
+            AppStrings.PreviewModes.safePreview
         case .interactive:
-            "Interactive"
+            AppStrings.PreviewModes.interactive
         case .rawText:
-            "Raw Text"
+            AppStrings.PreviewModes.rawText
         }
     }
 

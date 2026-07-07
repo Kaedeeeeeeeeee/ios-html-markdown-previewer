@@ -55,23 +55,23 @@ struct DocumentPreviewView: View {
                     } label: {
                         Image(systemName: previewModeIcon)
                     }
-                    .accessibilityLabel("Preview Mode")
-                    .accessibilityHint("Choose rendered, safe, interactive, or raw text preview.")
+                    .accessibilityLabel(AppStrings.Accessibility.previewMode)
+                    .accessibilityHint(AppStrings.Accessibility.previewModeHint)
                     .accessibilityIdentifier("preview-mode-menu")
                 }
 
-                ShareLink(item: store.entryFileURL(for: document)) {
-                    Image(systemName: "square.and.arrow.up")
-                }
-                .accessibilityLabel("Share File")
-                .accessibilityIdentifier("share-file-button")
+                ShareSheetButton(
+                    fileURL: store.entryFileURL(for: document),
+                    accessibilityLabel: AppStrings.Accessibility.shareFile,
+                    accessibilityIdentifier: "share-file-button"
+                )
 
                 Button {
                     isDetailsPresented = true
                 } label: {
                     Image(systemName: "info.circle")
                 }
-                .accessibilityLabel("File Details")
+                .accessibilityLabel(AppStrings.Accessibility.fileDetails)
                 .accessibilityIdentifier("file-details-button")
             }
         }
@@ -138,7 +138,7 @@ struct DocumentPreviewView: View {
                 setPreviewMode(.safePreview)
             } label: {
                 Label(
-                    "Rendered Preview",
+                    AppStrings.PreviewModes.renderedPreview,
                     systemImage: previewMode == .rawText ? "text.alignleft" : "checkmark.circle"
                 )
             }
@@ -146,25 +146,31 @@ struct DocumentPreviewView: View {
             Button {
                 setPreviewMode(.rawText)
             } label: {
-                Label("Raw Text", systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
+                Label(AppStrings.PreviewModes.rawText, systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
             }
         } else {
             Button {
                 setPreviewMode(.safePreview)
             } label: {
-                Label("Safe Preview", systemImage: previewMode == .safePreview ? "checkmark.shield" : "lock.shield")
+                Label(
+                    AppStrings.PreviewModes.safePreview,
+                    systemImage: previewMode == .safePreview ? "checkmark.shield" : "lock.shield"
+                )
             }
 
             Button {
                 isInteractiveConfirmationPresented = true
             } label: {
-                Label("Interactive Mode", systemImage: previewMode == .interactive ? "checkmark.circle" : "bolt")
+                Label(
+                    AppStrings.PreviewModes.interactive,
+                    systemImage: previewMode == .interactive ? "checkmark.circle" : "bolt"
+                )
             }
 
             Button {
                 setPreviewMode(.rawText)
             } label: {
-                Label("Raw Text", systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
+                Label(AppStrings.PreviewModes.rawText, systemImage: previewMode == .rawText ? "checkmark.circle" : "doc.text")
             }
         }
     }

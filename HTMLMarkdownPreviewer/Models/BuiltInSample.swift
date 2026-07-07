@@ -12,22 +12,22 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
     var title: String {
         switch self {
         case .html:
-            "HTML Sample"
+            AppStrings.Samples.htmlTitle
         case .markdown:
-            "Markdown Sample"
+            AppStrings.Samples.markdownTitle
         case .zipPackage:
-            "ZIP Report Sample"
+            AppStrings.Samples.zipTitle
         }
     }
 
     var subtitle: String {
         switch self {
         case .html:
-            "Single-file HTML"
+            AppStrings.Samples.htmlSubtitle
         case .markdown:
-            "Formatted Markdown"
+            AppStrings.Samples.markdownSubtitle
         case .zipPackage:
-            "HTML with local assets"
+            AppStrings.Samples.zipSubtitle
         }
     }
 

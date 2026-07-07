@@ -58,10 +58,12 @@ final class BuiltInSampleProvider {
 }
 
 private extension BuiltInSampleProvider {
-    static let htmlSample = """
+    static var htmlSample: String {
+        """
     <!doctype html>
     <html>
     <head>
+      <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <style>
         body { font: -apple-system-body; margin: 32px; line-height: 1.5; }
@@ -70,46 +72,52 @@ private extension BuiltInSampleProvider {
       </style>
     </head>
     <body>
-      <h1>HTML Preview Sample</h1>
-      <p>This file is rendered locally in safe preview mode.</p>
-      <p>Inline styles work, while external network resources are blocked by default.</p>
+      <h1>\(AppStrings.SampleContent.htmlHeading)</h1>
+      <p>\(AppStrings.SampleContent.htmlLocalRendering)</p>
+      <p>\(AppStrings.SampleContent.htmlExternalResources)</p>
       <p><code>sample.html</code></p>
     </body>
     </html>
     """
+    }
 
-    static let markdownSample = """
-    # Markdown Preview Sample
+    static var markdownSample: String {
+        """
+    # \(AppStrings.SampleContent.markdownHeading)
 
-    This sample shows the built-in Markdown reader.
+    \(AppStrings.SampleContent.markdownIntro)
 
-    - Headings and paragraphs
-    - **Bold**, *emphasis*, and `inline code`
-    - Ordered and unordered lists
+    - \(AppStrings.SampleContent.markdownHeadings)
+    - \(AppStrings.SampleContent.markdownInlineStyles)
+    - \(AppStrings.SampleContent.markdownLists)
 
-    > Remote images are not loaded by default.
+    > \(AppStrings.SampleContent.markdownRemoteImages)
 
     ```swift
-    let mode = "Safe Preview"
+    let mode = "\(AppStrings.PreviewModes.safePreview)"
     ```
     """
+    }
 
-    static let zipHTML = """
+    static var zipHTML: String {
+        """
     <!doctype html>
     <html>
     <head>
+      <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="assets/style.css">
     </head>
     <body>
       <main>
-        <h1>ZIP Report Sample</h1>
-        <p>This HTML file uses CSS and an image stored inside the ZIP package.</p>
-        <img src="images/pixel.svg" alt="Local sample image">
+        <h1>\(AppStrings.SampleContent.zipHeading)</h1>
+        <p>\(AppStrings.SampleContent.zipLocalAssets)</p>
+        <img src="images/pixel.svg" alt="\(AppStrings.SampleContent.zipImageAlt)">
       </main>
     </body>
     </html>
     """
+    }
 
     static let zipCSS = """
     body { margin: 0; font: -apple-system-body; background: #f7f7fb; color: #1d1d1f; }
