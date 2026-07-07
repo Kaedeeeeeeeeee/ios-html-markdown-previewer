@@ -166,97 +166,47 @@ def attach_build_to_version(build_id)
   puts "Attached build #{build_id} to App Store version #{APP_STORE_VERSION_ID}."
 end
 
-def create_review_submission
+SUBMITTED_APP_STORE_STATES = %w[
+  WAITING_FOR_REVIEW
+  IN_REVIEW
+  WAITING_FOR_EXPORT_COMPLIANCE
+  PENDING_DEVELOPER_RELEASE
+  PENDING_APPLE_RELEASE
+  PROCESSING_FOR_APP_STORE
+  READY_FOR_SALE
+  READY_FOR_DISTRIBUTION
+].freeze
+
+def fetch_app_store_version
+  request(
+    :get,
+    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}",
+    query: {
+      "fields[appStoreVersions]" => "versionString,appStoreState,platform"
+    }
+  ).fetch("data")
+end
+
+def app_store_version_state(label)
+  version = fetch_app_store_version
+  attrs = version.fetch("attributes", {})
+  state = attrs.fetch("appStoreState")
+  puts "#{label}: App Store version #{attrs["versionString"]} platform=#{attrs["platform"]} appStoreState=#{state}."
+  state
+end
+
+def submitted_app_store_state?(state)
+  SUBMITTED_APP_STORE_STATES.include?(state)
+end
+
+def create_app_store_version_submission
   response = request(
     :post,
-    "/v1/reviewSubmissions",
+    "/v1/appStoreVersionSubmissions",
     body: {
       data: {
-        type: "reviewSubmissions",
-        attributes: {
-          platform: PLATFORM
-        },
+        type: "appStoreVersionSubmissions",
         relationships: {
-          app: {
-            data: {
-              type: "apps",
-              id: APP_ID
-            }
-          },
-          appStoreVersionForReview: {
-            data: {
-              type: "appStoreVersions",
-              id: APP_STORE_VERSION_ID
-            }
-          }
-        }
-      }
-    }
-  )
-  id = response.fetch("data").fetch("id")
-  puts "Created review submission #{id}."
-  id
-rescue AscError => e
-  existing = find_existing_review_submission
-  return existing if existing
-
-  match = JSON.generate(e.body).match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)
-  raise unless match
-
-  puts "Using existing in-progress review submission #{match[0]}."
-  match[0]
-end
-
-def find_existing_review_submission
-  submissions = []
-  [
-    ["/v1/apps/#{APP_ID}/reviewSubmissions", {
-      "limit" => "20",
-      "fields[reviewSubmissions]" => "platform,state,submitted"
-    }],
-    ["/v1/reviewSubmissions", {
-      "filter[app]" => APP_ID,
-      "limit" => "20",
-      "fields[reviewSubmissions]" => "platform,state,submitted"
-    }]
-  ].each do |path, query|
-    begin
-      submissions = request(:get, path, query: query).fetch("data", [])
-      break if submissions.any?
-    rescue AscError
-      next
-    end
-  end
-
-  candidate = submissions.find do |submission|
-    attrs = submission.fetch("attributes", {})
-    attrs["platform"] == PLATFORM &&
-      attrs["submitted"] != true &&
-      ["READY_FOR_REVIEW", "UNRESOLVED_ISSUES", nil].include?(attrs["state"])
-  end
-
-  return nil unless candidate
-
-  id = candidate.fetch("id")
-  attrs = candidate.fetch("attributes", {})
-  puts "Using existing review submission #{id}: state=#{attrs["state"]} submitted=#{attrs["submitted"]}."
-  id
-end
-
-def add_version_to_submission(submission_id)
-  request(
-    :post,
-    "/v1/reviewSubmissionItems",
-    body: {
-      data: {
-        type: "reviewSubmissionItems",
-        relationships: {
-          reviewSubmission: {
-            data: {
-              type: "reviewSubmissions",
-              id: submission_id
-            }
-          },
           appStoreVersion: {
             data: {
               type: "appStoreVersions",
@@ -267,37 +217,41 @@ def add_version_to_submission(submission_id)
       }
     }
   )
-  puts "Added App Store version #{APP_STORE_VERSION_ID} to review submission #{submission_id}."
+  id = response.fetch("data").fetch("id")
+  puts "Created App Store version submission #{id}."
+end
+
+def wait_for_submitted_app_store_state
+  12.times do |attempt|
+    state = app_store_version_state(attempt.zero? ? "After submission" : "Rechecking submission state")
+    return state if submitted_app_store_state?(state)
+
+    sleep(10)
+  end
+
+  raise "App Store version #{APP_STORE_VERSION_ID} did not enter the review queue."
+end
+
+def submit_app_store_version
+  state = app_store_version_state("Before submission")
+  if submitted_app_store_state?(state)
+    puts "App Store version #{APP_STORE_VERSION_ID} is already submitted; continuing."
+    return
+  end
+
+  create_app_store_version_submission
+  wait_for_submitted_app_store_state
 rescue AscError => e
-  if [409, "409"].include?(e.status)
-    puts "Review submission item already exists or cannot be duplicated; continuing."
+  state = app_store_version_state("After submission error")
+  if submitted_app_store_state?(state)
+    puts "App Store version #{APP_STORE_VERSION_ID} is already submitted after API status #{e.status}; continuing."
   else
     raise
   end
-end
-
-def submit_review_submission(submission_id)
-  response = request(
-    :patch,
-    "/v1/reviewSubmissions/#{submission_id}",
-    body: {
-      data: {
-        type: "reviewSubmissions",
-        id: submission_id,
-        attributes: {
-          submitted: true
-        }
-      }
-    }
-  )
-  attrs = response.fetch("data").fetch("attributes", {})
-  puts "Submitted review submission #{submission_id}: state=#{attrs["state"]} submitted=#{attrs["submitted"]}."
 end
 
 build = wait_for_valid_build
 build_id = build.fetch("id")
 patch_build_encryption(build_id)
 attach_build_to_version(build_id)
-submission_id = create_review_submission
-add_version_to_submission(submission_id)
-submit_review_submission(submission_id)
+submit_app_store_version
