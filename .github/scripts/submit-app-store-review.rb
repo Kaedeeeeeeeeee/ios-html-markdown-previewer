@@ -219,7 +219,7 @@ def list_review_submissions(app_id, platform, states: OPEN_REVIEW_SUBMISSION_STA
   request(:get, "/v1/reviewSubmissions", query: query).fetch("data", [])
 end
 
-def find_open_review_submission(app_id, platform)
+def open_review_submissions(app_id, platform)
   submissions = list_review_submissions(app_id, platform)
   submissions = list_review_submissions(app_id, platform, states: nil) if submissions.empty?
 
@@ -228,13 +228,13 @@ def find_open_review_submission(app_id, platform)
     puts "Review submission candidate #{submission.fetch("id")}: platform=#{attrs["platform"]} state=#{attrs["state"]}."
   end
 
-  submissions.find do |submission|
+  submissions.select do |submission|
     attrs = submission.fetch("attributes", {})
     attrs["platform"] == platform && OPEN_REVIEW_SUBMISSION_STATES.include?(attrs["state"])
   end
 rescue AscError => e
   puts "Warning: could not list review submissions: #{e.message}"
-  nil
+  []
 end
 
 def fetch_review_submission(submission_id)
@@ -384,7 +384,11 @@ def prepare_and_submit_existing_submission(submission_id)
 rescue AscError => e
   if asc_error_code?(e, "ENTITY_ERROR.RELATIONSHIP.REQUIRED")
     puts "Review submission #{submission_id} lacks the required App Store version relationship; canceling it."
-    cancel_review_submission(submission_id)
+    begin
+      cancel_review_submission(submission_id)
+    rescue AscError
+      puts "Review submission #{submission_id} cannot be canceled; skipping it."
+    end
     return nil
   end
 
@@ -398,9 +402,12 @@ def create_and_submit_review_submission(app_id, platform)
       add_version_to_submission(submission_id)
       return submit_review_submission(submission_id)
     rescue AscError => e
-      existing = find_open_review_submission(app_id, platform) if [409, "409"].include?(e.status)
-      state = prepare_and_submit_existing_submission(existing.fetch("id")) if existing
-      return state if state
+      if [409, "409"].include?(e.status)
+        open_review_submissions(app_id, platform).each do |existing|
+          state = prepare_and_submit_existing_submission(existing.fetch("id"))
+          return state if state
+        end
+      end
 
       raise unless [409, "409"].include?(e.status) && attempt < 5
 
@@ -418,10 +425,12 @@ end
 
 def submit_app_store_version
   context = app_store_version_context("Before submission")
-  existing = find_open_review_submission(context.fetch(:app_id), context.fetch(:platform))
-  state = if existing
-            prepare_and_submit_existing_submission(existing.fetch("id"))
-          end
+  state = nil
+  open_review_submissions(context.fetch(:app_id), context.fetch(:platform)).each do |existing|
+    state = prepare_and_submit_existing_submission(existing.fetch("id"))
+    break if state
+  end
+
   state ||= create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
   ensure_review_submission_pending!(state)
   app_store_version_context("After submission")
