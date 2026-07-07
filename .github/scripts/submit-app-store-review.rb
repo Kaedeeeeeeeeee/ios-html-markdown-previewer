@@ -207,6 +207,10 @@ def asc_error_code?(error, code)
   error.body.fetch("errors", []).any? { |item| item["code"] == code }
 end
 
+def retryable_version_not_ready?(error)
+  JSON.generate(error.body).include?("Version is not ready to be submitted yet")
+end
+
 def list_review_submissions(app_id, platform, states: OPEN_REVIEW_SUBMISSION_STATES)
   query = {
     "filter[app]" => app_id,
@@ -359,23 +363,31 @@ def create_review_submission(app_id, platform)
 end
 
 def submit_review_submission(submission_id)
-  response = request(
-    :patch,
-    "/v1/reviewSubmissions/#{submission_id}",
-    body: {
-      data: {
-        type: "reviewSubmissions",
-        id: submission_id,
-        attributes: {
-          submitted: true
+  20.times do |attempt|
+    response = request(
+      :patch,
+      "/v1/reviewSubmissions/#{submission_id}",
+      body: {
+        data: {
+          type: "reviewSubmissions",
+          id: submission_id,
+          attributes: {
+            submitted: true
+          }
         }
       }
-    }
-  )
-  attrs = response.fetch("data").fetch("attributes", {})
-  state = attrs["state"]
-  puts "Submitted review submission #{submission_id}: state=#{state} submittedDate=#{attrs["submittedDate"] || "-"}."
-  state
+    )
+    attrs = response.fetch("data").fetch("attributes", {})
+    state = attrs["state"]
+    puts "Submitted review submission #{submission_id}: state=#{state} submittedDate=#{attrs["submittedDate"] || "-"}."
+    return state
+  rescue AscError => e
+    raise unless retryable_version_not_ready?(e) && attempt < 19
+
+    app_store_version_context("Submission is not ready yet")
+    puts "App Store Connect says version is not ready yet; retrying in 30 seconds."
+    sleep(30)
+  end
 end
 
 def prepare_and_submit_existing_submission(submission_id)
