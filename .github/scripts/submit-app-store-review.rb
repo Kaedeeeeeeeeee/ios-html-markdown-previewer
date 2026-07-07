@@ -16,6 +16,7 @@ PLATFORM = ENV.fetch("APP_STORE_CONNECT_PLATFORM", "IOS")
 KEY_ID = ENV.fetch("ASC_API_KEY_ID")
 ISSUER_ID = ENV.fetch("ASC_API_ISSUER_ID")
 KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
+SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRIES", "4"))
 
 class AscError < StandardError
   attr_reader :status, :body
@@ -183,8 +184,8 @@ def fetch_app_store_version
     :get,
     "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}",
     query: {
-      "include" => "app",
-      "fields[appStoreVersions]" => "versionString,appStoreState,platform,app"
+      "include" => "app,build",
+      "fields[appStoreVersions]" => "versionString,appStoreState,platform,app,build"
     }
   ).fetch("data")
 end
@@ -193,11 +194,13 @@ def app_store_version_context(label)
   version = fetch_app_store_version
   attrs = version.fetch("attributes", {})
   app_id = version.dig("relationships", "app", "data", "id") || APP_ID
+  build_id = version.dig("relationships", "build", "data", "id")
   platform = attrs["platform"] || PLATFORM
   state = attrs.fetch("appStoreState")
-  puts "#{label}: App Store version #{attrs["versionString"]} app=#{app_id} platform=#{platform} appStoreState=#{state}."
+  puts "#{label}: App Store version #{attrs["versionString"]} app=#{app_id} platform=#{platform} appStoreState=#{state} build=#{build_id || "-"}."
   {
     app_id: app_id,
+    build_id: build_id,
     platform: platform,
     app_store_state: state
   }
@@ -209,6 +212,70 @@ end
 
 def retryable_version_not_ready?(error)
   JSON.generate(error.body).include?("Version is not ready to be submitted yet")
+end
+
+def dump_readiness(context)
+  puts "Readiness: state=#{context.fetch(:app_store_state)} editable=#{context.fetch(:app_store_state) == "PREPARE_FOR_SUBMISSION"}."
+
+  build_id = context.fetch(:build_id)
+  if build_id
+    build = request(
+      :get,
+      "/v1/builds/#{build_id}",
+      query: {
+        "fields[builds]" => "version,processingState,expired,usesNonExemptEncryption"
+      }
+    ).fetch("data")
+    attrs = build.fetch("attributes", {})
+    puts "Readiness: build linked id=#{build_id} version=#{attrs["version"]} processingState=#{attrs["processingState"]} expired=#{attrs["expired"]} usesNonExemptEncryption=#{attrs["usesNonExemptEncryption"]}."
+  else
+    puts "Readiness: no build linked to App Store version."
+  end
+
+  begin
+    request(:get, "/v1/apps/#{context.fetch(:app_id)}/appPriceSchedule")
+    puts "Readiness: app price schedule exists."
+  rescue AscError => e
+    puts "Readiness: app price schedule missing or unreadable: #{e.message}"
+  end
+
+  app = request(
+    :get,
+    "/v1/apps/#{context.fetch(:app_id)}",
+    query: {
+      "fields[apps]" => "primaryLocale"
+    }
+  ).fetch("data")
+  primary_locale = app.dig("attributes", "primaryLocale")
+  puts "Readiness: app primaryLocale=#{primary_locale || "-"}."
+
+  localizations = request(
+    :get,
+    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}/appStoreVersionLocalizations",
+    query: {
+      "limit" => "50",
+      "fields[appStoreVersionLocalizations]" => "locale,description,keywords,supportUrl,whatsNew"
+    }
+  ).fetch("data", [])
+
+  localizations.each do |localization|
+    attrs = localization.fetch("attributes", {})
+    sets = request(
+      :get,
+      "/v1/appStoreVersionLocalizations/#{localization.fetch("id")}/appScreenshotSets",
+      query: {
+        "include" => "appScreenshots",
+        "fields[appScreenshotSets]" => "screenshotDisplayType,appScreenshots",
+        "limit" => "50"
+      }
+    ).fetch("data", [])
+    screenshot_set_count = sets.count do |set|
+      set.dig("relationships", "appScreenshots", "data").to_a.any?
+    end
+    puts "Readiness: localization #{attrs["locale"]} primary=#{attrs["locale"] == primary_locale} description=#{!attrs["description"].to_s.empty?} keywords=#{!attrs["keywords"].to_s.empty?} supportUrl=#{!attrs["supportUrl"].to_s.empty?} whatsNew=#{!attrs["whatsNew"].to_s.empty?} screenshotSetsWithImages=#{screenshot_set_count}."
+  end
+rescue AscError => e
+  puts "Readiness: could not complete readiness dump: #{e.message}"
 end
 
 def list_review_submissions(app_id, platform, states: OPEN_REVIEW_SUBMISSION_STATES)
@@ -363,7 +430,7 @@ def create_review_submission(app_id, platform)
 end
 
 def submit_review_submission(submission_id)
-  20.times do |attempt|
+  SUBMISSION_READY_RETRY_COUNT.times do |attempt|
     response = request(
       :patch,
       "/v1/reviewSubmissions/#{submission_id}",
@@ -382,7 +449,7 @@ def submit_review_submission(submission_id)
     puts "Submitted review submission #{submission_id}: state=#{state} submittedDate=#{attrs["submittedDate"] || "-"}."
     return state
   rescue AscError => e
-    raise unless retryable_version_not_ready?(e) && attempt < 19
+    raise unless retryable_version_not_ready?(e) && attempt < SUBMISSION_READY_RETRY_COUNT - 1
 
     app_store_version_context("Submission is not ready yet")
     puts "App Store Connect says version is not ready yet; retrying in 30 seconds."
@@ -437,6 +504,7 @@ end
 
 def submit_app_store_version
   context = app_store_version_context("Before submission")
+  dump_readiness(context)
   state = nil
   open_review_submissions(context.fetch(:app_id), context.fetch(:platform)).each do |existing|
     state = prepare_and_submit_existing_submission(existing.fetch("id"))
