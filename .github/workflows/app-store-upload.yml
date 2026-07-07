@@ -2,6 +2,12 @@ name: App Store Upload
 
 on:
   workflow_dispatch:
+    inputs:
+      submit_only:
+        description: "Skip archive/upload and only select the existing build for review submission."
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -34,6 +40,7 @@ jobs:
           echo "EXPORT_PATH=$RUNNER_TEMP/AppStoreUpload" >> "$GITHUB_ENV"
 
       - name: Select Xcode 26.6
+        if: ${{ github.event.inputs.submit_only != 'true' }}
         run: |
           set -euo pipefail
           for developer_dir in \
@@ -63,6 +70,7 @@ jobs:
           echo "ASC_API_KEY_PATH=$API_KEY_PATH" >> "$GITHUB_ENV"
 
       - name: Resolve Swift packages
+        if: ${{ github.event.inputs.submit_only != 'true' }}
         run: |
           set -euo pipefail
           xcodebuild -resolvePackageDependencies \
@@ -71,6 +79,7 @@ jobs:
             -derivedDataPath "$DERIVED_DATA_PATH"
 
       - name: Archive with automatic App Store signing
+        if: ${{ github.event.inputs.submit_only != 'true' }}
         run: |
           set -euo pipefail
           xcodebuild archive \
@@ -92,12 +101,14 @@ jobs:
             CODE_SIGNING_ALLOWED=YES
 
       - name: Inspect archive metadata
+        if: ${{ github.event.inputs.submit_only != 'true' }}
         run: |
           set -euo pipefail
           APP_INFO="$ARCHIVE_PATH/Products/Applications/HTMLMarkdownPreviewer.app/Info.plist"
           plutil -p "$APP_INFO" | grep -E 'BuildMachineOSBuild|CFBundleShortVersionString|CFBundleVersion|DTPlatformVersion|DTSDKName|DTXcode|DTXcodeBuild|MinimumOSVersion'
 
       - name: Upload archive to App Store Connect
+        if: ${{ github.event.inputs.submit_only != 'true' }}
         run: |
           set -euo pipefail
           EXPORT_OPTIONS="$RUNNER_TEMP/ExportOptions-upload.plist"

@@ -57,7 +57,7 @@ def request(method, path, query: nil, body: nil)
   }.fetch(method)
 
   attempts = 0
-  begin
+  loop do
     attempts += 1
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -70,17 +70,19 @@ def request(method, path, query: nil, body: nil)
     req.body = JSON.generate(body) if body
 
     response = http.request(req)
-    parsed = response.body.to_s.empty? ? {} : JSON.parse(response.body)
+    begin
+      parsed = response.body.to_s.empty? ? {} : JSON.parse(response.body)
+    rescue JSON::ParserError
+      raise AscError.new("invalid-json", { raw: response.body.to_s })
+    end
     return parsed if response.is_a?(Net::HTTPSuccess)
 
     if response.code.to_i == 429 && attempts < 5
       sleep(15 * attempts)
-      retry
+      next
     end
 
     raise AscError.new(response.code, parsed)
-  rescue JSON::ParserError
-    raise AscError.new("invalid-json", { raw: response&.body.to_s })
   end
 end
 
