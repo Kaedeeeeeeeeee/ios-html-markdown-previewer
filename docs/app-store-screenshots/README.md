@@ -1,12 +1,20 @@
 # App Store Screenshots
 
-These screenshots were generated with:
+These marketing screenshots were generated with:
 
 ```sh
 scripts/capture-release-screenshots.sh
 ```
 
-Current set:
+The command captures one English source set from the iPhone and iPad simulators,
+then places those real screenshots in a deterministic marketing canvas. It
+generates storefront-specific headlines for:
+
+- `en-US`
+- `zh-Hans`
+- `ja`
+
+Current output set:
 
 - `en-US/iphone-01-home.png`
 - `en-US/iphone-02-html-safe-preview.png`
@@ -21,9 +29,9 @@ Current set:
 - `zh-Hans/...`
 - `ja/...`
 
-The script also mirrors the `en-US` screenshots into the root screenshot directory
-as `iphone-01-home.png`, `ipad-01-home.png`, and the other legacy filenames used
-by release audits.
+The script also mirrors the final `en-US` marketing screenshots into the root
+screenshot directory as `iphone-01-home.png`, `ipad-01-home.png`, and the other
+legacy filenames used by release audits.
 
 Captured dimensions:
 
@@ -33,23 +41,27 @@ Captured dimensions:
 These dimensions match Apple's App Store Connect screenshot specifications for 6.9-inch iPhone portrait screenshots and 13-inch iPad portrait screenshots:
 https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
 
-The script uses simulator launch arguments to reset the local library, set app
-language and locale, open built-in samples, and show Settings.
+The source capture uses simulator launch arguments to reset the local library,
+open built-in samples, and show Settings. Source screenshots are written to
+`DerivedData/AppStoreScreenshotSources/en-US/`. Final contact sheets for visual
+review are written to `DerivedData/AppStoreScreenshotPreviews/`.
 
-Default App Store screenshot locales:
+Marketing copy lives in `copy.json`. The app UI inside every marketing image is
+intentionally English; the headline and supporting line are localized for each
+storefront.
 
-- `en-US`
-- `zh-Hans`
-- `ja`
+Override `OUT_DIR`, `SOURCE_OUT_DIR`, `PREVIEW_OUT_DIR`, `COPY_FILE`,
+`CAPTURE_LANGUAGE`, `CAPTURE_APPLE_LOCALE`, `IPHONE_DEVICE`, `IPAD_DEVICE`,
+`IPHONE_RUNTIME_VERSION`, or `IPAD_RUNTIME_VERSION` when capturing on a
+different simulator setup.
 
-Override `OUT_DIR`, `SCREENSHOT_LOCALES`, `ROOT_SCREENSHOT_LOCALE`,
-`IPHONE_DEVICE`, `IPAD_DEVICE`, `IPHONE_RUNTIME_VERSION`, or
-`IPAD_RUNTIME_VERSION` when capturing on a different simulator setup.
-
-`SCREENSHOT_LOCALES` entries use `store-locale|AppleLanguages|AppleLocale`, for
-example:
+To regenerate the marketing canvases from an existing source set without
+launching the simulators:
 
 ```sh
-SCREENSHOT_LOCALES='en-US|en|en_US zh-Hans|zh-Hans|zh_Hans_CN ja|ja|ja_JP' \
-  scripts/capture-release-screenshots.sh
+xcrun swift scripts/generate-app-store-screenshots.swift \
+  --source-dir DerivedData/AppStoreScreenshotSources/en-US \
+  --output-dir docs/app-store-screenshots \
+  --copy-file docs/app-store-screenshots/copy.json \
+  --preview-dir DerivedData/AppStoreScreenshotPreviews
 ```

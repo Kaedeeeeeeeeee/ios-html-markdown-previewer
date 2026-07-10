@@ -1,0 +1,1 @@
+Open local HTML, Markdown, and ZIP report packages on iPhone and iPad. Files stay on device, with safe HTML preview enabled by default.

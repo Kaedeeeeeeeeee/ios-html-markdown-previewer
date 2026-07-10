@@ -1,0 +1,23 @@
+HTML Previewer is a focused local file viewer for HTML, Markdown, and ZIP report packages.
+
+Use it when you receive an .html, .htm, .md, .markdown, or .zip file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
+
+Features:
+- Local HTML preview with safe mode enabled by default
+- Rich HTML rendering for responsive layouts, inline graphics, and CSS animation
+- Markdown reading view for common Markdown documents
+- ZIP report package import for HTML files with local CSS and image assets
+- Recent files list
+- Raw text fallback
+- File details
+- Built-in HTML, Markdown, and ZIP samples
+
+Privacy and business model:
+- Files are processed on device
+- No file uploads
+- No account
+- No ads
+- No subscription
+- Paid download, no in-app purchase
+
+Safe HTML preview disables page JavaScript and blocks external network resources by default. Interactive mode is available for trusted files.

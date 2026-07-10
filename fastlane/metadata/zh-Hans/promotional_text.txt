@@ -1,0 +1,1 @@
+在 iPhone 和 iPad 上打开本地 HTML、Markdown 和 ZIP 报告包。文件保留在设备上，默认启用安全 HTML 预览。
