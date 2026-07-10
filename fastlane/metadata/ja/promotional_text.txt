@@ -1,0 +1,1 @@
+iPhoneとiPadでローカルのHTML、Markdown、ZIPレポートを開けます。ファイルは端末内に保存され、安全なHTMLプレビューが標準で有効です。

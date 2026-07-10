@@ -17,6 +17,7 @@ KEY_ID = ENV.fetch("ASC_API_KEY_ID")
 ISSUER_ID = ENV.fetch("ASC_API_ISSUER_ID")
 KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
 SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRIES", "4"))
+SUBMIT_FOR_REVIEW = ENV.fetch("APP_STORE_CONNECT_SUBMIT_FOR_REVIEW", "false") == "true"
 DEFAULT_WHATS_NEW = ENV.fetch(
   "APP_STORE_CONNECT_WHATS_NEW",
   "Fixed the iPad share sheet so sharing options are visible on iPad."
@@ -562,4 +563,10 @@ build = wait_for_valid_build
 build_id = build.fetch("id")
 patch_build_encryption(build_id)
 attach_build_to_version(build_id)
-submit_app_store_version
+if SUBMIT_FOR_REVIEW
+  submit_app_store_version
+else
+  context = app_store_version_context("After build attachment")
+  dump_readiness(context)
+  puts "Build #{BUILD_NUMBER} is VALID and attached. Review submission was intentionally skipped."
+end

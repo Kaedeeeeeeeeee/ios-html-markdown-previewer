@@ -8,6 +8,16 @@ on:
         required: false
         type: boolean
         default: false
+      sync_store_assets:
+        description: "Upload localized metadata and replace screenshots from the repository."
+        required: false
+        type: boolean
+        default: true
+      submit_for_review:
+        description: "Submit the selected build for App Review after upload verification."
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -21,8 +31,9 @@ jobs:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
       APP_STORE_CONNECT_APP_ID: "6785794966"
       APP_STORE_CONNECT_VERSION_ID: "2729d4ec-07ba-4e36-adaf-429a9453462c"
-      APP_STORE_CONNECT_BUILD_NUMBER: "3"
+      APP_STORE_CONNECT_BUILD_NUMBER: "4"
       APP_STORE_CONNECT_PLATFORM: IOS
+      APP_STORE_CONNECT_SUBMIT_FOR_REVIEW: ${{ inputs.submit_for_review }}
       APPLE_TEAM_ID: Y4FV6WUU4V
       ASC_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
       ASC_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
@@ -142,7 +153,40 @@ jobs:
             -authenticationKeyID "$ASC_API_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_API_ISSUER_ID"
 
-      - name: Select build and submit for review
+      - name: Ensure fastlane is available
+        if: ${{ inputs.sync_store_assets && github.event.inputs.submit_only != 'true' }}
+        run: |
+          set -euo pipefail
+          if ! command -v fastlane >/dev/null 2>&1; then
+            brew install fastlane
+          fi
+          fastlane --version
+
+      - name: Stage localized App Store screenshots
+        if: ${{ inputs.sync_store_assets && github.event.inputs.submit_only != 'true' }}
+        run: |
+          set -euo pipefail
+          SCREENSHOT_STAGING="$RUNNER_TEMP/AppStoreScreenshots"
+          mkdir -p "$SCREENSHOT_STAGING"
+          for locale in en-US zh-Hans ja; do
+            cp -R "docs/app-store-screenshots/$locale" "$SCREENSHOT_STAGING/$locale"
+          done
+          screenshot_count="$(find "$SCREENSHOT_STAGING" -type f -name '*.png' | wc -l | tr -d ' ')"
+          if [[ "$screenshot_count" != "30" ]]; then
+            echo "Expected 30 localized App Store screenshots, found $screenshot_count." >&2
+            exit 1
+          fi
+          echo "FASTLANE_SCREENSHOTS_PATH=$SCREENSHOT_STAGING" >> "$GITHUB_ENV"
+
+      - name: Sync localized metadata and screenshots
+        if: ${{ inputs.sync_store_assets && github.event.inputs.submit_only != 'true' }}
+        env:
+          FASTLANE_DISABLE_COLORS: "1"
+          FASTLANE_SKIP_UPDATE_CHECK: "1"
+          FASTLANE_METADATA_PATH: ${{ github.workspace }}/fastlane/metadata
+        run: fastlane ios sync_store_assets
+
+      - name: Verify uploaded build and optionally submit for review
         run: ruby .github/scripts/submit-app-store-review.rb
 
       - name: Upload export logs

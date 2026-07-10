@@ -5,12 +5,15 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/HTMLMarkdownPreviewer.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/DerivedData"
 OUT_DIR="${OUT_DIR:-$ROOT_DIR/docs/app-store-screenshots}"
-SCREENSHOT_LOCALES="${SCREENSHOT_LOCALES:-en-US|en|en_US zh-Hans|zh-Hans|zh_Hans_CN ja|ja|ja_JP}"
-ROOT_SCREENSHOT_LOCALE="${ROOT_SCREENSHOT_LOCALE:-en-US}"
+SOURCE_OUT_DIR="${SOURCE_OUT_DIR:-$DERIVED_DATA/AppStoreScreenshotSources/en-US}"
+PREVIEW_OUT_DIR="${PREVIEW_OUT_DIR:-$DERIVED_DATA/AppStoreScreenshotPreviews}"
+CAPTURE_LANGUAGE="${CAPTURE_LANGUAGE:-en}"
+CAPTURE_APPLE_LOCALE="${CAPTURE_APPLE_LOCALE:-en_US}"
+COPY_FILE="${COPY_FILE:-$ROOT_DIR/docs/app-store-screenshots/copy.json}"
 BUNDLE_ID="com.kaede.htmlmarkdownpreviewer"
 SCHEME="HTMLMarkdownPreviewer"
 
-mkdir -p "$OUT_DIR"
+mkdir -p "$OUT_DIR" "$SOURCE_OUT_DIR" "$PREVIEW_OUT_DIR"
 
 select_device() {
   local preferred_name="$1"
@@ -120,36 +123,19 @@ capture_set() {
   capture "$device" "$output_dir" "$prefix-05-settings" "$language" "$apple_locale" --screenshot-reset-library --screenshot-settings
 }
 
-mirror_root_locale() {
-  local store_locale="$1"
-  local locale_dir="$OUT_DIR/$store_locale"
+echo "Capturing English iPhone source screenshots on $IPHONE_DEVICE..."
+capture_set "$IPHONE_DEVICE" "iphone" "$SOURCE_OUT_DIR" "$CAPTURE_LANGUAGE" "$CAPTURE_APPLE_LOCALE"
 
-  if [[ "$store_locale" != "$ROOT_SCREENSHOT_LOCALE" ]]; then
-    return
-  fi
+echo "Capturing English iPad source screenshots on $IPAD_DEVICE..."
+capture_set "$IPAD_DEVICE" "ipad" "$SOURCE_OUT_DIR" "$CAPTURE_LANGUAGE" "$CAPTURE_APPLE_LOCALE"
 
-  for screenshot in "$locale_dir"/*.png; do
-    cp "$screenshot" "$OUT_DIR/$(basename "$screenshot")"
-  done
-}
+echo "Composing localized App Store screenshots..."
+xcrun swift "$ROOT_DIR/scripts/generate-app-store-screenshots.swift" \
+  --source-dir "$SOURCE_OUT_DIR" \
+  --output-dir "$OUT_DIR" \
+  --copy-file "$COPY_FILE" \
+  --preview-dir "$PREVIEW_OUT_DIR"
 
-for locale_definition in $SCREENSHOT_LOCALES; do
-  IFS='|' read -r store_locale language apple_locale <<< "$locale_definition"
-  if [[ -z "${store_locale:-}" || -z "${language:-}" || -z "${apple_locale:-}" ]]; then
-    printf 'Invalid SCREENSHOT_LOCALES entry: %s\n' "$locale_definition" >&2
-    exit 1
-  fi
-
-  locale_dir="$OUT_DIR/$store_locale"
-  mkdir -p "$locale_dir"
-
-  echo "Capturing $store_locale iPhone screenshots on $IPHONE_DEVICE..."
-  capture_set "$IPHONE_DEVICE" "iphone" "$locale_dir" "$language" "$apple_locale"
-
-  echo "Capturing $store_locale iPad screenshots on $IPAD_DEVICE..."
-  capture_set "$IPAD_DEVICE" "ipad" "$locale_dir" "$language" "$apple_locale"
-
-  mirror_root_locale "$store_locale"
-done
-
-echo "Screenshots written to $OUT_DIR"
+echo "Source screenshots written to $SOURCE_OUT_DIR"
+echo "Localized App Store screenshots written to $OUT_DIR"
+echo "Contact sheets written to $PREVIEW_OUT_DIR"

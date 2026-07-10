@@ -1,0 +1,92 @@
+{
+  "en-US": {
+    "storefront": "English (U.S.)",
+    "screenshots": {
+      "01-home": {
+        "eyebrow": "LOCAL FILE PREVIEW",
+        "title": "Open. Preview. Done.",
+        "subtitle": "HTML, Markdown, and ZIP — right on your device."
+      },
+      "02-html-safe-preview": {
+        "eyebrow": "RICH HTML",
+        "title": "HTML, beautifully rendered",
+        "subtitle": "Responsive layouts, vector graphics, and CSS motion."
+      },
+      "03-markdown-preview": {
+        "eyebrow": "MARKDOWN READER",
+        "title": "Markdown, made readable",
+        "subtitle": "Clean typography for notes, docs, lists, and code."
+      },
+      "04-zip-report-preview": {
+        "eyebrow": "ZIP REPORTS",
+        "title": "Reports, fully intact",
+        "subtitle": "Keep local HTML, CSS, and images together."
+      },
+      "05-settings": {
+        "eyebrow": "PRIVATE BY DESIGN",
+        "title": "Your files stay yours",
+        "subtitle": "On-device processing. No account. No ads."
+      }
+    }
+  },
+  "zh-Hans": {
+    "storefront": "简体中文",
+    "screenshots": {
+      "01-home": {
+        "eyebrow": "本地文件预览",
+        "title": "打开文件，即刻预览",
+        "subtitle": "HTML、Markdown 与 ZIP，全程在设备端处理"
+      },
+      "02-html-safe-preview": {
+        "eyebrow": "丰富 HTML",
+        "title": "复杂 HTML，也能漂亮呈现",
+        "subtitle": "响应式布局、矢量图形与 CSS 动画清晰流畅"
+      },
+      "03-markdown-preview": {
+        "eyebrow": "MARKDOWN 阅读",
+        "title": "Markdown，阅读更舒服",
+        "subtitle": "标题、列表与代码，自动排出清晰层次"
+      },
+      "04-zip-report-preview": {
+        "eyebrow": "ZIP 报告",
+        "title": "ZIP 报告，完整还原",
+        "subtitle": "本地 HTML、CSS 与图片一起打开"
+      },
+      "05-settings": {
+        "eyebrow": "隐私优先",
+        "title": "你的文件，只属于你",
+        "subtitle": "仅在设备端处理，无账号、无广告"
+      }
+    }
+  },
+  "ja": {
+    "storefront": "日本語",
+    "screenshots": {
+      "01-home": {
+        "eyebrow": "ローカルファイル",
+        "title": "開いて、すぐプレビュー",
+        "subtitle": "HTML・Markdown・ZIPを端末内で表示"
+      },
+      "02-html-safe-preview": {
+        "eyebrow": "リッチ HTML",
+        "title": "リッチなHTMLも、美しく表示",
+        "subtitle": "レスポンシブ表示・ベクター・CSSアニメーションに対応"
+      },
+      "03-markdown-preview": {
+        "eyebrow": "MARKDOWN リーダー",
+        "title": "Markdownを、読みやすく",
+        "subtitle": "見出し・リスト・コードを美しく整形"
+      },
+      "04-zip-report-preview": {
+        "eyebrow": "ZIP レポート",
+        "title": "ZIPレポートを、そのまま再現",
+        "subtitle": "ローカルHTML・CSS・画像をまとめて表示"
+      },
+      "05-settings": {
+        "eyebrow": "プライバシー重視",
+        "title": "ファイルは、あなたの端末に",
+        "subtitle": "端末内処理。アカウント不要・広告なし"
+      }
+    }
+  }
+}

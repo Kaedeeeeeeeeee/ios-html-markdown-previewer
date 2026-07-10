@@ -81,13 +81,18 @@ require_file "scripts/release-device-build.sh"
 require_file "scripts/run-archive-device-smoke.sh"
 require_file "scripts/serve-validation-samples.sh"
 require_file "scripts/verify-public-pages.sh"
+require_file "fastlane/Fastfile"
 require_text "project.yml" "type: bundle\\.ui-testing" "project.yml includes UI test target"
-require_text "project.yml" "CURRENT_PROJECT_VERSION: 3" "project.yml build number is 3"
+require_text "project.yml" "CURRENT_PROJECT_VERSION: 4" "project.yml build number is 4"
 require_text "project.yml" "MARKETING_VERSION: 1\\.0" "project.yml marketing version is 1.0"
 require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.0;" "generated Xcode project marketing version is 1.0"
-require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 3;" "generated Xcode project build number is 3"
+require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 4;" "generated Xcode project build number is 4"
 require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "PRODUCT_BUNDLE_IDENTIFIER = com\\.kaede\\.htmlmarkdownpreviewer;" "bundle identifier is com.kaede.htmlmarkdownpreviewer"
 require_text "project.yml" "ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon" "AppIcon asset catalog is configured"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_NUMBER: \"4\"" "App Store upload workflow targets build 4"
+require_text ".github/workflows/app-store-upload.yml" "Sync localized metadata and screenshots" "App Store upload workflow syncs localized store assets"
+require_text ".github/workflows/app-store-upload.yml" "submit_for_review:" "App Store upload workflow keeps review submission explicit"
+require_text "fastlane/Fastfile" "overwrite_screenshots: true" "Fastlane replaces stale App Store screenshots"
 
 echo
 echo "== Package resolution =="
@@ -600,6 +605,8 @@ require_text "docs/support.md" "https://gist\\.github\\.com/Kaedeeeeeeeeee/394a0
 
 echo
 echo "== Screenshots =="
+require_file "docs/app-store-screenshots/copy.json"
+require_file "scripts/generate-app-store-screenshots.swift"
 for name in \
   iphone-01-home \
   iphone-02-html-safe-preview \
@@ -616,6 +623,87 @@ for name in \
   ipad-05-settings; do
   check_png_dimensions "docs/app-store-screenshots/$name.png" 2064 2752
 done
+for locale in en-US zh-Hans ja; do
+  for name in \
+    iphone-01-home \
+    iphone-02-html-safe-preview \
+    iphone-03-markdown-preview \
+    iphone-04-zip-report-preview \
+    iphone-05-settings; do
+    check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 1320 2868
+  done
+  for name in \
+    ipad-01-home \
+    ipad-02-html-safe-preview \
+    ipad-03-markdown-preview \
+    ipad-04-zip-report-preview \
+    ipad-05-settings; do
+    check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 2064 2752
+  done
+done
+if python3 - "$ROOT_DIR/docs/app-store-screenshots/copy.json" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], "r", encoding="utf-8") as handle:
+    copy = json.load(handle)
+
+required_locales = {"en-US", "zh-Hans", "ja"}
+required_screenshots = {
+    "01-home",
+    "02-html-safe-preview",
+    "03-markdown-preview",
+    "04-zip-report-preview",
+    "05-settings",
+}
+if set(copy) != required_locales:
+    raise SystemExit(f"unexpected screenshot locales: {sorted(copy)}")
+
+for locale in sorted(required_locales):
+    entries = copy[locale].get("screenshots", {})
+    if set(entries) != required_screenshots:
+        raise SystemExit(f"unexpected screenshot copy keys for {locale}: {sorted(entries)}")
+    for key, value in entries.items():
+        for field in ("eyebrow", "title", "subtitle"):
+            if not str(value.get(field, "")).strip():
+                raise SystemExit(f"empty {locale}/{key}/{field}")
+PY
+then
+  ok "App Store screenshot copy covers en-US, zh-Hans, and ja"
+else
+  fail "App Store screenshot copy is incomplete or invalid"
+fi
+
+for locale in en-US zh-Hans ja; do
+  for field in name subtitle promotional_text description keywords support_url privacy_url; do
+    require_file "fastlane/metadata/$locale/$field.txt"
+  done
+done
+if python3 - "$ROOT_DIR/fastlane/metadata" <<'PY'
+import pathlib
+import sys
+
+root = pathlib.Path(sys.argv[1])
+limits = {
+    "name.txt": 30,
+    "subtitle.txt": 30,
+    "promotional_text.txt": 170,
+    "description.txt": 4000,
+    "keywords.txt": 100,
+}
+for locale in ("en-US", "zh-Hans", "ja"):
+    for filename, limit in limits.items():
+        value = (root / locale / filename).read_text(encoding="utf-8").strip()
+        if not value:
+            raise SystemExit(f"empty metadata: {locale}/{filename}")
+        if len(value) > limit:
+            raise SystemExit(f"metadata too long: {locale}/{filename} is {len(value)}, limit {limit}")
+PY
+then
+  ok "Fastlane metadata is complete and within App Store length limits"
+else
+  fail "Fastlane metadata is incomplete or exceeds App Store limits"
+fi
 
 echo
 echo "== Usability samples =="

@@ -112,19 +112,24 @@ for path in [
     "scripts/validate-completed-release-results.sh",
     "scripts/prepare-submission-owner-handoff.sh",
     "scripts/prepare-usability-session-run.sh",
+    "fastlane/Fastfile",
 ]:
     require_file(path)
 
-require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*3\b", "project.yml build number is 3")
+require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*4\b", "project.yml build number is 4")
 require_text("project.yml", r"MARKETING_VERSION:\s*1\.0\b", "project.yml marketing version is 1.0")
 require_text("project.yml", r"deploymentTarget:\s*\n\s+iOS:\s*\"17\.0\"", "project.yml minimum iOS is 17.0")
 require_text("project.yml", r"PRODUCT_BUNDLE_IDENTIFIER:\s*com\.kaede\.htmlmarkdownpreviewer", "project.yml bundle identifier is correct")
 require_text("project.yml", r"ASSETCATALOG_COMPILER_APPICON_NAME:\s*AppIcon", "project.yml configures AppIcon")
 require_text("project.yml", r"ZIPFoundation:[\s\S]*from:\s*0\.9\.20", "ZIPFoundation dependency version is declared")
 require_text("project.yml", r"SwiftMarkdown:[\s\S]*from:\s*0\.8\.0", "Swift Markdown dependency version is declared")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"4"', "App Store upload workflow targets build 4")
+require_text(".github/workflows/app-store-upload.yml", r"Sync localized metadata and screenshots", "App Store upload workflow syncs localized store assets")
+require_text(".github/workflows/app-store-upload.yml", r"submit_for_review:", "App Store upload workflow keeps review submission explicit")
+require_text("fastlane/Fastfile", r"overwrite_screenshots:\s*true", "Fastlane replaces stale App Store screenshots")
 
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.0;", "generated Xcode project marketing version is 1.0")
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 3;", "generated Xcode project build number is 3")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 4;", "generated Xcode project build number is 4")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"PRODUCT_BUNDLE_IDENTIFIER = com\.kaede\.htmlmarkdownpreviewer;", "generated Xcode project bundle identifier is correct")
 
 print("\n== Info.plist ==")
@@ -243,10 +248,74 @@ if xcstrings_path.is_file():
 
 print("\n== Visual Assets ==")
 require_png_dimensions("HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1024x1024@1x.png", 1024, 1024)
+copy_path = require_file("docs/app-store-screenshots/copy.json")
+require_file("scripts/generate-app-store-screenshots.swift")
 for name in ["iphone-01-home", "iphone-02-html-safe-preview", "iphone-03-markdown-preview", "iphone-04-zip-report-preview", "iphone-05-settings"]:
     require_png_dimensions(f"docs/app-store-screenshots/{name}.png", 1320, 2868)
 for name in ["ipad-01-home", "ipad-02-html-safe-preview", "ipad-03-markdown-preview", "ipad-04-zip-report-preview", "ipad-05-settings"]:
     require_png_dimensions(f"docs/app-store-screenshots/{name}.png", 2064, 2752)
+for locale in ["en-US", "zh-Hans", "ja"]:
+    for name in ["iphone-01-home", "iphone-02-html-safe-preview", "iphone-03-markdown-preview", "iphone-04-zip-report-preview", "iphone-05-settings"]:
+        require_png_dimensions(f"docs/app-store-screenshots/{locale}/{name}.png", 1320, 2868)
+    for name in ["ipad-01-home", "ipad-02-html-safe-preview", "ipad-03-markdown-preview", "ipad-04-zip-report-preview", "ipad-05-settings"]:
+        require_png_dimensions(f"docs/app-store-screenshots/{locale}/{name}.png", 2064, 2752)
+
+if copy_path.is_file():
+    try:
+        screenshot_copy = json.loads(copy_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        fail(f"screenshot copy is not valid JSON: {error}")
+    else:
+        required_copy_locales = {"en-US", "zh-Hans", "ja"}
+        required_copy_keys = {
+            "01-home",
+            "02-html-safe-preview",
+            "03-markdown-preview",
+            "04-zip-report-preview",
+            "05-settings",
+        }
+        copy_errors = []
+        if set(screenshot_copy) != required_copy_locales:
+            copy_errors.append(f"unexpected locales: {sorted(screenshot_copy)}")
+        for locale in sorted(required_copy_locales & set(screenshot_copy)):
+            entries = screenshot_copy[locale].get("screenshots", {})
+            if set(entries) != required_copy_keys:
+                copy_errors.append(f"unexpected keys for {locale}: {sorted(entries)}")
+                continue
+            for key, value in entries.items():
+                for field in ("eyebrow", "title", "subtitle"):
+                    if not str(value.get(field, "")).strip():
+                        copy_errors.append(f"empty {locale}/{key}/{field}")
+        if copy_errors:
+            for error in copy_errors:
+                fail(error)
+        else:
+            ok("App Store screenshot copy covers en-US, zh-Hans, and ja")
+
+metadata_limits = {
+    "name.txt": 30,
+    "subtitle.txt": 30,
+    "promotional_text.txt": 170,
+    "description.txt": 4000,
+    "keywords.txt": 100,
+}
+metadata_errors = []
+for locale in ["en-US", "zh-Hans", "ja"]:
+    for filename in [*metadata_limits, "support_url.txt", "privacy_url.txt"]:
+        path = require_file(f"fastlane/metadata/{locale}/{filename}")
+        if not path.is_file():
+            continue
+        value = path.read_text(encoding="utf-8").strip()
+        if not value:
+            metadata_errors.append(f"empty {locale}/{filename}")
+        limit = metadata_limits.get(filename)
+        if limit is not None and len(value) > limit:
+            metadata_errors.append(f"{locale}/{filename} is {len(value)}, limit {limit}")
+if metadata_errors:
+    for error in metadata_errors:
+        fail(error)
+else:
+    ok("Fastlane metadata is complete and within App Store length limits")
 
 print("\n== App Store Materials ==")
 for path in [
