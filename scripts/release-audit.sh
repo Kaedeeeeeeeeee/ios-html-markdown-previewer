@@ -95,6 +95,7 @@ require_text ".github/workflows/app-store-upload.yml" "Sync localized metadata a
 require_text ".github/workflows/app-store-upload.yml" "submit_for_review:" "App Store upload workflow keeps review submission explicit"
 require_text "fastlane/Fastfile" "overwrite_screenshots: true" "Fastlane replaces stale App Store screenshots"
 require_text "fastlane/Fastfile" "skip_app_version_update: false" "Fastlane creates or updates the App Store version"
+require_text ".github/scripts/submit-app-store-review.rb" "/v1/apps/#\\{APP_ID\\}/appStoreVersions" "App Store verification resolves versions through the app relationship"
 
 echo
 echo "== Package resolution =="
