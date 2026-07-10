@@ -1,0 +1,1 @@
+Richer built-in HTML and ZIP samples now showcase responsive layouts, inline graphics, local assets, and CSS animation. App Store screenshots have also been refreshed.
