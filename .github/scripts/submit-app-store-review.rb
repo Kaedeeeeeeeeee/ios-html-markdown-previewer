@@ -10,7 +10,8 @@ require "uri"
 
 API_BASE = "https://api.appstoreconnect.apple.com"
 APP_ID = ENV.fetch("APP_STORE_CONNECT_APP_ID")
-APP_STORE_VERSION_ID = ENV.fetch("APP_STORE_CONNECT_VERSION_ID")
+CONFIGURED_APP_STORE_VERSION_ID = ENV["APP_STORE_CONNECT_VERSION_ID"]
+APP_STORE_VERSION_STRING = ENV.fetch("APP_STORE_CONNECT_VERSION_STRING")
 BUILD_NUMBER = ENV.fetch("APP_STORE_CONNECT_BUILD_NUMBER")
 PLATFORM = ENV.fetch("APP_STORE_CONNECT_PLATFORM", "IOS")
 KEY_ID = ENV.fetch("ASC_API_KEY_ID")
@@ -20,7 +21,7 @@ SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRI
 SUBMIT_FOR_REVIEW = ENV.fetch("APP_STORE_CONNECT_SUBMIT_FOR_REVIEW", "false") == "true"
 DEFAULT_WHATS_NEW = ENV.fetch(
   "APP_STORE_CONNECT_WHATS_NEW",
-  "Fixed the iPad share sheet so sharing options are visible on iPad."
+  "Adds richer built-in HTML and ZIP samples with refreshed App Store visuals."
 )
 
 class AscError < StandardError
@@ -92,6 +93,47 @@ def request(method, path, query: nil, body: nil)
   end
 end
 
+def app_store_version_id
+  return @app_store_version_id if @app_store_version_id
+
+  unless CONFIGURED_APP_STORE_VERSION_ID.to_s.empty?
+    @app_store_version_id = CONFIGURED_APP_STORE_VERSION_ID
+    puts "Using configured App Store version #{@app_store_version_id}."
+    return @app_store_version_id
+  end
+
+  12.times do |attempt|
+    versions = request(
+      :get,
+      "/v1/appStoreVersions",
+      query: {
+        "filter[app]" => APP_ID,
+        "filter[versionString]" => APP_STORE_VERSION_STRING,
+        "filter[platform]" => PLATFORM,
+        "limit" => "10",
+        "fields[appStoreVersions]" => "versionString,appStoreState,platform"
+      }
+    ).fetch("data", [])
+
+    version = versions.find do |candidate|
+      attributes = candidate.fetch("attributes", {})
+      attributes["versionString"] == APP_STORE_VERSION_STRING &&
+        attributes["platform"] == PLATFORM
+    end
+    if version
+      @app_store_version_id = version.fetch("id")
+      state = version.fetch("attributes", {})["appStoreState"]
+      puts "Resolved App Store version #{APP_STORE_VERSION_STRING}: id=#{@app_store_version_id} state=#{state}."
+      return @app_store_version_id
+    end
+
+    puts "App Store version #{APP_STORE_VERSION_STRING} is not visible yet."
+    sleep(10) unless attempt == 11
+  end
+
+  raise "Could not resolve App Store version #{APP_STORE_VERSION_STRING} for app #{APP_ID}."
+end
+
 def fetch_builds
   queries = [
     ["/v1/apps/#{APP_ID}/builds", {
@@ -161,7 +203,7 @@ end
 def attach_build_to_version(build_id)
   request(
     :patch,
-    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}/relationships/build",
+    "/v1/appStoreVersions/#{app_store_version_id}/relationships/build",
     body: {
       data: {
         type: "builds",
@@ -169,7 +211,7 @@ def attach_build_to_version(build_id)
       }
     }
   )
-  puts "Attached build #{build_id} to App Store version #{APP_STORE_VERSION_ID}."
+  puts "Attached build #{build_id} to App Store version #{app_store_version_id}."
 end
 
 OPEN_REVIEW_SUBMISSION_STATES = %w[
@@ -187,7 +229,7 @@ BLOCKING_REVIEW_SUBMISSION_STATES = (OPEN_REVIEW_SUBMISSION_STATES + %w[CANCELIN
 def fetch_app_store_version
   request(
     :get,
-    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}",
+    "/v1/appStoreVersions/#{app_store_version_id}",
     query: {
       "include" => "app,build",
       "fields[appStoreVersions]" => "versionString,appStoreState,platform,app,build"
@@ -256,7 +298,7 @@ def dump_readiness(context)
 
   localizations = request(
     :get,
-    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}/appStoreVersionLocalizations",
+    "/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations",
     query: {
       "limit" => "50",
       "fields[appStoreVersionLocalizations]" => "locale,description,keywords,supportUrl,whatsNew"
@@ -286,7 +328,7 @@ end
 def ensure_whats_new
   localizations = request(
     :get,
-    "/v1/appStoreVersions/#{APP_STORE_VERSION_ID}/appStoreVersionLocalizations",
+    "/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations",
     query: {
       "limit" => "50",
       "fields[appStoreVersionLocalizations]" => "locale,whatsNew"
@@ -395,7 +437,7 @@ end
 def submission_has_app_store_version?(submission_id)
   items = list_submission_items(submission_id)
   items.any? do |item|
-    item.dig("relationships", "appStoreVersion", "data", "id") == APP_STORE_VERSION_ID
+    item.dig("relationships", "appStoreVersion", "data", "id") == app_store_version_id
   end
 rescue AscError => e
   puts "Warning: could not list items for review submission #{submission_id}: #{e.message}"
@@ -419,14 +461,14 @@ def add_version_to_submission(submission_id)
           appStoreVersion: {
             data: {
               type: "appStoreVersions",
-              id: APP_STORE_VERSION_ID
+              id: app_store_version_id
             }
           }
         }
       }
     }
   )
-  puts "Added App Store version #{APP_STORE_VERSION_ID} to review submission #{submission_id}."
+  puts "Added App Store version #{app_store_version_id} to review submission #{submission_id}."
 rescue AscError => e
   if [409, "409"].include?(e.status)
     puts "Review submission item already exists or cannot be duplicated; continuing."
@@ -455,7 +497,7 @@ def create_review_submission(app_id, platform)
           appStoreVersionForReview: {
             data: {
               type: "appStoreVersions",
-              id: APP_STORE_VERSION_ID
+              id: app_store_version_id
             }
           }
         }

@@ -84,15 +84,17 @@ require_file "scripts/verify-public-pages.sh"
 require_file "fastlane/Fastfile"
 require_text "project.yml" "type: bundle\\.ui-testing" "project.yml includes UI test target"
 require_text "project.yml" "CURRENT_PROJECT_VERSION: 4" "project.yml build number is 4"
-require_text "project.yml" "MARKETING_VERSION: 1\\.0" "project.yml marketing version is 1.0"
-require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.0;" "generated Xcode project marketing version is 1.0"
+require_text "project.yml" "MARKETING_VERSION: 1\\.1" "project.yml marketing version is 1.1"
+require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.1;" "generated Xcode project marketing version is 1.1"
 require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 4;" "generated Xcode project build number is 4"
 require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "PRODUCT_BUNDLE_IDENTIFIER = com\\.kaede\\.htmlmarkdownpreviewer;" "bundle identifier is com.kaede.htmlmarkdownpreviewer"
 require_text "project.yml" "ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon" "AppIcon asset catalog is configured"
 require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_NUMBER: \"4\"" "App Store upload workflow targets build 4"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_VERSION_STRING: \"1\\.1\"" "App Store upload workflow targets version 1.1"
 require_text ".github/workflows/app-store-upload.yml" "Sync localized metadata and screenshots" "App Store upload workflow syncs localized store assets"
 require_text ".github/workflows/app-store-upload.yml" "submit_for_review:" "App Store upload workflow keeps review submission explicit"
 require_text "fastlane/Fastfile" "overwrite_screenshots: true" "Fastlane replaces stale App Store screenshots"
+require_text "fastlane/Fastfile" "skip_app_version_update: false" "Fastlane creates or updates the App Store version"
 
 echo
 echo "== Package resolution =="
@@ -675,7 +677,7 @@ else
 fi
 
 for locale in en-US zh-Hans ja; do
-  for field in name subtitle promotional_text description keywords support_url privacy_url; do
+  for field in name subtitle promotional_text description keywords release_notes support_url privacy_url; do
     require_file "fastlane/metadata/$locale/$field.txt"
   done
 done
@@ -690,6 +692,7 @@ limits = {
     "promotional_text.txt": 170,
     "description.txt": 4000,
     "keywords.txt": 100,
+    "release_notes.txt": 4000,
 }
 for locale in ("en-US", "zh-Hans", "ja"):
     for filename, limit in limits.items():
