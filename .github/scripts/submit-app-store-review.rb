@@ -105,12 +105,9 @@ def app_store_version_id
   12.times do |attempt|
     versions = request(
       :get,
-      "/v1/appStoreVersions",
+      "/v1/apps/#{APP_ID}/appStoreVersions",
       query: {
-        "filter[app]" => APP_ID,
-        "filter[versionString]" => APP_STORE_VERSION_STRING,
-        "filter[platform]" => PLATFORM,
-        "limit" => "10",
+        "limit" => "50",
         "fields[appStoreVersions]" => "versionString,appStoreState,platform"
       }
     ).fetch("data", [])

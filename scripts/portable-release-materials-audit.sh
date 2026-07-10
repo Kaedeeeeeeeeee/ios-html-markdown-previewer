@@ -129,6 +129,7 @@ require_text(".github/workflows/app-store-upload.yml", r"Sync localized metadata
 require_text(".github/workflows/app-store-upload.yml", r"submit_for_review:", "App Store upload workflow keeps review submission explicit")
 require_text("fastlane/Fastfile", r"overwrite_screenshots:\s*true", "Fastlane replaces stale App Store screenshots")
 require_text("fastlane/Fastfile", r"skip_app_version_update:\s*false", "Fastlane creates or updates the App Store version")
+require_text(".github/scripts/submit-app-store-review.rb", r'/v1/apps/#\{APP_ID\}/appStoreVersions', "App Store verification resolves versions through the app relationship")
 
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.1;", "generated Xcode project marketing version is 1.1")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 4;", "generated Xcode project build number is 4")
