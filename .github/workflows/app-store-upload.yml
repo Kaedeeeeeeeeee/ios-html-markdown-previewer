@@ -13,6 +13,11 @@ on:
         required: false
         type: boolean
         default: true
+      clean_screenshot_duplicates:
+        description: "Remove exact duplicate screenshots and require five images per locale and device family."
+        required: false
+        type: boolean
+        default: true
       submit_for_review:
         description: "Submit the selected build for App Review after upload verification."
         required: false
@@ -33,6 +38,7 @@ jobs:
       APP_STORE_CONNECT_VERSION_STRING: "1.1"
       APP_STORE_CONNECT_BUILD_NUMBER: "4"
       APP_STORE_CONNECT_PLATFORM: IOS
+      APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES: ${{ inputs.clean_screenshot_duplicates }}
       APP_STORE_CONNECT_SUBMIT_FOR_REVIEW: ${{ inputs.submit_for_review }}
       APPLE_TEAM_ID: Y4FV6WUU4V
       ASC_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}

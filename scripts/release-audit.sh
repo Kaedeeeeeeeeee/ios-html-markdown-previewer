@@ -93,9 +93,12 @@ require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_N
 require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_VERSION_STRING: \"1\\.1\"" "App Store upload workflow targets version 1.1"
 require_text ".github/workflows/app-store-upload.yml" "Sync localized metadata and screenshots" "App Store upload workflow syncs localized store assets"
 require_text ".github/workflows/app-store-upload.yml" "submit_for_review:" "App Store upload workflow keeps review submission explicit"
+require_text ".github/workflows/app-store-upload.yml" "clean_screenshot_duplicates:" "App Store upload workflow cleans duplicate screenshots explicitly"
 require_text "fastlane/Fastfile" "overwrite_screenshots: true" "Fastlane replaces stale App Store screenshots"
 require_text "fastlane/Fastfile" "skip_app_version_update: false" "Fastlane creates or updates the App Store version"
 require_text ".github/scripts/submit-app-store-review.rb" "/v1/apps/#\\{APP_ID\\}/appStoreVersions" "App Store verification resolves versions through the app relationship"
+require_text ".github/scripts/submit-app-store-review.rb" "verify_expected_screenshot_inventory!" "App Store verification requires exact screenshot inventory before submission"
+require_text ".github/scripts/submit-app-store-review.rb" "request\\(:delete, \"/v1/appScreenshots/" "App Store cleanup deletes duplicate screenshot resources"
 
 echo
 echo "== Package resolution =="

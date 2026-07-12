@@ -18,7 +18,25 @@ KEY_ID = ENV.fetch("ASC_API_KEY_ID")
 ISSUER_ID = ENV.fetch("ASC_API_ISSUER_ID")
 KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
 SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRIES", "4"))
+CLEAN_SCREENSHOT_DUPLICATES = ENV.fetch("APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES", "false") == "true"
 SUBMIT_FOR_REVIEW = ENV.fetch("APP_STORE_CONNECT_SUBMIT_FOR_REVIEW", "false") == "true"
+EXPECTED_SCREENSHOTS = {
+  "APP_IPHONE_67" => %w[
+    iphone-01-home.png
+    iphone-02-html-safe-preview.png
+    iphone-03-markdown-preview.png
+    iphone-04-zip-report-preview.png
+    iphone-05-settings.png
+  ],
+  "APP_IPAD_PRO_3GEN_129" => %w[
+    ipad-01-home.png
+    ipad-02-html-safe-preview.png
+    ipad-03-markdown-preview.png
+    ipad-04-zip-report-preview.png
+    ipad-05-settings.png
+  ]
+}.freeze
+EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja].freeze
 DEFAULT_WHATS_NEW = ENV.fetch(
   "APP_STORE_CONNECT_WHATS_NEW",
   "Adds richer built-in HTML and ZIP samples with refreshed App Store visuals."
@@ -58,6 +76,7 @@ def request(method, path, query: nil, body: nil)
   uri.query = URI.encode_www_form(query) if query
 
   klass = {
+    delete: Net::HTTP::Delete,
     get: Net::HTTP::Get,
     post: Net::HTTP::Post,
     patch: Net::HTTP::Patch
@@ -258,6 +277,124 @@ def retryable_version_not_ready?(error)
   JSON.generate(error.body).include?("Version is not ready to be submitted yet")
 end
 
+def app_store_version_localizations(fields: "locale")
+  request(
+    :get,
+    "/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations",
+    query: {
+      "limit" => "50",
+      "fields[appStoreVersionLocalizations]" => fields
+    }
+  ).fetch("data", [])
+end
+
+def screenshot_sets(localization_id)
+  request(
+    :get,
+    "/v1/appStoreVersionLocalizations/#{localization_id}/appScreenshotSets",
+    query: {
+      "limit" => "50",
+      "fields[appScreenshotSets]" => "screenshotDisplayType"
+    }
+  ).fetch("data", [])
+end
+
+def screenshots_in_set(set_id)
+  request(
+    :get,
+    "/v1/appScreenshotSets/#{set_id}/appScreenshots",
+    query: {
+      "limit" => "50",
+      "fields[appScreenshots]" => "fileName,sourceFileChecksum,assetDeliveryState"
+    }
+  ).fetch("data", [])
+end
+
+def screenshot_identity(screenshot)
+  attributes = screenshot.fetch("attributes", {})
+  [attributes["fileName"].to_s, attributes["sourceFileChecksum"].to_s]
+end
+
+def duplicate_screenshots(screenshots)
+  screenshots.group_by { |screenshot| screenshot_identity(screenshot) }
+             .values
+             .flat_map { |matching| matching.drop(1) }
+end
+
+def expected_screenshot_sets
+  localizations = app_store_version_localizations
+  by_locale = localizations.to_h do |localization|
+    [localization.fetch("attributes", {}).fetch("locale"), localization]
+  end
+
+  EXPECTED_SCREENSHOT_LOCALES.to_h do |locale|
+    localization = by_locale[locale]
+    raise "Missing App Store version localization #{locale}." unless localization
+
+    sets = screenshot_sets(localization.fetch("id"))
+    by_display_type = sets.group_by do |set|
+      set.fetch("attributes", {}).fetch("screenshotDisplayType")
+    end
+    selected = EXPECTED_SCREENSHOTS.to_h do |display_type, expected_files|
+      matches = by_display_type.fetch(display_type, [])
+      raise "Expected one #{locale} #{display_type} screenshot set, found #{matches.length}." unless matches.length == 1
+
+      [display_type, { set: matches.first, expected_files: expected_files }]
+    end
+    [locale, selected]
+  end
+end
+
+def verify_expected_screenshot_inventory!
+  expected_screenshot_sets.each do |locale, sets|
+    sets.each do |display_type, details|
+      screenshots = screenshots_in_set(details.fetch(:set).fetch("id"))
+      actual_files = screenshots.map { |screenshot| screenshot.fetch("attributes", {})["fileName"].to_s }
+      expected_files = details.fetch(:expected_files)
+      unless actual_files == expected_files
+        raise "Unexpected #{locale} #{display_type} screenshots: expected #{expected_files.inspect}, found #{actual_files.inspect}."
+      end
+
+      puts "Screenshot inventory verified: locale=#{locale} displayType=#{display_type} count=#{actual_files.length} files=#{actual_files.join(",")}."
+    end
+  end
+end
+
+def clean_duplicate_screenshots!
+  context = app_store_version_context("Before screenshot cleanup")
+  unless context.fetch(:app_store_state) == "PREPARE_FOR_SUBMISSION"
+    raise "Cannot clean screenshots while App Store version state is #{context.fetch(:app_store_state)}."
+  end
+
+  deleted = 0
+  expected_screenshot_sets.each do |locale, sets|
+    sets.each do |display_type, details|
+      set_id = details.fetch(:set).fetch("id")
+      screenshots = screenshots_in_set(set_id)
+      duplicates = duplicate_screenshots(screenshots)
+      duplicates.each do |screenshot|
+        attributes = screenshot.fetch("attributes", {})
+        request(:delete, "/v1/appScreenshots/#{screenshot.fetch("id")}")
+        deleted += 1
+        puts "Deleted duplicate screenshot: locale=#{locale} displayType=#{display_type} file=#{attributes["fileName"]} id=#{screenshot.fetch("id")}."
+      end
+    end
+  end
+
+  10.times do |attempt|
+    begin
+      verify_expected_screenshot_inventory!
+      puts "Screenshot cleanup completed: deleted=#{deleted}."
+      return
+    rescue RuntimeError => e
+      raise if attempt == 9
+
+      puts "Screenshot inventory has not converged yet: #{e.message} Retrying in 3 seconds."
+      sleep(3)
+    end
+  end
+end
+
 def dump_readiness(context)
   puts "Readiness: state=#{context.fetch(:app_store_state)} editable=#{context.fetch(:app_store_state) == "PREPARE_FOR_SUBMISSION"}."
 
@@ -293,30 +430,17 @@ def dump_readiness(context)
   primary_locale = app.dig("attributes", "primaryLocale")
   puts "Readiness: app primaryLocale=#{primary_locale || "-"}."
 
-  localizations = request(
-    :get,
-    "/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations",
-    query: {
-      "limit" => "50",
-      "fields[appStoreVersionLocalizations]" => "locale,description,keywords,supportUrl,whatsNew"
-    }
-  ).fetch("data", [])
+  localizations = app_store_version_localizations(fields: "locale,description,keywords,supportUrl,whatsNew")
 
   localizations.each do |localization|
     attrs = localization.fetch("attributes", {})
-    sets = request(
-      :get,
-      "/v1/appStoreVersionLocalizations/#{localization.fetch("id")}/appScreenshotSets",
-      query: {
-        "include" => "appScreenshots",
-        "fields[appScreenshotSets]" => "screenshotDisplayType,appScreenshots",
-        "limit" => "50"
-      }
-    ).fetch("data", [])
-    screenshot_set_count = sets.count do |set|
-      set.dig("relationships", "appScreenshots", "data").to_a.any?
+    sets = screenshot_sets(localization.fetch("id"))
+    screenshot_inventory = sets.map do |set|
+      display_type = set.fetch("attributes", {})["screenshotDisplayType"]
+      count = screenshots_in_set(set.fetch("id")).length
+      "#{display_type}=#{count}"
     end
-    puts "Readiness: localization #{attrs["locale"]} primary=#{attrs["locale"] == primary_locale} description=#{!attrs["description"].to_s.empty?} keywords=#{!attrs["keywords"].to_s.empty?} supportUrl=#{!attrs["supportUrl"].to_s.empty?} whatsNew=#{!attrs["whatsNew"].to_s.empty?} screenshotSetsWithImages=#{screenshot_set_count}."
+    puts "Readiness: localization #{attrs["locale"]} primary=#{attrs["locale"] == primary_locale} description=#{!attrs["description"].to_s.empty?} keywords=#{!attrs["keywords"].to_s.empty?} supportUrl=#{!attrs["supportUrl"].to_s.empty?} whatsNew=#{!attrs["whatsNew"].to_s.empty?} screenshotInventory=#{screenshot_inventory.join(",")}."
   end
 rescue AscError => e
   puts "Readiness: could not complete readiness dump: #{e.message}"
@@ -584,6 +708,7 @@ def submit_app_store_version
   ensure_whats_new
   context = app_store_version_context("After metadata normalization")
   dump_readiness(context)
+  verify_expected_screenshot_inventory!
   state = create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
   ensure_review_submission_pending!(state)
   app_store_version_context("After submission")
@@ -598,14 +723,21 @@ rescue AscError => e
   app_store_version_context("After submission")
 end
 
-build = wait_for_valid_build
-build_id = build.fetch("id")
-patch_build_encryption(build_id)
-attach_build_to_version(build_id)
-if SUBMIT_FOR_REVIEW
-  submit_app_store_version
-else
-  context = app_store_version_context("After build attachment")
-  dump_readiness(context)
-  puts "Build #{BUILD_NUMBER} is VALID and attached. Review submission was intentionally skipped."
+def run
+  build = wait_for_valid_build
+  build_id = build.fetch("id")
+  patch_build_encryption(build_id)
+  attach_build_to_version(build_id)
+  if CLEAN_SCREENSHOT_DUPLICATES
+    clean_duplicate_screenshots!
+  end
+  if SUBMIT_FOR_REVIEW
+    submit_app_store_version
+  else
+    context = app_store_version_context("After build attachment")
+    dump_readiness(context)
+    puts "Build #{BUILD_NUMBER} is VALID and attached. Review submission was intentionally skipped."
+  end
 end
+
+run if $PROGRAM_NAME == __FILE__
