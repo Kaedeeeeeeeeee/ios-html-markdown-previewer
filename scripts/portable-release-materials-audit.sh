@@ -127,9 +127,12 @@ require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD
 require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_VERSION_STRING:\s*"1\.1"', "App Store upload workflow targets version 1.1")
 require_text(".github/workflows/app-store-upload.yml", r"Sync localized metadata and screenshots", "App Store upload workflow syncs localized store assets")
 require_text(".github/workflows/app-store-upload.yml", r"submit_for_review:", "App Store upload workflow keeps review submission explicit")
+require_text(".github/workflows/app-store-upload.yml", r"clean_screenshot_duplicates:", "App Store upload workflow cleans duplicate screenshots explicitly")
 require_text("fastlane/Fastfile", r"overwrite_screenshots:\s*true", "Fastlane replaces stale App Store screenshots")
 require_text("fastlane/Fastfile", r"skip_app_version_update:\s*false", "Fastlane creates or updates the App Store version")
 require_text(".github/scripts/submit-app-store-review.rb", r'/v1/apps/#\{APP_ID\}/appStoreVersions', "App Store verification resolves versions through the app relationship")
+require_text(".github/scripts/submit-app-store-review.rb", r"verify_expected_screenshot_inventory!", "App Store verification requires exact screenshot inventory before submission")
+require_text(".github/scripts/submit-app-store-review.rb", r'request\(:delete, "/v1/appScreenshots/', "App Store cleanup deletes duplicate screenshot resources")
 
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.1;", "generated Xcode project marketing version is 1.1")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 4;", "generated Xcode project build number is 4")
