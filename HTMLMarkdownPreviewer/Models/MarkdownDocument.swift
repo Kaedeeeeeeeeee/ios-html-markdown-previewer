@@ -4,7 +4,7 @@ struct MarkdownDocument: Equatable, Sendable {
     var blocks: [MarkdownBlock]
 }
 
-enum MarkdownBlock: Equatable, Sendable, Identifiable {
+enum MarkdownBlock: Equatable, Sendable {
     case heading(level: Int, text: AttributedString)
     case paragraph(AttributedString)
     case blockQuote([MarkdownBlock])
@@ -15,28 +15,6 @@ enum MarkdownBlock: Equatable, Sendable, Identifiable {
     case image(MarkdownImage)
     case thematicBreak
 
-    var id: String {
-        switch self {
-        case .heading(let level, let text):
-            "heading-\(level)-\(text.characters)"
-        case .paragraph(let text):
-            "paragraph-\(text.characters)"
-        case .blockQuote(let blocks):
-            "blockquote-\(blocks.count)-\(blocks.map(\.id).joined(separator: "-"))"
-        case .codeBlock(let language, let code):
-            "code-\(language ?? "plain")-\(code.hashValue)"
-        case .unorderedList(let items):
-            "ul-\(items.map(\.id).joined(separator: "-"))"
-        case .orderedList(let start, let items):
-            "ol-\(start)-\(items.map(\.id).joined(separator: "-"))"
-        case .table(let table):
-            "table-\(table.header)-\(table.rows)-\(table.columnAlignments)"
-        case .image(let image):
-            "image-\(image.source)-\(image.altText)"
-        case .thematicBreak:
-            "thematic-break"
-        }
-    }
 }
 
 struct MarkdownTable: Equatable, Sendable {
@@ -61,13 +39,10 @@ struct MarkdownTable: Equatable, Sendable {
     }
 }
 
-struct MarkdownListItem: Equatable, Sendable, Identifiable {
+struct MarkdownListItem: Equatable, Sendable {
     var text: AttributedString
     var children: [MarkdownBlock]
 
-    var id: String {
-        "item-\(text.characters)-\(children.map(\.id).joined(separator: "-"))"
-    }
 }
 
 struct MarkdownImage: Equatable, Sendable {

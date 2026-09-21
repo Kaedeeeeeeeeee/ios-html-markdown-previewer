@@ -116,14 +116,14 @@ for path in [
 ]:
     require_file(path)
 
-require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*5\b", "project.yml build number is 5")
+require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*6\b", "project.yml build number is 6")
 require_text("project.yml", r"MARKETING_VERSION:\s*1\.2\b", "project.yml marketing version is 1.2")
 require_text("project.yml", r"deploymentTarget:\s*\n\s+iOS:\s*\"17\.0\"", "project.yml minimum iOS is 17.0")
 require_text("project.yml", r"PRODUCT_BUNDLE_IDENTIFIER:\s*com\.kaede\.htmlmarkdownpreviewer", "project.yml bundle identifier is correct")
 require_text("project.yml", r"ASSETCATALOG_COMPILER_APPICON_NAME:\s*AppIcon", "project.yml configures AppIcon")
 require_text("project.yml", r"ZIPFoundation:[\s\S]*from:\s*0\.9\.20", "ZIPFoundation dependency version is declared")
 require_text("project.yml", r"SwiftMarkdown:[\s\S]*from:\s*0\.8\.0", "Swift Markdown dependency version is declared")
-require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"5"', "App Store upload workflow targets build 5")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"6"', "App Store upload workflow targets build 6")
 require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_VERSION_STRING:\s*"1\.2"', "App Store upload workflow targets version 1.2")
 require_text(".github/workflows/app-store-upload.yml", r"Sync localized metadata and screenshots", "App Store upload workflow syncs localized store assets")
 require_text(".github/workflows/app-store-upload.yml", r"submit_for_review:", "App Store upload workflow keeps review submission explicit")
@@ -135,7 +135,7 @@ require_text(".github/scripts/submit-app-store-review.rb", r"verify_expected_scr
 require_text(".github/scripts/submit-app-store-review.rb", r'request\(:delete, "/v1/appScreenshots/', "App Store cleanup deletes duplicate screenshot resources")
 
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.2;", "generated Xcode project marketing version is 1.2")
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 5;", "generated Xcode project build number is 5")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 6;", "generated Xcode project build number is 6")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"PRODUCT_BUNDLE_IDENTIFIER = com\.kaede\.htmlmarkdownpreviewer;", "generated Xcode project bundle identifier is correct")
 
 print("\n== Info.plist ==")

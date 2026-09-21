@@ -36,7 +36,7 @@ jobs:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
       APP_STORE_CONNECT_APP_ID: "6785794966"
       APP_STORE_CONNECT_VERSION_STRING: "1.2"
-      APP_STORE_CONNECT_BUILD_NUMBER: "5"
+      APP_STORE_CONNECT_BUILD_NUMBER: "6"
       APP_STORE_CONNECT_PLATFORM: IOS
       APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES: ${{ inputs.clean_screenshot_duplicates }}
       APP_STORE_CONNECT_SUBMIT_FOR_REVIEW: ${{ inputs.submit_for_review }}

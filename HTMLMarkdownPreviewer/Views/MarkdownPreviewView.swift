@@ -8,7 +8,8 @@ struct MarkdownPreviewView: View {
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 18) {
-                ForEach(document.blocks) { block in
+                // A parsed document is read-only. Position distinguishes even identical blocks.
+                ForEach(Array(document.blocks.enumerated()), id: \.offset) { _, block in
                     MarkdownBlockView(block: block)
                 }
             }
@@ -102,7 +103,7 @@ private struct MarkdownBlockView: View {
                     .fill(Color.secondary.opacity(0.35))
                     .frame(width: 3)
                 VStack(alignment: .leading, spacing: 10) {
-                    ForEach(blocks) { child in
+                    ForEach(Array(blocks.enumerated()), id: \.offset) { _, child in
                         MarkdownBlockView(block: child)
                     }
                 }
@@ -242,7 +243,7 @@ private struct MarkdownListView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                 HStack(alignment: .top, spacing: 8) {
                     Text(marker(for: index))
                         .font(.body)
@@ -252,7 +253,7 @@ private struct MarkdownListView: View {
                         Text(item.text)
                             .font(.body)
                             .textSelection(.enabled)
-                        ForEach(item.children) { child in
+                        ForEach(Array(item.children.enumerated()), id: \.offset) { _, child in
                             MarkdownBlockView(block: child)
                         }
                     }

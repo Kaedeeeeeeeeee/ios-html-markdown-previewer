@@ -25,6 +25,24 @@ final class SmokeUITests: XCTestCase {
         assertPDFExport(sample: "markdown", heading: "Make room to read")
     }
 
+    func testChineseMarkdownRetainsEqualLengthHeadings() throws {
+        continueAfterFailure = false
+        let app = makeApp()
+        app.launchArguments = [
+            "--screenshot-reset-library", "--screenshot-sample=markdown",
+            "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts["留一点时间读书"].waitForExistence(timeout: 10))
+        // These two different headings have the same UTF-8 length. Content-derived
+        // CharacterView debug descriptions previously gave them identical view IDs.
+        XCTAssertTrue(app.staticTexts["留下来的想法"].exists)
+        XCTAssertTrue(scrollUntilExists(app.staticTexts["读下一章之前"], app: app))
+        XCTAssertTrue(scrollUntilExists(app.staticTexts["一个小提醒"], app: app))
+        attachScreenshot(named: "All Chinese Markdown headings remain visible", app: app)
+    }
+
     func testZIPPDFExportShowsShareSheet() throws {
         assertPDFExport(sample: "zipPackage", heading: "A week of reading")
     }
