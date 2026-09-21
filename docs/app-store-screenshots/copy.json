@@ -10,12 +10,12 @@
       "02-html-safe-preview": {
         "eyebrow": "RICH HTML",
         "title": "HTML, beautifully rendered",
-        "subtitle": "Responsive layouts, vector graphics, and CSS motion."
+        "subtitle": "Thoughtful layouts for plans, pages, and local documents."
       },
       "03-markdown-preview": {
         "eyebrow": "MARKDOWN READER",
         "title": "Markdown, made readable",
-        "subtitle": "Clean typography for notes, docs, lists, and code."
+        "subtitle": "Clean typography for notes, tables, lists, and code."
       },
       "04-zip-report-preview": {
         "eyebrow": "ZIP REPORTS",
@@ -40,12 +40,12 @@
       "02-html-safe-preview": {
         "eyebrow": "丰富 HTML",
         "title": "复杂 HTML，也能漂亮呈现",
-        "subtitle": "响应式布局、矢量图形与 CSS 动画清晰流畅"
+        "subtitle": "计划、网页与本地文档，清晰舒适地阅读"
       },
       "03-markdown-preview": {
         "eyebrow": "MARKDOWN 阅读",
         "title": "Markdown，阅读更舒服",
-        "subtitle": "标题、列表与代码，自动排出清晰层次"
+        "subtitle": "标题、表格、列表与代码，层次清晰"
       },
       "04-zip-report-preview": {
         "eyebrow": "ZIP 报告",
@@ -70,12 +70,12 @@
       "02-html-safe-preview": {
         "eyebrow": "リッチ HTML",
         "title": "リッチなHTMLも、美しく表示",
-        "subtitle": "レスポンシブ表示・ベクター・CSSアニメーションに対応"
+        "subtitle": "予定もページも、ローカル文書を心地よく読む"
       },
       "03-markdown-preview": {
         "eyebrow": "MARKDOWN リーダー",
         "title": "Markdownを、読みやすく",
-        "subtitle": "見出し・リスト・コードを美しく整形"
+        "subtitle": "見出し・表・リスト・コードを美しく整形"
       },
       "04-zip-report-preview": {
         "eyebrow": "ZIP レポート",

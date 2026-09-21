@@ -1,4 +1,4 @@
-# App Store Listing — Version 1.2 (Build 5)
+# App Store Listing — Version 1.2 (Build 6)
 
 ## Commercial Model
 

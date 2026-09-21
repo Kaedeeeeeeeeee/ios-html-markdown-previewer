@@ -1,67 +1,74 @@
 # App Store Screenshots
 
-These marketing screenshots were generated with:
+These marketing screenshots are generated with:
 
 ```sh
 scripts/capture-release-screenshots.sh
 ```
 
-The command captures one English source set from the iPhone and iPad simulators,
-then places those real screenshots in a deterministic marketing canvas. It
-generates storefront-specific headlines for:
+The command captures a separate, genuinely localized source set for each of
+`en-US`, `zh-Hans`, and `ja`, on both iPhone and iPad simulators. It then places
+those real app screenshots in a deterministic marketing canvas with matching
+localized headlines. The interface itself is never redrawn.
 
-- `en-US`
-- `zh-Hans`
-- `ja`
+Each locale contains five iPhone and five iPad images:
 
-Current output set:
+1. `01-home` — opening files and choosing a built-in example.
+2. `02-html-safe-preview` — the redesigned weekend plan.
+3. `03-markdown-preview` — the redesigned reading notes, including a table.
+4. `04-zip-report-preview` — the redesigned reading journal and local chart.
+5. `05-settings` — native preview, storage, and privacy settings.
 
-- `en-US/iphone-01-home.png`
-- `en-US/iphone-02-html-safe-preview.png`
-- `en-US/iphone-03-markdown-preview.png`
-- `en-US/iphone-04-zip-report-preview.png`
-- `en-US/iphone-05-settings.png`
-- `en-US/ipad-01-home.png`
-- `en-US/ipad-02-html-safe-preview.png`
-- `en-US/ipad-03-markdown-preview.png`
-- `en-US/ipad-04-zip-report-preview.png`
-- `en-US/ipad-05-settings.png`
-- `zh-Hans/...`
-- `ja/...`
+Filenames use the `iphone-` or `ipad-` prefix, for example
+`zh-Hans/iphone-02-html-safe-preview.png`.
 
-The script also mirrors the final `en-US` marketing screenshots into the root
-screenshot directory as `iphone-01-home.png`, `ipad-01-home.png`, and the other
-legacy filenames used by release audits.
+The final `en-US` screenshots are also mirrored byte-for-byte into this directory
+under the legacy root filenames used by release audits.
 
-Captured dimensions:
+## Dimensions
 
-- iPhone: 1320 x 2868
-- iPad: 2064 x 2752
+- iPhone 6.9-inch portrait: **1320 × 2868**.
+- iPad 13-inch portrait: **2064 × 2752**.
 
-These dimensions match Apple's App Store Connect screenshot specifications for 6.9-inch iPhone portrait screenshots and 13-inch iPad portrait screenshots:
-https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
+Both sizes were verified against [Apple's screenshot specifications](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications)
+on 2026-09-21 and match the repository's release audits.
 
-The source capture uses simulator launch arguments to reset the local library,
-open built-in samples, and show Settings. Source screenshots are written to
-`DerivedData/AppStoreScreenshotSources/en-US/`. Final contact sheets for visual
-review are written to `DerivedData/AppStoreScreenshotPreviews/`.
+## Capture isolation and output
 
-Marketing copy lives in `copy.json`. The app UI inside every marketing image is
-intentionally English; the headline and supporting line are localized for each
-storefront.
+The capture script builds Debug into `DerivedData/ScreenshotCapture/` and
+passes `HTML_PREVIEWER_UI_TESTS=1` through `SIMCTL_CHILD_` on every launch. The
+sample/reset arguments therefore operate on the isolated UI-test library and
+preferences, preserving the normal app library. Only simulators are used.
 
-Override `OUT_DIR`, `SOURCE_OUT_DIR`, `PREVIEW_OUT_DIR`, `COPY_FILE`,
-`CAPTURE_LANGUAGE`, `CAPTURE_APPLE_LOCALE`, `IPHONE_DEVICE`, `IPAD_DEVICE`,
-`IPHONE_RUNTIME_VERSION`, or `IPAD_RUNTIME_VERSION` when capturing on a
-different simulator setup.
+Sources are written to `DerivedData/AppStoreScreenshotSources/<locale>/`.
+Screenshots use dark appearance and a fixed 09:41 status bar. Contact sheets are
+written to `DerivedData/AppStoreScreenshotPreviews/`. Review the sources and
+contact sheets for the correct language, rendered sample, and absence of loading
+or transition screens before uploading.
 
-To regenerate the marketing canvases from an existing source set without
-launching the simulators:
+Marketing copy lives in `copy.json`. The 1.2 set shows the new weekend plan,
+reading notes, and reading journal. The HTML and Markdown captions describe
+content visible in those examples.
+
+Override `OUT_DIR`, `SOURCE_OUT_DIR` (the parent of the three locale directories),
+`PREVIEW_OUT_DIR`, `COPY_FILE`, `DERIVED_DATA`, `IPHONE_DEVICE`, `IPAD_DEVICE`,
+`IPHONE_RUNTIME_VERSION`, or `IPAD_RUNTIME_VERSION` to use another simulator
+setup. `CAPTURE_LOCALES` can restrict recapture to a space-separated subset; all
+three source sets must exist before composition.
+
+The 1.2 capture uses iPhone 18 Pro Max and iPad Pro 13-inch (M5), both on iOS 27.0.
+The completed set and its build provenance are recorded in
+[`verification-1.2.md`](verification-1.2.md).
+
+To regenerate the marketing canvases from existing localized sources:
 
 ```sh
 xcrun swift scripts/generate-app-store-screenshots.swift \
-  --source-dir DerivedData/AppStoreScreenshotSources/en-US \
+  --source-dir DerivedData/AppStoreScreenshotSources \
   --output-dir docs/app-store-screenshots \
   --copy-file docs/app-store-screenshots/copy.json \
   --preview-dir DerivedData/AppStoreScreenshotPreviews
 ```
+
+Add `--locales en-US` (or a comma-separated subset) to compose one completed
+locale while another locale is still being captured.

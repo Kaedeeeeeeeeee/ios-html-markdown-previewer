@@ -19,6 +19,7 @@ private struct Options {
     let outputDirectory: URL
     let copyFile: URL
     let previewDirectory: URL?
+    let locales: [String]
 }
 
 private struct ScreenshotSpec {
@@ -95,7 +96,7 @@ private func parseOptions() throws -> Options {
     while index < arguments.count {
         let argument = arguments[index]
         guard argument.hasPrefix("--"), index + 1 < arguments.count else {
-            throw GeneratorError.usage("Usage: generate-app-store-screenshots.swift --source-dir PATH --output-dir PATH --copy-file PATH [--preview-dir PATH]")
+            throw GeneratorError.usage("Usage: generate-app-store-screenshots.swift --source-dir PATH --output-dir PATH --copy-file PATH [--preview-dir PATH] [--locales en-US,zh-Hans,ja]")
         }
         values[argument] = arguments[index + 1]
         index += 2
@@ -104,14 +105,15 @@ private func parseOptions() throws -> Options {
     guard let source = values["--source-dir"],
           let output = values["--output-dir"],
           let copy = values["--copy-file"] else {
-        throw GeneratorError.usage("Usage: generate-app-store-screenshots.swift --source-dir PATH --output-dir PATH --copy-file PATH [--preview-dir PATH]")
+        throw GeneratorError.usage("Usage: generate-app-store-screenshots.swift --source-dir PATH --output-dir PATH --copy-file PATH [--preview-dir PATH] [--locales en-US,zh-Hans,ja]")
     }
 
     return Options(
         sourceDirectory: URL(fileURLWithPath: source, isDirectory: true),
         outputDirectory: URL(fileURLWithPath: output, isDirectory: true),
         copyFile: URL(fileURLWithPath: copy),
-        previewDirectory: values["--preview-dir"].map { URL(fileURLWithPath: $0, isDirectory: true) }
+        previewDirectory: values["--preview-dir"].map { URL(fileURLWithPath: $0, isDirectory: true) },
+        locales: (values["--locales"] ?? "en-US,zh-Hans,ja").split(separator: ",").map(String.init)
     )
 }
 
@@ -463,7 +465,11 @@ private func run() throws {
         [String: StorefrontCopy].self,
         from: Data(contentsOf: options.copyFile)
     )
-    let locales = ["en-US", "zh-Hans", "ja"]
+    let locales = options.locales
+    guard !locales.isEmpty, Set(locales).count == locales.count,
+          locales.allSatisfy({ ["en-US", "zh-Hans", "ja"].contains($0) }) else {
+        throw GeneratorError.usage("--locales must contain unique values from en-US,zh-Hans,ja")
+    }
     let devices: [(prefix: String, size: CGSize, isPhone: Bool)] = [
         ("iphone", CGSize(width: 1320, height: 2868), true),
         ("ipad", CGSize(width: 2064, height: 2752), false)
@@ -481,7 +487,9 @@ private func run() throws {
                     throw GeneratorError.missingCopy(locale: locale, key: spec.key)
                 }
                 let filename = "\(device.prefix)-\(spec.filenameSuffix).png"
-                let sourceURL = options.sourceDirectory.appendingPathComponent(filename)
+                let sourceURL = options.sourceDirectory
+                    .appendingPathComponent(locale, isDirectory: true)
+                    .appendingPathComponent(filename)
                 let outputURL = options.outputDirectory
                     .appendingPathComponent(locale, isDirectory: true)
                     .appendingPathComponent(filename)

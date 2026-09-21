@@ -3,3 +3,4 @@
 - Read Markdown tables with aligned columns and horizontal scrolling for wider tables.
 - Get to recent files first, with a collapsible samples section below.
 - Explore three redesigned samples: Weekend plan, Reading notes, and Reading week, with light and dark appearances that match the app.
+- Fixed missing headings and list items in some Markdown documents.
