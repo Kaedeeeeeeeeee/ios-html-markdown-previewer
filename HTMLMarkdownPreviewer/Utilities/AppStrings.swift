@@ -12,6 +12,10 @@ enum AppStrings {
         static let done = AppStrings.localized("action.done", defaultValue: "Done")
         static let openFile = AppStrings.localized("action.openFile", defaultValue: "Open File")
         static let openZIPPackage = AppStrings.localized("action.openZIPPackage", defaultValue: "Open ZIP Package")
+        static let shareOriginalFile = AppStrings.localized("action.shareOriginalFile", defaultValue: "Share Original File")
+        static let shareZIPPackage = AppStrings.localized("action.shareZIPPackage", defaultValue: "Share ZIP Package")
+        static let exportPDF = AppStrings.localized("action.exportPDF", defaultValue: "Export PDF")
+        static let preparingPDF = AppStrings.localized("action.preparingPDF", defaultValue: "Preparing PDF…")
         static let clearImportedFiles = AppStrings.localized(
             "action.clearImportedFiles",
             defaultValue: "Clear Imported Files"
@@ -45,6 +49,10 @@ enum AppStrings {
     }
 
     enum Errors {
+        static let cannotExportPDFTitle = AppStrings.localized("error.exportPDF.title", defaultValue: "Cannot Export PDF")
+        static let pdfPreviewNotReady = AppStrings.localized("error.exportPDF.notReady", defaultValue: "Wait for the preview to finish loading, then try again.")
+        static let pdfNoPages = AppStrings.localized("error.exportPDF.noPages", defaultValue: "This document could not be laid out for PDF export.")
+        static let pdfLoadTimedOut = AppStrings.localized("error.exportPDF.timedOut", defaultValue: "Preparing the document took too long. Please try again.")
         static let cannotOpenFileTitle = String(
             localized: "error.cannotOpenFile.title",
             defaultValue: "Cannot Open File"
@@ -239,15 +247,84 @@ enum AppStrings {
     }
 
     enum Samples {
-        static let htmlTitle = AppStrings.localized("sample.html.title", defaultValue: "HTML Sample")
-        static let markdownTitle = AppStrings.localized("sample.markdown.title", defaultValue: "Markdown Sample")
-        static let zipTitle = AppStrings.localized("sample.zip.title", defaultValue: "ZIP Report Sample")
-        static let htmlSubtitle = AppStrings.localized("sample.html.subtitle", defaultValue: "Single-file HTML")
-        static let markdownSubtitle = AppStrings.localized("sample.markdown.subtitle", defaultValue: "Formatted Markdown")
-        static let zipSubtitle = AppStrings.localized("sample.zip.subtitle", defaultValue: "HTML with local assets")
+        static let htmlTitle = AppStrings.localized("sample.html.title", defaultValue: "Weekend plan")
+        static let markdownTitle = AppStrings.localized("sample.markdown.title", defaultValue: "Reading notes")
+        static let zipTitle = AppStrings.localized("sample.zip.title", defaultValue: "Reading week")
+        static let htmlSubtitle = AppStrings.localized("sample.html.subtitle", defaultValue: "HTML · A day at your own pace")
+        static let markdownSubtitle = AppStrings.localized("sample.markdown.subtitle", defaultValue: "Markdown · Notes, lists & tables")
+        static let zipSubtitle = AppStrings.localized("sample.zip.subtitle", defaultValue: "ZIP · A journal with local assets")
+    }
+
+    enum SampleDesign {
+        static let htmlTitle = AppStrings.localized("sampleDesign.htmlTitle", defaultValue: "A slower Saturday")
+        static let htmlIntro = AppStrings.localized("sampleDesign.htmlIntro", defaultValue: "A little time outside. A few places worth stopping for.")
+        static let htmlEyebrow = AppStrings.localized("sampleDesign.htmlEyebrow", defaultValue: "WEEKEND PLAN")
+        static let htmlDate = AppStrings.localized("sampleDesign.htmlDate", defaultValue: "Saturday · 09:30–15:00")
+        static let htmlSummary = AppStrings.localized("sampleDesign.htmlSummary", defaultValue: "Three stops. One unhurried day.")
+        static let htmlSection = AppStrings.localized("sampleDesign.htmlSection", defaultValue: "The plan")
+        static let htmlStopOne = AppStrings.localized("sampleDesign.htmlStopOne", defaultValue: "Coffee & a new chapter")
+        static let htmlStopOneDetail = AppStrings.localized("sampleDesign.htmlStopOneDetail", defaultValue: "Take a window seat. Read a few pages before the city gets busy.")
+        static let htmlStopTwo = AppStrings.localized("sampleDesign.htmlStopTwo", defaultValue: "A walk by the river")
+        static let htmlStopTwoDetail = AppStrings.localized("sampleDesign.htmlStopTwoDetail", defaultValue: "Follow the water, leave room for a detour.")
+        static let htmlStopThree = AppStrings.localized("sampleDesign.htmlStopThree", defaultValue: "The neighborhood bookshop")
+        static let htmlStopThreeDetail = AppStrings.localized("sampleDesign.htmlStopThreeDetail", defaultValue: "Find one book you were not looking for.")
+        static let htmlNoteTitle = AppStrings.localized("sampleDesign.htmlNoteTitle", defaultValue: "Leave a little room")
+        static let htmlNote = AppStrings.localized("sampleDesign.htmlNote", defaultValue: "Keep the afternoon open. The best part may be the part you did not plan.")
+        static let htmlFooter = AppStrings.localized("sampleDesign.htmlFooter", defaultValue: "A small plan, saved for later.")
+        static let markdownTitle = AppStrings.localized("sampleDesign.markdownTitle", defaultValue: "Make room to read")
+        static let markdownIntro = AppStrings.localized("sampleDesign.markdownIntro", defaultValue: "Reading notes · A small habit for everyday life")
+        static let markdownQuote = AppStrings.localized("sampleDesign.markdownQuote", defaultValue: "A few good pages are enough for today.")
+        static let markdownSection = AppStrings.localized("sampleDesign.markdownSection", defaultValue: "What stays with me")
+        static let markdownParagraph = AppStrings.localized("sampleDesign.markdownParagraph", defaultValue: "A reading habit starts with a little space, not a bigger goal. Keep a book nearby and make the first step easy.")
+        static let markdownBulletOne = AppStrings.localized("sampleDesign.markdownBulletOne", defaultValue: "**Start small.** Ten quiet minutes can change the pace of a day.")
+        static let markdownBulletTwo = AppStrings.localized("sampleDesign.markdownBulletTwo", defaultValue: "**Keep a note.** Save one thought in your own words.")
+        static let markdownTableHeading = AppStrings.localized("sampleDesign.markdownTableHeading", defaultValue: "This week")
+        static let markdownDay = AppStrings.localized("sampleDesign.markdownDay", defaultValue: "Day")
+        static let markdownPages = AppStrings.localized("sampleDesign.markdownPages", defaultValue: "Pages")
+        static let markdownNoteColumn = AppStrings.localized("sampleDesign.markdownNoteColumn", defaultValue: "One thought")
+        static let markdownDayOne = AppStrings.localized("sampleDesign.markdownDayOne", defaultValue: "Mon")
+        static let markdownDayTwo = AppStrings.localized("sampleDesign.markdownDayTwo", defaultValue: "Wed")
+        static let markdownDayThree = AppStrings.localized("sampleDesign.markdownDayThree", defaultValue: "Fri")
+        static let markdownThoughtOne = AppStrings.localized("sampleDesign.markdownThoughtOne", defaultValue: "Make space")
+        static let markdownThoughtTwo = AppStrings.localized("sampleDesign.markdownThoughtTwo", defaultValue: "Notice more")
+        static let markdownThoughtThree = AppStrings.localized("sampleDesign.markdownThoughtThree", defaultValue: "Return often")
+        static let markdownNextHeading = AppStrings.localized("sampleDesign.markdownNextHeading", defaultValue: "For the next chapter")
+        static let markdownNextOne = AppStrings.localized("sampleDesign.markdownNextOne", defaultValue: "Choose one passage to read again.")
+        static let markdownNextTwo = AppStrings.localized("sampleDesign.markdownNextTwo", defaultValue: "Write down a question worth keeping.")
+        static let markdownCodeHeading = AppStrings.localized("sampleDesign.markdownCodeHeading", defaultValue: "A tiny reminder")
+        static let markdownFooter = AppStrings.localized("sampleDesign.markdownFooter", defaultValue: "Read a little. Keep what matters.")
+        static let zipTitle = AppStrings.localized("sampleDesign.zipTitle", defaultValue: "A week of reading")
+        static let zipIntro = AppStrings.localized("sampleDesign.zipIntro", defaultValue: "Small moments add up.")
+        static let zipEyebrow = AppStrings.localized("sampleDesign.zipEyebrow", defaultValue: "READING JOURNAL")
+        static let zipPeriod = AppStrings.localized("sampleDesign.zipPeriod", defaultValue: "September 14–20")
+        static let zipMinutes = AppStrings.localized("sampleDesign.zipMinutes", defaultValue: "minutes this week")
+        static let zipChartHeading = AppStrings.localized("sampleDesign.zipChartHeading", defaultValue: "A little, every day")
+        static let zipChartAlt = AppStrings.localized("sampleDesign.zipChartAlt", defaultValue: "Reading minutes from Monday to Sunday: 18, 32, 24, 45, 36, 52, 40.")
+        static let zipRhythm = AppStrings.localized("sampleDesign.zipRhythm", defaultValue: "Seven days, at your own pace.")
+        static let zipHighlights = AppStrings.localized("sampleDesign.zipHighlights", defaultValue: "Worth remembering")
+        static let zipHighlightOne = AppStrings.localized("sampleDesign.zipHighlightOne", defaultValue: "The quietest part of the morning")
+        static let zipHighlightOneDetail = AppStrings.localized("sampleDesign.zipHighlightOneDetail", defaultValue: "A chapter before the first notification.")
+        static let zipHighlightTwo = AppStrings.localized("sampleDesign.zipHighlightTwo", defaultValue: "One line to keep")
+        static let zipHighlightTwoDetail = AppStrings.localized("sampleDesign.zipHighlightTwoDetail", defaultValue: "Make time for the things you want to notice.")
+        static let zipFooter = AppStrings.localized("sampleDesign.zipFooter", defaultValue: "One week. A little more perspective.")
+        static let sampleLabel = AppStrings.localized("sampleDesign.sampleLabel", defaultValue: "Sample document")
+        static let zipMonday = AppStrings.localized("sampleDesign.zipMonday", defaultValue: "Mon")
+        static let zipTuesday = AppStrings.localized("sampleDesign.zipTuesday", defaultValue: "Tue")
+        static let zipWednesday = AppStrings.localized("sampleDesign.zipWednesday", defaultValue: "Wed")
+        static let zipThursday = AppStrings.localized("sampleDesign.zipThursday", defaultValue: "Thu")
+        static let zipFriday = AppStrings.localized("sampleDesign.zipFriday", defaultValue: "Fri")
+        static let zipSaturday = AppStrings.localized("sampleDesign.zipSaturday", defaultValue: "Sat")
+        static let zipSunday = AppStrings.localized("sampleDesign.zipSunday", defaultValue: "Sun")
     }
 
     enum SampleContent {
+        static let markdownTableFeature = AppStrings.localized("sampleContent.markdown.table.feature", defaultValue: "Feature")
+        static let markdownTableStatus = AppStrings.localized("sampleContent.markdown.table.status", defaultValue: "Status")
+        static let markdownTableHTMLPreview = AppStrings.localized("sampleContent.markdown.table.htmlPreview", defaultValue: "HTML preview")
+        static let markdownTableMarkdownTables = AppStrings.localized("sampleContent.markdown.table.markdownTables", defaultValue: "Markdown tables")
+        static let markdownTablePDFExport = AppStrings.localized("sampleContent.markdown.table.pdfExport", defaultValue: "PDF export")
+        static let markdownTableSupported = AppStrings.localized("sampleContent.markdown.table.supported", defaultValue: "Supported")
+        static let markdownTableAvailable = AppStrings.localized("sampleContent.markdown.table.available", defaultValue: "Available")
         static let htmlHeading = AppStrings.localized("sampleContent.html.heading", defaultValue: "HTML Preview Sample")
         static let htmlLocalRendering = AppStrings.localized(
             "sampleContent.html.localRendering",

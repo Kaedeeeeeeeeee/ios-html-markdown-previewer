@@ -2,6 +2,85 @@ import XCTest
 @testable import HTMLMarkdownPreviewer
 
 final class MarkdownRenderServiceTests: XCTestCase {
+    func testRendersTableColumnsAndAlignment() {
+        let document = MarkdownRenderService().render(markdown: """
+        | Default | Left | Center | Right |
+        | --- | :--- | :---: | ---: |
+        | A | B | C | 42 |
+        | D | E | F | 108 |
+        """)
+
+        XCTAssertEqual(document.blocks.count, 1)
+        guard case .table(let table) = document.blocks.first else {
+            return XCTFail("Expected a table instead of flattened paragraph text.")
+        }
+        XCTAssertEqual(table.columnAlignments, [.leading, .leading, .center, .trailing])
+        XCTAssertEqual(table.header.map { String($0.characters) }, ["Default", "Left", "Center", "Right"])
+        XCTAssertEqual(table.rows.map { $0.map { String($0.characters) } }, [["A", "B", "C", "42"], ["D", "E", "F", "108"]])
+    }
+
+    func testTablePreservesEmptyCellsAndPadsShortRows() {
+        let document = MarkdownRenderService().render(markdown: """
+        | First | Second | Third |
+        | --- | --- | --- |
+        | | middle | |
+        | only first |
+        | one | two | three | extra |
+        """)
+
+        guard case .table(let table) = document.blocks.first else {
+            return XCTFail("Expected a table.")
+        }
+        XCTAssertEqual(table.rows.map { $0.map { String($0.characters) } }, [
+            ["", "middle", ""],
+            ["only first", "", ""],
+            ["one", "two", "three"]
+        ])
+    }
+
+    func testTablePreservesInlineFormattingAndEscapedPipes() {
+        let document = MarkdownRenderService().render(markdown: #"""
+        | **Name** | Details |
+        | --- | --- |
+        | A\|B | **bold** and *italic* and `a\|b` and [link](https://example.com) |
+        """#)
+
+        guard case .table(let table) = document.blocks.first else {
+            return XCTFail("Expected a table.")
+        }
+        XCTAssertEqual(String(table.header[0].characters), "Name")
+        XCTAssertEqual(table.header[0].inlinePresentationIntent, .stronglyEmphasized)
+        XCTAssertEqual(String(table.rows[0][0].characters), "A|B")
+        let details = table.rows[0][1]
+        XCTAssertEqual(String(details.characters), "bold and italic and a|b and link")
+        XCTAssertTrue(details.runs.contains { $0.inlinePresentationIntent?.contains(.stronglyEmphasized) == true })
+        XCTAssertTrue(details.runs.contains { $0.inlinePresentationIntent?.contains(.emphasized) == true })
+        XCTAssertTrue(details.runs.contains { $0.inlinePresentationIntent?.contains(.code) == true })
+        XCTAssertTrue(details.runs.contains { $0.link == URL(string: "https://example.com") })
+    }
+
+    func testRendersHeaderOnlyTableAndTableInsideBlockQuote() {
+        let document = MarkdownRenderService().render(markdown: """
+        | Header |
+        | --- |
+
+        > | Item | Value |
+        > | --- | ---: |
+        > | Nested | 7 |
+        """)
+
+        XCTAssertEqual(document.blocks.count, 2)
+        guard case .table(let headerOnly) = document.blocks[0],
+              case .blockQuote(let quotedBlocks) = document.blocks[1],
+              case .table(let nested) = quotedBlocks.first else {
+            return XCTFail("Expected both top-level and nested tables.")
+        }
+        XCTAssertEqual(headerOnly.header, [AttributedString("Header")])
+        XCTAssertTrue(headerOnly.rows.isEmpty)
+        XCTAssertEqual(nested.columnAlignments, [.leading, .trailing])
+        XCTAssertEqual(nested.rows[0], [AttributedString("Nested"), AttributedString("7")])
+    }
+
     func testRendersCoreMarkdownBlocks() {
         let markdown = """
         # Title
@@ -104,6 +183,8 @@ final class MarkdownRenderServiceTests: XCTestCase {
 
     func testBlocksRemoteImagesAndResolvesLocalImagesAgainstBaseURL() throws {
         let baseURL = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: baseURL) }
+        try writeImageFixture(to: baseURL.appendingPathComponent("images/pixel.png"))
         let document = MarkdownRenderService().render(
             markdown: """
             ![Local alt](images/pixel.png)
@@ -133,10 +214,13 @@ final class MarkdownRenderServiceTests: XCTestCase {
 
     func testMarkdownLocalImagesCannotEscapeReadAccessRoot() throws {
         let containerURL = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: containerURL) }
         let rootURL = containerURL.appendingPathComponent("document-root", isDirectory: true)
         let baseURL = rootURL.appendingPathComponent("nested", isDirectory: true)
         let outsideURL = containerURL.appendingPathComponent("outside.png")
         try FileManager.default.createDirectory(at: baseURL, withIntermediateDirectories: true)
+        try writeImageFixture(to: rootURL.appendingPathComponent("asset.png"))
+        try writeImageFixture(to: outsideURL)
 
         let document = MarkdownRenderService().render(
             markdown: """
@@ -166,5 +250,14 @@ final class MarkdownRenderServiceTests: XCTestCase {
                 return XCTFail("Expected unsupported escaped image at index \(index).")
             }
         }
+    }
+
+    private func writeImageFixture(to url: URL) throws {
+        // Existing files and missing paths can standardize /private/var differently on devices.
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let pixel = try XCTUnwrap(Data(base64Encoded:
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+        ))
+        try pixel.write(to: url)
     }
 }

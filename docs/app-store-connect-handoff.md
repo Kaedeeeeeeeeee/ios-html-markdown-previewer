@@ -2,7 +2,7 @@
 
 Issue: #10
 
-Use this handoff when maintaining the App Store Connect record and preparing the current `1.1` update. It consolidates the fields that otherwise live across the listing draft, privacy notes, export compliance note, screenshots, and release checklist.
+Use this handoff when maintaining the App Store Connect record and preparing the current `1.2` update. It consolidates the fields that otherwise live across the listing draft, privacy notes, export compliance note, screenshots, and release checklist.
 
 ## Preconditions
 
@@ -49,7 +49,7 @@ Use this handoff when maintaining the App Store Connect record and preparing the
 - Availability: account-owner decision. If there is no region-specific legal constraint, use all App Store countries and regions.
 - Do not configure StoreKit products for MVP.
 
-## Version 1.1 Metadata
+## Version 1.2 Metadata
 
 Copy from `docs/app-store-listing.md`:
 

@@ -5,8 +5,9 @@ Use it when you receive an .html, .htm, .md, .markdown, or .zip file from Files,
 Features:
 - Local HTML preview with safe mode enabled by default
 - Rich HTML rendering for responsive layouts, inline graphics, and CSS animation
-- Markdown reading view for common Markdown documents
-- ZIP report package import for HTML files with local CSS and image assets
+- Markdown reading view with tables and horizontal scrolling for wide tables
+- Import and share complete ZIP report packages with local CSS and image assets
+- Export HTML and Markdown previews as PDF
 - Recent files list
 - Raw text fallback
 - File details

@@ -28,3 +28,17 @@ Do not attach sensitive files to public comments.
 - Safe Preview blocks JavaScript and external HTTP/HTTPS resources by default.
 - ZIP packages are the reliable way to preview HTML files that depend on local CSS or images.
 - Single-file HTML and Markdown imports are best effort for relative local assets.
+
+## Sharing and PDF Export (Version 1.2)
+
+Open the share menu in a document preview to share the original file or export a
+PDF. For a ZIP report, sharing sends the complete original ZIP, including its
+styles and images. PDF export becomes available when the rendered preview has
+finished loading; switch out of Raw Text to export the rendered document.
+
+HTML PDFs use the current page and its print layout. Scripts, animations, and
+interactive controls become static in the PDF. Markdown PDFs include tables and
+available local images; blocked remote images remain blocked.
+
+Recent files appear above Samples. When the library contains files, tap Samples
+to expand or collapse the examples. The app remembers that choice.

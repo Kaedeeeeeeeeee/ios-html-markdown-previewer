@@ -4,21 +4,96 @@ import XCTest
 final class SmokeUITests: XCTestCase {
     func testPreviewShareSheetShowsVisibleOptions() throws {
         continueAfterFailure = false
-        let app = XCUIApplication()
+        let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=html"]
         app.launch()
 
         XCTAssertTrue(app.buttons["share-file-button"].waitForExistence(timeout: 10))
         tapElement(app.buttons["share-file-button"], app: app)
+        tapElement(app.buttons["Share Original File"], app: app)
         XCTAssertTrue(
             waitForAnyLabel(["Copy", "Save to Files", "More"], app: app),
             "Share sheet did not show visible share options"
         )
     }
 
+    func testHTMLPDFExportShowsShareSheet() throws {
+        assertPDFExport(sample: "html", heading: "A slower Saturday", repeatExport: true)
+    }
+
+    func testMarkdownPDFExportShowsShareSheet() throws {
+        assertPDFExport(sample: "markdown", heading: "Make room to read")
+    }
+
+    func testZIPPDFExportShowsShareSheet() throws {
+        assertPDFExport(sample: "zipPackage", heading: "A week of reading")
+    }
+
+    func testZIPShareOffersCompletePackage() throws {
+        continueAfterFailure = false
+        let app = makeApp()
+        app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=zipPackage"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["A week of reading"].waitForExistence(timeout: 10))
+
+        tapElement(app.buttons["share-file-button"], app: app)
+        XCTAssertFalse(app.buttons["Share Original File"].exists)
+        tapElement(app.buttons["Share ZIP Package"], app: app)
+        XCTAssertTrue(waitForAnyLabel(["Copy", "Save to Files", "More"], app: app))
+        attachScreenshot(named: "ZIP package share sheet", app: app)
+
+        // System activities can keep the device language even when the app is tested in English.
+        let saveToFiles = app.descendants(matching: .any).matching(NSPredicate(
+            format: "label == %@ OR (label CONTAINS %@ AND label CONTAINS %@)",
+            "Save to Files", "ファイル", "保存"
+        )).firstMatch
+        tapElement(saveToFiles, app: app)
+        let packageName = app.textFields.matching(NSPredicate(
+            format: "value == %@ OR value == %@", "reading-week", "reading-week.zip"
+        )).firstMatch
+        XCTAssertTrue(
+            packageName.waitForExistence(timeout: 10),
+            "Save to Files should offer reading-week.zip instead of its index.html entry"
+        )
+        attachScreenshot(named: "ZIP package filename in Save to Files", app: app)
+    }
+
+    func testRecentFilesPrecedeCollapsibleSamples() throws {
+        continueAfterFailure = false
+        let app = makeApp()
+        app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=html"]
+        app.launch()
+        navigateHome(app: app)
+
+        let recent = app.buttons["recent-document-weekend-plan.html"]
+        let disclosure = app.descendants(matching: .any)["samples-disclosure"].firstMatch
+        let sample = app.buttons["sample-html"]
+        XCTAssertTrue(recent.waitForExistence(timeout: 10))
+        XCTAssertTrue(disclosure.waitForExistence(timeout: 5))
+        if sample.exists {
+            tapElement(disclosure, app: app)
+        }
+        XCTAssertTrue(waitUntilAbsent(sample))
+        XCTAssertLessThan(recent.frame.maxY, disclosure.frame.minY)
+        attachScreenshot(named: "Recent files above collapsed samples", app: app)
+
+        tapElement(disclosure, app: app)
+        XCTAssertTrue(sample.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["sample-markdown"].exists)
+        XCTAssertTrue(app.buttons["sample-zipPackage"].exists)
+
+        app.terminate()
+        app.launchArguments = []
+        app.launch()
+        XCTAssertTrue(app.buttons["sample-html"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["recent-document-weekend-plan.html"].exists)
+        tapElement(app.descendants(matching: .any)["samples-disclosure"].firstMatch, app: app)
+        XCTAssertTrue(waitUntilAbsent(app.buttons["sample-html"]))
+    }
+
     func testBuiltInSamplesAndSettingsSmoke() throws {
         continueAfterFailure = false
-        let app = XCUIApplication()
+        let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library"]
         app.launch()
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 10))
@@ -33,7 +108,7 @@ final class SmokeUITests: XCTestCase {
         navigateHome(app: app)
 
         openSample(identifier: "sample-markdown", app: app)
-        XCTAssertTrue(app.staticTexts["Markdown Preview Sample"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Make room to read"].waitForExistence(timeout: 10))
         openRawTextMode(app: app)
         XCTAssertTrue(app.staticTexts["Raw Text"].waitForExistence(timeout: 10))
         navigateHome(app: app)
@@ -43,8 +118,15 @@ final class SmokeUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(identifier: "Scripts and external network resources are blocked.").firstMatch.exists)
         navigateHome(app: app)
 
-        let recentZIPSample = app.buttons["recent-document-sample-report.zip"]
+        let recentZIPSample = app.buttons["recent-document-reading-week.zip"]
         XCTAssertTrue(scrollUntilExists(recentZIPSample, app: app), "Missing recent ZIP sample row")
+    }
+
+    private func makeApp() -> XCUIApplication {
+        let app = XCUIApplication()
+        // Environment persists when a test changes launchArguments and relaunches the app.
+        app.launchEnvironment["HTML_PREVIEWER_UI_TESTS"] = "1"
+        return app
     }
 
     private func openSettingsAndVerifyReleaseClaims(app: XCUIApplication) {
@@ -72,8 +154,71 @@ final class SmokeUITests: XCTestCase {
 
     private func openSample(identifier: String, app: XCUIApplication) {
         let sample = app.buttons[identifier]
+        let disclosure = app.descendants(matching: .any)["samples-disclosure"].firstMatch
+        if !sample.exists, disclosure.exists {
+            XCTAssertTrue(scrollUntilHittable(disclosure, app: app), "Missing samples disclosure")
+            tapElement(disclosure, app: app)
+        }
         XCTAssertTrue(scrollUntilHittable(sample, app: app), "Missing sample button: \(identifier)")
         sample.tap()
+    }
+
+    private func assertPDFExport(sample: String, heading: String, repeatExport: Bool = false) {
+        continueAfterFailure = false
+        let app = makeApp()
+        app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=\(sample)"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts[heading].waitForExistence(timeout: 10))
+        attachScreenshot(named: "\(sample) rendered preview", app: app)
+        exportPDFAndVerifyShareSheet(sample: sample, app: app)
+
+        if repeatExport {
+            if app.otherElements["PopoverDismissRegion"].exists {
+                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9)).tap()
+            } else {
+                tapElement(app.buttons["Close"], app: app)
+            }
+            let shareButton = app.buttons["share-file-button"]
+            let shareReady = XCTNSPredicateExpectation(
+                predicate: NSPredicate { _, _ in shareButton.exists && shareButton.isHittable },
+                object: nil
+            )
+            XCTAssertEqual(XCTWaiter.wait(for: [shareReady], timeout: 10), .completed)
+            exportPDFAndVerifyShareSheet(sample: "\(sample) repeated export", app: app)
+        }
+    }
+
+    private func exportPDFAndVerifyShareSheet(sample: String, app: XCUIApplication) {
+        tapElement(app.buttons["share-file-button"], app: app)
+
+        let export = app.buttons["Export PDF"]
+        let enabledExpectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in export.exists && export.isEnabled },
+            object: nil
+        )
+        XCTAssertEqual(XCTWaiter.wait(for: [enabledExpectation], timeout: 10), .completed)
+        tapElement(export, app: app)
+        XCTAssertTrue(
+            waitForAnyLabel(["Copy", "Save to Files", "More"], app: app, timeout: 20),
+            "Export PDF did not present the native share sheet for \(sample)"
+        )
+        XCTAssertFalse(app.alerts["Cannot Export PDF"].exists)
+        attachScreenshot(named: "\(sample) PDF share sheet", app: app)
+    }
+
+    private func waitUntilAbsent(_ element: XCUIElement) -> Bool {
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in !element.exists },
+            object: nil
+        )
+        return XCTWaiter.wait(for: [expectation], timeout: 5) == .completed
+    }
+
+    private func attachScreenshot(named name: String, app: XCUIApplication) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     private func openRawTextMode(app: XCUIApplication) {
@@ -126,16 +271,18 @@ final class SmokeUITests: XCTestCase {
         return settingsScreenExists(app: app)
     }
 
-    private func waitForAnyLabel(_ labels: [String], app: XCUIApplication) -> Bool {
-        for _ in 0..<10 {
-            if labels.contains(where: { app.descendants(matching: .any)[$0].exists }) {
-                return true
-            }
-
-            RunLoop.current.run(until: Date().addingTimeInterval(0.5))
-        }
-
-        return false
+    private func waitForAnyLabel(
+        _ labels: [String],
+        app: XCUIApplication,
+        timeout: TimeInterval = 10
+    ) -> Bool {
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in
+                labels.contains { app.descendants(matching: .any)[$0].exists }
+            },
+            object: nil
+        )
+        return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
     }
 
     private func settingsScreenExists(app: XCUIApplication) -> Bool {

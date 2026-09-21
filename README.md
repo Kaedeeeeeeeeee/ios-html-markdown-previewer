@@ -11,10 +11,17 @@ MVP implementation is complete for the local core flow:
 - Document type declarations for HTML, Markdown, and ZIP.
 - Separate app file picker entries for HTML/Markdown files and ZIP report packages.
 - Safe WKWebView preview with JavaScript disabled and external HTTP/HTTPS resources blocked by default.
-- Native Markdown reading view for common Markdown.
+- Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling.
 - ZIP package import with local CSS/image resource loading.
-- Recent files, details, raw text fallback, delete cleanup, and built-in samples.
+- Share original files or complete ZIP packages, preserving bundled CSS and images.
+- Export rendered HTML and Markdown to paginated A4 PDFs from the share menu.
+- Recent files before collapsible samples, details, raw text fallback, and delete cleanup.
 - App icon, privacy manifest, App Store listing draft, and screenshot assets.
+
+PDF export uses the loaded HTML page and its print styles, or a locally rendered
+Markdown document. It is available after rendered preview finishes loading;
+Raw Text mode continues to offer original-file sharing. Exported PDFs are static
+documents. Temporary export files are removed when the share activity finishes.
 
 Remaining release gates are external to simulator-only local development:
 

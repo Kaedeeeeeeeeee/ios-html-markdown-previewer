@@ -1,4 +1,4 @@
-# App Store Listing Draft
+# App Store Listing — Version 1.2 (Build 5)
 
 ## Commercial Model
 
@@ -36,13 +36,14 @@ Description:
 
 HTML Previewer is a focused local file viewer for HTML, Markdown, and ZIP report packages.
 
-Use it when you receive an `.html`, `.htm`, `.md`, `.markdown`, or `.zip` file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
+Use it when you receive an .html, .htm, .md, .markdown, or .zip file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
 
 Features:
 - Local HTML preview with safe mode enabled by default
 - Rich HTML rendering for responsive layouts, inline graphics, and CSS animation
-- Markdown reading view for common Markdown documents
-- ZIP report package import for HTML files with local CSS and image assets
+- Markdown reading view with tables and horizontal scrolling for wide tables
+- Import and share complete ZIP report packages with local CSS and image assets
+- Export HTML and Markdown previews as PDF
 - Recent files list
 - Raw text fallback
 - File details
@@ -76,13 +77,14 @@ Description:
 
 HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Markdown 和 ZIP 报告包。
 
-当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 `.html`、`.htm`、`.md`、`.markdown` 或 `.zip` 文件时，可以直接在 iPhone 或 iPad 上查看。
+当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 .html、.htm、.md、.markdown 或 .zip 文件时，可以直接在 iPhone 或 iPad 上查看。
 
 功能：
 - 默认启用安全模式的本地 HTML 预览
 - 支持响应式布局、内嵌图形与 CSS 动画的丰富 HTML 渲染
-- 常见 Markdown 文档阅读视图
-- 导入 ZIP 报告包并加载本地 CSS 与图片资源
+- 支持表格的 Markdown 阅读视图，宽表格可横向滚动
+- 导入和分享包含本地 CSS 与图片资源的完整 ZIP 报告包
+- 将 HTML 和 Markdown 预览导出为 PDF
 - 最近文件列表
 - 原始文本备用查看
 - 文件详情
@@ -116,13 +118,14 @@ Description:
 
 HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端末内で閲覧するためのシンプルなファイルビューアです。
 
-「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから `.html`、`.htm`、`.md`、`.markdown`、`.zip` ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
+「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから .html、.htm、.md、.markdown、.zip ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
 
 主な機能:
 - 安全モードが標準で有効なローカルHTMLプレビュー
 - レスポンシブ表示、埋め込みグラフィック、CSSアニメーションを含むリッチなHTML表示
-- 一般的なMarkdown文書の閲覧ビュー
-- ローカルCSSや画像を含むZIPレポートパッケージの取り込み
+- 表に対応したMarkdown閲覧ビュー。横に長い表はスクロール可能
+- ローカルCSSや画像を含むZIPレポートパッケージの取り込みと共有
+- HTMLとMarkdownのプレビューをPDFとして書き出し
 - 最近使ったファイル一覧
 - テキスト表示へのフォールバック
 - ファイル詳細
@@ -150,9 +153,9 @@ The app previews user-selected local files only. It does not require an account 
 
 For review, launch the app and use the built-in Samples section:
 
-1. Open HTML Sample to test local HTML safe preview.
-2. Open Markdown Sample to test native Markdown rendering.
-3. Open ZIP Report Sample to test ZIP import and local asset loading.
+1. Open Weekend plan (HTML) to test local HTML safe preview.
+2. Open Reading notes (Markdown) to test native Markdown rendering.
+3. Open Reading week (ZIP) to test ZIP import and local asset loading.
 
 External file opening is supported through iOS document type registration for HTML, Markdown, and ZIP files. The exact appearance in third-party app share/open menus depends on iOS and the source app.
 

@@ -1,4 +1,5 @@
 import SwiftUI
+import WebKit
 
 struct DocumentPreviewView: View {
     let store: DocumentLibraryStore
@@ -8,6 +9,9 @@ struct DocumentPreviewView: View {
     @State private var previewMode: PreviewMode
     @State private var isInteractiveConfirmationPresented = false
     @State private var isDetailsPresented = false
+    @State private var loadedWebView: WKWebView?
+    @State private var isExporting = false
+    @State private var exportError: String?
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
         self.store = store
@@ -23,7 +27,9 @@ struct DocumentPreviewView: View {
             case .markdown(let markdownDocument):
                 MarkdownPreviewView(document: markdownDocument)
             case .html(let fileURL, let readAccessRootURL, let mode):
-                HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode)
+                HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode) {
+                    loadedWebView = $0
+                }
             case .rawText(let text):
                 RawTextPreview(text: text)
             case .unsupported:
@@ -61,9 +67,14 @@ struct DocumentPreviewView: View {
                 }
 
                 ShareSheetButton(
-                    fileURL: store.entryFileURL(for: document),
+                    fileURL: store.originalFileURL(for: document),
                     accessibilityLabel: AppStrings.Accessibility.shareFile,
-                    accessibilityIdentifier: "share-file-button"
+                    accessibilityIdentifier: "share-file-button",
+                    shareTitle: document.type == .zipPackage
+                        ? AppStrings.Actions.shareZIPPackage : AppStrings.Actions.shareOriginalFile,
+                    exportPDF: canExportPDF ? exportPDF : nil,
+                    onExporting: { isExporting = $0 },
+                    onExportError: { exportError = $0.localizedDescription }
                 )
 
                 Button {
@@ -75,7 +86,26 @@ struct DocumentPreviewView: View {
                 .accessibilityIdentifier("file-details-button")
             }
         }
-        .onAppear(perform: loadPreview)
+        .disabled(isExporting)
+        .overlay {
+            if isExporting {
+                ProgressView(AppStrings.Actions.preparingPDF)
+                    .padding(24)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                    .accessibilityIdentifier("pdf-export-progress")
+            }
+        }
+        .alert(AppStrings.Errors.cannotExportPDFTitle, isPresented: Binding(
+            get: { exportError != nil },
+            set: { if !$0 { exportError = nil } }
+        )) {
+            Button(AppStrings.Actions.ok, role: .cancel) {}
+        } message: {
+            Text(exportError ?? "")
+        }
+        .onAppear {
+            if case .loading = state { loadPreview() }
+        }
         .onChange(of: previewMode) {
             loadPreview()
         }
@@ -93,6 +123,7 @@ struct DocumentPreviewView: View {
     }
 
     private func loadPreview() {
+        loadedWebView = nil
         do {
             let entryFileURL = store.entryFileURL(for: document)
             switch document.entryDocumentType {
@@ -120,6 +151,28 @@ struct DocumentPreviewView: View {
             }
         } catch {
             state = .failed(error.localizedDescription)
+        }
+    }
+
+    private var canExportPDF: Bool {
+        switch state {
+        case .markdown: true
+        case .html: loadedWebView != nil
+        default: false
+        }
+    }
+
+    @MainActor
+    private func exportPDF() async throws -> URL {
+        let exporter = PDFExportService()
+        switch state {
+        case .html:
+            guard let loadedWebView else { throw PDFExportError.previewNotReady }
+            return try await exporter.export(webView: loadedWebView, title: document.displayName)
+        case .markdown(let markdown):
+            return try await exporter.export(markdown: markdown, title: document.displayName)
+        default:
+            throw PDFExportError.previewNotReady
         }
     }
 

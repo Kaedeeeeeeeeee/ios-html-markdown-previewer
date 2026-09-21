@@ -25,9 +25,6 @@ final class BuiltInSampleProviderTests: XCTestCase {
 
             if sample == .html {
                 let html = try String(contentsOf: sampleURL, encoding: .utf8)
-                XCTAssertTrue(html.contains("<svg"))
-                XCTAssertTrue(html.contains("@keyframes"))
-                XCTAssertTrue(html.contains("prefers-reduced-motion"))
                 XCTAssertFalse(html.contains("http://"))
                 XCTAssertFalse(html.contains("https://"))
             }

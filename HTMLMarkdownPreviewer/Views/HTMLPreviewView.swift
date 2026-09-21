@@ -5,6 +5,7 @@ struct HTMLPreviewView: View {
     let fileURL: URL
     let readAccessRootURL: URL
     let mode: HTMLPreviewMode
+    var onPreviewReady: (WKWebView?) -> Void = { _ in }
 
     @State private var configuration: WKWebViewConfiguration?
     @State private var errorMessage: String?
@@ -16,7 +17,8 @@ struct HTMLPreviewView: View {
                     fileURL: fileURL,
                     readAccessRootURL: readAccessRootURL,
                     mode: mode,
-                    configuration: configuration
+                    configuration: configuration,
+                    onPreviewReady: onPreviewReady
                 )
                 .id("\(fileURL.path)-\(mode)")
             } else if let errorMessage {
@@ -36,11 +38,14 @@ struct HTMLPreviewView: View {
 
     @MainActor
     private func loadConfiguration() async {
+        onPreviewReady(nil)
         configuration = nil
         errorMessage = nil
 
         do {
-            configuration = try await HTMLPreviewConfiguration.make(mode: mode)
+            let loadedConfiguration = try await HTMLPreviewConfiguration.make(mode: mode)
+            guard !Task.isCancelled else { return }
+            configuration = loadedConfiguration
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -52,9 +57,10 @@ private struct HTMLWebView: UIViewRepresentable {
     let readAccessRootURL: URL
     let mode: HTMLPreviewMode
     let configuration: WKWebViewConfiguration
+    let onPreviewReady: (WKWebView?) -> Void
 
     func makeCoordinator() -> WebNavigationPolicy {
-        WebNavigationPolicy(mode: mode)
+        WebNavigationPolicy(mode: mode, onPreviewReady: onPreviewReady)
     }
 
     func makeUIView(context: Context) -> WKWebView {

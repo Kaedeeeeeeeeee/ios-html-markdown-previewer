@@ -50,8 +50,18 @@ verify_raw_matches_local() {
   local url="$2"
   local local_path="$3"
   local raw_path="$TMP_DIR/$label.md"
+  local content_revision
+  content_revision="$(python3 - "$local_path" <<'PY'
+import hashlib
+import pathlib
+import sys
+print(hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest())
+PY
+)"
 
-  curl "${curl_common[@]}" "$url" > "$raw_path"
+  # A newly published gist may still have a cached response at its unversioned URL.
+  # Refresh only when the expected content changes; still compare the complete body.
+  curl "${curl_common[@]}" "$url?content=$content_revision" > "$raw_path"
 
   python3 - "$local_path" "$raw_path" "$label" <<'PY'
 import pathlib

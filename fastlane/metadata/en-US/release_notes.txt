@@ -1,1 +1,5 @@
-Richer built-in HTML and ZIP samples now showcase responsive layouts, inline graphics, local assets, and CSS animation. App Store screenshots have also been refreshed.
+- Fixed ZIP sharing so packages include their stylesheets and images.
+- Export HTML and Markdown previews as PDFs.
+- Read Markdown tables with aligned columns and horizontal scrolling for wider tables.
+- Get to recent files first, with a collapsible samples section below.
+- Explore three redesigned samples: Weekend plan, Reading notes, and Reading week, with light and dark appearances that match the app.

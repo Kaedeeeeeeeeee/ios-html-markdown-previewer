@@ -5,6 +5,7 @@ struct AppView: View {
     private let importService: DocumentImportService
     private let sampleProvider: BuiltInSampleProvider
 
+    @AppStorage("home.samplesExpanded") private var areSamplesExpanded = false
     @State private var documents: [PreviewDocument] = []
     @State private var path: [PreviewDocument] = []
     @State private var isImporterPresented = false
@@ -38,18 +39,11 @@ struct AppView: View {
                     .accessibilityIdentifier("open-zip-package-button")
                 }
 
-                Section(AppStrings.Home.samples) {
-                    ForEach(BuiltInSample.allCases) { sample in
-                        Button {
-                            importSample(sample)
-                        } label: {
-                            SampleRow(sample: sample)
-                        }
-                        .accessibilityIdentifier("sample-\(sample.rawValue)")
-                    }
-                }
-
                 if documents.isEmpty {
+                    Section(AppStrings.Home.samples) {
+                        sampleRows
+                    }
+
                     ContentUnavailableView(
                         AppStrings.Home.noRecentFiles,
                         systemImage: "tray",
@@ -65,6 +59,15 @@ struct AppView: View {
                             .accessibilityIdentifier("recent-document-\(document.originalFilename)")
                         }
                         .onDelete(perform: deleteDocuments)
+                    }
+
+                    Section {
+                        DisclosureGroup(isExpanded: $areSamplesExpanded) {
+                            sampleRows
+                        } label: {
+                            Text(AppStrings.Home.samples)
+                                .accessibilityIdentifier("samples-disclosure")
+                        }
                     }
                 }
             }
@@ -122,6 +125,17 @@ struct AppView: View {
             Button(AppStrings.Actions.ok, role: .cancel) {}
         } message: {
             Text(errorMessage ?? "")
+        }
+    }
+
+    private var sampleRows: some View {
+        ForEach(BuiltInSample.allCases) { sample in
+            Button {
+                importSample(sample)
+            } label: {
+                SampleRow(sample: sample)
+            }
+            .accessibilityIdentifier("sample-\(sample.rawValue)")
         }
     }
 

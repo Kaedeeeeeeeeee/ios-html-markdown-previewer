@@ -7,13 +7,15 @@ struct MarkdownPreviewView: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 14) {
+            LazyVStack(alignment: .leading, spacing: 18) {
                 ForEach(document.blocks) { block in
                     MarkdownBlockView(block: block)
                 }
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: 680, alignment: .leading)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 28)
+            .frame(maxWidth: .infinity)
         }
         .background(Color(.systemBackground))
         .environment(\.openURL, OpenURLAction { url in
@@ -87,6 +89,7 @@ private struct MarkdownBlockView: View {
                 .fontWeight(level <= 2 ? .bold : .semibold)
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, level == 1 ? 0 : 12)
         case .paragraph(let text):
             Text(text)
                 .font(.body)
@@ -104,6 +107,8 @@ private struct MarkdownBlockView: View {
                     }
                 }
             }
+            .foregroundStyle(.secondary)
+            .padding(.vertical, 4)
         case .codeBlock(let language, let code):
             VStack(alignment: .leading, spacing: 8) {
                 if let language, !language.isEmpty {
@@ -115,15 +120,17 @@ private struct MarkdownBlockView: View {
                     Text(code)
                         .font(.system(.body, design: .monospaced))
                         .textSelection(.enabled)
-                        .padding(12)
                 }
             }
+            .padding(16)
             .background(Color(.secondarySystemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         case .unorderedList(let items):
             MarkdownListView(items: items, start: nil)
         case .orderedList(let start, let items):
             MarkdownListView(items: items, start: start)
+        case .table(let table):
+            MarkdownTableView(table: table)
         case .image(let image):
             MarkdownImageView(image: image)
         case .thematicBreak:
@@ -133,11 +140,99 @@ private struct MarkdownBlockView: View {
 
     private func font(forHeadingLevel level: Int) -> Font {
         switch level {
-        case 1: .title.bold()
+        case 1: .largeTitle.bold()
         case 2: .title2.bold()
         case 3: .title3.weight(.semibold)
         default: .headline
         }
+    }
+}
+
+private struct MarkdownTableView: View {
+    let table: MarkdownTable
+
+    @ScaledMetric(relativeTo: .body) private var minimumColumnWidth: CGFloat = 88
+    @ScaledMetric(relativeTo: .body) private var maximumColumnWidth: CGFloat = 240
+
+    var body: some View {
+        let widths = columnWidths
+
+        ScrollView(.horizontal) {
+            Grid(alignment: .topLeading, horizontalSpacing: 0, verticalSpacing: 0) {
+                tableRow(table.header, widths: widths, isHeader: true)
+                    .background(Color(.secondarySystemBackground))
+                ForEach(table.rows.indices, id: \.self) { rowIndex in
+                    tableRow(table.rows[rowIndex], widths: widths, isHeader: false)
+                        .background(rowIndex.isMultiple(of: 2) ? Color(.systemBackground) : Color(.tertiarySystemBackground))
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(Color(.separator), lineWidth: 0.5)
+            }
+            .padding(.bottom, 6)
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private func tableRow(_ cells: [AttributedString], widths: [CGFloat], isHeader: Bool) -> some View {
+        GridRow(alignment: .top) {
+            ForEach(cells.indices, id: \.self) { column in
+                Text(cells[column])
+                    .font(.body)
+                    .fontWeight(isHeader ? .semibold : nil)
+                    .multilineTextAlignment(textAlignment(for: table.columnAlignments[column]))
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(width: widths[column], alignment: frameAlignment(for: table.columnAlignments[column]))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .accessibilityLabel(accessibilityLabel(for: cells[column], column: column, isHeader: isHeader))
+                    .accessibilityAddTraits(isHeader ? .isHeader : [])
+            }
+        }
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(Color(.separator))
+                .frame(height: 0.5)
+                .accessibilityHidden(true)
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    private var columnWidths: [CGFloat] {
+        let font = UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
+        return table.header.indices.map { column in
+            let cells = [table.header[column]] + table.rows.map { $0[column] }
+            let textWidth = cells.map { cell in
+                (String(cell.characters) as NSString).size(withAttributes: [.font: font]).width
+            }.max() ?? 0
+            return min(maximumColumnWidth, max(minimumColumnWidth, ceil(textWidth)))
+        }
+    }
+
+    private func frameAlignment(for alignment: MarkdownTable.ColumnAlignment) -> Alignment {
+        switch alignment {
+        case .leading: .leading
+        case .center: .center
+        case .trailing: .trailing
+        }
+    }
+
+    private func textAlignment(for alignment: MarkdownTable.ColumnAlignment) -> TextAlignment {
+        switch alignment {
+        case .leading: .leading
+        case .center: .center
+        case .trailing: .trailing
+        }
+    }
+
+    private func accessibilityLabel(for cell: AttributedString, column: Int, isHeader: Bool) -> Text {
+        if isHeader || table.header[column].characters.isEmpty {
+            return Text(cell)
+        }
+        return Text(table.header[column]) + Text(": ") + Text(cell)
     }
 }
 
@@ -225,6 +320,11 @@ private struct MarkdownImageView: View {
             - Second
 
             > A quote.
+
+            | Item | Status | Count |
+            | :--- | :---: | ---: |
+            | **Reports** | Ready | 12 |
+            | Notes with a longer description that wraps | Review | 3 |
             """
         )
     )

@@ -248,9 +248,9 @@ generated_at="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
   printf -- '- Screenshot JSON: `%s`\n' "$screenshot_json"
   printf -- '- Screenshot log: `%s`\n' "$screenshot_log"
   printf '\n## Manual Smoke Still Required\n\n'
-  printf -- '- Open HTML Sample.\n'
-  printf -- '- Open Markdown Sample.\n'
-  printf -- '- Open ZIP Report Sample.\n'
+  printf -- '- Open Weekend plan (HTML).\n'
+  printf -- '- Open Reading notes (Markdown).\n'
+  printf -- '- Open Reading week (ZIP).\n'
   printf -- '- Verify Safe Preview messaging and Settings release claims.\n'
   printf -- '- Record the full result in `docs/final-archive-smoke-test-template.md`.\n'
 } >"$report_path"

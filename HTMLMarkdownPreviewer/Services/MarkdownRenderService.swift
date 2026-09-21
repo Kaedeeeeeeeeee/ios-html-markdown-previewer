@@ -46,6 +46,20 @@ final class MarkdownRenderService {
                 start: Int(list.startIndex),
                 items: renderListItems(from: list, baseURL: baseURL, readAccessRootURL: readAccessRootURL)
             )]
+        case let table as Markdown.Table:
+            return [.table(MarkdownTable(
+                columnAlignments: table.columnAlignments.map { alignment in
+                    switch alignment {
+                    case .center: .center
+                    case .right: .trailing
+                    case .left, nil: .leading
+                    }
+                },
+                header: table.head.cells.map { renderInlineChildren(of: $0) },
+                rows: table.body.rows.map { row in
+                    row.cells.map { renderInlineChildren(of: $0) }
+                }
+            ))]
         case _ as ThematicBreak:
             return [.thematicBreak]
         default:

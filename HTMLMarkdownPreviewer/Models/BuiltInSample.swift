@@ -34,11 +34,11 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
     var filename: String {
         switch self {
         case .html:
-            "sample.html"
+            "weekend-plan.html"
         case .markdown:
-            "sample.md"
+            "reading-notes.md"
         case .zipPackage:
-            "sample-report.zip"
+            "reading-week.zip"
         }
     }
 

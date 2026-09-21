@@ -325,12 +325,12 @@ Build source must be a signed archive or TestFlight build for release completion
 |---|---|---|
 | App launches to home screen |  |  |
 | Home screen shows Samples section |  |  |
-| HTML Sample opens |  |  |
-| HTML Sample shows Safe Preview |  |  |
+| Weekend plan (HTML) opens |  |  |
+| Weekend plan (HTML) shows Safe Preview |  |  |
 | HTML Safe Preview blocks external resources by default |  |  |
-| Markdown Sample opens and renders formatted content |  |  |
-| ZIP Report Sample opens |  |  |
-| ZIP Report Sample renders local CSS/images |  |  |
+| Reading notes (Markdown) opens and renders formatted content |  |  |
+| Reading week (ZIP) opens |  |  |
+| Reading week (ZIP) renders local CSS/images |  |  |
 | ZIP sample appears in Recent |  |  |
 | Recent item reopens successfully |  |  |
 | Recent item can be deleted |  |  |
