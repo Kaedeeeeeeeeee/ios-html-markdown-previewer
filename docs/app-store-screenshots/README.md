@@ -41,9 +41,15 @@ passes `HTML_PREVIEWER_UI_TESTS=1` through `SIMCTL_CHILD_` on every launch. The
 sample/reset arguments therefore operate on the isolated UI-test library and
 preferences, preserving the normal app library. Only simulators are used.
 
-Sources are written to `DerivedData/AppStoreScreenshotSources/<locale>/`.
-Screenshots use dark appearance and a fixed 09:41 status bar. Contact sheets are
-written to `DerivedData/AppStoreScreenshotPreviews/`. Review the sources and
+The verified 1.3 sources are in
+`DerivedData/Release1.3/ScreenshotSources/<locale>/`. Screenshots use dark
+appearance and a fixed 09:41 status bar. The six current contact sheets are in
+`DerivedData/Release1.3/ScreenshotPreviews/`:
+`en-US-iphone.png`, `en-US-ipad.png`, `zh-Hans-iphone.png`,
+`zh-Hans-ipad.png`, `ja-iphone.png`, and `ja-ipad.png`.
+The generic `DerivedData/AppStoreScreenshotSources/` and
+`DerivedData/AppStoreScreenshotPreviews/` folders still contain the older 1.2
+capture; do not use them as evidence for the current release. Review the sources and
 contact sheets for the correct language, rendered sample, and absence of loading
 or transition screens before uploading.
 
@@ -70,10 +76,10 @@ To regenerate the marketing canvases from existing localized sources:
 
 ```sh
 xcrun swift scripts/generate-app-store-screenshots.swift \
-  --source-dir DerivedData/AppStoreScreenshotSources \
+  --source-dir DerivedData/Release1.3/ScreenshotSources \
   --output-dir docs/app-store-screenshots \
   --copy-file docs/app-store-screenshots/copy.json \
-  --preview-dir DerivedData/AppStoreScreenshotPreviews
+  --preview-dir DerivedData/Release1.3/ScreenshotPreviews
 ```
 
 Add `--locales en-US` (or a comma-separated subset) to compose one completed

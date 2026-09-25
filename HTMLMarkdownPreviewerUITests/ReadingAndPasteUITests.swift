@@ -156,7 +156,8 @@ final class ReadingAndPasteUITests: XCTestCase {
         <script>document.getElementById('safety').textContent='UNSAFE SCRIPT EXECUTED';</script></body></html>
         """
         paste(html, name: "HTML QA", app: app)
-        XCTAssertTrue(app.staticTexts["Local HTML report"].waitForExistence(timeout: 10))
+        // A cold WebKit process launch on older retained simulators can exceed 10 seconds.
+        XCTAssertTrue(app.staticTexts["Local HTML report"].waitForExistence(timeout: 30))
         XCTAssertTrue(app.staticTexts["Interactive"].exists)
         XCTAssertTrue(app.staticTexts["UNSAFE SCRIPT EXECUTED"].waitForExistence(timeout: 10))
         app.buttons["preview-mode-menu"].tap()
