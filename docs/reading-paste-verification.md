@@ -14,7 +14,7 @@ Date: 2026-09-23. Development branch: `codex/reading-paste-preview`.
 
 ## Simulator checks
 
-Validation uses simulator-only XCTest and XCUITest. No physical device is used.
+The September 23 validation in this section used simulator-only XCTest and XCUITest. Physical-device follow-up is recorded separately below.
 
 Device: iPhone 18 Pro, iOS 27.0 simulator (`F56A2968-F35C-4455-8A34-43DCC6CDC319`).
 
@@ -50,4 +50,8 @@ Final status: all 75 unique unit/integration tests and all 14 unique UI regressi
 
 The GitHub Actions UI smoke job now includes the two paste → search → outline → relaunch flows. CI has not been run remotely for this branch.
 
-The implementation and test evidence are local. This task does not change the App Store version or publish a build.
+## Physical-device follow-up
+
+On September 25, the feature branch was fast-forward merged into local `main` at `1cfd7c3`. A fresh Debug build was installed on the user's iPhone 17 (iOS 27.0), and all 14 UI regression tests passed with no skips. See [the physical-device report](physical-device-validation-results/2026-09-25-reading-paste-iphone-17.md) for results, test-harness adjustments, and local screenshot evidence.
+
+The implementation and test evidence are local. This work does not change the App Store version or publish a build.

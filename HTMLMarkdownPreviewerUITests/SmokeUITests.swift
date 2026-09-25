@@ -6,13 +6,13 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=html"]
-        app.launch()
+        launch(app)
 
         XCTAssertTrue(app.buttons["share-file-button"].waitForExistence(timeout: 10))
         tapElement(app.buttons["share-file-button"], app: app)
         tapElement(app.buttons["Share Original File"], app: app)
         XCTAssertTrue(
-            waitForAnyLabel(["Copy", "Save to Files", "More"], app: app),
+            waitForAnyLabel(nativeShareOptionLabels, app: app),
             "Share sheet did not show visible share options"
         )
     }
@@ -32,7 +32,7 @@ final class SmokeUITests: XCTestCase {
             "--screenshot-reset-library", "--screenshot-sample=markdown",
             "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"
         ]
-        app.launch()
+        launch(app)
 
         XCTAssertTrue(app.staticTexts["留一点时间读书"].waitForExistence(timeout: 10))
         // These two different headings have the same UTF-8 length. Content-derived
@@ -51,19 +51,19 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=zipPackage"]
-        app.launch()
+        launch(app)
         XCTAssertTrue(app.staticTexts["A week of reading"].waitForExistence(timeout: 10))
 
         tapElement(app.buttons["share-file-button"], app: app)
         XCTAssertFalse(app.buttons["Share Original File"].exists)
         tapElement(app.buttons["Share ZIP Package"], app: app)
-        XCTAssertTrue(waitForAnyLabel(["Copy", "Save to Files", "More"], app: app))
+        XCTAssertTrue(waitForAnyLabel(nativeShareOptionLabels, app: app))
         attachScreenshot(named: "ZIP package share sheet", app: app)
 
         // System activities can keep the device language even when the app is tested in English.
         let saveToFiles = app.descendants(matching: .any).matching(NSPredicate(
-            format: "label == %@ OR (label CONTAINS %@ AND label CONTAINS %@)",
-            "Save to Files", "ファイル", "保存"
+            format: "label == %@ OR (label CONTAINS %@ AND label CONTAINS %@) OR (label CONTAINS %@ AND label CONTAINS %@) OR (label CONTAINS %@ AND label CONTAINS %@)",
+            "Save to Files", "ファイル", "保存", "文件", "存储", "檔案", "儲存"
         )).firstMatch
         tapElement(saveToFiles, app: app)
         let packageName = app.textFields.matching(NSPredicate(
@@ -80,7 +80,7 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=html"]
-        app.launch()
+        launch(app)
         navigateHome(app: app)
 
         let recent = app.buttons["recent-document-weekend-plan.html"]
@@ -102,7 +102,7 @@ final class SmokeUITests: XCTestCase {
 
         app.terminate()
         app.launchArguments = []
-        app.launch()
+        launch(app)
         XCTAssertTrue(app.buttons["sample-html"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["recent-document-weekend-plan.html"].exists)
         tapElement(app.descendants(matching: .any)["samples-disclosure"].firstMatch, app: app)
@@ -113,7 +113,7 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library"]
-        app.launch()
+        launch(app)
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["open-file-button"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["open-zip-package-button"].waitForExistence(timeout: 5))
@@ -145,6 +145,22 @@ final class SmokeUITests: XCTestCase {
         // Environment persists when a test changes launchArguments and relaunches the app.
         app.launchEnvironment["HTML_PREVIEWER_UI_TESTS"] = "1"
         return app
+    }
+
+    private func launch(_ app: XCUIApplication) {
+        // Pin the app's language for English assertions while retaining explicit locale tests.
+        if !app.launchArguments.contains("-AppleLanguages") {
+            app.launchArguments += ["-AppleLanguages", "(en)"]
+            if !app.launchArguments.contains("-AppleLocale") {
+                app.launchArguments += ["-AppleLocale", "en_US"]
+            }
+        }
+        app.launch()
+    }
+
+    // The native share controller can retain the device language despite app launch overrides.
+    private var nativeShareOptionLabels: [String] {
+        ["Copy", "Save to Files", "More", "コピー", "その他", "拷贝", "复制", "更多", "拷貝", "複製"]
     }
 
     private func openSettingsAndVerifyReleaseClaims(app: XCUIApplication) {
@@ -185,7 +201,7 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library", "--screenshot-sample=\(sample)"]
-        app.launch()
+        launch(app)
         XCTAssertTrue(app.staticTexts[heading].waitForExistence(timeout: 10))
         attachScreenshot(named: "\(sample) rendered preview", app: app)
         exportPDFAndVerifyShareSheet(sample: sample, app: app)
@@ -194,7 +210,10 @@ final class SmokeUITests: XCTestCase {
             if app.otherElements["PopoverDismissRegion"].exists {
                 app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9)).tap()
             } else {
-                tapElement(app.buttons["Close"], app: app)
+                let close = app.buttons.matching(NSPredicate(
+                    format: "label IN %@", ["Close", "閉じる", "关闭", "關閉"]
+                )).firstMatch
+                tapElement(close, app: app)
             }
             let shareButton = app.buttons["share-file-button"]
             let shareReady = XCTNSPredicateExpectation(
@@ -217,7 +236,7 @@ final class SmokeUITests: XCTestCase {
         XCTAssertEqual(XCTWaiter.wait(for: [enabledExpectation], timeout: 10), .completed)
         tapElement(export, app: app)
         XCTAssertTrue(
-            waitForAnyLabel(["Copy", "Save to Files", "More"], app: app, timeout: 20),
+            waitForAnyLabel(nativeShareOptionLabels, app: app, timeout: 20),
             "Export PDF did not present the native share sheet for \(sample)"
         )
         XCTAssertFalse(app.alerts["Cannot Export PDF"].exists)

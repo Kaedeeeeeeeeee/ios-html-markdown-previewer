@@ -108,7 +108,8 @@ final class ReadingAndPasteUITests: XCTestCase {
         app.buttons["paste-preview-button"].tap()
         XCTAssertTrue(app.buttons["paste-open-button"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["paste-open-button"].isEnabled)
-        UIPasteboard.general.string = "https://example.com/report"
+        setPasteboard("https://example.com/report", app: app)
+        XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
         app.buttons["paste-system-button"].tap()
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-open-button"]))
         app.buttons["paste-open-button"].tap()
@@ -168,7 +169,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 10))
         app.buttons["paste-preview-button"].tap()
         XCTAssertTrue(app.buttons["paste-system-button"].waitForExistence(timeout: 5))
-        UIPasteboard.general.string = text
+        setPasteboard(text, app: app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
         app.buttons["paste-system-button"].tap()
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-open-button"]))
@@ -184,6 +185,31 @@ final class ReadingAndPasteUITests: XCTestCase {
         app.buttons["reading-tools-menu"].tap()
         app.buttons["reading-find-button"].tap()
         XCTAssertTrue(app.textFields["reading-search-field"].waitForExistence(timeout: 5))
+    }
+
+    private func setPasteboard(_ text: String, app: XCUIApplication) {
+        #if !targetEnvironment(simulator)
+        // Real devices restrict pasteboard access from background processes.
+        // Bring the test runner forward only to prepare its own fixture.
+        guard let runnerIdentifier = Bundle.main.bundleIdentifier else {
+            XCTFail("Missing UI test runner bundle identifier")
+            return
+        }
+        let runner = XCUIApplication(bundleIdentifier: runnerIdentifier)
+        runner.activate()
+        XCTAssertTrue(runner.wait(for: .runningForeground, timeout: 5))
+        #endif
+
+        UIPasteboard.general.setItems(
+            [["public.utf8-plain-text": text]],
+            options: [.localOnly: true]
+        )
+        XCTAssertEqual(UIPasteboard.general.string, text)
+
+        #if !targetEnvironment(simulator)
+        app.activate()
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 5))
+        #endif
     }
 
     private func openContents(_ app: XCUIApplication) {
