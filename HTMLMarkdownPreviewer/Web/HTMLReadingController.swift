@@ -68,7 +68,7 @@ final class HTMLReadingController {
             arguments["restorePosition"] = NSNull()
         }
 
-        webView.callAsyncJavaScript(
+        webView.callDocumentJavaScript(
             Self.installScript,
             arguments: arguments,
             in: nil,
@@ -119,7 +119,7 @@ final class HTMLReadingController {
         let generation = generation
         let searchRevision = searchRevision
         let query = state.query
-        webView.callAsyncJavaScript(
+        webView.callDocumentJavaScript(
             "return globalThis.__htmlPreviewReading?.navigate(operation, value, sessionID) ?? null;",
             arguments: ["operation": operation, "value": value, "sessionID": sessionID],
             in: nil,
@@ -153,7 +153,7 @@ final class HTMLReadingController {
                 }
             }
             if let sessionID {
-                webView.callAsyncJavaScript(
+                webView.callDocumentJavaScript(
                     "globalThis.__htmlPreviewReading?.dispose(sessionID); return null;",
                     arguments: ["sessionID": sessionID],
                     in: nil,
@@ -186,7 +186,7 @@ final class HTMLReadingController {
         isSearching = true
         state.matchCount = 0
         state.selectedMatch = -1
-        webView.callAsyncJavaScript(
+        webView.callDocumentJavaScript(
             "return globalThis.__htmlPreviewReading?.search(query, sessionID, scrollToFirst) ?? null;",
             arguments: ["query": query, "sessionID": sessionID, "scrollToFirst": scrollToFirst],
             in: nil,

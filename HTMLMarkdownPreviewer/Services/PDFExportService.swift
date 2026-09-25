@@ -59,7 +59,7 @@ struct PDFExportService {
         _ = try await webView.evaluateJavaScript(insertStyle)
         do {
             // Search decoration belongs to the reader, never to the exported document.
-            _ = try await webView.callAsyncJavaScript(
+            _ = try await webView.callDocumentJavaScript(
                 "globalThis.__htmlPreviewReading?.suspendHighlights(); return null;",
                 arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
             )
@@ -76,7 +76,7 @@ struct PDFExportService {
     }
 
     private func resumeReadingHighlights(in webView: WKWebView) async {
-        _ = try? await webView.callAsyncJavaScript(
+        _ = try? await webView.callDocumentJavaScript(
             "globalThis.__htmlPreviewReading?.resumeHighlights(); return null;",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         )

@@ -7,6 +7,38 @@ import XCTest
 
 @MainActor
 final class HTMLReadingTests: XCTestCase {
+    func testDocumentJavaScriptPreservesPromisesArgumentsErrorsAndIsolatedWorld() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("javascript.html")
+        try fixture("<h1>JavaScript bridge</h1>").write(to: url, atomically: true, encoding: .utf8)
+        let session = try await ReadingTestSession(entryURL: url)
+        defer { session.close() }
+        try await session.load(url)
+
+        let value = try await session.webView.callDocumentJavaScript(
+            "globalThis.__bridgeProbe = input; return await Promise.resolve(input.value + 1);",
+            arguments: ["input": ["value": 41]], contentWorld: HTMLReadingController.contentWorld
+        )
+        XCTAssertEqual(value as? Int, 42)
+        let pageGlobal = try await session.webView.evaluateJavaScript("typeof globalThis.__bridgeProbe")
+        XCTAssertEqual(pageGlobal as? String, "undefined")
+        let undefined = try await session.webView.callDocumentJavaScript(
+            "return undefined;", contentWorld: HTMLReadingController.contentWorld
+        )
+        XCTAssertNil(undefined)
+
+        do {
+            _ = try await session.webView.callDocumentJavaScript(
+                "return Promise.reject(new Error('expected failure'));",
+                contentWorld: HTMLReadingController.contentWorld
+            )
+            XCTFail("A rejected JavaScript promise must propagate its error.")
+        } catch {
+            XCTAssertEqual((error as NSError).domain, WKError.errorDomain)
+        }
+    }
+
     func testSafePreviewSearchAndOutlineDoNotEnablePageScriptsOrExternalResources() async throws {
         let server = try ReadingHTTPProbe()
         defer { server.stop() }
@@ -46,7 +78,7 @@ final class HTMLReadingTests: XCTestCase {
         let pageGlobal = try await session.webView.evaluateJavaScript("typeof globalThis.__htmlPreviewReading") as? String
         XCTAssertEqual(pageResult, "before")
         XCTAssertEqual(pageGlobal, "undefined", "Reading globals must not be exposed to page-world scripts.")
-        let highlightVisible = try await session.webView.callAsyncJavaScript(
+        let highlightVisible = try await session.webView.callDocumentJavaScript(
             "return globalThis.CSS?.highlights?.get('html-previewer-reading-matches')?.size === 2 || !!document.querySelector('[data-html-previewer-reading-overlay]');",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         ) as? Bool
@@ -56,7 +88,7 @@ final class HTMLReadingTests: XCTestCase {
         session.state.query = "a+b"
         session.reader.synchronize()
         try await waitUntil { session.state.matchCount == 2 && session.state.selectedMatch == 0 }
-        let selectedText = try await session.webView.callAsyncJavaScript(
+        let selectedText = try await session.webView.callDocumentJavaScript(
             "const highlight = globalThis.CSS?.highlights?.get('html-previewer-reading-current'); return highlight ? Array.from(highlight)[0].toString() : null;",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         ) as? String
@@ -104,7 +136,7 @@ final class HTMLReadingTests: XCTestCase {
         session.reader.detach()
         XCTAssertFalse(session.state.isReady)
         XCTAssertEqual(session.state.position?.progress ?? -1, saved.progress, accuracy: 0.02)
-        let cleaned = try await session.webView.callAsyncJavaScript(
+        let cleaned = try await session.webView.callDocumentJavaScript(
             "return !document.querySelector('[data-html-previewer-reading-overlay]') && !(globalThis.CSS?.highlights?.has('html-previewer-reading-matches'));",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         ) as? Bool
@@ -128,7 +160,7 @@ final class HTMLReadingTests: XCTestCase {
         session.state.query = ""
         session.reader.synchronize()
         try await waitUntil { session.state.matchCount == 0 && session.state.selectedMatch == -1 }
-        let removed = try await session.webView.callAsyncJavaScript(
+        let removed = try await session.webView.callDocumentJavaScript(
             "return !(globalThis.CSS?.highlights?.has('html-previewer-reading-matches')) && !document.querySelector('[data-html-previewer-reading-overlay]');",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         ) as? Bool
@@ -253,7 +285,7 @@ final class HTMLReadingTests: XCTestCase {
         try await waitUntil { session.state.matchCount == 2 }
         session.state.query = "receiptnumber"
         session.reader.synchronize()
-        let count = try await session.webView.callAsyncJavaScript(
+        let count = try await session.webView.callDocumentJavaScript(
             "return globalThis.__htmlPreviewReading.snapshot().matchCount;",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         ) as? Int
@@ -277,7 +309,7 @@ final class HTMLReadingTests: XCTestCase {
         session.state.query = "export needle"
         session.reader.synchronize()
         try await waitUntil { session.state.matchCount == 1 }
-        _ = try await session.webView.callAsyncJavaScript(
+        _ = try await session.webView.callDocumentJavaScript(
             """
             const reader = globalThis.__htmlPreviewReading;
             const highlighted = () => !!globalThis.CSS?.highlights?.has('html-previewer-reading-current') ||
@@ -299,7 +331,7 @@ final class HTMLReadingTests: XCTestCase {
         let data = try await PDFExportService().pdfData(webView: session.webView, title: "Search export")
         let pdf = try XCTUnwrap(PDFDocument(data: data))
         XCTAssertTrue(pdf.string?.contains("export needle") == true)
-        let eventsValue = try await session.webView.callAsyncJavaScript(
+        let eventsValue = try await session.webView.callDocumentJavaScript(
             "return globalThis.__readingPrintEvents;", arguments: [:],
             in: nil, contentWorld: HTMLReadingController.contentWorld
         )
