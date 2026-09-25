@@ -14,7 +14,8 @@ localized headlines. The interface itself is never redrawn.
 Each locale contains five iPhone and five iPad images:
 
 1. `01-home` — opening files and choosing a built-in example.
-2. `02-html-safe-preview` — the redesigned weekend plan.
+2. `02-html-safe-preview` — the animated weekend plan in Interactive mode.
+   The legacy filename is retained for upload compatibility.
 3. `03-markdown-preview` — the redesigned reading notes, including a table.
 4. `04-zip-report-preview` — the redesigned reading journal and local chart.
 5. `05-settings` — native preview, storage, and privacy settings.
@@ -46,9 +47,9 @@ written to `DerivedData/AppStoreScreenshotPreviews/`. Review the sources and
 contact sheets for the correct language, rendered sample, and absence of loading
 or transition screens before uploading.
 
-Marketing copy lives in `copy.json`. The 1.2 set shows the new weekend plan,
-reading notes, and reading journal. The HTML and Markdown captions describe
-content visible in those examples.
+Marketing copy lives in `copy.json`. The 1.3 set shows the paste entry, animated weekend plan, reading notes,
+reading journal, bottom-right preview actions, and current Interactive default.
+The HTML and Settings captions describe the available preview modes.
 
 Override `OUT_DIR`, `SOURCE_OUT_DIR` (the parent of the three locale directories),
 `PREVIEW_OUT_DIR`, `COPY_FILE`, `DERIVED_DATA`, `IPHONE_DEVICE`, `IPAD_DEVICE`,
@@ -56,8 +57,13 @@ Override `OUT_DIR`, `SOURCE_OUT_DIR` (the parent of the three locale directories
 setup. `CAPTURE_LOCALES` can restrict recapture to a space-separated subset; all
 three source sets must exist before composition.
 
-The 1.2 capture uses iPhone 18 Pro Max and iPad Pro 13-inch (M5), both on iOS 27.0.
+The 1.3 capture uses the retained iPhone 18 Pro on iOS 27.0 and iPad Air 11-inch
+(M3) on iOS 26.5. Pass their device IDs with `IPHONE_DEVICE` and `IPAD_DEVICE`.
+The compositor accepts native portrait screenshots and preserves their aspect
+ratio while fitting the entire device into the fixed marketing canvas. The
+App Store canvas sizes above are independent of the source simulator resolution.
 The completed set and its build provenance are recorded in
+[`verification-1.3.md`](verification-1.3.md). Previous capture evidence remains in
 [`verification-1.2.md`](verification-1.2.md).
 
 To regenerate the marketing canvases from existing localized sources:

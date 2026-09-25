@@ -274,10 +274,14 @@ private func drawBadge(copy: MarketingCopy, size: CGSize, isPhone: Bool) {
 
 private func drawDevice(image: NSImage, size: CGSize, isPhone: Bool) {
     let sourceAspect = image.size.width / image.size.height
-    let imageWidth: CGFloat = isPhone ? 920 : 1460
-    let imageHeight = imageWidth / sourceAspect
-    let imageLeft: CGFloat = isPhone ? 286 : 446
     let imageTop: CGFloat = isPhone ? 748 : 694
+    let preferredWidth: CGFloat = isPhone ? 920 : 1460
+    // Retained simulator models have different native aspect ratios. Fit the
+    // entire screenshot, including the bottom actions, without stretching it.
+    let maximumHeight = size.height - imageTop - 100
+    let imageWidth = min(preferredWidth, maximumHeight * sourceAspect)
+    let imageHeight = imageWidth / sourceAspect
+    let imageLeft = size.width - (isPhone ? 114 : 158) - imageWidth
     let imageRect = rectFromTop(
         left: imageLeft,
         top: imageTop,
@@ -334,10 +338,13 @@ private func render(
         throw GeneratorError.invalidImage(sourceURL)
     }
     let actual = CGSize(width: representation.pixelsWide, height: representation.pixelsHigh)
-    guard actual == expectedSize else {
+    let aspect = actual.width / actual.height
+    let supportedAspect = isPhone ? (0.43...0.50) : (0.65...0.80)
+    guard actual.width > 0, actual.height > actual.width,
+          supportedAspect.contains(Double(aspect)) else {
         throw GeneratorError.invalidDimensions(sourceURL, actual: actual, expected: expectedSize)
     }
-    image.size = expectedSize
+    image.size = actual
 
     let width = Int(expectedSize.width)
     let height = Int(expectedSize.height)
