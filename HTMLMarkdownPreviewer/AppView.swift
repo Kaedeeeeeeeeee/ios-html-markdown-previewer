@@ -89,17 +89,19 @@ struct AppView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        isSettingsPresented = true
-                    } label: {
-                        Image(systemName: "gearshape")
+                    if path.isEmpty {
+                        Button {
+                            isSettingsPresented = true
+                        } label: {
+                            Image(systemName: "gearshape")
+                        }
+                        .accessibilityLabel(AppStrings.Accessibility.settings)
+                        .accessibilityIdentifier("settings-button")
                     }
-                    .accessibilityLabel(AppStrings.Accessibility.settings)
-                    .accessibilityIdentifier("settings-button")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    if !documents.isEmpty {
+                    if path.isEmpty, !documents.isEmpty {
                         EditButton()
                     }
                 }

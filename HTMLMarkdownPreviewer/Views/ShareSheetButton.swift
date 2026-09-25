@@ -17,6 +17,7 @@ struct ShareSheetButton: UIViewRepresentable {
     func makeUIView(context: Context) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 21), forImageIn: .normal)
         button.accessibilityLabel = accessibilityLabel
         button.accessibilityIdentifier = accessibilityIdentifier
         button.showsMenuAsPrimaryAction = true
@@ -26,6 +27,7 @@ struct ShareSheetButton: UIViewRepresentable {
 
     func updateUIView(_ button: UIButton, context: Context) {
         configure(button, coordinator: context.coordinator)
+        button.isEnabled = context.environment.isEnabled
         button.accessibilityLabel = accessibilityLabel
         button.accessibilityIdentifier = accessibilityIdentifier
     }

@@ -14,8 +14,8 @@
 3. Open `markdown-notes.md` from Files.
 4. Open `markdown-reference.markdown` from Files.
 5. Open `zip-report.zip` from Files and confirm the local CSS and image appear.
-6. Open `external-resource.html` and describe what Safe Preview is doing.
-7. Open `interactive-trusted.html`, then decide whether to use Interactive mode.
+6. Open `external-resource.html`, switch to Safe Preview, and describe the difference.
+7. Open `interactive-trusted.html`, try its interaction in the default Interactive mode, then switch to Safe Preview.
 8. Try opening `broken.zip` and explain the error message.
 9. Return to the app home screen and reopen a recent file.
 10. Delete a recent file.
@@ -32,7 +32,7 @@
 ## Pass Criteria
 
 - User can complete core open and preview tasks without moderator instruction.
-- User understands that default Safe Preview blocks JavaScript and external network resources.
+- User understands that new HTML opens in Interactive mode with scripts and external resources enabled, and can select Safe Preview to block them.
 - User understands that ZIP is the reliable path for local CSS and image assets.
 - User can recover from an invalid ZIP error.
 - User understands paid download, no ads, no account, and no subscription.

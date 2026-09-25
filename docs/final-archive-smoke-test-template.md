@@ -42,21 +42,21 @@ Build source must be a signed archive or TestFlight build for release completion
 | App launches to home screen |  |  |
 | Home screen shows Samples section |  |  |
 | HTML Sample opens |  |  |
-| HTML Sample shows Safe Preview |  |  |
-| HTML Safe Preview blocks external resources by default |  |  |
+| Newly imported HTML Sample shows Interactive mode |  |  |
+| Switching to Safe Preview blocks page scripts and external resources |  |  |
 | Markdown Sample opens and renders formatted content |  |  |
 | ZIP Report Sample opens |  |  |
 | ZIP Report Sample renders local CSS/images |  |  |
 | ZIP sample appears in Recent |  |  |
-| Recent item reopens successfully |  |  |
+| Recent item reopens successfully with its saved preview mode |  |  |
 | Recent item can be deleted |  |  |
 
 ## Settings And Release Claims
 
 | Claim | Expected state | Pass/Fail | Notes |
 |---|---|---|---|
-| JavaScript | Disabled in Safe Preview |  |  |
-| External resources | Blocked in Safe Preview |  |  |
+| JavaScript | Enabled in default Interactive mode; disabled in Safe Preview |  |  |
+| External resources | Enabled in default Interactive mode; blocked in Safe Preview |  |  |
 | Processing | On device |  |  |
 | Account | None |  |  |
 | Ads | None |  |  |

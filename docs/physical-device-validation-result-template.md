@@ -58,7 +58,7 @@ Run these checks for at least one successful import per document type.
 | App appears as an open/share target |  |  |
 | File imports into app sandbox |  |  |
 | App navigates to preview after import |  |  |
-| HTML Safe Preview renders local content |  |  |
+| New HTML opens in Interactive mode and renders local content |  |  |
 | Markdown renders formatted content |  |  |
 | ZIP opens the selected entry HTML |  |  |
 | ZIP loads same-package CSS/images |  |  |
@@ -70,8 +70,8 @@ Run these checks for at least one successful import per document type.
 
 | Sample | Expected result | Pass/Fail | Notes |
 |---|---|---|---|
-| `external-resource.html` | Safe Preview blocks remote http/https resources by default |  |  |
-| `interactive-trusted.html` | Safe Preview disables JavaScript; Interactive mode works only after user switches |  |  |
+| `external-resource.html` | Interactive permits external resources; switching to Safe Preview blocks remote http/https resources |  |  |
+| `interactive-trusted.html` | New import opens in Interactive with JavaScript enabled; switching to Safe Preview disables page JavaScript; reopening preserves the saved mode |  |  |
 | `broken.zip` | App shows a clear invalid ZIP error and leaves no broken recent item |  |  |
 
 ## Source-Specific Caveats

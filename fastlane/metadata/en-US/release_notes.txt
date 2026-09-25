@@ -1,6 +1,6 @@
-- Fixed ZIP sharing so packages include their stylesheets and images.
-- Export HTML and Markdown previews as PDFs.
-- Read Markdown tables with aligned columns and horizontal scrolling for wider tables.
-- Get to recent files first, with a collapsible samples section below.
-- Explore three redesigned samples: Weekend plan, Reading notes, and Reading week, with light and dark appearances that match the app.
-- Fixed missing headings and list items in some Markdown documents.
+- Find text in HTML and Markdown, jump between matches, and navigate with a heading outline.
+- Pick up where you left off with saved reading positions.
+- Paste HTML or Markdown text to create a preview and keep it in Recent Files.
+- Explore the animated HTML sample with day/evening scenes and a pause control.
+- New HTML files now open in Interactive mode. Safe Preview remains available, and saved mode choices are preserved.
+- Reading tools, preview mode, sharing, and file details now sit at the bottom right, leaving more room for document titles.

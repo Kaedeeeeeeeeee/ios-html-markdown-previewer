@@ -31,6 +31,7 @@ final class BuiltInSampleProviderTests: XCTestCase {
 
             let document = try service.importDocument(from: sampleURL, source: .bundledSample)
             XCTAssertEqual(document.importSource, .bundledSample)
+            XCTAssertEqual(document.preferredPreviewMode, sample == .markdown ? .safePreview : .interactive)
 
             if sample == .zipPackage {
                 XCTAssertEqual(document.type, .zipPackage)

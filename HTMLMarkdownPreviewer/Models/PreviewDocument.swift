@@ -37,7 +37,7 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         extractedFileCount: Int? = nil,
         totalUncompressedBytes: UInt64? = nil,
         lastOpenedAt: Date? = nil,
-        preferredPreviewMode: PreviewMode = .safePreview,
+        preferredPreviewMode: PreviewMode? = nil,
         readingPosition: ReadingPosition? = nil
     ) {
         self.id = id
@@ -56,7 +56,7 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         self.extractedFileCount = extractedFileCount
         self.totalUncompressedBytes = totalUncompressedBytes
         self.lastOpenedAt = lastOpenedAt
-        self.preferredPreviewMode = preferredPreviewMode
+        self.preferredPreviewMode = preferredPreviewMode ?? PreviewMode.defaultMode(for: self.entryDocumentType)
         self.readingPosition = readingPosition
     }
 }

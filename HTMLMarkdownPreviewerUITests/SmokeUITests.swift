@@ -121,6 +121,9 @@ final class SmokeUITests: XCTestCase {
         openSettingsAndVerifyReleaseClaims(app: app)
 
         openSample(identifier: "sample-html", app: app)
+        XCTAssertTrue(app.staticTexts["Interactive"].waitForExistence(timeout: 10))
+        tapElement(app.buttons["preview-mode-menu"], app: app)
+        tapElement(app.buttons["Safe Preview"], app: app)
         XCTAssertTrue(app.staticTexts["Safe Preview"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts.matching(identifier: "Scripts and external network resources are blocked. Relative assets are best effort for single files.").firstMatch.exists)
         navigateHome(app: app)
@@ -132,8 +135,7 @@ final class SmokeUITests: XCTestCase {
         navigateHome(app: app)
 
         openSample(identifier: "sample-zipPackage", app: app)
-        XCTAssertTrue(app.staticTexts["Safe Preview"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.staticTexts.matching(identifier: "Scripts and external network resources are blocked.").firstMatch.exists)
+        XCTAssertTrue(app.staticTexts["Interactive"].waitForExistence(timeout: 10))
         navigateHome(app: app)
 
         let recentZIPSample = app.buttons["recent-document-reading-week.zip"]
@@ -175,6 +177,7 @@ final class SmokeUITests: XCTestCase {
             }
         }
         XCTAssertTrue(settingsScreenExists(app: app), "Settings screen did not appear")
+        assertLabelExists("Default Mode: Interactive", app: app)
         assertLabelExists("Safe JavaScript: Disabled", app: app)
         assertLabelExists("Safe External Resources: Blocked", app: app)
         assertLabelExists("Imported Files: Stored in App", app: app)

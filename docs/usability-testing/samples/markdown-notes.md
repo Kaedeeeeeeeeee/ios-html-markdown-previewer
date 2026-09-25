@@ -17,7 +17,7 @@ This file covers common Markdown reading support.
 3. Confirm lists are readable.
 4. Confirm code blocks use a distinct style.
 
-> Safe Preview should keep user-selected documents local by default.
+> Select Safe Preview to block page scripts and external network resources.
 
 ```swift
 let supportedFiles = ["html", "md", "zip"]

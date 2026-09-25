@@ -3,6 +3,85 @@ import XCTest
 
 @MainActor
 final class ReadingAndPasteUITests: XCTestCase {
+    func testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch() {
+        let app = launchFresh()
+        let name = "週末の読書ノート—跨语言阅读记录—A longer document title for a quieter Saturday"
+        let sections = (1...8).map { index in
+            "## Chapter \(index)\n\n" + String(repeating: "A quieter Saturday leaves room for reading. ", count: 10)
+        }.joined(separator: "\n\n")
+        paste("# Weekend reading\n\n\(sections)\n\nThe final reading note.", name: name, app: app)
+        XCTAssertTrue(app.staticTexts["Weekend reading"].waitForExistence(timeout: 10))
+
+        let title = app.buttons["document-title-button"]
+        XCTAssertTrue(eventuallyHittable(title))
+        XCTAssertTrue(title.label.contains(name))
+        XCTAssertLessThan(title.frame.maxY, app.frame.height * 0.3)
+
+        let actionIDs = ["reading-tools-menu", "preview-mode-menu", "share-file-button", "file-details-button"]
+        let actions = actionIDs.map { app.buttons[$0] }
+        for action in actions {
+            XCTAssertTrue(eventuallyHittable(action), "Missing accessible bottom action: \(action.identifier)")
+            XCTAssertGreaterThan(action.frame.minY, app.frame.height * 0.6)
+            XCTAssertGreaterThan(action.frame.minY, title.frame.maxY)
+        }
+        let rowY = actions[0].frame.midY
+        for action in actions.dropFirst() {
+            XCTAssertLessThan(abs(action.frame.midY - rowY), 24, "The four actions should share one row")
+        }
+        XCTAssertGreaterThan(actions[3].frame.maxX, app.frame.maxX - app.frame.width * 0.2)
+        for (left, right) in zip(actions, actions.dropFirst()) {
+            XCTAssertLessThanOrEqual(left.frame.maxX, right.frame.minX + 1, "Bottom actions must not overlap")
+        }
+        screenshot("Long multilingual title with four bottom-right actions", app: app)
+
+        let fullFilename = app.descendants(matching: .any).matching(
+            NSPredicate(format: "label == %@", "Name: \(name).md")
+        ).firstMatch
+        title.tap()
+        XCTAssertTrue(fullFilename.waitForExistence(timeout: 5))
+        app.buttons["document-details-done-button"].tap()
+        XCTAssertTrue(eventuallyHittable(app.buttons["file-details-button"]))
+        app.buttons["file-details-button"].tap()
+        XCTAssertTrue(fullFilename.waitForExistence(timeout: 5))
+        app.buttons["document-details-done-button"].tap()
+
+        openSearch(app)
+        app.textFields["reading-search-field"].tap()
+        let keyboard = app.keyboards.firstMatch
+        XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
+        let keyboardContinue = keyboard.buttons["Continue"]
+        if keyboardContinue.exists {
+            keyboardContinue.tap()
+        }
+        XCTAssertTrue(wait { keyboard.keys.count > 0 }, "The normal keyboard should be available after onboarding")
+        app.textFields["reading-search-field"].typeText("Saturday")
+        waitForLabel("1 of 80", identifier: "reading-match-count", app: app)
+        for identifier in actionIDs {
+            XCTAssertFalse(app.buttons[identifier].exists, "Search should replace the action dock")
+        }
+        XCTAssertFalse(app.descendants(matching: .any)["preview-actions"].exists)
+        XCTAssertTrue(app.buttons["reading-search-close"].isHittable)
+        screenshot("Search replaces bottom actions above the keyboard", app: app)
+        app.buttons["reading-search-close"].tap()
+        XCTAssertTrue(wait { !app.keyboards.firstMatch.exists })
+        XCTAssertFalse(app.textFields["reading-search-field"].exists)
+        for action in actions {
+            XCTAssertTrue(eventuallyHittable(action))
+        }
+        let contentScrollView = app.scrollViews.firstMatch
+        XCTAssertTrue(contentScrollView.exists)
+        let finalNote = app.staticTexts["The final reading note."]
+        for _ in 0..<20 {
+            if finalNote.exists && finalNote.isHittable && finalNote.frame.maxY < actions[0].frame.minY {
+                break
+            }
+            contentScrollView.swipeUp()
+        }
+        XCTAssertTrue(finalNote.exists && finalNote.isHittable)
+        XCTAssertLessThan(finalNote.frame.maxY, actions[0].frame.minY, "The final text should scroll fully above the floating actions")
+        screenshot("Final reading note clears the bottom action dock", app: app)
+    }
+
     func testMarkdownSearchRevealsLongParagraphAndOffscreenTableColumn() {
         let app = launchFresh()
         let paragraph = "needle " + String(repeating: "A longer sentence with wide WWW and narrow iii characters. ", count: 100) + " needle"
@@ -78,7 +157,11 @@ final class ReadingAndPasteUITests: XCTestCase {
         """
         paste(html, name: "HTML QA", app: app)
         XCTAssertTrue(app.staticTexts["Local HTML report"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.staticTexts["Safe script remains blocked"].exists)
+        XCTAssertTrue(app.staticTexts["Interactive"].exists)
+        XCTAssertTrue(app.staticTexts["UNSAFE SCRIPT EXECUTED"].waitForExistence(timeout: 10))
+        app.buttons["preview-mode-menu"].tap()
+        app.buttons["Safe Preview"].tap()
+        XCTAssertTrue(app.staticTexts["Safe script remains blocked"].waitForExistence(timeout: 10))
         XCTAssertFalse(app.staticTexts["UNSAFE SCRIPT EXECUTED"].exists)
         openSearch(app)
         app.textFields["reading-search-field"].typeText("compass")
@@ -99,6 +182,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["recent-document-HTML QA.html"].waitForExistence(timeout: 10))
         app.buttons["recent-document-HTML QA.html"].tap()
+        XCTAssertTrue(app.staticTexts["Safe Preview"].waitForExistence(timeout: 10))
         XCTAssertTrue(eventuallyHittable(app.staticTexts["Final destination"]))
         screenshot("HTML reading position restored after relaunch", app: app)
     }

@@ -114,8 +114,10 @@ Apple references:
    - Open HTML Sample.
    - Open Markdown Sample.
    - Open ZIP Report Sample.
-   - Verify Safe Preview blocks external resources by default.
-   - Verify Settings states: JavaScript disabled, external resources blocked, no ads, no account.
+   - Verify newly imported HTML opens in Interactive mode, with page JavaScript and external resources enabled.
+   - Switch to Safe Preview and verify page scripts and external resources are blocked. Reopen the file and confirm the saved mode is preserved.
+   - Verify external navigation and form navigation are blocked in both modes.
+   - Verify Settings describes Interactive as the default for new HTML, Safe Preview as selectable, no ads, and no account.
    - Verify recent file reopen and delete.
 16. After App Store Connect setup, final smoke, #1, and #11 result drafts are filled, validate that no completed result still has placeholders, stale commit evidence, empty required result cells, failed/not-tested required cells, missing Files local pass coverage, weak final-smoke build evidence, or unresolved P0/P1 follow-ups:
    ```sh

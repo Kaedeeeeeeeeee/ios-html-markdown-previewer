@@ -65,65 +65,25 @@ struct DocumentPreviewView: View {
                     reading.query = ""
                     isSearchPresented = false
                 }
+            } else {
+                previewActions
             }
         }
         .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                if supportsReadingTools {
-                    Menu {
-                        Button {
-                            isSearchPresented = true
-                        } label: {
-                            Label(ReadingStrings.find, systemImage: "magnifyingglass")
-                        }
-                        .accessibilityIdentifier("reading-find-button")
-                        Button {
-                            readingSheet = .contents
-                        } label: {
-                            Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
-                        }
-                        .accessibilityIdentifier("reading-contents-button")
-                        Button {
-                            reading.navigate(to: .beginning)
-                        } label: {
-                            Label(ReadingStrings.beginning, systemImage: "arrow.up.to.line")
-                        }
-                    } label: {
-                        Image(systemName: "doc.text.magnifyingglass")
-                    }
-                    .disabled(!reading.isReady)
-                    .accessibilityLabel(ReadingStrings.tools)
-                    .accessibilityIdentifier("reading-tools-menu")
-                }
-                if supportsPreviewModeMenu {
-                    Menu {
-                        previewModeButtons
-                    } label: {
-                        Image(systemName: previewModeIcon)
-                    }
-                    .accessibilityLabel(AppStrings.Accessibility.previewMode)
-                    .accessibilityHint(AppStrings.Accessibility.previewModeHint)
-                    .accessibilityIdentifier("preview-mode-menu")
-                }
-
-                ShareSheetButton(
-                    fileURL: store.originalFileURL(for: document),
-                    accessibilityLabel: AppStrings.Accessibility.shareFile,
-                    accessibilityIdentifier: "share-file-button",
-                    shareTitle: document.type == .zipPackage
-                        ? AppStrings.Actions.shareZIPPackage : AppStrings.Actions.shareOriginalFile,
-                    exportPDF: canExportPDF ? exportPDF : nil,
-                    onExporting: { isExporting = $0 },
-                    onExportError: { exportError = $0.localizedDescription }
-                )
-
+            ToolbarItem(placement: .principal) {
                 Button {
                     isDetailsPresented = true
                 } label: {
-                    Image(systemName: "info.circle")
+                    Text(document.displayName)
+                        .font(.headline)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .contentShape(Rectangle())
                 }
-                .accessibilityLabel(AppStrings.Accessibility.fileDetails)
-                .accessibilityIdentifier("file-details-button")
+                .buttonStyle(.plain)
+                .accessibilityHint(AppStrings.Accessibility.fileDetails)
+                .accessibilityIdentifier("document-title-button")
             }
         }
         .disabled(isExporting)
@@ -177,6 +137,83 @@ struct DocumentPreviewView: View {
         .sheet(item: $readingSheet) { _ in
             DocumentOutlineView(reading: reading)
         }
+    }
+
+    private var previewActions: some View {
+        HStack(spacing: 4) {
+            if supportsReadingTools {
+                Menu {
+                    Button {
+                        isSearchPresented = true
+                    } label: {
+                        Label(ReadingStrings.find, systemImage: "magnifyingglass")
+                    }
+                    .accessibilityIdentifier("reading-find-button")
+                    Button {
+                        readingSheet = .contents
+                    } label: {
+                        Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
+                    }
+                    .accessibilityIdentifier("reading-contents-button")
+                    Button {
+                        reading.navigate(to: .beginning)
+                    } label: {
+                        Label(ReadingStrings.beginning, systemImage: "arrow.up.to.line")
+                    }
+                } label: {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .disabled(!reading.isReady)
+                .accessibilityLabel(ReadingStrings.tools)
+                .accessibilityIdentifier("reading-tools-menu")
+            }
+            if supportsPreviewModeMenu {
+                Menu {
+                    previewModeButtons
+                } label: {
+                    Image(systemName: previewModeIcon)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .accessibilityLabel(AppStrings.Accessibility.previewMode)
+                .accessibilityHint(AppStrings.Accessibility.previewModeHint)
+                .accessibilityIdentifier("preview-mode-menu")
+            }
+
+            ShareSheetButton(
+                fileURL: store.originalFileURL(for: document),
+                accessibilityLabel: AppStrings.Accessibility.shareFile,
+                accessibilityIdentifier: "share-file-button",
+                shareTitle: document.type == .zipPackage
+                    ? AppStrings.Actions.shareZIPPackage : AppStrings.Actions.shareOriginalFile,
+                exportPDF: canExportPDF ? exportPDF : nil,
+                onExporting: { isExporting = $0 },
+                onExportError: { exportError = $0.localizedDescription }
+            )
+            .frame(width: 44, height: 44)
+
+            Button {
+                isDetailsPresented = true
+            } label: {
+                Image(systemName: "info.circle")
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .accessibilityLabel(AppStrings.Accessibility.fileDetails)
+            .accessibilityIdentifier("file-details-button")
+        }
+        .font(.system(size: 21))
+        .buttonStyle(.plain)
+        .foregroundStyle(.primary)
+        .padding(6)
+        .modifier(PreviewActionsSurface())
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("preview-actions")
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
     }
 
     private func loadPreview() {
@@ -356,6 +393,21 @@ struct DocumentPreviewView: View {
         }
 
         return store.entryFileURL(for: document).deletingLastPathComponent()
+    }
+}
+
+private struct PreviewActionsSurface: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            content.glassEffect(.regular, in: .capsule)
+        } else {
+            content
+                .background(.regularMaterial, in: Capsule())
+                .overlay {
+                    Capsule().strokeBorder(.primary.opacity(0.08), lineWidth: 0.5)
+                }
+                .shadow(color: .black.opacity(0.08), radius: 8, y: 3)
+        }
     }
 }
 

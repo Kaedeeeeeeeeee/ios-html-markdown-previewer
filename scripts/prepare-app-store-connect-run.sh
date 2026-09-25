@@ -268,7 +268,7 @@ Use the current App Store Connect questionnaire and record the final account-own
 | Messaging and chat | No |  |  | App has no user-to-user communication |
 | Advertising | No |  |  | No ad SDKs |
 | User-generated content | No |  |  | App locally previews user-selected files |
-| Unrestricted web access | No |  |  | Safe Preview blocks external resources; app is not a browser |
+| Unrestricted web access | No |  |  | Interactive permits scripts and external resources; external navigation and form navigation stay blocked. Safe Preview is selectable to block scripts and external resources |
 | Made for Kids | No / Not Applicable |  |  |  |
 | Final age rating | Account-owner/App Store Connect result |  |  |  |
 

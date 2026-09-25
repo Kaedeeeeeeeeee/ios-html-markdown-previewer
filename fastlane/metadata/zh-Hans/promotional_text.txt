@@ -1,1 +1,1 @@
-在 iPhone 和 iPad 上打开本地 HTML、Markdown 和 ZIP 报告包。文件保留在设备上，默认启用安全 HTML 预览。
+在 iPhone 和 iPad 上阅读 HTML、Markdown 和 ZIP 报告。文内搜索、标题目录、记住阅读位置，让长文更好读；粘贴文本即可预览，也能将文档导出为 PDF。

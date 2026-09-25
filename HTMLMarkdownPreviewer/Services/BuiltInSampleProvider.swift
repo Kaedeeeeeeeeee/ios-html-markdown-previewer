@@ -67,7 +67,7 @@ extension BuiltInSampleProvider {
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <meta name="color-scheme" content="light dark">
           <title>\(escaped(AppStrings.SampleDesign.htmlTitle))</title>
-          <style>\(sampleCSS)</style>
+          <style>\(sampleCSS)\(htmlMotionCSS)</style>
         </head>
         <body>
           <main>
@@ -77,18 +77,19 @@ extension BuiltInSampleProvider {
               <p class="intro">\(escaped(AppStrings.SampleDesign.htmlIntro))</p>
               <p class="dateline">\(escaped(AppStrings.SampleDesign.htmlDate))</p>
             </header>
+            \(htmlMotionScene)
             <section aria-labelledby="plan-heading">
               <h2 class="section-label" id="plan-heading">\(escaped(AppStrings.SampleDesign.htmlSection))</h2>
               <ol class="schedule panel">
-                <li>
+                <li id="coffee-stop">
                   <time datetime="09:30">09:30</time>
                   <div><h3>\(escaped(AppStrings.SampleDesign.htmlStopOne))</h3><p>\(escaped(AppStrings.SampleDesign.htmlStopOneDetail))</p></div>
                 </li>
-                <li>
+                <li id="river-stop">
                   <time datetime="11:00">11:00</time>
                   <div><h3>\(escaped(AppStrings.SampleDesign.htmlStopTwo))</h3><p>\(escaped(AppStrings.SampleDesign.htmlStopTwoDetail))</p></div>
                 </li>
-                <li>
+                <li id="book-stop">
                   <time datetime="14:00">14:00</time>
                   <div><h3>\(escaped(AppStrings.SampleDesign.htmlStopThree))</h3><p>\(escaped(AppStrings.SampleDesign.htmlStopThreeDetail))</p></div>
                 </li>
@@ -99,6 +100,10 @@ extension BuiltInSampleProvider {
               <h2>\(escaped(AppStrings.SampleDesign.htmlNoteTitle))</h2>
               <p>\(escaped(AppStrings.SampleDesign.htmlNote))</p>
             </aside>
+            <details class="packing-note">
+              <summary>\(escaped(AppStrings.SampleDesign.htmlPackingTitle))</summary>
+              <p>\(escaped(AppStrings.SampleDesign.htmlPackingBody))</p>
+            </details>
             <footer><p>\(escaped(AppStrings.SampleDesign.htmlFooter))</p><span>\(escaped(AppStrings.SampleDesign.sampleLabel)) · HTML</span></footer>
           </main>
         </body>
@@ -250,7 +255,7 @@ extension BuiltInSampleProvider {
         escaped(Bundle.main.preferredLocalizations.first ?? "en")
     }
 
-    private static func escaped(_ text: String) -> String {
+    static func escaped(_ text: String) -> String {
         text.replacingOccurrences(of: "&", with: "&amp;")
             .replacingOccurrences(of: "<", with: "&lt;")
             .replacingOccurrences(of: ">", with: "&gt;")

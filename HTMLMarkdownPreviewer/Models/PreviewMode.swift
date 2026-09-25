@@ -5,6 +5,12 @@ enum PreviewMode: String, CaseIterable, Codable, Hashable, Identifiable, Sendabl
     case interactive
     case rawText
 
+    static let defaultHTMLMode: PreviewMode = .interactive
+
+    static func defaultMode(for type: PreviewDocumentType) -> PreviewMode {
+        type == .html ? defaultHTMLMode : .safePreview
+    }
+
     var id: String {
         rawValue
     }

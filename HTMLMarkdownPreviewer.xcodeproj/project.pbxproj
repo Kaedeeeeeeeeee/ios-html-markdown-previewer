@@ -10,6 +10,7 @@
 		043235D650C92F14284F3B6B /* DocumentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B41A86144BE735C5DC2114 /* DocumentPreviewView.swift */; };
 		06246163CA33DF6E8C844EAC /* MarkdownDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6CCDC7BECC879E7BFAADF3 /* MarkdownDocument.swift */; };
 		0D830595AF048383EC78AE93 /* PastePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79455D38D3EAC4634DFFF436 /* PastePreviewView.swift */; };
+		0E02F3002A88D69F74CA4E72 /* BuiltInSampleProvider+HTMLMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677A050F2521739D75176CE9 /* BuiltInSampleProvider+HTMLMotion.swift */; };
 		0E82DB2454CC49AF65130A85 /* HTMLReadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF6D488B0CF8768076E45B0 /* HTMLReadingTests.swift */; };
 		0FBD3C4D8B0F6EF58ED4374C /* PastedDocumentImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609386F94D2B25DC862BCE1D /* PastedDocumentImportServiceTests.swift */; };
 		118F4AD1B54C480D74BD6953 /* ContentBlockerRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE9124C5104618D3E6CEBBC /* ContentBlockerRules.swift */; };
@@ -119,6 +120,7 @@
 		5E6EE7D14AB31061D2DC94ED /* DocumentImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentImportServiceTests.swift; sourceTree = "<group>"; };
 		609386F94D2B25DC862BCE1D /* PastedDocumentImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastedDocumentImportServiceTests.swift; sourceTree = "<group>"; };
 		66893E422FE3945844F0647D /* DocumentLibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentLibraryStore.swift; sourceTree = "<group>"; };
+		677A050F2521739D75176CE9 /* BuiltInSampleProvider+HTMLMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BuiltInSampleProvider+HTMLMotion.swift"; sourceTree = "<group>"; };
 		68040EB20BE0C5F832A0B438 /* ImportSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportSource.swift; sourceTree = "<group>"; };
 		6A923BEF4B110CB0A0F91D41 /* BuiltInSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuiltInSample.swift; sourceTree = "<group>"; };
 		6AC828F538E6A65E21BA9B86 /* ReadingToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingToolsView.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				57B7C0F78D5EE26430B2A543 /* BuiltInSampleProvider.swift */,
+				677A050F2521739D75176CE9 /* BuiltInSampleProvider+HTMLMotion.swift */,
 				213D01C6A8454994AFA44D2C /* BuiltInSampleProvider+Markdown.swift */,
 				76DD199EDF6C558806D3891D /* DocumentImportService.swift */,
 				66893E422FE3945844F0647D /* DocumentLibraryStore.swift */,
@@ -454,6 +457,7 @@
 				4363849F817DBBED8E1E7890 /* AppStrings.swift in Sources */,
 				55E257A6BD4B59E091DAAB33 /* AppView.swift in Sources */,
 				2A2B25C488E2677C023C654A /* BuiltInSample.swift in Sources */,
+				0E02F3002A88D69F74CA4E72 /* BuiltInSampleProvider+HTMLMotion.swift in Sources */,
 				A039C952B9EA8E1D7F0639F5 /* BuiltInSampleProvider+Markdown.swift in Sources */,
 				2B9B6180BEF46D10F4CF139E /* BuiltInSampleProvider.swift in Sources */,
 				118F4AD1B54C480D74BD6953 /* ContentBlockerRules.swift in Sources */,
@@ -639,7 +643,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -658,7 +662,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -722,7 +726,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -735,7 +739,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

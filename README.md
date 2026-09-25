@@ -10,7 +10,7 @@ MVP implementation is complete for the local core flow:
 
 - Document type declarations for HTML, Markdown, and ZIP.
 - Separate app file picker entries for HTML/Markdown files and ZIP report packages.
-- Safe WKWebView preview with JavaScript disabled and external HTTP/HTTPS resources blocked by default.
+- New HTML imports open in Interactive WKWebView preview with page JavaScript and external resources enabled. Safe Preview remains available to block page scripts and external HTTP/HTTPS resources; both modes block external navigation and form navigation.
 - Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling.
 - ZIP package import with local CSS/image resource loading.
 - Share original files or complete ZIP packages, preserving bundled CSS and images.
@@ -36,7 +36,9 @@ Paste to Preview accepts up to 2 MB of text and never reads the clipboard in the
 background. It can recognize HTML and Markdown wrapped in a single code fence;
 the format can also be chosen explicitly. Pasting only a URL shows an explanation
 instead of fetching a webpage. Pasted content uses the same local storage,
-safe-preview defaults, sharing, and PDF export as imported files.
+preview defaults, sharing, and PDF export as imported files. New pasted HTML and
+HTML entries inside ZIP packages open in Interactive mode; Markdown uses its
+native reading view. Reopening a document preserves its saved preview mode.
 
 Remaining release gates are external to simulator-only local development:
 

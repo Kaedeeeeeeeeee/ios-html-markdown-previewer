@@ -104,7 +104,7 @@ final class PastedDocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(defaultName, PasteStrings.defaultDocumentName + ".md")
     }
 
-    func testHTMLImportCreatesRecentDocumentInSafeModeAndRemovesTemporaryFile() throws {
+    func testHTMLImportCreatesRecentDocumentInInteractiveModeAndRemovesTemporaryFile() throws {
         let workspace = try makeWorkspace()
         defer { try? FileManager.default.removeItem(at: workspace) }
         let store = DocumentLibraryStore(rootURL: workspace.appendingPathComponent("library"))
@@ -118,7 +118,7 @@ final class PastedDocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(document.displayName, "Weekly report")
         XCTAssertEqual(document.type, .html)
         XCTAssertEqual(document.importSource, .pastedText)
-        XCTAssertEqual(document.preferredPreviewMode, .safePreview)
+        XCTAssertEqual(document.preferredPreviewMode, .interactive)
         XCTAssertEqual(document.externalURLCount, 1)
         XCTAssertEqual(try store.loadDocuments(), [document])
         XCTAssertEqual(try String(contentsOf: store.originalFileURL(for: document), encoding: .utf8), html)

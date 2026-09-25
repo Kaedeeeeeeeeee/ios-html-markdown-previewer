@@ -2,7 +2,7 @@
 
 Issue: #10
 
-Use this handoff when maintaining the App Store Connect record and preparing the current `1.2` update. It consolidates the fields that otherwise live across the listing draft, privacy notes, export compliance note, screenshots, and release checklist.
+Use this handoff when maintaining the App Store Connect record and preparing the next update. It consolidates the fields that otherwise live across the listing draft, privacy notes, export compliance note, screenshots, and release checklist.
 
 ## Preconditions
 
@@ -49,7 +49,7 @@ Use this handoff when maintaining the App Store Connect record and preparing the
 - Availability: account-owner decision. If there is no region-specific legal constraint, use all App Store countries and regions.
 - Do not configure StoreKit products for MVP.
 
-## Version 1.2 Metadata
+## Next Release Metadata
 
 Copy from `docs/app-store-listing.md`:
 
@@ -126,7 +126,7 @@ Recommended answers for the MVP app-bundled experience:
 | Messaging and chat | No | The app has no user-to-user communication. |
 | Advertising | No | The app includes no ads or ad SDKs. |
 | User-generated content | No | The app does not broadly distribute user-created content or host a social content feed. |
-| Unrestricted web access | No | The app is not a browser and has no URL entry or free web navigation. Safe Preview blocks external resources by default. |
+| Unrestricted web access | No | The app has no URL entry or free web navigation. Interactive mode permits page scripts and external resources; external navigation and form navigation remain blocked. Safe Preview is selectable to block scripts and external resources. |
 | Made for Kids | No / Not Applicable | The app is a general productivity utility, not a Kids category app. |
 | Override to higher age rating | Not Applicable | Use only if the account owner chooses a higher rating for policy or market reasons. |
 

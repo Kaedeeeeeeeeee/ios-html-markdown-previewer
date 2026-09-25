@@ -22,6 +22,7 @@ final class DocumentImportServiceTests: XCTestCase {
         XCTAssertEqual(document.originalFilename, "report.html")
         XCTAssertEqual(document.type, .html)
         XCTAssertEqual(document.entryDocumentType, .html)
+        XCTAssertEqual(document.preferredPreviewMode, .interactive)
         XCTAssertEqual(document.importSource, .fileImporter)
         XCTAssertEqual(document.importedAt, fixedDate)
         XCTAssertEqual(document.localRootRelativePath, "Imports/\(fixedID.uuidString)")
@@ -57,6 +58,7 @@ final class DocumentImportServiceTests: XCTestCase {
 
         XCTAssertEqual(document.type, .zipPackage)
         XCTAssertEqual(document.entryDocumentType, .html)
+        XCTAssertEqual(document.preferredPreviewMode, .interactive)
         XCTAssertEqual(document.importSource, .externalOpen)
         XCTAssertEqual(document.originalFileRelativePath, "original/fixture.zip")
         XCTAssertEqual(document.entryFileRelativePath, "extracted/index.html")

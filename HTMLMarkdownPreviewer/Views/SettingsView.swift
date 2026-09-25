@@ -14,7 +14,7 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 Section(AppStrings.Settings.htmlSection) {
-                    settingsRow(AppStrings.Settings.defaultMode, value: PreviewMode.safePreview.displayName)
+                    settingsRow(AppStrings.Settings.defaultMode, value: PreviewMode.defaultHTMLMode.displayName)
                     settingsRow(AppStrings.Settings.safeJavaScript, value: AppStrings.Settings.disabled)
                     settingsRow(AppStrings.Settings.safeExternalResources, value: AppStrings.Settings.blocked)
                 }

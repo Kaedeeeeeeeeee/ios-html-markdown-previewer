@@ -25,11 +25,41 @@ Do not attach sensitive files to public comments.
 
 ## Common Notes
 
-- Safe Preview blocks JavaScript and external HTTP/HTTPS resources by default.
+- In version 1.3 and later, new HTML files open in Interactive mode, with page JavaScript and external resources enabled. This also applies to pasted HTML and HTML entries in ZIP packages. Version 1.2 and earlier use Safe Preview by default.
+- Select Safe Preview to block page JavaScript and external HTTP/HTTPS resources. Both modes block external navigation and form navigation.
+- Reopening a document preserves its saved preview mode; Markdown continues to use its native reading view.
 - ZIP packages are the reliable way to preview HTML files that depend on local CSS or images.
 - Single-file HTML and Markdown imports are best effort for relative local assets.
 
-## Sharing and PDF Export (Version 1.2)
+## Reading Tools and Preview Controls (Version 1.3 and Later)
+
+The document controls are at the bottom right: reading tools, preview mode,
+sharing, and file details. Available controls depend on the document type and
+preview mode. The title has more room at the top; tap it to see the complete
+filename in file details.
+
+Open reading tools to search within rendered HTML or Markdown, move to the next
+or previous match, browse the heading outline, or return to the beginning.
+Documents without headings have no outline entries. HTML reading tools work on
+the main document; for ZIP packages, reading position is saved for the entry page.
+Switch out of Raw Text to use reading tools.
+
+Reading positions are saved automatically and restored when you reopen a document,
+including after restarting the app. During search, the search bar replaces the
+bottom controls. Close search to bring the controls back.
+
+## Paste to Preview (Version 1.3 and Later)
+
+On Home, choose Paste to Preview and paste or enter the HTML or Markdown content
+itself. The app suggests a format; you can change it and optionally enter a name
+before tapping Preview. The new document is saved in Recent Files. The clipboard
+is only accessed when you choose to paste; it is not read automatically.
+
+A web address alone cannot be previewed this way. For text larger than 2 MB,
+import it as a file instead. Pasted HTML uses the same preview modes as imported
+HTML. Use a ZIP package when your HTML needs accompanying local styles or images.
+
+## Sharing and PDF Export (Version 1.2 and Later)
 
 Open the share menu in a document preview to share the original file or export a
 PDF. For a ZIP report, sharing sends the complete original ZIP, including its
