@@ -22,6 +22,18 @@ overlay symbol. The fixed archive passes strict code-signature verification.
 Only the fixed archive and IPA are eligible for release. The pre-fix build was
 never uploaded to App Store Connect.
 
-Runtime validation and submission evidence are recorded in the 1.3 release
+Runtime validation passed all 76 unit/integration tests on both iPhone SE
+(3rd generation), iOS 18.5, and iPhone 18 Pro, iOS 27. These include the new bridge
+regression, existing reading isolation/position tests, and PDF exports. The
+built-in sample/settings UI smoke also passed on iOS 18.5.
+
+The SE initially had an independent simulator launch-service stall. A scoped
+restart of only its `runningboardd` restored app/test launch. No simulator data
+was erased and no other simulator was reset. Earlier UI paste failures were
+separately traced to the iOS 18 Form accessibility frame covering the whole row,
+while the native Paste control is left-aligned. The UI fixture now taps inside
+the observed control and prepares clipboard data in the foreground.
+
+Final UI validation and submission evidence are recorded in the 1.3 release
 record. Machine-readable build provenance and logs are under
 `DerivedData/Release1.3/`.

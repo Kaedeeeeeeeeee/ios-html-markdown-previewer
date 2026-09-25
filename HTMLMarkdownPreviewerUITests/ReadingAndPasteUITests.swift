@@ -194,7 +194,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertFalse(app.buttons["paste-open-button"].isEnabled)
         setPasteboard("https://example.com/report", app: app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
-        app.buttons["paste-system-button"].tap()
+        tapSystemPaste(app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-open-button"]))
         app.buttons["paste-open-button"].tap()
         XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 5))
@@ -255,13 +255,22 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["paste-system-button"].waitForExistence(timeout: 5))
         setPasteboard(text, app: app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
-        app.buttons["paste-system-button"].tap()
+        tapSystemPaste(app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-open-button"]))
         let nameField = app.textFields["paste-name-field"]
         scrollTo(nameField, app: app)
         nameField.tap()
         nameField.typeText(name)
         app.buttons["paste-open-button"].tap()
+    }
+
+    private func tapSystemPaste(_ app: XCUIApplication) {
+        let button = app.buttons["paste-system-button"]
+        // On iOS 18, Form exposes the whole row as the PasteButton's accessibility
+        // frame even though the native control only occupies its leading edge.
+        button.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0.5))
+            .withOffset(CGVector(dx: min(48, button.frame.width / 2), dy: 0))
+            .tap()
     }
 
     private func openSearch(_ app: XCUIApplication) {
@@ -272,9 +281,8 @@ final class ReadingAndPasteUITests: XCTestCase {
     }
 
     private func setPasteboard(_ text: String, app: XCUIApplication) {
-        #if !targetEnvironment(simulator)
-        // Real devices restrict pasteboard access from background processes.
-        // Bring the test runner forward only to prepare its own fixture.
+        // Prepare clipboard content from a foreground app on every OS, matching
+        // a real copy-and-paste flow without relying on simulator background access.
         guard let runnerIdentifier = Bundle.main.bundleIdentifier else {
             XCTFail("Missing UI test runner bundle identifier")
             return
@@ -282,7 +290,6 @@ final class ReadingAndPasteUITests: XCTestCase {
         let runner = XCUIApplication(bundleIdentifier: runnerIdentifier)
         runner.activate()
         XCTAssertTrue(runner.wait(for: .runningForeground, timeout: 5))
-        #endif
 
         UIPasteboard.general.setItems(
             [["public.utf8-plain-text": text]],
@@ -290,10 +297,8 @@ final class ReadingAndPasteUITests: XCTestCase {
         )
         XCTAssertEqual(UIPasteboard.general.string, text)
 
-        #if !targetEnvironment(simulator)
         app.activate()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 5))
-        #endif
     }
 
     private func openContents(_ app: XCUIApplication) {
