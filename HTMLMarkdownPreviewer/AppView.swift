@@ -11,6 +11,8 @@ struct AppView: View {
     @State private var isImporterPresented = false
     @State private var importPickerScope: ImportPickerScope = .previewDocument
     @State private var isSettingsPresented = false
+    @State private var isPastePreviewPresented = false
+    @State private var pastedDocument: PreviewDocument?
     @State private var errorMessage: String?
     @State private var didHandleLaunchArguments = false
 
@@ -37,6 +39,13 @@ struct AppView: View {
                         Label(AppStrings.Actions.openZIPPackage, systemImage: "archivebox")
                     }
                     .accessibilityIdentifier("open-zip-package-button")
+
+                    Button {
+                        isPastePreviewPresented = true
+                    } label: {
+                        Label(PasteStrings.title, systemImage: "doc.on.clipboard")
+                    }
+                    .accessibilityIdentifier("paste-preview-button")
                 }
 
                 if documents.isEmpty {
@@ -97,6 +106,11 @@ struct AppView: View {
             }
             .sheet(isPresented: $isSettingsPresented) {
                 SettingsView(clearImportedFiles: clearImportedFiles)
+            }
+            .sheet(isPresented: $isPastePreviewPresented, onDismiss: openPastedDocument) {
+                PastePreviewView(store: store) { document in
+                    pastedDocument = document
+                }
             }
         }
         .fileImporter(
@@ -172,6 +186,13 @@ struct AppView: View {
         } catch {
             showError(error)
         }
+    }
+
+    private func openPastedDocument() {
+        guard let document = pastedDocument else { return }
+        pastedDocument = nil
+        reloadDocuments()
+        path.append(document)
     }
 
     private func handleLaunchArgumentsIfNeeded() {

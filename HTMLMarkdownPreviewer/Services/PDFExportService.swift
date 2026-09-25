@@ -58,14 +58,28 @@ struct PDFExportService {
         let removeStyle = "document.getElementById('\(styleID)')?.remove()"
         _ = try await webView.evaluateJavaScript(insertStyle)
         do {
+            // Search decoration belongs to the reader, never to the exported document.
+            _ = try await webView.callAsyncJavaScript(
+                "globalThis.__htmlPreviewReading?.suspendHighlights(); return null;",
+                arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
+            )
             try Task.checkCancellation()
             let data = try renderPDF(webView: webView, title: title)
             _ = try? await webView.evaluateJavaScript(removeStyle)
+            await resumeReadingHighlights(in: webView)
             return data
         } catch {
             _ = try? await webView.evaluateJavaScript(removeStyle)
+            await resumeReadingHighlights(in: webView)
             throw error
         }
+    }
+
+    private func resumeReadingHighlights(in webView: WKWebView) async {
+        _ = try? await webView.callAsyncJavaScript(
+            "globalThis.__htmlPreviewReading?.resumeHighlights(); return null;",
+            arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
+        )
     }
 
     private func renderPDF(webView: WKWebView, title: String) throws -> Data {

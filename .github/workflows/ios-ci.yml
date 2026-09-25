@@ -183,4 +183,6 @@ jobs:
             -derivedDataPath DerivedData \
             -parallel-testing-enabled NO \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke \
-            -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings
+            -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch

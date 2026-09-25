@@ -5,6 +5,7 @@ enum ImportSource: String, CaseIterable, Codable, Hashable, Identifiable, Sendab
     case externalOpen
     case zipArchive
     case bundledSample
+    case pastedText
 
     var id: String {
         rawValue
@@ -20,6 +21,8 @@ enum ImportSource: String, CaseIterable, Codable, Hashable, Identifiable, Sendab
             AppStrings.ImportSources.zipArchive
         case .bundledSample:
             AppStrings.ImportSources.builtInSample
+        case .pastedText:
+            PasteStrings.importSource
         }
     }
 }

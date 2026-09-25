@@ -16,12 +16,27 @@ MVP implementation is complete for the local core flow:
 - Share original files or complete ZIP packages, preserving bundled CSS and images.
 - Export rendered HTML and Markdown to paginated A4 PDFs from the share menu.
 - Recent files before collapsible samples, details, raw text fallback, and delete cleanup.
+- Paste HTML or Markdown text with the system Paste button, choose a format and optional name, and keep the preview in Recent files.
+- Find text, jump through a heading outline, and resume the last reading position in rendered HTML and Markdown previews.
 - App icon, privacy manifest, App Store listing draft, and screenshot assets.
 
 PDF export uses the loaded HTML page and its print styles, or a locally rendered
 Markdown document. It is available after rendered preview finishes loading;
 Raw Text mode continues to offer original-file sharing. Exported PDFs are static
 documents. Temporary export files are removed when the share activity finishes.
+
+Reading tools are available from the document-and-magnifier button in rendered
+previews. Search highlights matches and provides previous/next controls; the
+outline lists document headings. Reading positions are stored locally per
+imported document, including across app restarts. HTML reading tools inspect the
+main document in an app-owned WebKit content world without enabling page scripts
+in Safe Preview. For ZIP packages, the saved position belongs to the entry page.
+
+Paste to Preview accepts up to 2 MB of text and never reads the clipboard in the
+background. It can recognize HTML and Markdown wrapped in a single code fence;
+the format can also be chosen explicitly. Pasting only a URL shows an explanation
+instead of fetching a webpage. Pasted content uses the same local storage,
+safe-preview defaults, sharing, and PDF export as imported files.
 
 Remaining release gates are external to simulator-only local development:
 

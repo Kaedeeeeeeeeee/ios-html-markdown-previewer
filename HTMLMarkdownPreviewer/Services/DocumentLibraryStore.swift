@@ -69,6 +69,19 @@ final class DocumentLibraryStore {
         return updatedDocument
     }
 
+    func readingPosition(for document: PreviewDocument) -> ReadingPosition? {
+        latestStoredDocument(for: document).readingPosition
+    }
+
+    func updateReadingPosition(_ position: ReadingPosition, for document: PreviewDocument) throws {
+        // Merge with disk so an older navigation value never overwrites mode or recency.
+        var updatedDocument = latestStoredDocument(for: document)
+        let normalized = ReadingPosition(anchorID: position.anchorID, progress: position.progress)
+        guard updatedDocument.readingPosition != normalized else { return }
+        updatedDocument.readingPosition = normalized
+        try save(updatedDocument)
+    }
+
     func delete(_ document: PreviewDocument) throws {
         let documentRootURL = documentRootURL(for: document)
         if fileManager.fileExists(atPath: documentRootURL.path) {

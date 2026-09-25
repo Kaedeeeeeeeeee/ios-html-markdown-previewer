@@ -12,11 +12,17 @@ struct DocumentPreviewView: View {
     @State private var loadedWebView: WKWebView?
     @State private var isExporting = false
     @State private var exportError: String?
+    @State private var reading: DocumentReadingState
+    @State private var isSearchPresented = false
+    @State private var readingSheet: ReadingSheet?
+    @State private var readingSaveTask: Task<Void, Never>?
+    @Environment(\.scenePhase) private var scenePhase
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
         self.store = store
         self._document = State(initialValue: document)
         self._previewMode = State(initialValue: document.preferredPreviewMode)
+        self._reading = State(initialValue: DocumentReadingState(position: store.readingPosition(for: document)))
     }
 
     var body: some View {
@@ -25,9 +31,9 @@ struct DocumentPreviewView: View {
             case .loading:
                 ProgressView()
             case .markdown(let markdownDocument):
-                MarkdownPreviewView(document: markdownDocument)
+                MarkdownPreviewView(document: markdownDocument, readingState: reading)
             case .html(let fileURL, let readAccessRootURL, let mode):
-                HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode) {
+                HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode, readingState: reading) {
                     loadedWebView = $0
                 }
             case .rawText(let text):
@@ -53,8 +59,42 @@ struct DocumentPreviewView: View {
                 PreviewStatusBar(status: status)
             }
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if isSearchPresented, supportsReadingTools {
+                DocumentSearchBar(reading: reading) {
+                    reading.query = ""
+                    isSearchPresented = false
+                }
+            }
+        }
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
+                if supportsReadingTools {
+                    Menu {
+                        Button {
+                            isSearchPresented = true
+                        } label: {
+                            Label(ReadingStrings.find, systemImage: "magnifyingglass")
+                        }
+                        .accessibilityIdentifier("reading-find-button")
+                        Button {
+                            readingSheet = .contents
+                        } label: {
+                            Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
+                        }
+                        .accessibilityIdentifier("reading-contents-button")
+                        Button {
+                            reading.navigate(to: .beginning)
+                        } label: {
+                            Label(ReadingStrings.beginning, systemImage: "arrow.up.to.line")
+                        }
+                    } label: {
+                        Image(systemName: "doc.text.magnifyingglass")
+                    }
+                    .disabled(!reading.isReady)
+                    .accessibilityLabel(ReadingStrings.tools)
+                    .accessibilityIdentifier("reading-tools-menu")
+                }
                 if supportsPreviewModeMenu {
                     Menu {
                         previewModeButtons
@@ -109,6 +149,20 @@ struct DocumentPreviewView: View {
         .onChange(of: previewMode) {
             loadPreview()
         }
+        .onChange(of: reading.position) {
+            readingSaveTask?.cancel()
+            readingSaveTask = Task { @MainActor in
+                do { try await Task.sleep(for: .milliseconds(500)) } catch { return }
+                saveReadingPosition()
+            }
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase != .active { saveReadingPosition() }
+        }
+        .onDisappear {
+            readingSaveTask?.cancel()
+            saveReadingPosition()
+        }
         .confirmationDialog(AppStrings.Security.interactiveModeTitle, isPresented: $isInteractiveConfirmationPresented) {
             Button(AppStrings.Security.useInteractiveMode) {
                 setPreviewMode(.interactive)
@@ -120,9 +174,14 @@ struct DocumentPreviewView: View {
         .sheet(isPresented: $isDetailsPresented) {
             DocumentDetailsView(document: document, store: store, previewMode: previewMode)
         }
+        .sheet(item: $readingSheet) { _ in
+            DocumentOutlineView(reading: reading)
+        }
     }
 
     private func loadPreview() {
+        saveReadingPosition()
+        reading.resetContent()
         loadedWebView = nil
         do {
             let entryFileURL = store.entryFileURL(for: document)
@@ -152,6 +211,19 @@ struct DocumentPreviewView: View {
         } catch {
             state = .failed(error.localizedDescription)
         }
+    }
+
+    private var supportsReadingTools: Bool {
+        switch state {
+        case .markdown, .html: true
+        default: false
+        }
+    }
+
+    private func saveReadingPosition() {
+        guard let position = reading.position else { return }
+        // A failed position write must not interrupt reading the original document.
+        try? store.updateReadingPosition(position, for: document)
     }
 
     private var canExportPDF: Bool {
@@ -285,6 +357,11 @@ struct DocumentPreviewView: View {
 
         return store.entryFileURL(for: document).deletingLastPathComponent()
     }
+}
+
+private enum ReadingSheet: String, Identifiable {
+    case contents
+    var id: String { rawValue }
 }
 
 private enum PreviewContentState {
