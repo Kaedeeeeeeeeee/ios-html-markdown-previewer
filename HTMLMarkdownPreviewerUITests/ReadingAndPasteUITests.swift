@@ -181,9 +181,28 @@ final class ReadingAndPasteUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
-        XCTAssertTrue(app.buttons["recent-document-HTML QA.html"].waitForExistence(timeout: 10))
-        app.buttons["recent-document-HTML QA.html"].tap()
-        XCTAssertTrue(app.staticTexts["Safe Preview"].waitForExistence(timeout: 10))
+        let recent = app.buttons["recent-document-HTML QA.html"]
+        let recentReady = eventuallyHittable(recent)
+        if !recentReady {
+            attachInterfaceSnapshot("HTML resume recent document is not ready", app: app)
+        }
+        XCTAssertTrue(recentReady)
+        recent.tap()
+        let reopened = app.buttons["document-title-button"].waitForExistence(timeout: 10)
+        if !reopened || app.buttons["document-title-button"].label != "HTML QA" {
+            attachInterfaceSnapshot("HTML resume preview navigation failed", app: app)
+        }
+        XCTAssertTrue(reopened, "The recent HTML document should open its preview.")
+        XCTAssertEqual(app.buttons["document-title-button"].label, "HTML QA")
+        // The native status exposes either its title or its combined VoiceOver label.
+        let safeStatus = app.descendants(matching: .any).matching(
+            NSPredicate(format: "label == %@ OR label BEGINSWITH %@", "Safe Preview", "Safe Preview:")
+        ).firstMatch
+        let safePreviewRestored = safeStatus.waitForExistence(timeout: 10)
+        if !safePreviewRestored {
+            attachInterfaceSnapshot("HTML resume missing Safe Preview status", app: app)
+        }
+        XCTAssertTrue(safePreviewRestored)
         XCTAssertTrue(eventuallyHittable(app.staticTexts["Final destination"]))
         screenshot("HTML reading position restored after relaunch", app: app)
     }
@@ -336,6 +355,14 @@ final class ReadingAndPasteUITests: XCTestCase {
     private func screenshot(_ name: String, app: XCUIApplication) {
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    private func attachInterfaceSnapshot(_ name: String, app: XCUIApplication) {
+        screenshot(name, app: app)
+        let attachment = XCTAttachment(string: app.debugDescription)
+        attachment.name = "\(name) accessibility hierarchy"
         attachment.lifetime = .keepAlways
         add(attachment)
     }
