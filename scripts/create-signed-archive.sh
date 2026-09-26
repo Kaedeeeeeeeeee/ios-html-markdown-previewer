@@ -262,8 +262,8 @@ if not errors:
     expected_archive = {
         "ApplicationPath": "Applications/HTMLMarkdownPreviewer.app",
         "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
-        "CFBundleShortVersionString": "1.3",
-        "CFBundleVersion": "7",
+        "CFBundleShortVersionString": "1.4",
+        "CFBundleVersion": "8",
     }
     for key, expected in expected_archive.items():
         if properties.get(key) != expected:
@@ -276,8 +276,8 @@ if not errors:
     expected_app = {
         "CFBundleDisplayName": "HTML Previewer",
         "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
-        "CFBundleShortVersionString": "1.3",
-        "CFBundleVersion": "7",
+        "CFBundleShortVersionString": "1.4",
+        "CFBundleVersion": "8",
         "CFBundleSupportedPlatforms": ["iPhoneOS"],
         "MinimumOSVersion": "17.0",
         "ITSAppUsesNonExemptEncryption": False,

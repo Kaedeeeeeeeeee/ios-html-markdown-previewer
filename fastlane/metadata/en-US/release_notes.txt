@@ -1,6 +1,6 @@
-- Find text in HTML and Markdown, jump between matches, and navigate with a heading outline.
-- Pick up where you left off with saved reading positions.
-- Paste HTML or Markdown text to create a preview and keep it in Recent Files.
-- Explore the animated HTML sample with day/evening scenes and a pause control.
-- New HTML files now open in Interactive mode. Safe Preview remains available, and saved mode choices are preserved.
-- Reading tools, preview mode, sharing, and file details now sit at the bottom right, leaving more room for document titles.
+- Full-screen reading gives your documents more room.
+- Adjust HTML zoom and Markdown text size and line spacing. Your display settings are remembered.
+- Open local Markdown images in a full-screen viewer with pinch-to-zoom.
+- Find files by name and filter your library by HTML, Markdown, or ZIP.
+- Pin frequently used files and change their display names without renaming the original files.
+- When importing a duplicate, choose to update the existing file, keep both copies, or cancel.
