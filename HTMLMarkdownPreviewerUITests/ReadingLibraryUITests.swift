@@ -126,6 +126,8 @@ final class ReadingLibraryUITests: XCTestCase {
             let htmlRow = row(fixture.htmlFilename, app: app)
             let markdownRow = row(fixture.markdownFilename, app: app)
             try require(htmlRow.waitForExistence(timeout: 10) && markdownRow.exists, "Both scoped fixtures should appear")
+            try assertCompactFilterInRecentHeader(app)
+            XCTAssertEqual(try displayedValue("library-filter-menu", app: app), "All Files")
 
             try contextAction("library-pin-button", on: htmlRow, app: app)
             try require(wait { htmlRow.exists && markdownRow.exists && htmlRow.frame.minY < markdownRow.frame.minY }, "Pinned document should sort above the unpinned fixture")
@@ -140,13 +142,21 @@ final class ReadingLibraryUITests: XCTestCase {
             try searchLibrary(renamedTitle, app: app)
             try require(row(fixture.htmlFilename, app: app).waitForExistence(timeout: 5), "Search should find the updated display name")
             XCTAssertFalse(row(fixture.markdownFilename, app: app).exists)
+            try assertCompactFilterInRecentHeader(app)
+            screenshot("Recent Items keeps its compact filter when only a pinned report matches", app: app)
 
             try chooseFilter("markdown", app: app)
             try require(wait { !self.row(fixture.htmlFilename, app: app).exists }, "Markdown filter must exclude an HTML report")
+            try require(app.buttons["library-clear-filters"].waitForExistence(timeout: 5), "A search and file type with no matches should show the empty result state")
+            try assertCompactFilterInRecentHeader(app)
+            screenshot("Empty search results retain the Recent Items filter", app: app)
             try chooseFilter("html", app: app)
             try require(row(fixture.htmlFilename, app: app).waitForExistence(timeout: 5), "HTML filter should show the matching report")
+            XCTAssertFalse(app.buttons["library-clear-filters"].exists)
             screenshot("Renamed report found with filename search and HTML filter", app: app)
             try chooseFilter("all", app: app)
+            try searchLibrary(fixture.token, app: app)
+            try require(wait { htmlRow.exists && markdownRow.exists }, "Returning to All Files should make both document types available")
 
             relaunch(app)
             try searchLibrary(renamedTitle, app: app)
@@ -297,8 +307,48 @@ final class ReadingLibraryUITests: XCTestCase {
     }
 
     private func chooseFilter(_ kind: String, app: XCUIApplication) throws {
-        try tap("library-filter-menu", app: app)
+        let titles = ["all": "All Files", "html": "HTML", "markdown": "Markdown", "zip": "ZIP"]
+        let selectedTitle = try XCTUnwrap(titles[kind], "Unknown file type filter")
+        try assertCompactFilterInRecentHeader(app)
+        let menu = app.buttons["library-filter-menu"]
+        if menu.isHittable {
+            menu.tap()
+        } else {
+            // iPadOS 18 can report a visible Section-header Menu as not
+            // hittable. Its observed, on-screen center still opens the menu.
+            app.coordinate(withNormalizedOffset: .zero)
+                .withOffset(CGVector(dx: menu.frame.midX - app.frame.minX,
+                                     dy: menu.frame.midY - app.frame.minY)).tap()
+        }
+        for option in ["all", "html", "markdown", "zip"] {
+            let button = app.buttons["library-filter-\(option)"]
+            try require(button.waitForExistence(timeout: 5) && button.isHittable,
+                        "The file type menu should expose its \(option) choice")
+            XCTAssertEqual(button.label, titles[option])
+        }
+        if kind == "markdown" {
+            screenshot("File type choices opened from the Recent Items header", app: app)
+        }
         try tap("library-filter-\(kind)", app: app)
+        try require(wait { self.value(of: app.buttons["library-filter-menu"]) == selectedTitle },
+                    "The compact filter should announce the selected file type")
+    }
+
+    private func assertCompactFilterInRecentHeader(_ app: XCUIApplication) throws {
+        let heading = app.staticTexts["library-recent-heading"]
+        let menu = app.buttons["library-filter-menu"]
+        try require(wait {
+            heading.exists && menu.exists && menu.isEnabled
+                && !menu.frame.isEmpty && app.frame.contains(menu.frame)
+        },
+                    "Recent Items and its filter must remain available, including pinned-only and empty results")
+        XCTAssertEqual(menu.label, "File Type", "The icon should retain an accessible name")
+        XCTAssertLessThanOrEqual(menu.frame.width, 56, "File type filtering should use a compact header icon")
+        XCTAssertLessThanOrEqual(menu.frame.height, 56, "File type filtering should not occupy a separate card")
+        XCTAssertGreaterThanOrEqual(menu.frame.minX, heading.frame.maxX,
+                                    "The filter should sit to the right of the Recent Items heading")
+        XCTAssertEqual(menu.frame.midY, heading.frame.midY, accuracy: 12,
+                       "The filter and Recent Items title should share a header row")
     }
 
     private func contextAction(_ identifier: String, on documentRow: XCUIElement, app: XCUIApplication) throws {
