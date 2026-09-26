@@ -4,7 +4,7 @@ struct PastePreviewView: View {
     @Environment(\.dismiss) private var dismiss
 
     let store: DocumentLibraryStore
-    let onImported: (PreviewDocument) -> Void
+    let onPrepared: (PreparedDocumentImport) -> Void
 
     @State private var text = ""
     @State private var name = ""
@@ -93,6 +93,7 @@ struct PastePreviewView: View {
                 }
             }
         }
+        .interactiveDismissDisabled(isImporting)
         .onChange(of: text) { _, newValue in
             isTooLarge = newValue.utf8.count > PastedDocumentImportService.maximumUTF8Bytes
             if !didChooseFormat && !isTooLarge {
@@ -126,9 +127,9 @@ struct PastePreviewView: View {
             defer { isImporting = false }
             await Task.yield()
             do {
-                let document = try PastedDocumentImportService(store: store)
-                    .importDocument(text: text, name: name, format: format)
-                onImported(document)
+                let prepared = try PastedDocumentImportService(store: store)
+                    .prepareImport(text: text, name: name, format: format)
+                onPrepared(prepared)
                 dismiss()
             } catch {
                 errorMessage = error.localizedDescription

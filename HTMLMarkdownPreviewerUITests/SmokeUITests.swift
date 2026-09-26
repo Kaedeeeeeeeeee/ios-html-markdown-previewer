@@ -192,7 +192,9 @@ final class SmokeUITests: XCTestCase {
     private func openSample(identifier: String, app: XCUIApplication) {
         let sample = app.buttons[identifier]
         let disclosure = app.descendants(matching: .any)["samples-disclosure"].firstMatch
-        if !sample.exists, disclosure.exists {
+        // List rows outside the viewport may not exist in the accessibility tree yet.
+        // Find an already-expanded sample by scrolling before toggling its disclosure.
+        if !sample.exists, disclosure.exists, !scrollUntilHittable(sample, app: app) {
             XCTAssertTrue(scrollUntilHittable(disclosure, app: app), "Missing samples disclosure")
             tapElement(disclosure, app: app)
         }

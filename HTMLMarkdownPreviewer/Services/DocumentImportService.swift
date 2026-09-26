@@ -36,6 +36,11 @@ final class DocumentImportService {
     }
 
     func importDocument(from sourceURL: URL, source: ImportSource) throws -> PreviewDocument {
+        let prepared = try prepareImport(from: sourceURL, source: source)
+        return try resolve(prepared, as: .keepBoth)
+    }
+
+    func prepareImport(from sourceURL: URL, source: ImportSource) throws -> PreparedDocumentImport {
         let didAccess = sourceURL.startAccessingSecurityScopedResource()
         defer {
             if didAccess {
@@ -49,7 +54,7 @@ final class DocumentImportService {
         }
 
         let documentID = uuidProvider()
-        let documentRootURL = store.documentRootURL(for: documentID)
+        let documentRootURL = store.stagedDocumentRootURL(for: documentID)
         let originalDirectoryURL = documentRootURL.appendingPathComponent("original", isDirectory: true)
         let extractedDirectoryURL = documentRootURL.appendingPathComponent("extracted", isDirectory: true)
 
@@ -79,7 +84,7 @@ final class DocumentImportService {
                     type: .zipPackage,
                     importSource: source,
                     importedAt: dateProvider(),
-                    localRootRelativePath: store.relativeDocumentRootPath(for: documentID),
+                    localRootRelativePath: store.relativeStagedRootPath(for: documentID),
                     originalFileRelativePath: "original/\(originalFilename)",
                     entryFileRelativePath: entryRelativePath,
                     entryDocumentType: entryType,
@@ -97,7 +102,7 @@ final class DocumentImportService {
                     type: detectedType,
                     importSource: source,
                     importedAt: dateProvider(),
-                    localRootRelativePath: store.relativeDocumentRootPath(for: documentID),
+                    localRootRelativePath: store.relativeStagedRootPath(for: documentID),
                     originalFileRelativePath: "original/\(originalFilename)",
                     entryFileRelativePath: "original/\(originalFilename)",
                     entryDocumentType: detectedType,
@@ -106,12 +111,80 @@ final class DocumentImportService {
                 )
             }
 
-            try store.save(document)
-            return document
+            return PreparedDocumentImport(document: document, duplicate: try duplicate(for: document))
         } catch {
             try? fileManager.removeItem(at: documentRootURL)
             throw error
         }
+    }
+
+    func resolve(_ prepared: PreparedDocumentImport, as resolution: DocumentImportResolution) throws -> PreviewDocument {
+        do {
+            switch resolution {
+            case .keepBoth:
+                var document = prepared.document
+                document.displayName = try availableDisplayName(for: document)
+                return try store.commitStagedDocument(document)
+            case .updateExisting:
+                guard let duplicate = prepared.duplicate else {
+                    return try store.commitStagedDocument(prepared.document)
+                }
+                // Recheck immediately before saving: a pending import must not restore a stale position.
+                guard let current = try store.loadDocuments().first(where: { $0.id == duplicate.document.id }) else {
+                    throw DocumentLibraryError.documentNoLongerExists
+                }
+                let sameContent = hasIdenticalContents(prepared.document, current)
+                return try store.replaceContents(
+                    of: current,
+                    with: prepared.document,
+                    preservingReadingPosition: sameContent
+                )
+            }
+        } catch {
+            try? discard(prepared)
+            throw error
+        }
+    }
+
+    func discard(_ prepared: PreparedDocumentImport) throws {
+        try store.discardStagedDocument(prepared.document)
+    }
+
+    func refreshDuplicate(for prepared: PreparedDocumentImport) throws -> PreparedDocumentImport {
+        PreparedDocumentImport(document: prepared.document, duplicate: try duplicate(for: prepared.document))
+    }
+
+    private func duplicate(for incoming: PreviewDocument) throws -> DocumentImportDuplicate? {
+        let candidates = try store.loadDocuments().filter {
+            $0.type == incoming.type && (incoming.importSource != .bundledSample || $0.importSource == .bundledSample)
+        }
+        // Prefer the same filename when several copies exist, then match identical contents under a different name.
+        let matchingNames = candidates.filter {
+            $0.originalFilename.localizedStandardCompare(incoming.originalFilename) == .orderedSame
+        }
+        if let identical = (matchingNames + candidates).first(where: { hasIdenticalContents(incoming, $0) }) {
+            return DocumentImportDuplicate(document: identical, hasIdenticalContents: true)
+        }
+        return matchingNames.first.map { DocumentImportDuplicate(document: $0, hasIdenticalContents: false) }
+    }
+
+    private func hasIdenticalContents(_ lhs: PreviewDocument, _ rhs: PreviewDocument) -> Bool {
+        guard lhs.fileSize == rhs.fileSize else { return false }
+        return fileManager.contentsEqual(
+            atPath: store.originalFileURL(for: lhs).path,
+            andPath: store.originalFileURL(for: rhs).path
+        )
+    }
+
+    private func availableDisplayName(for document: PreviewDocument) throws -> String {
+        let names = try store.loadDocuments().map(\.displayName)
+        func exists(_ candidate: String) -> Bool {
+            names.contains { $0.localizedStandardCompare(candidate) == .orderedSame }
+        }
+        guard exists(document.displayName) else { return document.displayName }
+        var suffix = 2
+        while exists("\(document.displayName) (\(suffix))") { suffix += 1 }
+        return "\(document.displayName) (\(suffix))"
     }
 
     private func sanitizedFilename(_ filename: String) -> String {

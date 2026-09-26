@@ -41,10 +41,10 @@ passes `HTML_PREVIEWER_UI_TESTS=1` through `SIMCTL_CHILD_` on every launch. The
 sample/reset arguments therefore operate on the isolated UI-test library and
 preferences, preserving the normal app library. Only simulators are used.
 
-The verified 1.3 sources are in
-`DerivedData/Release1.3/ScreenshotSources/<locale>/`. Screenshots use dark
+The verified 1.4 sources are in the primary checkout at
+`/Users/user/html_preview/DerivedData/Release1.4/ScreenshotSources/<locale>/`. Screenshots use dark
 appearance and a fixed 09:41 status bar. The six current contact sheets are in
-`DerivedData/Release1.3/ScreenshotPreviews/`:
+`/Users/user/html_preview/DerivedData/Release1.4/ScreenshotPreviews/`:
 `en-US-iphone.png`, `en-US-ipad.png`, `zh-Hans-iphone.png`,
 `zh-Hans-ipad.png`, `ja-iphone.png`, and `ja-ipad.png`.
 The generic `DerivedData/AppStoreScreenshotSources/` and
@@ -53,7 +53,7 @@ capture; do not use them as evidence for the current release. Review the sources
 contact sheets for the correct language, rendered sample, and absence of loading
 or transition screens before uploading.
 
-Marketing copy lives in `copy.json`. The 1.3 set shows the paste entry, animated weekend plan, reading notes,
+Marketing copy lives in `copy.json`. The 1.4 set shows the file search and paste entries, animated weekend plan, reading notes,
 reading journal, bottom-right preview actions, and current Interactive default.
 The HTML and Settings captions describe the available preview modes.
 
@@ -63,23 +63,24 @@ Override `OUT_DIR`, `SOURCE_OUT_DIR` (the parent of the three locale directories
 setup. `CAPTURE_LOCALES` can restrict recapture to a space-separated subset; all
 three source sets must exist before composition.
 
-The 1.3 capture uses the retained iPhone 18 Pro on iOS 27.0 and iPad Air 11-inch
-(M3) on iOS 26.5. Pass their device IDs with `IPHONE_DEVICE` and `IPAD_DEVICE`.
+The 1.4 capture uses the retained iPhone 18 Pro on iOS 27.0 and iPad Pro 12.9-inch
+(6th generation) on iOS 18.5. Pass their device IDs with `IPHONE_DEVICE` and `IPAD_DEVICE`.
 The compositor accepts native portrait screenshots and preserves their aspect
 ratio while fitting the entire device into the fixed marketing canvas. The
 App Store canvas sizes above are independent of the source simulator resolution.
 The completed set and its build provenance are recorded in
-[`verification-1.3.md`](verification-1.3.md). Previous capture evidence remains in
+[`verification-1.4.md`](verification-1.4.md). Previous capture evidence remains in
+[`verification-1.3.md`](verification-1.3.md) and
 [`verification-1.2.md`](verification-1.2.md).
 
 To regenerate the marketing canvases from existing localized sources:
 
 ```sh
 xcrun swift scripts/generate-app-store-screenshots.swift \
-  --source-dir DerivedData/Release1.3/ScreenshotSources \
+  --source-dir /Users/user/html_preview/DerivedData/Release1.4/ScreenshotSources \
   --output-dir docs/app-store-screenshots \
   --copy-file docs/app-store-screenshots/copy.json \
-  --preview-dir DerivedData/Release1.3/ScreenshotPreviews
+  --preview-dir /Users/user/html_preview/DerivedData/Release1.4/ScreenshotPreviews
 ```
 
 Add `--locales en-US` (or a comma-separated subset) to compose one completed

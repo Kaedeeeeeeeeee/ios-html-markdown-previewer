@@ -391,9 +391,20 @@ private extension HTMLReadingController {
         function fraction(value, extent, signed = false) {
             return extent > 0 ? Math.min(1, Math.max(signed ? -1 : 0, value / extent)) : 0;
         }
+        function rootScrollGeometry() {
+            const box = viewportFor(null);
+            const visual = window.visualViewport;
+            return {
+                left: Number.isFinite(visual?.pageLeft) ? visual.pageLeft : scrollingRoot.scrollLeft,
+                top: Number.isFinite(visual?.pageTop) ? visual.pageTop : scrollingRoot.scrollTop,
+                maxLeft: Math.max(0, scrollingRoot.scrollWidth - (box.right - box.left)),
+                maxTop: Math.max(0, scrollingRoot.scrollHeight - (box.bottom - box.top))
+            };
+        }
         function position() {
-            const extent = Math.max(0, scrollingRoot.scrollHeight - scrollingRoot.clientHeight);
-            const y = Math.max(0, scrollingRoot.scrollTop);
+            const root = rootScrollGeometry();
+            const extent = root.maxTop;
+            const y = Math.max(0, root.top);
             let headingID = null;
             let nearestTop = -Infinity;
             for (const heading of headings) {
@@ -411,7 +422,7 @@ private extension HTMLReadingController {
                 const leftFraction = fraction(element.scrollLeft, element.scrollWidth - element.clientWidth, true);
                 if (topFraction || leftFraction) scrolls.push({ ...descriptor, topFraction, leftFraction });
             }
-            const windowLeftFraction = fraction(scrollingRoot.scrollLeft, scrollingRoot.scrollWidth - scrollingRoot.clientWidth, true);
+            const windowLeftFraction = fraction(root.left, root.maxLeft, true);
             const anchorID = scrolls.length || windowLeftFraction
                 ? positionPrefix + JSON.stringify({ heading: headingID, scrolls, windowLeftFraction })
                 : headingID;
@@ -501,8 +512,9 @@ private extension HTMLReadingController {
         async function scrollToPosition(element, left, top, revision) {
             if (!isCurrent(revision)) return false;
             const scroller = element || scrollingRoot;
-            const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
-            const maxTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+            const root = element ? null : rootScrollGeometry();
+            const maxLeft = root ? root.maxLeft : Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+            const maxTop = root ? root.maxTop : Math.max(0, scroller.scrollHeight - scroller.clientHeight);
             const rtl = getComputedStyle(scroller).direction === 'rtl';
             const targetLeft = Math.min(rtl ? 0 : maxLeft, Math.max(rtl ? -maxLeft : 0, left));
             const targetTop = Math.min(maxTop, Math.max(0, top));
@@ -517,7 +529,7 @@ private extension HTMLReadingController {
                 let deadline = null;
                 let stableFrames = 0;
                 let previousGeometry = null;
-                const eventTarget = element || document;
+                const eventTarget = element || window.visualViewport || document;
                 const finish = () => {
                     if (finished) return;
                     finished = true;
@@ -536,8 +548,10 @@ private extension HTMLReadingController {
                 const nextFrame = () => {
                     frame = null;
                     if (!isCurrent(revision)) { finish(); return; }
-                    const geometry = [scroller.scrollLeft, scroller.scrollTop,
-                        scroller.clientWidth, scroller.clientHeight, scroller.scrollWidth, scroller.scrollHeight];
+                    const root = element ? null : rootScrollGeometry();
+                    const geometry = root
+                        ? [root.left, root.top, root.maxLeft, root.maxTop, scroller.scrollWidth, scroller.scrollHeight]
+                        : [scroller.scrollLeft, scroller.scrollTop, scroller.clientWidth, scroller.clientHeight, scroller.scrollWidth, scroller.scrollHeight];
                     const reached = Math.abs(geometry[0] - targetLeft) <= 1 && Math.abs(geometry[1] - targetTop) <= 1;
                     const unchanged = previousGeometry && geometry.every((value, index) => value === previousGeometry[index]);
                     stableFrames = reached ? (unchanged ? stableFrames + 1 : 1) : 0;
@@ -569,8 +583,9 @@ private extension HTMLReadingController {
             const rect = targetRect(range);
             const box = usableViewport(null, target);
             const top = alignToStart ? rect.top - box.top : nearestDelta(rect.top, rect.bottom, box.top, box.bottom);
-            const rootLeft = scrollingRoot.scrollLeft;
-            const rootTop = scrollingRoot.scrollTop;
+            const root = rootScrollGeometry();
+            const rootLeft = root.left;
+            const rootTop = root.top;
             const destinationLeft = rootLeft + nearestDelta(rect.left, rect.right, box.left, box.right);
             const destinationTop = rootTop + top;
             await scrollToPosition(null, destinationLeft, destinationTop, revision);
@@ -678,6 +693,8 @@ private extension HTMLReadingController {
             clearTimeout(scrollTimer);
             document.removeEventListener('scroll', onScroll, true);
             window.removeEventListener('resize', onScroll);
+            window.visualViewport?.removeEventListener('scroll', onScroll);
+            window.visualViewport?.removeEventListener('resize', onScroll);
             clearHighlights();
             style.remove();
         }
@@ -705,9 +722,8 @@ private extension HTMLReadingController {
             const progress = Math.min(1, Math.max(0, Number(restorePosition.progress) || 0));
             const left = saved ? Math.min(1, Math.max(-1, Number(saved.windowLeftFraction) || 0)) : 0;
             if (progress > 0 || saved) {
-                await scrollToPosition(null,
-                    left * Math.max(0, scrollingRoot.scrollWidth - scrollingRoot.clientWidth),
-                    progress * Math.max(0, scrollingRoot.scrollHeight - scrollingRoot.clientHeight), revision);
+                const root = rootScrollGeometry();
+                await scrollToPosition(null, left * root.maxLeft, progress * root.maxTop, revision);
             } else if (typeof anchor === 'string') {
                 // Existing heading-N positions remain valid.
                 await revealHeading(anchor, revision);
@@ -715,6 +731,8 @@ private extension HTMLReadingController {
         }
         document.addEventListener('scroll', onScroll, { capture: true, passive: true });
         window.addEventListener('resize', onScroll, { passive: true });
+        window.visualViewport?.addEventListener('scroll', onScroll, { passive: true });
+        window.visualViewport?.addEventListener('resize', onScroll, { passive: true });
         return { search, navigate, dispose, snapshot, initialize, suspendHighlights, resumeHighlights,
             headings: headings.map(({ id, title, level }) => ({ id, title, level })) };
     })();

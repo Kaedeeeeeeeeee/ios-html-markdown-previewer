@@ -3,6 +3,11 @@ import SwiftUI
 struct MarkdownPreviewView: View {
     let document: MarkdownDocument
     var readingState: DocumentReadingState? = nil
+    let fontScale: Double
+    let lineSpacing: Double
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var appliedTypography: MarkdownTypography?
 
     @State private var blockedLink: BlockedMarkdownLink?
     @State private var index: MarkdownReadingIndex
@@ -20,14 +25,24 @@ struct MarkdownPreviewView: View {
     private let coordinateSpace = "markdown-reading-viewport"
     private let contentID = "markdown-reading-content"
 
-    init(document: MarkdownDocument, readingState: DocumentReadingState? = nil) {
+    init(
+        document: MarkdownDocument,
+        readingState: DocumentReadingState? = nil,
+        fontScale: Double = ReadingAppearance.defaultFontScale,
+        lineSpacing: Double = ReadingAppearance.defaultLineSpacing
+    ) {
         self.document = document
         self.readingState = readingState
+        self.fontScale = ReadingAppearance.normalizedFontScale(fontScale)
+        self.lineSpacing = ReadingAppearance.normalizedLineSpacing(lineSpacing)
         _index = State(initialValue: MarkdownReadingIndex(document: document))
     }
 
     var body: some View {
         let highlight = self.highlight
+        let requestedTypography = MarkdownTypography(
+            fontScale: fontScale, lineSpacing: lineSpacing, dynamicTypeSize: dynamicTypeSize
+        )
         GeometryReader { viewport in
             ScrollViewReader { proxy in
                 ScrollView {
@@ -53,6 +68,23 @@ struct MarkdownPreviewView: View {
                     }
                 }
                 .coordinateSpace(name: coordinateSpace)
+                .environment(\.markdownTypography, appliedTypography ?? requestedTypography)
+                .onChange(of: requestedTypography, initial: true) { _, typography in
+                    guard appliedTypography != typography else { return }
+                    // Capture the old block/fraction before changing its layout.
+                    // Stable block identities let lazy content restore after reflow.
+                    if appliedTypography != nil, hasPrepared {
+                        recordPosition(viewportHeight: viewport.size.height)
+                        pendingRestoration = readingState?.position
+                        isRestoring = pendingRestoration != nil
+                        didRequestRestoreAnchor = false
+                        pendingJump = nil
+                        pendingMatch = nil
+                        frames = [:]
+                        matchRects = [:]
+                    }
+                    appliedTypography = typography
+                }
                 .onPreferenceChange(MarkdownReadingFrames.self) { values in
                     frames = values
                     if isRestoring {
@@ -248,6 +280,57 @@ struct MarkdownPreviewView: View {
     }
 }
 
+/// Use the identical scaled UIFont for SwiftUI Text and its search geometry.
+/// Explicit Dynamic Type traits also honor previews and in-app accessibility overrides.
+private struct MarkdownTypography: Equatable, Sendable {
+    var fontScale = 1.0
+    var lineSpacing = 4.0
+    var dynamicTypeSize: DynamicTypeSize = .large
+
+    @MainActor
+    func font(_ style: UIFont.TextStyle, weight: UIFont.Weight = .regular, monospaced: Bool = false) -> UIFont {
+        let traits = UITraitCollection(preferredContentSizeCategory: contentSizeCategory)
+        let size = UIFont.preferredFont(forTextStyle: style, compatibleWith: traits).pointSize * fontScale
+        return monospaced ? .monospacedSystemFont(ofSize: size, weight: weight)
+            : .systemFont(ofSize: size, weight: weight)
+    }
+
+    private var contentSizeCategory: UIContentSizeCategory {
+        switch dynamicTypeSize {
+        case .xSmall: .extraSmall
+        case .small: .small
+        case .medium: .medium
+        case .large: .large
+        case .xLarge: .extraLarge
+        case .xxLarge: .extraExtraLarge
+        case .xxxLarge: .extraExtraExtraLarge
+        case .accessibility1: .accessibilityMedium
+        case .accessibility2: .accessibilityLarge
+        case .accessibility3: .accessibilityExtraLarge
+        case .accessibility4: .accessibilityExtraExtraLarge
+        case .accessibility5: .accessibilityExtraExtraExtraLarge
+        @unknown default: .large
+        }
+    }
+}
+
+private struct MarkdownTypographyKey: EnvironmentKey {
+    static let defaultValue = MarkdownTypography()
+}
+
+private extension EnvironmentValues {
+    var markdownTypography: MarkdownTypography {
+        get { self[MarkdownTypographyKey.self] }
+        set { self[MarkdownTypographyKey.self] = newValue }
+    }
+}
+
+private struct MarkdownImagePresentation: Identifiable {
+    let id = UUID()
+    let image: UIImage
+    let caption: String
+}
+
 private struct MarkdownReadingFrames: PreferenceKey {
     static let defaultValue: [String: CGRect] = [:]
 
@@ -433,6 +516,7 @@ private struct MarkdownBlockView: View {
     let block: MarkdownBlock
     let path: String
     let highlight: MarkdownSearchHighlight
+    @Environment(\.markdownTypography) private var typography
     @State private var revealedHorizontalTarget: MarkdownReadingIndex.SearchTarget?
 
     var body: some View {
@@ -440,20 +524,21 @@ private struct MarkdownBlockView: View {
         case .heading(let level, let text):
             Text(highlight.text(text, id: path))
                 .id(MarkdownReadingIndex.elementAnchorID(path))
-                .font(font(forHeadingLevel: level))
-                .fontWeight(level <= 2 ? .bold : .semibold)
+                .font(Font(uiFont(forHeadingLevel: level)))
+                .lineSpacing(typography.lineSpacing)
                 .textSelection(.enabled)
-                .background(MarkdownMatchGeometry(text: text, path: path, highlight: highlight, font: uiFont(forHeadingLevel: level)))
+                .background(MarkdownMatchGeometry(text: text, path: path, highlight: highlight, font: uiFont(forHeadingLevel: level),
+                                                  lineSpacing: typography.lineSpacing))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, level == 1 ? 0 : 12)
         case .paragraph(let text):
             Text(highlight.text(text, id: path))
                 .id(MarkdownReadingIndex.elementAnchorID(path))
-                .font(.body)
-                .lineSpacing(4)
+                .font(Font(typography.font(.body)))
+                .lineSpacing(typography.lineSpacing)
                 .textSelection(.enabled)
                 .background(MarkdownMatchGeometry(text: text, path: path, highlight: highlight,
-                                                  font: .preferredFont(forTextStyle: .body), lineSpacing: 4))
+                                                  font: typography.font(.body), lineSpacing: typography.lineSpacing))
                 .frame(maxWidth: .infinity, alignment: .leading)
         case .blockQuote(let blocks):
             HStack(alignment: .top, spacing: 10) {
@@ -472,21 +557,23 @@ private struct MarkdownBlockView: View {
             VStack(alignment: .leading, spacing: 8) {
                 if let language, !language.isEmpty {
                     Text(language.uppercased())
-                        .font(.caption.weight(.semibold))
+                        .font(Font(typography.font(.caption1, weight: .semibold)))
                         .foregroundStyle(.secondary)
                 }
                 ScrollViewReader { proxy in
                     ScrollView(.horizontal, showsIndicators: false) {
                         Text(highlight.text(AttributedString(code), id: path))
                             .id(MarkdownReadingIndex.elementAnchorID(path))
-                            .font(.system(.body, design: .monospaced))
+                            .font(Font(typography.font(.body, monospaced: true)))
+                            .lineSpacing(typography.lineSpacing)
                             .textSelection(.enabled)
                             .background(MarkdownMatchGeometry(
                                 text: AttributedString(code), path: path, highlight: highlight,
-                                font: .monospacedSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-                                                           weight: .regular)
+                                font: typography.font(.body, monospaced: true),
+                                lineSpacing: typography.lineSpacing
                             ))
                     }
+                    .onChange(of: typography) { _, _ in revealedHorizontalTarget = nil }
                     .onPreferenceChange(MarkdownSearchRects.self) { values in
                         guard let target = highlight.target, target.elementID == path else {
                             revealedHorizontalTarget = nil
@@ -514,15 +601,6 @@ private struct MarkdownBlockView: View {
         }
     }
 
-    private func font(forHeadingLevel level: Int) -> Font {
-        switch level {
-        case 1: .largeTitle.bold()
-        case 2: .title2.bold()
-        case 3: .title3.weight(.semibold)
-        default: .headline
-        }
-    }
-
     private func uiFont(forHeadingLevel level: Int) -> UIFont {
         let style: UIFont.TextStyle = switch level {
         case 1: .largeTitle
@@ -530,8 +608,7 @@ private struct MarkdownBlockView: View {
         case 3: .title3
         default: .headline
         }
-        return .systemFont(ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
-                           weight: level <= 2 ? .bold : .semibold)
+        return typography.font(style, weight: level <= 2 ? .bold : .semibold)
     }
 }
 
@@ -539,10 +616,8 @@ private struct MarkdownTableView: View {
     let table: MarkdownTable
     let path: String
     let highlight: MarkdownSearchHighlight
+    @Environment(\.markdownTypography) private var typography
     @State private var revealedHorizontalTarget: MarkdownReadingIndex.SearchTarget?
-
-    @ScaledMetric(relativeTo: .body) private var minimumColumnWidth: CGFloat = 88
-    @ScaledMetric(relativeTo: .body) private var maximumColumnWidth: CGFloat = 240
 
     var body: some View {
         let widths = columnWidths
@@ -564,6 +639,7 @@ private struct MarkdownTableView: View {
                 }
                 .padding(.bottom, 6)
             }
+            .onChange(of: typography) { _, _ in revealedHorizontalTarget = nil }
             .onPreferenceChange(MarkdownSearchRects.self) { values in
                 guard let target = highlight.target, target.elementID.hasPrefix(path + "-row-") else {
                     revealedHorizontalTarget = nil
@@ -583,16 +659,16 @@ private struct MarkdownTableView: View {
                 let cellID = MarkdownReadingIndex.cellID(path, row: row, column: column)
                 Text(highlight.text(cells[column], id: cellID))
                     .id(MarkdownReadingIndex.elementAnchorID(cellID))
-                    .font(.body)
-                    .fontWeight(isHeader ? .semibold : nil)
+                    .font(Font(typography.font(.body, weight: isHeader ? .semibold : .regular)))
+                    .lineSpacing(typography.lineSpacing)
                     .multilineTextAlignment(textAlignment(for: table.columnAlignments[column]))
                     .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(width: widths[column], alignment: frameAlignment(for: table.columnAlignments[column]))
                     .background(MarkdownMatchGeometry(
                         text: cells[column], path: cellID, highlight: highlight,
-                        font: .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-                                          weight: isHeader ? .semibold : .regular),
+                        font: typography.font(.body, weight: isHeader ? .semibold : .regular),
+                        lineSpacing: typography.lineSpacing,
                         alignment: nsTextAlignment(for: table.columnAlignments[column])
                     ))
                     .padding(.horizontal, 12)
@@ -611,7 +687,10 @@ private struct MarkdownTableView: View {
     }
 
     private var columnWidths: [CGFloat] {
-        let font = UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
+        let font = typography.font(.body, weight: .bold)
+        let scale = font.pointSize / 17
+        let minimumColumnWidth = 88 * scale
+        let maximumColumnWidth = 240 * scale
         return table.header.indices.map { column in
             let cells = [table.header[column]] + table.rows.map { $0[column] }
             let textWidth = cells.map { cell in
@@ -654,6 +733,7 @@ private struct MarkdownTableView: View {
 }
 
 private struct MarkdownListView: View {
+    @Environment(\.markdownTypography) private var typography
     let items: [MarkdownListItem]
     let start: Int?
     let path: String
@@ -664,17 +744,19 @@ private struct MarkdownListView: View {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                 HStack(alignment: .top, spacing: 8) {
                     Text(marker(for: index))
-                        .font(.body)
+                        .font(Font(typography.font(.body)))
                         .foregroundStyle(.secondary)
-                        .frame(width: 28, alignment: .trailing)
+                        .frame(minWidth: 28 * typography.font(.body).pointSize / 17, alignment: .trailing)
                     VStack(alignment: .leading, spacing: 8) {
                         let itemID = MarkdownReadingIndex.itemID(path, offset: index)
                         Text(highlight.text(item.text, id: itemID))
                             .id(MarkdownReadingIndex.elementAnchorID(itemID))
-                            .font(.body)
+                            .font(Font(typography.font(.body)))
+                            .lineSpacing(typography.lineSpacing)
                             .textSelection(.enabled)
                             .background(MarkdownMatchGeometry(text: item.text, path: itemID, highlight: highlight,
-                                                              font: .preferredFont(forTextStyle: .body)))
+                                                              font: typography.font(.body),
+                                                              lineSpacing: typography.lineSpacing))
                         ForEach(Array(item.children.enumerated()), id: \.offset) { childOffset, child in
                             MarkdownBlockView(block: child, path: MarkdownReadingIndex.childID(itemID, offset: childOffset), highlight: highlight)
                         }
@@ -694,15 +776,35 @@ private struct MarkdownListView: View {
 
 private struct MarkdownImageView: View {
     let image: MarkdownImage
+    @State private var presentedImage: MarkdownImagePresentation?
 
     var body: some View {
         switch image.kind {
         case .local(let url):
             if let uiImage = UIImage(contentsOfFile: url.path) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
-                    .accessibilityLabel(image.altText.isEmpty ? AppStrings.Accessibility.markdownImage : image.altText)
+                Button {
+                    presentedImage = MarkdownImagePresentation(image: uiImage, caption: image.altText)
+                } label: {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .overlay(alignment: .bottomTrailing) {
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                .font(.caption.weight(.semibold))
+                                .padding(9)
+                                .background(.regularMaterial, in: Circle())
+                                .padding(10)
+                                .accessibilityHidden(true)
+                        }
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(image.altText.isEmpty ? AppearanceStrings.openImage : image.altText)
+                .accessibilityHint(AppearanceStrings.imageHint)
+                .accessibilityIdentifier("markdown-image-open-" + url.lastPathComponent)
+                .fullScreenCover(item: $presentedImage) { presentation in
+                    MarkdownImageViewer(image: presentation.image, caption: presentation.caption)
+                }
             } else {
                 placeholder(AppStrings.MarkdownImages.localUnavailable, detail: image.source)
             }

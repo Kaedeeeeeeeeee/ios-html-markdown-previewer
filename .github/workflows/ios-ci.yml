@@ -235,7 +235,7 @@ jobs:
           xcrun simctl erase "${{ steps.simulator.outputs.id }}"
 
       - name: Run UI smoke test
-        timeout-minutes: 10
+        timeout-minutes: 15
         run: |
           xcodebuild test \
             -project HTMLMarkdownPreviewer.xcodeproj \
@@ -247,4 +247,14 @@ jobs:
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \
-            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch \
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist
+
+      - name: Preserve test results and failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-test-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: DerivedData/Logs/Test/*.xcresult
+          if-no-files-found: warn
+          retention-days: 7
