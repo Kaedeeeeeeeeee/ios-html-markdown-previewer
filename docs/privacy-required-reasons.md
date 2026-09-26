@@ -7,7 +7,10 @@ The app does not collect user data, does not track users, does not use ads, and 
 - `NSPrivacyCollectedDataTypes`: empty
 - `NSPrivacyTracking`: false
 - `NSPrivacyTrackingDomains`: empty
+- `NSPrivacyAccessedAPICategoryUserDefaults` with reason `CA92.1`
 - `NSPrivacyAccessedAPICategoryFileTimestamp` with reasons `C617.1` and `3B52.1`
+
+The preferences declaration covers this app's own home-screen and reading settings, including HTML zoom, Markdown font size, and line spacing. These preferences stay in the app's local storage and are not shared with other apps or transmitted off device.
 
 The file metadata declaration is needed because the app reads file metadata such as file size and directory status while importing user-selected documents and managing files copied into the app sandbox.
 
