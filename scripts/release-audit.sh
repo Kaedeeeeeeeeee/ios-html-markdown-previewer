@@ -548,7 +548,7 @@ require_text "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift" "accessibil
 require_text "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift" "accessibilityIdentifier\\(\"document-details-screen\"\\)" "document details sheet has a UI test identifier"
 require_text "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift" "accessibilityIdentifier\\(\"document-details-done-button\"\\)" "document details Done button has a UI test identifier"
 require_text "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift" "accessibilityLabel.*title.*value" "document details rows expose combined VoiceOver labels"
-require_text "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift" "AppStrings\\.Accessibility\\.markdownImage" "Markdown images without alt text get a fallback VoiceOver label"
+require_text "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift" "accessibilityLabel.*image\\.altText\\.isEmpty.*AppearanceStrings\\.openImage" "Markdown image buttons without alt text get a fallback VoiceOver label"
 require_text "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift" "accessibilityLabel.*title.*detail" "Markdown image placeholders expose combined VoiceOver labels"
 
 echo
