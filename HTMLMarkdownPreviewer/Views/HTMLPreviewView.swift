@@ -120,7 +120,7 @@ private struct HTMLWebView: UIViewRepresentable {
         private var isPreparing = false
         private var baselineScale: CGFloat?
         private var baselineMinimumScale: CGFloat?
-        private var viewportWidth: CGFloat = 0
+        private var viewportSize: CGSize = .zero
         private var zoomRevision = 0
         private var needsReadingPreparation = true
 
@@ -167,7 +167,10 @@ private struct HTMLWebView: UIViewRepresentable {
             guard navigationFinished else { return }
             if baselineScale == nil {
                 prepareZoom(in: webView)
-            } else if abs(viewportWidth - webView.bounds.width) > 0.5 {
+            } else if abs(viewportSize.width - webView.bounds.width) > 0.5
+                        || abs(viewportSize.height - webView.bounds.height) > 0.5 {
+                // Hiding reader controls changes height without changing width.
+                // WebKit can reset optical zoom during either viewport resize.
                 prepareZoom(in: webView)
             }
         }
@@ -203,7 +206,7 @@ private struct HTMLWebView: UIViewRepresentable {
                     self.historyZoom = self.historyZoom.filter { items.contains($0.key) }
                     self.historyZoom[item] = NaturalZoom(scale: scale, minimumScale: scrollView.minimumZoomScale)
                 }
-                self.viewportWidth = webView.bounds.width
+                self.viewportSize = webView.bounds.size
                 self.applyPageZoom(in: webView)
             }
         }

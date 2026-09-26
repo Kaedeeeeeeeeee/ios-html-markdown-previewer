@@ -101,6 +101,100 @@ final class HTMLAppearanceTests: XCTestCase {
         try await waitForNativeZoom(1.5, in: webView)
     }
 
+    func testOpticalZoomSurvivesHeightOnlyViewportChanges() async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("resizable.html")
+        try """
+        <!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+        <style>html{-webkit-text-size-adjust:100%}body{font:16px -apple-system;line-height:1.5;padding:18px}p{margin:0}</style>
+        </head><body><p>Viewport zoom marker</p><div style="height:1400px"></div>
+        <script>window.reportState = { value: 17 };</script></body></html>
+        """.write(to: url, atomically: true, encoding: .utf8)
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive })
+        let previousWindow = scene.windows.first { $0.isKeyWindow }
+        let window = UIWindow(windowScene: scene)
+        let model = HTMLAppearanceTestModel()
+        model.viewportHeight = 300
+        window.rootViewController = UIHostingController(rootView: HTMLAppearanceTestHost(url: url, model: model))
+        window.makeKeyAndVisible()
+        defer {
+            window.isHidden = true
+            window.rootViewController = nil
+            previousWindow?.makeKey()
+        }
+        try await waitUntil { model.webView != nil && model.reading.isReady }
+        let webView = try XCTUnwrap(model.webView)
+        try await waitUntil { abs(webView.bounds.height - 300) < 0.5 }
+        let originalWidth = webView.bounds.width
+        let original = try await markerMetrics(in: webView)
+        let originalGlyphHeight = try XCTUnwrap(original["screenTextHeight"])
+        _ = try await webView.evaluateJavaScript("window.reportState.value = 42")
+        let originalHTML = try await webView.evaluateJavaScript("document.body.innerHTML") as? String
+        model.zoom = 1.5
+        try await waitForNativeZoom(1.5, in: webView)
+        let enlarged = try await markerMetrics(in: webView)
+        let enlargedGlyphHeight = try XCTUnwrap(enlarged["screenTextHeight"])
+        XCTAssertGreaterThan(enlargedGlyphHeight, originalGlyphHeight + 2)
+
+        for height in [CGFloat(520), CGFloat(300)] {
+            let previousVisualHeightValue = try await webView.evaluateJavaScript("visualViewport.height")
+            let previousVisualHeight = try XCTUnwrap(previousVisualHeightValue as? Double)
+            model.viewportHeight = height
+            try await waitUntil { abs(webView.bounds.height - height) < 0.5 }
+
+            // A new UIKit frame can precede WebKit's viewport transaction. Wait
+            // for changed browser geometry to remain stable before asserting;
+            // otherwise an old 150% sample can hide the later reset to 100%.
+            let deadline = ContinuousClock.now + .seconds(10)
+            var previousGeometry: [Double]?
+            var stableSince: ContinuousClock.Instant?
+            while true {
+                let viewportValue = try await webView.evaluateJavaScript(
+                    "[visualViewport.height, visualViewport.scale, innerHeight]"
+                )
+                let viewport = try XCTUnwrap(viewportValue as? [Double])
+                let geometry = viewport + [Double(webView.scrollView.zoomScale), Double(webView.bounds.height)]
+                let animating: Bool
+                if #available(iOS 17.4, *) { animating = webView.scrollView.isZoomAnimating }
+                else { animating = webView.scrollView.isZooming }
+                let browserResized = abs(viewport[0] - previousVisualHeight) > 1
+                let unchanged = previousGeometry.map { previous in
+                    zip(previous, geometry).allSatisfy { abs($0.0 - $0.1) < 0.005 }
+                } ?? false
+                if browserResized, unchanged, !webView.isLoading,
+                   !animating, !webView.scrollView.isZoomBouncing {
+                    if stableSince == nil { stableSince = ContinuousClock.now }
+                    if let stableSince, ContinuousClock.now - stableSince >= .seconds(1) { break }
+                } else {
+                    stableSince = nil
+                }
+                previousGeometry = geometry
+                guard ContinuousClock.now < deadline else {
+                    XCTFail("Browser viewport did not settle after resizing height to \(height): \(geometry)")
+                    throw HTMLAppearanceTestError.timedOut
+                }
+                try await Task.sleep(for: .milliseconds(40))
+            }
+
+            let metrics = try await markerMetrics(in: webView)
+            recordMetrics(metrics, stage: "height-only-\(Int(height))")
+            XCTAssertEqual(webView.bounds.width, originalWidth, accuracy: 0.5, "This regression must change height only.")
+            XCTAssertEqual(webView.scrollView.zoomScale, 1.5, accuracy: 0.005)
+            XCTAssertEqual(try XCTUnwrap(metrics["visualScale"]), 1.5, accuracy: 0.005)
+            XCTAssertEqual(try XCTUnwrap(metrics["screenTextHeight"]), enlargedGlyphHeight, accuracy: 1,
+                           "Entering and leaving a taller reading viewport must retain the enlarged glyph size.")
+            XCTAssertTrue(model.webView === webView, "Viewport changes must keep the same WebView.")
+            XCTAssertTrue(model.reading.isReady)
+            let liveValue = try await webView.evaluateJavaScript("window.reportState.value") as? Int
+            let currentHTML = try await webView.evaluateJavaScript("document.body.innerHTML") as? String
+            XCTAssertEqual(liveValue, 42, "Viewport changes must preserve live page state without reloading.")
+            XCTAssertEqual(currentHTML, originalHTML)
+        }
+    }
+
     func testSavedZoomLoadsWithTheSameTextBaselineAndResetRestoresFreshSize() async throws {
         for textAdjustment in ["auto", "100%"] {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -461,6 +555,7 @@ private enum HTMLAppearanceTestError: Error { case timedOut }
 @Observable
 private final class HTMLAppearanceTestModel {
     var zoom = 1.0
+    var viewportHeight: CGFloat?
     var webView: WKWebView?
     let reading = DocumentReadingState()
 }
@@ -475,5 +570,6 @@ private struct HTMLAppearanceTestHost: View {
                         mode: mode, readingState: model.reading, pageZoom: model.zoom) {
             model.webView = $0
         }
+        .frame(height: model.viewportHeight)
     }
 }

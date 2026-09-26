@@ -22,15 +22,20 @@ final class ReadingLibraryUITests: XCTestCase {
             screenshot("HTML page zoom controls", app: app)
             try tap("reading-appearance-done", app: app)
             try require(wait { marker.exists && marker.frame.height > originalHeight + 1 }, "Page zoom should visibly enlarge HTML text")
+            let enlargedHeight = marker.frame.height
 
             try tap("reading-tools-menu", app: app)
             try tap("reading-fullscreen-button", app: app)
             try require(wait { app.buttons["reading-fullscreen-exit"].isHittable }, "Full screen must retain an accessible restore button")
             XCTAssertFalse(app.buttons["document-title-button"].exists)
             XCTAssertFalse(app.buttons["preview-mode-menu"].exists)
+            try require(wait { marker.exists && abs(marker.frame.height - enlargedHeight) <= 1 },
+                        "Entering full screen must retain the enlarged text height within 1 point")
             screenshot("HTML full screen with visible restore control", app: app)
             try tap("reading-fullscreen-exit", app: app)
             try require(wait { app.buttons["document-title-button"].exists && app.buttons["preview-mode-menu"].isHittable }, "Restoring full screen should bring navigation and the action dock back")
+            try require(wait { marker.exists && abs(marker.frame.height - enlargedHeight) <= 1 },
+                        "Leaving full screen must retain the enlarged text height within 1 point")
 
             try navigateHome(app)
             relaunch(app)
