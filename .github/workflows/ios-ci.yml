@@ -247,7 +247,8 @@ jobs:
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \
-            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch \
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist
 
       - name: Preserve test results and failure screenshots
         if: always()

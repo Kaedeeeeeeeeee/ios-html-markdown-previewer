@@ -1,6 +1,6 @@
 # Reading and library improvements
 
-Development version: 1.4 (8). This change does not submit a new App Store build.
+Release candidate: 1.4 (9). Earlier simulator and physical validation below used build8; the compact library filter was added in build9.
 
 ## Reading
 
@@ -51,3 +51,7 @@ The corrected physical build succeeded (`ReadingLibraryDeviceQA/build-fullscreen
 Evidence is stored under `DerivedData/ReadingLibraryQA/`, `DerivedData/ReadingLibrarySmallQA/`, and `DerivedData/ReadingLibraryDeviceQA/` in the main checkout. Localized visual captures are in `DerivedData/ReadingLibraryQA/visual/`.
 
 Environment notes: the iOS 18.5 unit run initially stalled in XcodeBuildMCP's packaged test launch; a normal `xcodebuild test` run passed. The existing iPadOS 26.5 simulator stalled in FrontBoard before starting the app, so iPad validation used the existing 18.5 simulator. The final iOS 27 XCTest startup stalled before any test began; that run was cancelled and does not count as a passing automated test. Native simulator interaction verified the final HTML flow instead. No simulator was created or erased.
+
+## Compact library filter — build9
+
+The separate file-type card is replaced by a44-point native menu button at the trailing edge of the Recent Items header. Its outlined symbol becomes a tinted filled symbol when a type filter is active; the menu marks the selected option and VoiceOver announces its current value. Pinned files remain first with their pin symbols. The shared header stays visible with pinned-only results and with no matching files, so search and type filters can always be changed. All existing English, Simplified/Traditional Chinese, and Japanese labels are reused. Runtime validation is recorded in the release evidence.

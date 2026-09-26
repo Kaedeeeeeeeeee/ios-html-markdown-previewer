@@ -67,34 +67,31 @@ struct AppView: View {
                     .listRowBackground(Color.clear)
                 } else {
                     Section {
-                        libraryFilterMenu
-                    }
+                        documentRows(pinnedDocuments)
+                        documentRows(recentDocuments)
 
-                    if !pinnedDocuments.isEmpty {
-                        Section(LibraryStrings.pinned) {
-                            documentRows(pinnedDocuments)
-                        }
-                    }
-
-                    if !recentDocuments.isEmpty {
-                        Section(AppStrings.Home.recent) {
-                            documentRows(recentDocuments)
-                        }
-                    }
-
-                    if filteredDocuments.isEmpty {
-                        ContentUnavailableView {
-                            Label(LibraryStrings.noResults, systemImage: "doc.text.magnifyingglass")
-                        } description: {
-                            Text(LibraryStrings.noResultsDescription)
-                        } actions: {
-                            Button(LibraryStrings.clearFilters) {
-                                searchText = ""
-                                selectedFilter = .all
+                        if filteredDocuments.isEmpty {
+                            ContentUnavailableView {
+                                Label(LibraryStrings.noResults, systemImage: "doc.text.magnifyingglass")
+                            } description: {
+                                Text(LibraryStrings.noResultsDescription)
+                            } actions: {
+                                Button(LibraryStrings.clearFilters) {
+                                    searchText = ""
+                                    selectedFilter = .all
+                                }
+                                .accessibilityIdentifier("library-clear-filters")
                             }
-                            .accessibilityIdentifier("library-clear-filters")
+                            .listRowBackground(Color.clear)
                         }
-                        .listRowBackground(Color.clear)
+                    } header: {
+                        HStack(spacing: 12) {
+                            Text(AppStrings.Home.recent)
+                                .accessibilityIdentifier("library-recent-heading")
+                            Spacer(minLength: 0)
+                            libraryFilterMenu
+                        }
+                        .textCase(nil)
                     }
 
                     Section {
@@ -209,42 +206,19 @@ struct AppView: View {
                 .accessibilityIdentifier("library-filter-\(filter.rawValue)")
             }
         } label: {
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 12) {
-                    filterTitle.fixedSize()
-                    Spacer(minLength: 12)
-                    filterSelection.fixedSize()
-                }
-                VStack(alignment: .leading, spacing: 8) {
-                    filterTitle
-                    filterSelection
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.vertical, 2)
+            Image(systemName: selectedFilter == .all
+                  ? "line.3.horizontal.decrease.circle"
+                  : "line.3.horizontal.decrease.circle.fill")
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(selectedFilter == .all ? Color.secondary : Color.accentColor)
+                .frame(width: 44, height: 44)
+                .contentShape(Circle())
         }
+        .buttonStyle(.borderless)
+        .menuIndicator(.hidden)
         .accessibilityLabel(LibraryStrings.filter)
         .accessibilityValue(selectedFilter.title)
         .accessibilityIdentifier("library-filter-menu")
-    }
-
-    private var filterTitle: some View {
-        Label(LibraryStrings.filter, systemImage: "line.3.horizontal.decrease.circle")
-            .labelStyle(.titleAndIcon)
-            .foregroundStyle(Color.primary)
-    }
-
-    private var filterSelection: some View {
-        HStack(spacing: 6) {
-            Text(selectedFilter.title)
-                .foregroundStyle(Color.secondary)
-            Image(systemName: "chevron.up.chevron.down")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.tint)
-                .accessibilityHidden(true)
-        }
     }
 
     private func documentRows(_ visibleDocuments: [PreviewDocument]) -> some View {

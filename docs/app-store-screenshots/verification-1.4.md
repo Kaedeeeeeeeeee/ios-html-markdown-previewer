@@ -93,3 +93,7 @@ Evidence is under `/Users/user/html_preview/DerivedData/Release1.4/`:
 The build, completed capture sequence, full composition, dimension/hash audit,
 shell syntax check, and `git diff --check` passed. This capture task did not
 upload screenshots, commit changes, or push Git branches.
+
+## Build9 library refinement
+
+Build9 replaces the file-type card with a compact menu beside the Recent Items heading. The existing store home captures depict the empty library, where neither the old card nor the new menu is displayed. The other four captured screens per device/locale are unchanged. The30 captured images therefore still represent the released screens; their provenance remains build8 rather than being relabeled as new captures. The populated-library header and menu are covered separately by build9 simulator QA.
