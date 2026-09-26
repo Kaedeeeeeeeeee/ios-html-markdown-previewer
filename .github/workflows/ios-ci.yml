@@ -248,3 +248,12 @@ jobs:
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch
+
+      - name: Preserve test results and failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-test-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: DerivedData/Logs/Test/*.xcresult
+          if-no-files-found: warn
+          retention-days: 7
