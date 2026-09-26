@@ -16,7 +16,13 @@ struct DocumentPreviewView: View {
     @State private var isSearchPresented = false
     @State private var readingSheet: ReadingSheet?
     @State private var readingSaveTask: Task<Void, Never>?
+    @State private var isFullScreen = false
+    @State private var isAppearancePresented = false
+    @AppStorage("reading.htmlZoom") private var htmlZoom = 1.0
+    @AppStorage("reading.markdownFontScale") private var markdownFontScale = 1.0
+    @AppStorage("reading.markdownLineSpacing") private var markdownLineSpacing = 4.0
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dismiss) private var dismiss
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
         self.store = store
@@ -31,9 +37,11 @@ struct DocumentPreviewView: View {
             case .loading:
                 ProgressView()
             case .markdown(let markdownDocument):
-                MarkdownPreviewView(document: markdownDocument, readingState: reading)
+                MarkdownPreviewView(document: markdownDocument, readingState: reading,
+                                    fontScale: markdownFontScale, lineSpacing: markdownLineSpacing)
             case .html(let fileURL, let readAccessRootURL, let mode):
-                HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode, readingState: reading) {
+                HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode,
+                                readingState: reading, pageZoom: htmlZoom) {
                     loadedWebView = $0
                 }
             case .rawText(let text):
@@ -55,19 +63,41 @@ struct DocumentPreviewView: View {
         .navigationTitle(document.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .top, spacing: 0) {
-            if let status = previewStatus {
+            if !isFullScreen, let status = previewStatus {
                 PreviewStatusBar(status: status)
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if isSearchPresented, supportsReadingTools {
+            if !isFullScreen, isSearchPresented, supportsReadingTools {
                 DocumentSearchBar(reading: reading) {
                     reading.query = ""
                     isSearchPresented = false
                 }
-            } else {
+            } else if !isFullScreen {
                 previewActions
             }
+        }
+        .toolbar(isFullScreen ? .hidden : .visible, for: .navigationBar)
+        .statusBarHidden(isFullScreen)
+        .overlay(alignment: .bottomTrailing) {
+            if isFullScreen {
+                Button {
+                    isFullScreen = false
+                } label: {
+                    Label(AppearanceStrings.showControls, systemImage: "arrow.down.right.and.arrow.up.left")
+                        .labelStyle(.iconOnly)
+                        .font(.system(size: 19, weight: .medium))
+                        .frame(width: 48, height: 48)
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .modifier(PreviewActionsSurface())
+                .accessibilityIdentifier("reading-fullscreen-exit")
+                .padding(16)
+            }
+        }
+        .accessibilityAction(.escape) {
+            if isFullScreen { isFullScreen = false } else { dismiss() }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -137,6 +167,11 @@ struct DocumentPreviewView: View {
         .sheet(item: $readingSheet) { _ in
             DocumentOutlineView(reading: reading)
         }
+        .sheet(isPresented: $isAppearancePresented) {
+            ReadingAppearanceView(isHTML: document.entryDocumentType == .html,
+                                  htmlZoom: $htmlZoom, fontScale: $markdownFontScale,
+                                  lineSpacing: $markdownLineSpacing)
+        }
     }
 
     private var previewActions: some View {
@@ -155,6 +190,21 @@ struct DocumentPreviewView: View {
                         Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
                     }
                     .accessibilityIdentifier("reading-contents-button")
+                    Divider()
+                    Button {
+                        isAppearancePresented = true
+                    } label: {
+                        Label(AppearanceStrings.appearance, systemImage: "textformat.size")
+                    }
+                    .accessibilityIdentifier("reading-appearance-button")
+                    Button {
+                        isSearchPresented = false
+                        isFullScreen = true
+                    } label: {
+                        Label(AppearanceStrings.fullScreen, systemImage: "arrow.up.left.and.arrow.down.right")
+                    }
+                    .accessibilityIdentifier("reading-fullscreen-button")
+                    Divider()
                     Button {
                         reading.navigate(to: .beginning)
                     } label: {
@@ -388,11 +438,7 @@ struct DocumentPreviewView: View {
     }
 
     private func readAccessRootURL(for document: PreviewDocument) -> URL {
-        if document.type == .zipPackage {
-            return store.documentRootURL(for: document).appendingPathComponent("extracted", isDirectory: true)
-        }
-
-        return store.entryFileURL(for: document).deletingLastPathComponent()
+        store.readAccessRootURL(for: document)
     }
 }
 

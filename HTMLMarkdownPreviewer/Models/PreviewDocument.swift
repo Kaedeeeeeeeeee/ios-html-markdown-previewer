@@ -19,6 +19,10 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
     var lastOpenedAt: Date?
     var preferredPreviewMode: PreviewMode
     var readingPosition: ReadingPosition?
+    // Optional so libraries written before pinning was introduced decode unchanged.
+    var pinnedAt: Date?
+
+    var isPinned: Bool { pinnedAt != nil }
 
     init(
         id: UUID = UUID(),
@@ -38,7 +42,8 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         totalUncompressedBytes: UInt64? = nil,
         lastOpenedAt: Date? = nil,
         preferredPreviewMode: PreviewMode? = nil,
-        readingPosition: ReadingPosition? = nil
+        readingPosition: ReadingPosition? = nil,
+        pinnedAt: Date? = nil
     ) {
         self.id = id
         self.displayName = displayName
@@ -58,5 +63,6 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         self.lastOpenedAt = lastOpenedAt
         self.preferredPreviewMode = preferredPreviewMode ?? PreviewMode.defaultMode(for: self.entryDocumentType)
         self.readingPosition = readingPosition
+        self.pinnedAt = pinnedAt
     }
 }

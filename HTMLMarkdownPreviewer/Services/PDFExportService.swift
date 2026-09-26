@@ -44,6 +44,8 @@ struct PDFExportService {
     }
 
     func pdfData(webView: WKWebView, title: String) async throws -> Data {
+        let originalZoom = webView.scrollView.zoomScale
+        let originalOffset = webView.scrollView.contentOffset
         // WebKit otherwise omits backgrounds and lightens text for paper printing.
         // Limit this temporary rule to print media; keep the source's own print layout.
         let styleID = "html-previewer-print-\(UUID().uuidString)"
@@ -67,10 +69,12 @@ struct PDFExportService {
             let data = try renderPDF(webView: webView, title: title)
             _ = try? await webView.evaluateJavaScript(removeStyle)
             await resumeReadingHighlights(in: webView)
+            await restoreReadingViewport(in: webView, scale: originalZoom, offset: originalOffset)
             return data
         } catch {
             _ = try? await webView.evaluateJavaScript(removeStyle)
             await resumeReadingHighlights(in: webView)
+            await restoreReadingViewport(in: webView, scale: originalZoom, offset: originalOffset)
             throw error
         }
     }
@@ -80,6 +84,52 @@ struct PDFExportService {
             "globalThis.__htmlPreviewReading?.resumeHighlights(); return null;",
             arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
         )
+    }
+
+    private func restoreReadingViewport(in webView: WKWebView, scale: CGFloat, offset: CGPoint) async {
+        guard webView.window != nil, scale.isFinite, scale > 0 else { return }
+        // UIKit printing can reset WebKit's optical scale and visible position.
+        // Finish the screen layout before restoring the reader's native viewport.
+        webView.setNeedsLayout()
+        webView.layoutIfNeeded()
+        _ = try? await webView.callDocumentJavaScript(
+            "await new Promise(resolve => { setTimeout(resolve, 250); requestAnimationFrame(() => requestAnimationFrame(resolve)); }); return null;",
+            arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
+        )
+        let scrollView = webView.scrollView
+        let inset = scrollView.adjustedContentInset
+        scrollView.maximumZoomScale = max(scrollView.maximumZoomScale, scale)
+        if abs(scrollView.zoomScale - scale) > 0.005 {
+            scrollView.zoom(to: CGRect(
+                x: (offset.x + inset.left) / scale,
+                y: (offset.y + inset.top) / scale,
+                width: (scrollView.bounds.width - inset.left - inset.right) / scale,
+                height: (scrollView.bounds.height - inset.top - inset.bottom) / scale
+            ), animated: true)
+        }
+        var stableSamples = 0
+        for _ in 0..<60 {
+            guard webView.window != nil else { return }
+            let value = try? await webView.callDocumentJavaScript(
+                "return window.visualViewport?.scale ?? 1;",
+                arguments: [:], in: nil, contentWorld: HTMLReadingController.contentWorld
+            )
+            let visualScale = value as? Double
+            let animating: Bool
+            if #available(iOS 17.4, *) { animating = scrollView.isZoomAnimating }
+            else { animating = scrollView.isZooming }
+            let settled = !animating && abs(scrollView.zoomScale - scale) < 0.005
+                && visualScale.map { abs($0 - scale) < 0.005 } == true
+            stableSamples = settled ? stableSamples + 1 : 0
+            if stableSamples >= 2 { break }
+            try? await Task.sleep(for: .milliseconds(40))
+        }
+        let maxX = max(-inset.left, scrollView.contentSize.width - scrollView.bounds.width + inset.right)
+        let maxY = max(-inset.top, scrollView.contentSize.height - scrollView.bounds.height + inset.bottom)
+        scrollView.setContentOffset(CGPoint(
+            x: min(maxX, max(-inset.left, offset.x)),
+            y: min(maxY, max(-inset.top, offset.y))
+        ), animated: false)
     }
 
     private func renderPDF(webView: WKWebView, title: String) throws -> Data {

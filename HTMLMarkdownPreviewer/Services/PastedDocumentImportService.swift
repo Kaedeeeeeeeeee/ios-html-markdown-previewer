@@ -49,6 +49,10 @@ final class PastedDocumentImportService {
     }
 
     func importDocument(text: String, name: String, format: PastedDocumentFormat) throws -> PreviewDocument {
+        try importService.resolve(prepareImport(text: text, name: name, format: format), as: .keepBoth)
+    }
+
+    func prepareImport(text: String, name: String, format: PastedDocumentFormat) throws -> PreparedDocumentImport {
         let prepared = try Self.prepare(text: text, name: name, format: format)
         let directory = temporaryRootURL.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -56,7 +60,7 @@ final class PastedDocumentImportService {
 
         let fileURL = directory.appendingPathComponent(prepared.filename)
         try prepared.content.write(to: fileURL, atomically: true, encoding: .utf8)
-        return try importService.importDocument(from: fileURL, source: .pastedText)
+        return try importService.prepareImport(from: fileURL, source: .pastedText)
     }
 
     static func prepare(text: String, name: String, format: PastedDocumentFormat) throws -> PreparedPastedDocument {

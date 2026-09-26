@@ -18,6 +18,10 @@ MVP implementation is complete for the local core flow:
 - Recent files before collapsible samples, details, raw text fallback, and delete cleanup.
 - Paste HTML or Markdown text with the system Paste button, choose a format and optional name, and keep the preview in Recent files.
 - Find text, jump through a heading outline, and resume the last reading position in rendered HTML and Markdown previews.
+- Full-screen reading with a one-tap control restore button, HTML page zoom, and Markdown font-size and line-spacing controls.
+- Local Markdown images open in a full-screen viewer with pinch, pan, double-tap, and accessible zoom controls.
+- Search the document library, filter by type, pin frequent documents, and rename display titles without changing source filenames or asset paths.
+- Review repeated imports before choosing to update an existing document or keep another copy.
 - App icon, privacy manifest, App Store listing draft, and screenshot assets.
 
 PDF export uses the loaded HTML page and its print styles, or a locally rendered
