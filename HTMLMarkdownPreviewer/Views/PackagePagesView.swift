@@ -56,10 +56,10 @@ struct PackageNavigationBar: View {
 struct PackagePagesView: View {
     let pages: [PackagePage]
     let selectedPath: String
+    let prefersLargePresentation: Bool
     let onSelect: (PackagePage) -> Void
     @State private var search = ""
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private var filtered: [PackagePage] {
         let query = search.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -135,7 +135,7 @@ struct PackagePagesView: View {
                 }
             }
         }
-        .presentationDetents(horizontalSizeClass == .regular ? [.large] : [.medium, .large])
+        .presentationDetents(prefersLargePresentation ? [.large] : [.medium, .large])
         .presentationDragIndicator(.visible)
     }
 }

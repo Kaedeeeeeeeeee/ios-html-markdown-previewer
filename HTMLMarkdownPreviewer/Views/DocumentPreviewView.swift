@@ -28,6 +28,7 @@ struct DocumentPreviewView: View {
     @AppStorage("reading.markdownLineSpacing") private var markdownLineSpacing = 4.0
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
         self.store = store
@@ -214,6 +215,7 @@ struct DocumentPreviewView: View {
         .sheet(isPresented: $isPackagePagesPresented) {
             PackagePagesView(pages: packageNavigation?.pages ?? [],
                              selectedPath: packageNavigation?.current.page.relativePath ?? "",
+                             prefersLargePresentation: horizontalSizeClass == .regular,
                              onSelect: selectPackagePage)
         }
     }
