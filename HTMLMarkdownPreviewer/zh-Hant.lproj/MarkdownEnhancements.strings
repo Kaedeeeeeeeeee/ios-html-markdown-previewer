@@ -1,0 +1,17 @@
+"copy" = "複製程式碼";
+"copied" = "已複製";
+"code" = "程式碼";
+"diagram" = "流程圖";
+"source" = "原始碼";
+"mathError" = "無法顯示此公式，已保留原文。";
+"diagramError" = "無法顯示此流程圖，已保留原始碼。";
+"loadingError" = "無法載入離線算繪資源，請重新開啟文件。";
+"sample.codeHeading" = "讓程式碼更易讀";
+"sample.codeIntro" = "語法色彩幫助你理解程式碼，一鍵複製保留原有格式。";
+"sample.mathHeading" = "把公式寫進筆記";
+"sample.mathIntro" = "行內公式 $E = mc^2$ 可以自然地嵌入句子，複雜的公式則獨立成行：";
+"sample.diagramHeading" = "從想法到流程圖";
+"sample.diagramIntro" = "Mermaid 程式碼區塊可以直接顯示為流程圖，離線也能使用。";
+"sample.diagramStart" = "撰寫";
+"sample.diagramRead" = "預覽";
+"sample.diagramShare" = "分享 PDF";

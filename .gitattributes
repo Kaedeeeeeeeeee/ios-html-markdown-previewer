@@ -1,0 +1,5 @@
+# Preserve upstream template-literal and license whitespace in generated assets.
+HTMLMarkdownPreviewer/Resources/Markdown/markdown-libraries.min.js linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof
+HTMLMarkdownPreviewer/Resources/Markdown/markdown-libraries.min.js.LEGAL.txt linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof
+HTMLMarkdownPreviewer/Resources/Markdown/THIRD-PARTY-LICENSES.txt linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof
+HTMLMarkdownPreviewer/Resources/Markdown/katex.min.css linguist-generated=true

@@ -37,8 +37,15 @@ struct DocumentPreviewView: View {
             case .loading:
                 ProgressView()
             case .markdown(let markdownDocument):
-                MarkdownPreviewView(document: markdownDocument, readingState: reading,
-                                    fontScale: markdownFontScale, lineSpacing: markdownLineSpacing)
+                if markdownDocument.requiresEnhancedRendering {
+                    MarkdownRichPreviewView(document: markdownDocument, readingState: reading,
+                                            fontScale: markdownFontScale, lineSpacing: markdownLineSpacing) {
+                        loadedWebView = $0
+                    }
+                } else {
+                    MarkdownPreviewView(document: markdownDocument, readingState: reading,
+                                        fontScale: markdownFontScale, lineSpacing: markdownLineSpacing)
+                }
             case .html(let fileURL, let readAccessRootURL, let mode):
                 HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode,
                                 readingState: reading, pageZoom: htmlZoom) {

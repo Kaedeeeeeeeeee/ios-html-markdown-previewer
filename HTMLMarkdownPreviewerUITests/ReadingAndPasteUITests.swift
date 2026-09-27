@@ -3,6 +3,111 @@ import XCTest
 
 @MainActor
 final class ReadingAndPasteUITests: XCTestCase {
+    func testEnhancedMarkdownCopiesExactCodeAndKeepsMathDiagramSearchAndPosition() throws {
+        continueAfterFailure = false
+        let token = UUID().uuidString
+        let name = "QA-ReadingLibrary-\(token)-Enhanced"
+        let app = XCUIApplication()
+        app.launchEnvironment["HTML_PREVIEWER_UI_TESTS"] = "1"
+        let arguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = arguments + ["--reading-library-fixture=\(token)"]
+        app.launch()
+        defer {
+            app.terminate()
+            app.launchArguments = arguments + ["--reading-library-cleanup=\(token)"]
+            app.launch()
+            XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 15))
+            XCTAssertFalse(app.buttons["recent-document-\(name).md"].exists)
+        }
+        let code = "let result = 42\n\tprint(\"日本語 + 中文: \\(result)\")\n"
+        let middle = (1...5).map {
+            "## Section \($0)\n\n" + String(repeating: "Offline study notes retain their reading position. ", count: 12)
+        }.joined(separator: "\n\n")
+        let markdown = """
+        # Enhanced study notes
+
+        ```swift
+        \(code)```
+
+        ## Formula study
+
+        An inline formula $E = mc^2$ stays in this sentence.
+
+        $$
+        x^2 + y^2 = z^2
+        $$
+
+        ## Diagram study
+
+        ```mermaid
+        flowchart LR
+          AlphaNode[Idea] --> ReviewNode[Review] --> FinishNode[Done]
+        ```
+
+        \(middle)
+
+        ## Final enhanced decision
+
+        This final enhanced reading position stays after reopening.
+        """
+        paste(markdown, name: name, app: app)
+        let ready = app.buttons["reading-tools-menu"]
+        let readiness = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in ready.exists && ready.isEnabled }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [readiness], timeout: 45), .completed)
+        XCTAssertTrue(app.webViews.firstMatch.exists)
+        let copy = app.webViews.buttons["Copy Code"].firstMatch
+        XCTAssertTrue(eventuallyHittable(copy))
+        copy.tap()
+        XCTAssertTrue(app.webViews.buttons["Copied"].waitForExistence(timeout: 5))
+        screenshot("Enhanced Markdown syntax colors and copy confirmation", app: app)
+
+        // Round-trip the actual copy through the app's public system PasteButton;
+        // this verifies its native bridge without a test-only clipboard reader.
+        app.navigationBars.buttons["HTML Previewer"].tap()
+        app.buttons["paste-preview-button"].tap()
+        XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
+        tapSystemPaste(app)
+        let editor = app.textViews["paste-text-editor"]
+        XCTAssertTrue(wait { (editor.value as? String) == code }, "Copied code must preserve tabs, Unicode and the trailing newline exactly.")
+        screenshot("Copied enhanced code pasted with original whitespace", app: app)
+        app.buttons["paste-cancel-button"].tap()
+        let row = app.buttons["recent-document-\(name).md"]
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
+        let reopenedReadiness = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in ready.exists && ready.isEnabled }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [reopenedReadiness], timeout: 45), .completed)
+
+        openSearch(app)
+        app.textFields["reading-search-field"].typeText("x^2\n")
+        waitForLabel("1 of 1", identifier: "reading-match-count", app: app)
+        XCTAssertFalse(app.staticTexts["This formula could not be displayed. Its source is shown below."].exists)
+        screenshot("LaTeX formula revealed by canonical-source search", app: app)
+        app.buttons["reading-search-close"].tap()
+        openSearch(app)
+        app.textFields["reading-search-field"].typeText("AlphaNode\n")
+        waitForLabel("1 of 1", identifier: "reading-match-count", app: app)
+        XCTAssertFalse(app.staticTexts["This diagram could not be displayed. Its source is shown below."].exists)
+        screenshot("Offline Mermaid diagram revealed by source search", app: app)
+        app.buttons["reading-search-close"].tap()
+
+        openContents(app)
+        let heading = app.buttons["Final enhanced decision"]
+        scrollTo(heading, app: app)
+        heading.tap()
+        let finalText = app.staticTexts["This final enhanced reading position stays after reopening."]
+        XCTAssertTrue(eventuallyHittable(finalText))
+        screenshot("Enhanced Markdown outline jumps to final section", app: app)
+        app.navigationBars.buttons["HTML Previewer"].tap()
+        app.terminate()
+        app.launchArguments = arguments
+        app.launch()
+        XCTAssertTrue(row.waitForExistence(timeout: 15))
+        row.tap()
+        XCTAssertTrue(finalText.waitForExistence(timeout: 45))
+        XCTAssertTrue(eventuallyHittable(finalText), "Enhanced Markdown should reopen at the structural block saved before relaunch.")
+        screenshot("Enhanced Markdown saved position after relaunch", app: app)
+    }
+
     func testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch() {
         let app = launchFresh()
         let name = "週末の読書ノート—跨语言阅读记录—A longer document title for a quieter Saturday"

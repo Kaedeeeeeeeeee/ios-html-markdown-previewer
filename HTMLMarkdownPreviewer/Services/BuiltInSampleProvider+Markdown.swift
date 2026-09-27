@@ -29,11 +29,32 @@ extension BuiltInSampleProvider {
         1. \(AppStrings.SampleDesign.markdownNextOne)
         2. \(AppStrings.SampleDesign.markdownNextTwo)
 
-        ## \(AppStrings.SampleDesign.markdownCodeHeading)
+        ## \(MarkdownEnhancementStrings.codeHeading)
 
-        ```text
-        pages: 10
-        notifications: off
+        \(MarkdownEnhancementStrings.codeIntro)
+
+        ```swift
+        let pages = [12, 18, 24]
+        let total = pages.reduce(0, +)
+        print("Read \\(total) pages")
+        ```
+
+        ## \(MarkdownEnhancementStrings.mathHeading)
+
+        \(MarkdownEnhancementStrings.mathIntro)
+
+        $$
+        \\int_0^1 x^2\\,dx = \\frac{1}{3}
+        $$
+
+        ## \(MarkdownEnhancementStrings.diagramHeading)
+
+        \(MarkdownEnhancementStrings.diagramIntro)
+
+        ```mermaid
+        flowchart LR
+            A["\(MarkdownEnhancementStrings.diagramStart)"] --> B["\(MarkdownEnhancementStrings.diagramRead)"]
+            B --> C["\(MarkdownEnhancementStrings.diagramShare)"]
         ```
 
         ---

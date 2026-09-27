@@ -68,7 +68,7 @@ struct MarkdownReadingIndex {
                 for (offset, child) in children.enumerated() {
                     visit(child, path: Self.childID(path, offset: offset), blockID: blockID)
                 }
-            case .codeBlock(_, let code):
+            case .codeBlock(_, let code), .mathBlock(let code):
                 elements.append(Element(id: path, blockID: blockID, text: code))
             case .unorderedList(let items), .orderedList(_, let items):
                 for (offset, item) in items.enumerated() {

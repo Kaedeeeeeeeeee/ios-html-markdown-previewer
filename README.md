@@ -11,7 +11,8 @@ MVP implementation is complete for the local core flow:
 - Document type declarations for HTML, Markdown, and ZIP.
 - Separate app file picker entries for HTML/Markdown files and ZIP report packages.
 - New HTML imports open in Interactive WKWebView preview with page JavaScript and external resources enabled. Safe Preview remains available to block page scripts and external HTTP/HTTPS resources; both modes block external navigation and form navigation.
-- Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling.
+- Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling. Documents with code, mathematics, or Mermaid diagrams use an offline enhanced reader.
+- Syntax highlighting for 19 code languages and exact one-tap copying; inline and display LaTeX math; Mermaid diagrams. Bundled libraries and fonts require no network connection.
 - ZIP package import with local CSS/image resource loading.
 - Share original files or complete ZIP packages, preserving bundled CSS and images.
 - Export rendered HTML and Markdown to paginated A4 PDFs from the share menu.
@@ -42,7 +43,16 @@ the format can also be chosen explicitly. Pasting only a URL shows an explanatio
 instead of fetching a webpage. Pasted content uses the same local storage,
 preview defaults, sharing, and PDF export as imported files. New pasted HTML and
 HTML entries inside ZIP packages open in Interactive mode; Markdown uses its
-native reading view. Reopening a document preserves its saved preview mode.
+rendered reading view. Reopening a document preserves its saved preview mode.
+
+Markdown supports `$...$` and `\(...\)` for inline mathematics, `$$...$$`,
+`\[...\]`, or a `math` fenced block for display equations, and `mermaid`
+fenced blocks for diagrams. This is the KaTeX subset of LaTeX math, not a `.tex`
+document compiler. Code and escaped dollar signs remain literal. Unknown code
+languages and invalid equations or diagrams keep readable source. Formula and
+diagram source is searchable, and PDF export waits for the local renderer and
+fonts before printing. See [Markdown enhancements](docs/updates/2026-09-27-markdown-enhancements.md)
+for examples and offline dependency details.
 
 Remaining release gates are external to simulator-only local development:
 

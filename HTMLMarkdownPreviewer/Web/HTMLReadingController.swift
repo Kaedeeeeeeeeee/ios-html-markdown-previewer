@@ -7,7 +7,10 @@ import WebKit
 final class HTMLReadingController {
     static let contentWorld = WKContentWorld.world(name: "com.kaede.htmlmarkdownpreviewer.reading")
 
+    enum DocumentKind: Equatable { case html, markdown }
+
     private let state: DocumentReadingState
+    private let documentKind: DocumentKind
     private let entryURL: URL
     private let handlerName = "reading_" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
     private weak var webView: WKWebView?
@@ -22,8 +25,9 @@ final class HTMLReadingController {
     private var lastNavigationID: UUID?
     private var isSearching = false
 
-    init(state: DocumentReadingState, entryURL: URL) {
+    init(state: DocumentReadingState, entryURL: URL, documentKind: DocumentKind = .html) {
         self.state = state
+        self.documentKind = documentKind
         self.entryURL = entryURL.standardizedFileURL
     }
 
@@ -58,7 +62,7 @@ final class HTMLReadingController {
         let sessionID = UUID().uuidString
         self.sessionID = sessionID
         sessionURL = webView.url?.standardizedFileURL
-        var arguments: [String: Any] = ["sessionID": sessionID, "handlerName": handlerName]
+        var arguments: [String: Any] = ["sessionID": sessionID, "handlerName": handlerName, "isMarkdown": documentKind == .markdown]
         if isEntryPage, let position = state.position {
             arguments["restorePosition"] = [
                 "anchorID": position.anchorID as Any? ?? NSNull(),
@@ -92,6 +96,22 @@ final class HTMLReadingController {
             self.state.isReady = true
             self.synchronize()
         }
+    }
+
+    /// Applies reader typography without throwing away the current query, outline,
+    /// structural block anchor, or the WebView's enhancement state.
+    func applyMarkdownAppearance(fontScale: Double, lineSpacing: Double, baseSize: Double) async throws {
+        guard documentKind == .markdown, state.isReady, let webView, let sessionID else { return }
+        let generation = generation
+        let value = try await webView.callDocumentJavaScript(
+            "return await globalThis.__htmlPreviewReading?.reflow(fontScale, lineSpacing, baseSize, sessionID) ?? null;",
+            arguments: ["fontScale": fontScale, "lineSpacing": lineSpacing,
+                        "baseSize": baseSize, "sessionID": sessionID],
+            contentWorld: Self.contentWorld
+        )
+        guard self.generation == generation, self.sessionID == sessionID,
+              let snapshot = value as? [String: Any] else { return }
+        updatePosition(from: snapshot)
     }
 
     /// Called when the SwiftUI input or a navigation request changes.
@@ -251,7 +271,7 @@ private extension HTMLReadingController {
         const positionPrefix = 'html-reading-v1:';
         const matchStyleName = 'html-previewer-reading-matches';
         const currentStyleName = 'html-previewer-reading-current';
-        const excluded = 'script,style,noscript,template,textarea,input,select,option,[contenteditable="true"],[aria-hidden="true"]';
+        const excluded = 'script,style,noscript,template,textarea,input,select,option,[contenteditable="true"],[aria-hidden="true"]' + (isMarkdown ? ',[data-reading-ignore]' : '');
         const blockSelector = 'address,article,aside,blockquote,dd,div,dl,dt,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,li,main,nav,p,pre,section,table,td,th,tr';
         const hasHighlights = typeof Highlight === 'function' && !!globalThis.CSS?.highlights;
         const scrollingRoot = document.scrollingElement || document.documentElement;
@@ -264,6 +284,7 @@ private extension HTMLReadingController {
         let ranges = [];
         let fallbackOverlay = null;
         let highlightSuspensions = 0;
+        let reflowDepth = 0;
         let positionSequence = 0;
         let operationRevision = 0;
         const pendingScrolls = new Set();
@@ -328,11 +349,24 @@ private extension HTMLReadingController {
             const position = getComputedStyle(element).position;
             if (position === 'fixed' || position === 'sticky') occluders.push(element);
         }
+        function headingTitle(element) {
+            if (!isMarkdown) return (element.innerText || '').replace(/\s+/g, ' ').trim();
+            const title = element.getAttribute('data-reading-heading-title');
+            if (title !== null) return title.replace(/\s+/g, ' ').trim();
+            const clone = element.cloneNode(true);
+            for (const ignored of clone.querySelectorAll('[data-reading-ignore]')) ignored.remove();
+            for (const atomic of clone.querySelectorAll('[data-reading-atomic]')) {
+                atomic.textContent = atomic.getAttribute('data-reading-text') || '';
+            }
+            return (clone.textContent || '').replace(/\s+/g, ' ').trim();
+        }
+        const markdownBlocks = isMarkdown
+            ? Array.from(document.querySelectorAll('[data-markdown-block]')).filter(visible) : [];
         const headings = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6'))
             .filter(visible)
             .map((element, index) => ({
-                element, id: `heading-${index}`,
-                title: (element.innerText || '').replace(/\s+/g, ' ').trim(),
+                element, id: isMarkdown ? (element.getAttribute('data-reading-heading-id') || element.id || `heading-${index}`) : `heading-${index}`,
+                title: headingTitle(element),
                 level: Number(element.tagName.slice(1))
             })).filter(item => item.title);
 
@@ -405,6 +439,14 @@ private extension HTMLReadingController {
             const root = rootScrollGeometry();
             const extent = root.maxTop;
             const y = Math.max(0, root.top);
+            if (isMarkdown) {
+                const viewportTop = viewportFor(null).top;
+                const block = markdownBlocks.find(element => element.getBoundingClientRect().bottom > viewportTop) || markdownBlocks.at(-1);
+                const rect = block?.getBoundingClientRect();
+                const blockFraction = rect?.height > 0 ? Math.min(1, Math.max(0, (viewportTop - rect.top) / rect.height)) : 0;
+                const anchorID = block ? `${block.getAttribute('data-markdown-block')}@${blockFraction}` : null;
+                return { sessionID: token, sequence: ++positionSequence, anchorID, progress: fraction(y, extent) };
+            }
             let headingID = null;
             let nearestTop = -Infinity;
             for (const heading of headings) {
@@ -432,7 +474,7 @@ private extension HTMLReadingController {
             return { ...position(), matchCount: ranges.length, selectedMatch };
         }
         function notify() {
-            if (!disposed && !highlightSuspensions) globalThis.webkit?.messageHandlers[handlerName]?.postMessage(position());
+            if (!disposed && !highlightSuspensions && !reflowDepth) globalThis.webkit?.messageHandlers[handlerName]?.postMessage(position());
         }
         function clearHighlights() {
             if (hasHighlights) {
@@ -445,34 +487,47 @@ private extension HTMLReadingController {
         function paintMatches() {
             if (!hasHighlights || highlightSuspensions || disposed || !ranges.length) return;
             const highlight = new Highlight();
-            for (const range of ranges) highlight.add(range);
+            for (const range of ranges) if (!range.__markdownAtomic && !range.__markdownParts) highlight.add(range);
             CSS.highlights.set(matchStyleName, highlight);
         }
+        function rangeElement(range) {
+            return range.__markdownAtomic || range.__markdownTarget || range.startContainer.parentElement;
+        }
+        function rangeRects(range) {
+            if (range.__markdownAtomic) return Array.from(range.__markdownAtomic.getClientRects());
+            if (range.__markdownParts) {
+                return range.__markdownParts.flatMap(part => Array.from((part.atomic || part.range).getClientRects()));
+            }
+            return Array.from(range.getClientRects());
+        }
         function clippedRects(range) {
-            const viewport = usableViewport(null, range.startContainer.parentElement);
+            const target = rangeElement(range);
+            const viewport = usableViewport(null, target);
             const clip = { ...viewport };
-            for (let element = range.startContainer.parentElement; element; element = element.parentElement) {
+            for (let element = target; element; element = element.parentElement) {
                 if (element === scrollingRoot || element === document.documentElement) continue;
                 const css = getComputedStyle(element);
                 const box = viewportFor(element);
                 if (css.overflowX !== 'visible') { clip.left = Math.max(clip.left, box.left); clip.right = Math.min(clip.right, box.right); }
                 if (css.overflowY !== 'visible') { clip.top = Math.max(clip.top, box.top); clip.bottom = Math.min(clip.bottom, box.bottom); }
             }
-            return Array.from(range.getClientRects()).map(rect => ({
+            return rangeRects(range).map(rect => ({
                 left: Math.max(rect.left, clip.left), right: Math.min(rect.right, clip.right),
                 top: Math.max(rect.top, clip.top), bottom: Math.min(rect.bottom, clip.bottom)
             })).filter(rect => rect.right > rect.left && rect.bottom > rect.top);
         }
         function paintCurrent() {
             if (highlightSuspensions || disposed) return;
-            if (hasHighlights) {
-                CSS.highlights.delete(currentStyleName);
-                if (selectedMatch >= 0) CSS.highlights.set(currentStyleName, new Highlight(ranges[selectedMatch]));
-                return;
-            }
-            // Safari 17.0/17.1: draw only the selected range without modifying text.
             fallbackOverlay?.remove();
             fallbackOverlay = null;
+            const atomic = selectedMatch >= 0 && (ranges[selectedMatch].__markdownAtomic || ranges[selectedMatch].__markdownParts);
+            if (hasHighlights) {
+                CSS.highlights.delete(currentStyleName);
+                if (selectedMatch >= 0 && !atomic) CSS.highlights.set(currentStyleName, new Highlight(ranges[selectedMatch]));
+                if (!atomic) return;
+            }
+            // Safari 17.0/17.1 and atomic diagrams use overlays without rewriting
+            // document content. A formula match outlines its complete expression.
             if (selectedMatch < 0) return;
             const overlay = document.createElement('div');
             overlay.setAttribute('data-html-previewer-reading-overlay', '');
@@ -480,7 +535,7 @@ private extension HTMLReadingController {
             overlay.style.cssText = 'position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:2147483647;contain:strict;';
             for (const rect of clippedRects(ranges[selectedMatch])) {
                 const part = document.createElement('div');
-                part.style.cssText = `position:absolute;left:${rect.left}px;top:${rect.top}px;width:${rect.right - rect.left}px;height:${rect.bottom - rect.top}px;background:rgba(255,152,47,.42);border-radius:2px;`;
+                part.style.cssText = `position:absolute;left:${rect.left}px;top:${rect.top}px;width:${rect.right - rect.left}px;height:${rect.bottom - rect.top}px;${atomic ? 'box-sizing:border-box;border:2px solid #ff982f;background:rgba(255,152,47,.12)' : 'background:rgba(255,152,47,.42)'};border-radius:2px;`;
                 overlay.appendChild(part);
             }
             document.documentElement.appendChild(overlay);
@@ -496,7 +551,8 @@ private extension HTMLReadingController {
             scrollTimer = setTimeout(() => { scrollTimer = null; paintCurrent(); }, 80);
         }
         function targetRect(range) {
-            return Array.from(range.getClientRects()).find(rect => rect.width > 0 && rect.height > 0) || range.getBoundingClientRect();
+            if (range.__markdownAtomic) return range.__markdownAtomic.getBoundingClientRect();
+            return rangeRects(range).find(rect => rect.width > 0 && rect.height > 0) || range.getBoundingClientRect();
         }
         function nearestDelta(start, end, near, far) {
             if (start < near) return start - near;
@@ -566,7 +622,8 @@ private extension HTMLReadingController {
             });
         }
         async function scrollToRange(range, alignToStart = false, revision = operationRevision) {
-            const target = range.startContainer.parentElement;
+            if (range.__markdownAtomic || range.__markdownParts) alignToStart = true;
+            const target = rangeElement(range);
             // Resolve the actual text rectangle, not its potentially very wide td/pre.
             // Re-measure after each inner scroller changes before moving its parent.
             for (let element = target; element; element = element.parentElement) {
@@ -614,11 +671,22 @@ private extension HTMLReadingController {
             while (walker.nextNode()) {
                 const node = walker.currentNode;
                 if (node.nodeType === Node.ELEMENT_NODE) {
-                    if (node.tagName === 'BR' && visible(node)) text += '\n';
+                    if (isMarkdown && node.hasAttribute('data-reading-atomic') && visible(node)
+                        && !node.parentElement?.closest('[data-reading-atomic]')) {
+                        const source = node.getAttribute('data-reading-text') || '';
+                        // Inline math shares its paragraph's text flow. Only a
+                        // real block boundary contributes a search separator.
+                        const block = node.closest(blockSelector);
+                        if (previousBlock && previousBlock !== block) text += '\n';
+                        previousBlock = block;
+                        segments.push({ node, atomic: node, start: text.length, end: text.length + source.length });
+                        text += source;
+                    } else if (node.tagName === 'BR' && visible(node)
+                        && !(isMarkdown && node.closest('[data-reading-atomic]'))) text += '\n';
                     continue;
                 }
                 const parent = node.parentElement;
-                if (!parent || !node.data.length) continue;
+                if (!parent || !node.data.length || (isMarkdown && parent.closest('[data-reading-atomic]'))) continue;
                 if (!visibility.has(parent)) visibility.set(parent, visible(parent));
                 if (!visibility.get(parent)) continue;
                 const block = parent.closest(blockSelector);
@@ -627,13 +695,32 @@ private extension HTMLReadingController {
                 segments.push({ node, start: text.length, end: text.length + node.data.length });
                 text += node.data;
             }
-            const escaped = needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+            // Native Markdown search ignores diacritics. Keep that behavior on
+            // enhanced pages while preserving original UTF-16 DOM range offsets.
+            const fold = value => value.normalize('NFD').replace(/\p{M}/gu, '');
+            const searchNeedle = isMarkdown ? fold(needle) : needle;
+            let searchableText = text;
+            let offsets = null;
+            if (isMarkdown && fold(text) !== text) {
+                searchableText = '';
+                offsets = [];
+                let cursor = 0;
+                for (const character of text) {
+                    const folded = fold(character);
+                    if (!folded.length && offsets.length) offsets[offsets.length - 1].end = cursor + character.length;
+                    for (let unit = 0; unit < folded.length; unit++) offsets.push({ start: cursor, end: cursor + character.length });
+                    searchableText += folded;
+                    cursor += character.length;
+                }
+            }
+            if (!searchNeedle) return snapshot();
+            const escaped = searchNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
             const expression = new RegExp(escaped, 'giu');
             let match;
             let segmentIndex = 0;
-            while ((match = expression.exec(text)) !== null) {
-                const start = match.index;
-                const end = start + match[0].length;
+            while ((match = expression.exec(searchableText)) !== null) {
+                const start = offsets ? offsets[match.index].start : match.index;
+                const end = offsets ? offsets[match.index + match[0].length - 1].end : match.index + match[0].length;
                 while (segmentIndex < segments.length && segments[segmentIndex].end <= start) segmentIndex++;
                 const first = segments[segmentIndex];
                 if (!first || first.start > start) continue;
@@ -642,9 +729,32 @@ private extension HTMLReadingController {
                 const last = segments[endIndex];
                 if (!last || last.start >= end) continue;
                 const range = document.createRange();
-                range.setStart(first.node, start - first.start);
-                range.setEnd(last.node, end - last.start);
-                if (range.getClientRects().length) ranges.push(range);
+                if (first === last && first.atomic) {
+                    // Canonical formula/diagram source is indexed once, rather than
+                    // duplicated hidden MathML and visual glyph descendants.
+                    range.selectNodeContents(first.atomic);
+                    range.__markdownAtomic = first.atomic;
+                } else {
+                    if (first.atomic) range.setStartBefore(first.atomic);
+                    else range.setStart(first.node, start - first.start);
+                    if (last.atomic) range.setEndAfter(last.atomic);
+                    else range.setEnd(last.node, end - last.start);
+                    const matchedSegments = segments.slice(segmentIndex, endIndex + 1);
+                    if (matchedSegments.some(segment => segment.atomic)) {
+                        // A mixed phrase may begin/end beside a formula, or span
+                        // several. Keep its real text ranges plus complete atomic
+                        // boxes; generated MathML must not distort the outline.
+                        range.__markdownTarget = first.atomic || first.node.parentElement;
+                        range.__markdownParts = matchedSegments.map(segment => {
+                            if (segment.atomic) return { atomic: segment.atomic };
+                            const part = document.createRange();
+                            part.setStart(segment.node, Math.max(start, segment.start) - segment.start);
+                            part.setEnd(segment.node, Math.min(end, segment.end) - segment.start);
+                            return { range: part };
+                        });
+                    }
+                }
+                if (rangeRects(range).some(rect => rect.width > 0 && rect.height > 0)) ranges.push(range);
             }
             paintMatches();
             if (ranges.length) {
@@ -698,9 +808,42 @@ private extension HTMLReadingController {
             clearHighlights();
             style.remove();
         }
+        async function restoreMarkdown(saved, revision) {
+            const anchor = typeof saved?.anchorID === 'string' ? /^((?:markdown-block-)\d+)(?:@([0-9.eE+-]+))?$/.exec(saved.anchorID) : null;
+            const block = anchor && markdownBlocks.find(element => element.getAttribute('data-markdown-block') === anchor[1]);
+            const progress = Math.min(1, Math.max(0, Number(saved?.progress) || 0));
+            if (block && !(progress <= 0 && block === markdownBlocks[0])) {
+                const fraction = Math.min(1, Math.max(0, Number(anchor[2]) || 0));
+                const rect = block.getBoundingClientRect();
+                await scrollToPosition(null, 0, rootScrollGeometry().top + rect.top - viewportFor(null).top + rect.height * fraction, revision);
+            } else {
+                await scrollToPosition(null, 0, progress * rootScrollGeometry().maxTop, revision);
+            }
+        }
+        async function reflow(fontScale, lineSpacing, baseSize, expectedToken) {
+            if (!isMarkdown || disposed || expectedToken !== token) return null;
+            const saved = position();
+            const revision = beginOperation();
+            reflowDepth++;
+            try {
+                document.documentElement.style.setProperty('--reader-scale', String(Math.min(1.8, Math.max(.8, Number(fontScale) || 1))));
+                document.documentElement.style.setProperty('--reader-spacing', `${Math.min(12, Math.max(0, Number(lineSpacing) || 0))}px`);
+                document.documentElement.style.setProperty('--reader-base-size', `${Math.min(96, Math.max(12, Number(baseSize) || 17))}px`);
+                await Promise.race([document.fonts?.ready || Promise.resolve(), new Promise(resolve => setTimeout(resolve, 2000))]);
+                await new Promise(resolve => { setTimeout(resolve, 250); requestAnimationFrame(() => requestAnimationFrame(resolve)); });
+                if (isCurrent(revision)) await restoreMarkdown(saved, revision);
+            } finally {
+                reflowDepth--;
+            }
+            if (!isCurrent(revision)) return null;
+            paintCurrent();
+            notify();
+            return snapshot();
+        }
         async function initialize() {
             const revision = operationRevision;
             if (!restorePosition) return;
+            if (isMarkdown) { await restoreMarkdown(restorePosition, revision); return; }
             let saved = null;
             const anchor = restorePosition.anchorID;
             if (typeof anchor === 'string' && anchor.startsWith(positionPrefix)) {
@@ -733,7 +876,7 @@ private extension HTMLReadingController {
         window.addEventListener('resize', onScroll, { passive: true });
         window.visualViewport?.addEventListener('scroll', onScroll, { passive: true });
         window.visualViewport?.addEventListener('resize', onScroll, { passive: true });
-        return { search, navigate, dispose, snapshot, initialize, suspendHighlights, resumeHighlights,
+        return { search, navigate, dispose, snapshot, initialize, reflow, suspendHighlights, resumeHighlights,
             headings: headings.map(({ id, title, level }) => ({ id, title, level })) };
     })();
     globalThis.__htmlPreviewReading = reader;

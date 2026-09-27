@@ -1,0 +1,17 @@
+"copy" = "Copy Code";
+"copied" = "Copied";
+"code" = "Code";
+"diagram" = "Diagram";
+"source" = "Source";
+"mathError" = "This formula could not be displayed. Its source is shown below.";
+"diagramError" = "This diagram could not be displayed. Its source is shown below.";
+"loadingError" = "The offline renderer could not be loaded. Try opening the document again.";
+"sample.codeHeading" = "Code that reads clearly";
+"sample.codeIntro" = "Syntax colors help you follow the code. Copy keeps the original spacing.";
+"sample.mathHeading" = "A little mathematics";
+"sample.mathIntro" = "An inline formula, $E = mc^2$, fits naturally into a sentence. Larger ideas get their own line:";
+"sample.diagramHeading" = "From idea to diagram";
+"sample.diagramIntro" = "A Mermaid code block becomes a flowchart, even while offline.";
+"sample.diagramStart" = "Write";
+"sample.diagramRead" = "Preview";
+"sample.diagramShare" = "Share PDF";

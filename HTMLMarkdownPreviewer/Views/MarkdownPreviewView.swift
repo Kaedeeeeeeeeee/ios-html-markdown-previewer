@@ -553,6 +553,8 @@ private struct MarkdownBlockView: View {
             }
             .foregroundStyle(.secondary)
             .padding(.vertical, 4)
+        case .mathBlock(let source):
+            Text(source).font(.system(.body, design: .monospaced)).textSelection(.enabled)
         case .codeBlock(let language, let code):
             VStack(alignment: .leading, spacing: 8) {
                 if let language, !language.isEmpty {

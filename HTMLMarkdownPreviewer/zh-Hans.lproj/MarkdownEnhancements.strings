@@ -1,0 +1,17 @@
+"copy" = "复制代码";
+"copied" = "已复制";
+"code" = "代码";
+"diagram" = "流程图";
+"source" = "源代码";
+"mathError" = "无法显示此公式，已保留原文。";
+"diagramError" = "无法显示此流程图，已保留源代码。";
+"loadingError" = "无法加载离线渲染资源，请重新打开文档。";
+"sample.codeHeading" = "让代码更易读";
+"sample.codeIntro" = "语法颜色帮助你理解代码，一键复制保留原有格式。";
+"sample.mathHeading" = "把公式写进笔记";
+"sample.mathIntro" = "行内公式 $E = mc^2$ 可以自然地嵌入句子，复杂的公式则独立成行：";
+"sample.diagramHeading" = "从想法到流程图";
+"sample.diagramIntro" = "Mermaid 代码块可以直接显示为流程图，离线也能使用。";
+"sample.diagramStart" = "编写";
+"sample.diagramRead" = "预览";
+"sample.diagramShare" = "分享 PDF";
