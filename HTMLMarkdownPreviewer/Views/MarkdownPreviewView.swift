@@ -5,6 +5,7 @@ struct MarkdownPreviewView: View {
     var readingState: DocumentReadingState? = nil
     let fontScale: Double
     let lineSpacing: Double
+    var onOpenLocalLink: (URL) -> Bool
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var appliedTypography: MarkdownTypography?
@@ -29,12 +30,14 @@ struct MarkdownPreviewView: View {
         document: MarkdownDocument,
         readingState: DocumentReadingState? = nil,
         fontScale: Double = ReadingAppearance.defaultFontScale,
-        lineSpacing: Double = ReadingAppearance.defaultLineSpacing
+        lineSpacing: Double = ReadingAppearance.defaultLineSpacing,
+        onOpenLocalLink: @escaping (URL) -> Bool = { _ in false }
     ) {
         self.document = document
         self.readingState = readingState
         self.fontScale = ReadingAppearance.normalizedFontScale(fontScale)
         self.lineSpacing = ReadingAppearance.normalizedLineSpacing(lineSpacing)
+        self.onOpenLocalLink = onOpenLocalLink
         _index = State(initialValue: MarkdownReadingIndex(document: document))
     }
 
@@ -114,6 +117,7 @@ struct MarkdownPreviewView: View {
         }
         .background(Color(.systemBackground))
         .environment(\.openURL, OpenURLAction { url in
+            if onOpenLocalLink(url) { return .handled }
             blockedLink = MarkdownLinkPolicy.blockedLink(for: url)
             return .handled
         })

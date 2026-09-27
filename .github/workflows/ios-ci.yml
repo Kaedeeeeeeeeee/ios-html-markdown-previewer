@@ -235,7 +235,7 @@ jobs:
           xcrun simctl erase "${{ steps.simulator.outputs.id }}"
 
       - name: Run UI smoke test
-        timeout-minutes: 15
+        timeout-minutes: 25
         run: |
           xcodebuild test \
             -project HTMLMarkdownPreviewer.xcodeproj \
@@ -249,7 +249,8 @@ jobs:
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist \
-            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testEnhancedMarkdownCopiesExactCodeAndKeepsMathDiagramSearchAndPosition
+            -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testEnhancedMarkdownCopiesExactCodeAndKeepsMathDiagramSearchAndPosition \
+            -only-testing:HTMLMarkdownPreviewerUITests/ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch
 
       - name: Preserve test results and failure screenshots
         if: always()

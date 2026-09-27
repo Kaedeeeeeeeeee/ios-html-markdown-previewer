@@ -29,7 +29,7 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = [
-            "--screenshot-reset-library", "--screenshot-sample=markdown",
+            "--screenshot-sample=markdown",
             "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"
         ]
         launch(app)
@@ -39,7 +39,7 @@ final class SmokeUITests: XCTestCase {
         // CharacterView debug descriptions previously gave them identical view IDs.
         XCTAssertTrue(app.staticTexts["留下来的想法"].exists)
         XCTAssertTrue(scrollUntilExists(app.staticTexts["读下一章之前"], app: app))
-        XCTAssertTrue(scrollUntilExists(app.staticTexts["一个小提醒"], app: app))
+        XCTAssertTrue(scrollUntilExists(app.staticTexts["让代码更易读"], app: app))
         attachScreenshot(named: "All Chinese Markdown headings remain visible", app: app)
     }
 

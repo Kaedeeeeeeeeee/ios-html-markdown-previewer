@@ -1,0 +1,9 @@
+"pages" = "Package Pages";
+"search" = "Find a page";
+"back" = "Previous Page";
+"entry" = "Entry";
+"current" = "Current";
+"noResults" = "No Matching Pages";
+"noResultsDetail" = "Try another page title or filename.";
+"description" = "Open any page in this package. Your place is saved for each page.";
+"count" = "%ld pages";

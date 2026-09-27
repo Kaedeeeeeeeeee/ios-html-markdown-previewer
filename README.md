@@ -13,7 +13,7 @@ MVP implementation is complete for the local core flow:
 - New HTML imports open in Interactive WKWebView preview with page JavaScript and external resources enabled. Safe Preview remains available to block page scripts and external HTTP/HTTPS resources; both modes block external navigation and form navigation.
 - Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling. Documents with code, mathematics, or Mermaid diagrams use an offline enhanced reader.
 - Syntax highlighting for 19 code languages and exact one-tap copying; inline and display LaTeX math; Mermaid diagrams. Bundled libraries and fonts require no network connection.
-- ZIP package import with local CSS/image resource loading.
+- ZIP package import with local CSS/image resource loading, searchable HTML/Markdown page selection, and previous-page navigation.
 - Share original files or complete ZIP packages, preserving bundled CSS and images.
 - Export rendered HTML and Markdown to paginated A4 PDFs from the share menu.
 - Recent files before collapsible samples, details, raw text fallback, and delete cleanup.
@@ -35,7 +35,16 @@ previews. Search highlights matches and provides previous/next controls; the
 outline lists document headings. Reading positions are stored locally per
 imported document, including across app restarts. HTML reading tools inspect the
 main document in an app-owned WebKit content world without enabling page scripts
-in Safe Preview. For ZIP packages, the saved position belongs to the entry page.
+in Safe Preview. ZIP packages remember the last selected page and a separate
+reading position for each page.
+
+ZIP previews include a compact package bar below the preview status. Tap the
+current page to search titles and paths, or use the back arrow to return to the
+previous package page. Local links between HTML and Markdown use the same reader;
+CSS and images remain relative to their page. Original sharing sends the complete
+ZIP, while PDF export and Raw Text use the current page. The built-in ZIP sample
+contains an overview, a nested HTML report, and a Markdown appendix. See
+[ZIP navigation](docs/updates/2026-09-27-zip-navigation.md) for behavior and validation.
 
 Paste to Preview accepts up to 2 MB of text and never reads the clipboard in the
 background. It can recognize HTML and Markdown wrapped in a single code fence;

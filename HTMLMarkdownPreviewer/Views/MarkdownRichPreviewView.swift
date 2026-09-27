@@ -9,6 +9,7 @@ struct MarkdownRichPreviewView: View {
     var fontScale: Double = ReadingAppearance.defaultFontScale
     var lineSpacing: Double = ReadingAppearance.defaultLineSpacing
     var onPreviewReady: (WKWebView?) -> Void = { _ in }
+    var onOpenLocalLink: (URL) -> Bool = { _ in false }
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var page: MarkdownRichPage?
@@ -38,7 +39,7 @@ struct MarkdownRichPreviewView: View {
                         onPreviewReady(webView)
                     },
                     onError: { _ in errorMessage = MarkdownEnhancementStrings.loadingError },
-                    onLink: { blockedLink = MarkdownLinkPolicy.blockedLink(for: $0) },
+                    onLink: { if !onOpenLocalLink($0) { blockedLink = MarkdownLinkPolicy.blockedLink(for: $0) } },
                     onImage: { presentedImage = $0 }
                 )
                 .id(page.id)
