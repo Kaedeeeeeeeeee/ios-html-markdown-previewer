@@ -29,6 +29,8 @@ final class SmokeUITests: XCTestCase {
         continueAfterFailure = false
         let app = makeApp()
         app.launchArguments = [
+            // Earlier sample tests persist Raw Text mode; this assertion needs a fresh preview.
+            "--screenshot-reset-library",
             "--screenshot-sample=markdown",
             "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"
         ]
