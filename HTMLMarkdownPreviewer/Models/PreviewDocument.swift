@@ -19,6 +19,9 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
     var lastOpenedAt: Date?
     var preferredPreviewMode: PreviewMode
     var readingPosition: ReadingPosition?
+    // Optional for metadata written before package navigation. Paths are relative to extracted/.
+    var savedPackagePageRelativePath: String?
+    var packageReadingPositions: [String: ReadingPosition]?
     // Optional so libraries written before pinning was introduced decode unchanged.
     var pinnedAt: Date?
 
@@ -43,6 +46,8 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         lastOpenedAt: Date? = nil,
         preferredPreviewMode: PreviewMode? = nil,
         readingPosition: ReadingPosition? = nil,
+        savedPackagePageRelativePath: String? = nil,
+        packageReadingPositions: [String: ReadingPosition]? = nil,
         pinnedAt: Date? = nil
     ) {
         self.id = id
@@ -63,6 +68,8 @@ struct PreviewDocument: Identifiable, Codable, Hashable, Sendable {
         self.lastOpenedAt = lastOpenedAt
         self.preferredPreviewMode = preferredPreviewMode ?? PreviewMode.defaultMode(for: self.entryDocumentType)
         self.readingPosition = readingPosition
+        self.savedPackagePageRelativePath = savedPackagePageRelativePath
+        self.packageReadingPositions = packageReadingPositions
         self.pinnedAt = pinnedAt
     }
 }

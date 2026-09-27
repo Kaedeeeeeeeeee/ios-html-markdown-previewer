@@ -8,6 +8,8 @@ struct HTMLPreviewView: View {
     var readingState: DocumentReadingState? = nil
     var pageZoom: Double = 1
     var onPreviewReady: (WKWebView?) -> Void = { _ in }
+    var onLocalPageNavigation: ((URL) -> Bool)? = nil
+    var onPageFinished: ((URL) -> Void)? = nil
 
     @State private var configuration: WKWebViewConfiguration?
     @State private var errorMessage: String?
@@ -24,7 +26,9 @@ struct HTMLPreviewView: View {
                     query: readingState?.query ?? "",
                     navigationRequest: readingState?.navigationRequest,
                     pageZoom: ReadingAppearance.normalizedHTMLZoom(pageZoom),
-                    onPreviewReady: onPreviewReady
+                    onPreviewReady: onPreviewReady,
+                    onLocalPageNavigation: onLocalPageNavigation,
+                    onPageFinished: onPageFinished
                 )
                 .id("\(fileURL.path)-\(mode)")
             } else if let errorMessage {
@@ -70,10 +74,13 @@ private struct HTMLWebView: UIViewRepresentable {
     let navigationRequest: ReadingNavigationRequest?
     let pageZoom: Double
     let onPreviewReady: (WKWebView?) -> Void
+    let onLocalPageNavigation: ((URL) -> Bool)?
+    let onPageFinished: ((URL) -> Void)?
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(mode: mode, fileURL: fileURL, readingState: readingState,
-                    pageZoom: pageZoom, onPreviewReady: onPreviewReady)
+        Coordinator(mode: mode, fileURL: fileURL, readAccessRootURL: readAccessRootURL,
+                    readingState: readingState, pageZoom: pageZoom, onPreviewReady: onPreviewReady,
+                    onLocalPageNavigation: onLocalPageNavigation, onPageFinished: onPageFinished)
     }
 
     func makeUIView(context: Context) -> WKWebView {
@@ -83,6 +90,7 @@ private struct HTMLWebView: UIViewRepresentable {
             coordinator?.viewDidLayout(webView)
         }
         webView.navigationDelegate = context.coordinator.navigationPolicy
+        webView.uiDelegate = context.coordinator.navigationPolicy
         context.coordinator.readingController?.attach(to: webView)
         webView.loadFileURL(fileURL, allowingReadAccessTo: readAccessRootURL)
         return webView
@@ -99,13 +107,18 @@ private struct HTMLWebView: UIViewRepresentable {
         coordinator.stop()
         webView.stopLoading()
         webView.navigationDelegate = nil
+        webView.uiDelegate = nil
     }
 
     @MainActor
     final class Coordinator {
         let readingController: HTMLReadingController?
         private let mode: HTMLPreviewMode
+        private let fileURL: URL
+        private let readAccessRootURL: URL
         private let onPreviewReady: (WKWebView?) -> Void
+        private let onLocalPageNavigation: ((URL) -> Bool)?
+        private let onPageFinished: ((URL) -> Void)?
         private var updateTask: Task<Void, Never>?
         private var desiredPageZoom: Double
         private var appliedPageZoom: Double?
@@ -124,7 +137,10 @@ private struct HTMLWebView: UIViewRepresentable {
         private var zoomRevision = 0
         private var needsReadingPreparation = true
 
-        lazy var navigationPolicy = WebNavigationPolicy(mode: mode) { [weak self] webView in
+        lazy var navigationPolicy = WebNavigationPolicy(
+            mode: mode, entryURL: fileURL, readAccessRootURL: readAccessRootURL,
+            onLocalPageNavigation: onLocalPageNavigation, onPageFinished: onPageFinished
+        ) { [weak self] webView in
             guard let self else { return }
             if let webView {
                 self.navigationFinished = true
@@ -147,13 +163,20 @@ private struct HTMLWebView: UIViewRepresentable {
         init(
             mode: HTMLPreviewMode,
             fileURL: URL,
+            readAccessRootURL: URL,
             readingState: DocumentReadingState?,
             pageZoom: Double,
-            onPreviewReady: @escaping (WKWebView?) -> Void
+            onPreviewReady: @escaping (WKWebView?) -> Void,
+            onLocalPageNavigation: ((URL) -> Bool)?,
+            onPageFinished: ((URL) -> Void)?
         ) {
             self.mode = mode
+            self.fileURL = fileURL
+            self.readAccessRootURL = readAccessRootURL
             self.desiredPageZoom = pageZoom
             self.onPreviewReady = onPreviewReady
+            self.onLocalPageNavigation = onLocalPageNavigation
+            self.onPageFinished = onPageFinished
             readingController = readingState.map { HTMLReadingController(state: $0, entryURL: fileURL) }
         }
 

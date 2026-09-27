@@ -23,6 +23,11 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: HTMLMarkdownPreviewer
+        excludes:
+          - Resources/Markdown
+      - path: HTMLMarkdownPreviewer/Resources/Markdown
+        type: folder
+        buildPhase: resources
     dependencies:
       - package: ZIPFoundation
       - package: SwiftMarkdown

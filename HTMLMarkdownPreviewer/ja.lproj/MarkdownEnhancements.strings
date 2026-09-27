@@ -1,0 +1,17 @@
+"copy" = "コードをコピー";
+"copied" = "コピーしました";
+"code" = "コード";
+"diagram" = "図";
+"source" = "ソース";
+"mathError" = "この数式を表示できないため、元の記述を表示しています。";
+"diagramError" = "この図を表示できないため、ソースを表示しています。";
+"loadingError" = "オフライン表示用のデータを読み込めませんでした。書類を開き直してください。";
+"sample.codeHeading" = "読みやすいコード";
+"sample.codeIntro" = "構文の色分けでコードを読みやすく。コピーすると元の書式が保たれます。";
+"sample.mathHeading" = "ノートに数式を";
+"sample.mathIntro" = "行内数式 $E = mc^2$ は文章の中に自然に収まります。複雑な数式は独立した行で表示できます。";
+"sample.diagramHeading" = "アイデアを図に";
+"sample.diagramIntro" = "Mermaid のコードブロックがフローチャートに。オフラインでも表示できます。";
+"sample.diagramStart" = "作成";
+"sample.diagramRead" = "プレビュー";
+"sample.diagramShare" = "PDF を共有";

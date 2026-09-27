@@ -153,6 +153,9 @@ final class DocumentLibraryStore {
             lastOpenedAt: current.lastOpenedAt,
             preferredPreviewMode: current.preferredPreviewMode,
             readingPosition: preservingReadingPosition ? current.readingPosition : nil,
+            // A new extracted payload may have different pages, anchors and content at the same paths.
+            savedPackagePageRelativePath: nil,
+            packageReadingPositions: nil,
             pinnedAt: current.pinnedAt
         )
         do {
@@ -208,6 +211,52 @@ final class DocumentLibraryStore {
         guard updatedDocument.readingPosition != normalized else { return }
         updatedDocument.readingPosition = normalized
         try save(updatedDocument)
+    }
+
+    func savedPackagePageRelativePath(for document: PreviewDocument) -> String? {
+        let current = latestStoredDocument(for: document)
+        guard current.type == .zipPackage, let path = current.savedPackagePageRelativePath,
+              packageCatalog(for: current).page(relativePath: path) != nil else { return nil }
+        return path
+    }
+
+    func packageReadingPosition(forPage relativePath: String, in document: PreviewDocument) -> ReadingPosition? {
+        let current = latestStoredDocument(for: document)
+        guard current.type == .zipPackage, PackagePageCatalog.isValidRelativePath(relativePath) else { return nil }
+        let catalog = packageCatalog(for: current)
+        guard let page = catalog.page(relativePath: relativePath) else { return nil }
+        let position = current.packageReadingPositions?[relativePath] ?? (page.isEntry ? current.readingPosition : nil)
+        return position.map { ReadingPosition(anchorID: $0.anchorID, progress: $0.progress) }
+    }
+
+    /// Selection is saved even before a page reports a position. A nil position preserves that page's last position.
+    func updatePackageReadingState(
+        pageRelativePath: String,
+        position: ReadingPosition? = nil,
+        for document: PreviewDocument
+    ) throws {
+        guard document.type == .zipPackage,
+              fileManager.fileExists(atPath: metadataURL(for: document).path),
+              PackagePageCatalog.isValidRelativePath(pageRelativePath) else { return }
+        // Merge with disk so page callbacks cannot undo a rename, pin, preview mode or another page's position.
+        var current = latestStoredDocument(for: document)
+        guard current.type == .zipPackage, current.entryFileRelativePath == document.entryFileRelativePath,
+              let page = packageCatalog(for: current).page(relativePath: pageRelativePath) else { return }
+        let before = current
+        current.savedPackagePageRelativePath = pageRelativePath
+        if let position {
+            let normalized = ReadingPosition(anchorID: position.anchorID, progress: position.progress)
+            var positions = current.packageReadingPositions ?? [:]
+            positions[pageRelativePath] = normalized
+            current.packageReadingPositions = positions
+            if page.isEntry { current.readingPosition = normalized }
+        }
+        guard current != before else { return }
+        try save(current)
+    }
+
+    private func packageCatalog(for document: PreviewDocument) -> PackagePageCatalog {
+        PackagePageCatalog(rootURL: readAccessRootURL(for: document), entryURL: entryFileURL(for: document))
     }
 
     func delete(_ document: PreviewDocument) throws {

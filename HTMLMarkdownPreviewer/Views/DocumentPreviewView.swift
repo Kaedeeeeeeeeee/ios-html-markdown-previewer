@@ -18,11 +18,17 @@ struct DocumentPreviewView: View {
     @State private var readingSaveTask: Task<Void, Never>?
     @State private var isFullScreen = false
     @State private var isAppearancePresented = false
+    @State private var packageNavigation: PackageNavigationState?
+    @State private var packageCatalog: PackagePageCatalog?
+    @State private var isPackagePagesPresented = false
+    @State private var previewGeneration = UUID()
+    @State private var pendingPackageFragment: String?
     @AppStorage("reading.htmlZoom") private var htmlZoom = 1.0
     @AppStorage("reading.markdownFontScale") private var markdownFontScale = 1.0
     @AppStorage("reading.markdownLineSpacing") private var markdownLineSpacing = 4.0
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     init(document: PreviewDocument, store: DocumentLibraryStore) {
         self.store = store
@@ -31,21 +37,39 @@ struct DocumentPreviewView: View {
         self._reading = State(initialValue: DocumentReadingState(position: store.readingPosition(for: document)))
     }
 
-    var body: some View {
-        Group {
+    private var previewContent: some View {
+        let generation = previewGeneration
+        return Group {
             switch state {
             case .loading:
                 ProgressView()
             case .markdown(let markdownDocument):
-                MarkdownPreviewView(document: markdownDocument, readingState: reading,
-                                    fontScale: markdownFontScale, lineSpacing: markdownLineSpacing)
+                if markdownDocument.requiresEnhancedRendering {
+                    MarkdownRichPreviewView(document: markdownDocument, readingState: reading,
+                                            fontScale: markdownFontScale, lineSpacing: markdownLineSpacing,
+                                            onPreviewReady: { webView in
+                                                if generation == previewGeneration { loadedWebView = webView }
+                                            }, onOpenLocalLink: openPackageLink)
+                        .id(generation)
+                } else {
+                    MarkdownPreviewView(document: markdownDocument, readingState: reading,
+                                        fontScale: markdownFontScale, lineSpacing: markdownLineSpacing,
+                                        onOpenLocalLink: openPackageLink)
+                        .id(generation)
+                }
             case .html(let fileURL, let readAccessRootURL, let mode):
                 HTMLPreviewView(fileURL: fileURL, readAccessRootURL: readAccessRootURL, mode: mode,
-                                readingState: reading, pageZoom: htmlZoom) {
-                    loadedWebView = $0
-                }
+                                readingState: reading, pageZoom: htmlZoom,
+                                onPreviewReady: { webView in
+                                    if generation == previewGeneration { loadedWebView = webView }
+                                }, onLocalPageNavigation: packageLinkHandler,
+                                onPageFinished: { url in
+                                    if generation == previewGeneration { packageNavigation?.didFinish(url: url) }
+                                })
+                    .id(generation)
             case .rawText(let text):
                 RawTextPreview(text: text)
+                    .id(generation)
             case .unsupported:
                 ContentUnavailableView(
                     AppStrings.Errors.previewUnavailableTitle,
@@ -60,11 +84,22 @@ struct DocumentPreviewView: View {
                 )
             }
         }
+    }
+
+    var body: some View {
+        previewContent
         .navigationTitle(document.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .top, spacing: 0) {
-            if !isFullScreen, let status = previewStatus {
-                PreviewStatusBar(status: status)
+            if !isFullScreen {
+                VStack(spacing: 0) {
+                    if let status = previewStatus { PreviewStatusBar(status: status) }
+                    if let packageNavigation {
+                        PackageNavigationBar(navigation: packageNavigation, onBack: goBackInPackage) {
+                            isPackagePagesPresented = true
+                        }
+                    }
+                }
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -133,8 +168,12 @@ struct DocumentPreviewView: View {
         } message: {
             Text(exportError ?? "")
         }
-        .onAppear {
-            if case .loading = state { loadPreview() }
+        .task {
+            if case .loading = state {
+                await preparePackage()
+                guard !Task.isCancelled else { return }
+                loadPreview()
+            }
         }
         .onChange(of: previewMode) {
             loadPreview()
@@ -146,6 +185,7 @@ struct DocumentPreviewView: View {
                 saveReadingPosition()
             }
         }
+        .onChange(of: reading.isReady) { applyPackageMarkdownAnchor() }
         .onChange(of: scenePhase) {
             if scenePhase != .active { saveReadingPosition() }
         }
@@ -168,9 +208,15 @@ struct DocumentPreviewView: View {
             DocumentOutlineView(reading: reading)
         }
         .sheet(isPresented: $isAppearancePresented) {
-            ReadingAppearanceView(isHTML: document.entryDocumentType == .html,
+            ReadingAppearanceView(isHTML: activeDocumentType == .html,
                                   htmlZoom: $htmlZoom, fontScale: $markdownFontScale,
                                   lineSpacing: $markdownLineSpacing)
+        }
+        .sheet(isPresented: $isPackagePagesPresented) {
+            PackagePagesView(pages: packageNavigation?.pages ?? [],
+                             selectedPath: packageNavigation?.current.page.relativePath ?? "",
+                             prefersLargePresentation: horizontalSizeClass == .regular,
+                             onSelect: selectPackagePage)
         }
     }
 
@@ -268,11 +314,12 @@ struct DocumentPreviewView: View {
 
     private func loadPreview() {
         saveReadingPosition()
+        previewGeneration = UUID()
         reading.resetContent()
         loadedWebView = nil
         do {
-            let entryFileURL = store.entryFileURL(for: document)
-            switch document.entryDocumentType {
+            let entryFileURL = packageNavigation?.current.page.fileURL ?? activeEntryFileURL
+            switch activeDocumentType {
             case .markdown:
                 if previewMode == .rawText {
                     state = .rawText(try TextFileReader().readText(from: entryFileURL))
@@ -287,7 +334,7 @@ struct DocumentPreviewView: View {
                     state = .rawText(try TextFileReader().readText(from: entryFileURL))
                 } else {
                     state = .html(
-                        fileURL: entryFileURL,
+                        fileURL: activeEntryFileURL,
                         readAccessRootURL: readAccessRootURL(for: document),
                         mode: previewMode.htmlPreviewMode
                     )
@@ -308,9 +355,12 @@ struct DocumentPreviewView: View {
     }
 
     private func saveReadingPosition() {
-        guard let position = reading.position else { return }
         // A failed position write must not interrupt reading the original document.
-        try? store.updateReadingPosition(position, for: document)
+        if let page = packageNavigation?.current.page {
+            try? store.updatePackageReadingState(pageRelativePath: page.relativePath, position: reading.position, for: document)
+        } else if let position = reading.position {
+            try? store.updateReadingPosition(position, for: document)
+        }
     }
 
     private var canExportPDF: Bool {
@@ -327,25 +377,25 @@ struct DocumentPreviewView: View {
         switch state {
         case .html:
             guard let loadedWebView else { throw PDFExportError.previewNotReady }
-            return try await exporter.export(webView: loadedWebView, title: document.displayName)
+            return try await exporter.export(webView: loadedWebView, title: exportTitle)
         case .markdown(let markdown):
-            return try await exporter.export(markdown: markdown, title: document.displayName)
+            return try await exporter.export(markdown: markdown, title: exportTitle)
         default:
             throw PDFExportError.previewNotReady
         }
     }
 
     private var previewModeIcon: String {
-        previewMode.systemImage
+        activeDocumentType == .markdown && previewMode != .rawText ? "text.alignleft" : previewMode.systemImage
     }
 
     private var supportsPreviewModeMenu: Bool {
-        document.entryDocumentType == .html || document.entryDocumentType == .markdown
+        activeDocumentType == .html || activeDocumentType == .markdown
     }
 
     @ViewBuilder
     private var previewModeButtons: some View {
-        if document.entryDocumentType == .markdown {
+        if activeDocumentType == .markdown {
             Button {
                 setPreviewMode(.safePreview)
             } label: {
@@ -396,7 +446,7 @@ struct DocumentPreviewView: View {
             )
         }
 
-        guard document.entryDocumentType == .html else {
+        guard activeDocumentType == .html else {
             return nil
         }
 
@@ -439,6 +489,82 @@ struct DocumentPreviewView: View {
 
     private func readAccessRootURL(for document: PreviewDocument) -> URL {
         store.readAccessRootURL(for: document)
+    }
+
+    private var packageLinkHandler: ((URL) -> Bool)? {
+        guard document.type == .zipPackage else { return nil }
+        return { url in openPackageLink(url) }
+    }
+
+    private var activeEntryFileURL: URL { packageNavigation?.current.url ?? store.entryFileURL(for: document) }
+    private var activeDocumentType: PreviewDocumentType { packageNavigation?.current.page.documentType ?? document.entryDocumentType }
+    private var exportTitle: String { packageNavigation?.current.page.title ?? document.displayName }
+
+    private func preparePackage() async {
+        guard document.type == .zipPackage, packageNavigation == nil else { return }
+        let catalog = PackagePageCatalog(rootURL: store.readAccessRootURL(for: document), entryURL: store.entryFileURL(for: document))
+        let task = Task.detached(priority: .userInitiated) { try catalog.load() }
+        let pages = try? await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: { task.cancel() }
+        guard !Task.isCancelled, let pages, !pages.isEmpty else { return }
+        packageCatalog = catalog
+        let saved = store.savedPackagePageRelativePath(for: document)
+        let selected = pages.first(where: { $0.relativePath == saved }) ?? pages.first(where: \.isEntry) ?? pages[0]
+        packageNavigation = PackageNavigationState(pages: pages, selected: selected)
+        reading = DocumentReadingState(position: store.packageReadingPosition(forPage: selected.relativePath, in: document))
+    }
+
+    private func selectPackagePage(_ page: PackagePage) {
+        guard let packageNavigation, page.relativePath != packageNavigation.current.page.relativePath else { return }
+        saveReadingPosition()
+        packageNavigation.select(page)
+        reloadPackagePage()
+    }
+
+    private func openPackageLink(_ url: URL) -> Bool {
+        let candidate = url.scheme == nil ? URL(string: url.relativeString, relativeTo: activeEntryFileURL)?.absoluteURL : url
+        guard let packageCatalog, let packageNavigation,
+              let candidate,
+              let resolved = packageCatalog.validatedNavigationURL(candidate),
+              let page = packageCatalog.resolve(url: resolved) else { return false }
+        if page.relativePath == packageNavigation.current.page.relativePath,
+           resolved.query == packageNavigation.current.url.query, page.documentType == .markdown {
+            pendingPackageFragment = resolved.fragment
+            applyPackageMarkdownAnchor()
+            return true
+        }
+        saveReadingPosition()
+        guard packageNavigation.select(page, url: resolved) else { return true }
+        reloadPackagePage(followAnchor: resolved.fragment != nil)
+        return true
+    }
+
+    private func goBackInPackage() {
+        guard let packageNavigation, packageNavigation.canGoBack else { return }
+        saveReadingPosition()
+        packageNavigation.goBack()
+        reloadPackagePage()
+    }
+
+    private func reloadPackagePage(followAnchor: Bool = false) {
+        guard let page = packageNavigation?.current.page else { return }
+        readingSaveTask?.cancel()
+        isSearchPresented = false
+        readingSheet = nil
+        loadedWebView = nil
+        pendingPackageFragment = followAnchor ? packageNavigation?.current.url.fragment : nil
+        reading = DocumentReadingState(position: followAnchor ? nil : store.packageReadingPosition(forPage: page.relativePath, in: document))
+        loadPreview()
+    }
+
+    private func applyPackageMarkdownAnchor() {
+        guard activeDocumentType == .markdown, reading.isReady, let fragment = pendingPackageFragment else { return }
+        pendingPackageFragment = nil
+        if fragment.isEmpty { reading.navigate(to: .beginning) }
+        else if let id = PackageMarkdownAnchor.headingID(for: fragment, headings: reading.headings) {
+            reading.navigate(to: .heading(id))
+        }
     }
 }
 

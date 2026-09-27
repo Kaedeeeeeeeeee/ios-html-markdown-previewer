@@ -61,6 +61,8 @@ struct MarkdownPrintHTMLRenderer {
             return "<h\(level)>\(renderInline(text))</h\(level)>"
         case .paragraph(let text):
             return "<p>\(renderInline(text))</p>"
+        case .mathBlock(let source):
+            return "<pre>\(escaped(source))</pre>"
         case .blockQuote(let blocks):
             return "<blockquote>\(renderBlocks(blocks))</blockquote>"
         case .codeBlock(let language, let code):

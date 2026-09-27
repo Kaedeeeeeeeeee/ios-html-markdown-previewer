@@ -38,6 +38,8 @@ final class BuiltInSampleProvider {
         let archive = try Archive(url: url, accessMode: .create)
         let files: [(path: String, data: Data)] = [
             ("index.html", Self.zipHTML.data(using: .utf8)!),
+            ("chapters/details.html", Self.zipDetailsHTML.data(using: .utf8)!),
+            ("appendix/notes.md", Self.zipNotesMarkdown.data(using: .utf8)!),
             ("assets/style.css", Self.zipCSS.data(using: .utf8)!),
             ("images/pixel.svg", Self.zipSVG.data(using: .utf8)!)
         ]
@@ -133,6 +135,13 @@ extension BuiltInSampleProvider {
             <section class="reading-total" aria-label="\(escaped(AppStrings.SampleDesign.zipMinutes))">
               <strong>247</strong><span>\(escaped(AppStrings.SampleDesign.zipMinutes))</span>
             </section>
+            <nav class="package-contents" aria-label="\(escaped(PackageSampleStrings.contents))">
+              <h2 class="section-label">\(escaped(PackageSampleStrings.contents))</h2>
+              <div class="package-links panel">
+                \(zipPageLink(number: "02", title: PackageSampleStrings.detailsLinkTitle, subtitle: PackageSampleStrings.detailsLinkCaption, href: "chapters/details.html"))
+                \(zipPageLink(number: "03", title: PackageSampleStrings.notesTitle, subtitle: PackageSampleStrings.notesLinkCaption, href: "appendix/notes.md"))
+              </div>
+            </nav>
             <figure class="reading-chart panel">
               <figcaption>\(escaped(AppStrings.SampleDesign.zipChartHeading))</figcaption>
               <img src="images/pixel.svg" width="560" height="180" alt="\(escaped(AppStrings.SampleDesign.zipChartAlt))">
@@ -153,7 +162,7 @@ extension BuiltInSampleProvider {
         """
     }
 
-    static var zipCSS: String { sampleCSS }
+    static var zipCSS: String { sampleCSS + zipPagesCSS }
 
     /// The external image is a real data chart, keeping the ZIP's relative-asset example useful.
     /// Solid fills also survive WebKit's PDF printing without gradient/blending artifacts.
@@ -251,7 +260,7 @@ extension BuiltInSampleProvider {
     }
     """
 
-    private static var sampleLanguage: String {
+    static var sampleLanguage: String {
         escaped(Bundle.main.preferredLocalizations.first ?? "en")
     }
 

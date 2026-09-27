@@ -1,0 +1,9 @@
+"pages" = "包內頁面";
+"search" = "搜尋頁面";
+"back" = "返回上一頁";
+"entry" = "入口頁";
+"current" = "目前頁面";
+"noResults" = "沒有符合的頁面";
+"noResultsDetail" = "試試其他頁面標題或檔案名稱。";
+"description" = "可開啟包內任意頁面，每一頁的閱讀位置都會保留。";
+"count" = "%ld 個頁面";

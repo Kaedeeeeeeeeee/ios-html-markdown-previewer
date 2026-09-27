@@ -406,6 +406,9 @@ struct AppView: View {
         if ReadingLibraryTestFixtures.handle(arguments: arguments, store: store) {
             reloadDocuments()
         }
+        if PackageNavigationTestFixtures.handle(arguments: arguments, store: store) {
+            reloadDocuments()
+        }
         #endif
 
         if arguments.contains("--screenshot-reset-library") {

@@ -9,12 +9,27 @@ enum MarkdownBlock: Equatable, Sendable {
     case paragraph(AttributedString)
     case blockQuote([MarkdownBlock])
     case codeBlock(language: String?, code: String)
+    case mathBlock(String)
     case unorderedList([MarkdownListItem])
     case orderedList(start: Int, items: [MarkdownListItem])
     case table(MarkdownTable)
     case image(MarkdownImage)
     case thematicBreak
 
+}
+
+/// The value and attributed characters both contain the original LaTeX source,
+/// without its Markdown delimiters. This also keeps formulas searchable.
+struct MarkdownMathAttribute: AttributedStringKey {
+    typealias Value = String
+    static let name = "com.kaede.markdown.math"
+}
+
+extension AttributedString {
+    var markdownMath: String? {
+        get { self[MarkdownMathAttribute.self] }
+        set { self[MarkdownMathAttribute.self] = newValue }
+    }
 }
 
 struct MarkdownTable: Equatable, Sendable {

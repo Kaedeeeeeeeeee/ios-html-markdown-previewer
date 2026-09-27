@@ -342,9 +342,160 @@ final class HTMLReadingTests: XCTestCase {
         XCTAssertEqual(session.state.selectedMatch, 0)
     }
 
+    func testMarkdownAtomicSearchUsesSourceOnceAndIgnoresReaderControls() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("markdown-atomic.html")
+        try fixture("""
+        <section data-markdown-block="markdown-block-0"><h1 id="markdown-block-0" data-reading-heading-id="markdown-block-0">Math notes</h1></section>
+        <section data-markdown-block="markdown-block-1">
+          <p>Before the expression. Café notes.</p>
+          <span id="formula" data-reading-atomic data-reading-text="x^2 + x" style="display:inline-block;padding:12px">
+            <span aria-hidden="true">x^2 + x</span><span style="position:absolute;clip:rect(1px,1px,1px,1px)">x^2 + x</span>
+          </span>
+          <button data-reading-ignore>Copy code</button>
+          <pre><code><span>let </span><span>answer</span> = 42</code></pre>
+        </section>
+        <section data-markdown-block="markdown-block-2"><h2 data-reading-heading-id="markdown-block-2-child-0">Repeated title</h2></section>
+        <section data-markdown-block="markdown-block-3"><h2 data-reading-heading-id="markdown-block-3-child-0">Repeated title</h2></section>
+        """).write(to: url, atomically: true, encoding: .utf8)
+        let session = try await ReadingTestSession(entryURL: url, documentKind: .markdown)
+        defer { session.close() }
+        try await session.load(url)
+        XCTAssertEqual(session.state.headings.map(\.id), ["markdown-block-0", "markdown-block-2-child-0", "markdown-block-3-child-0"])
+        let encoding = try await session.webView.evaluateJavaScript("document.characterSet") as? String
+        let accentedText = try await session.webView.evaluateJavaScript("document.querySelector('p').textContent") as? String
+        XCTAssertEqual(encoding, "UTF-8", "The local test HTML must use the same explicit UTF-8 charset as generated Markdown pages.")
+        XCTAssertEqual(accentedText, "Before the expression. Café notes.", "The diacritic search fixture must not be decoded as mojibake.")
+        try await assertMarkdownSearch("x^2", count: 1, session: session)
+        let outlined = try await session.webView.evaluateJavaScript("""
+        (() => {
+            const formula = document.getElementById('formula').getBoundingClientRect();
+            const border = document.querySelector('[data-html-previewer-reading-overlay] > div')?.getBoundingClientRect();
+            return !!border && Math.abs(border.width - formula.width) < 1 && Math.abs(border.height - formula.height) < 1;
+        })()
+        """) as? Bool
+        XCTAssertEqual(outlined, true, "Canonical math matches should reveal and outline the complete visible formula.")
+        try await assertMarkdownSearch("cafe", count: 1, session: session)
+        try await assertMarkdownSearch("Copy code", count: 0, session: session)
+        try await assertMarkdownSearch("let answer", count: 1, session: session)
+        let source = try await session.webView.evaluateJavaScript("document.querySelector('code').textContent") as? String
+        XCTAssertEqual(source, "let answer = 42", "Search must preserve the exact highlighted code for copying.")
+        let overlayRemoved = try await session.webView.evaluateJavaScript("!document.querySelector('[data-html-previewer-reading-overlay]')") as? Bool
+        if #available(iOS 17.2, *) { XCTAssertEqual(overlayRemoved, true) }
+    }
+
+    func testMarkdownSearchSpansInlineFormulaBoundariesWithoutInventingWhitespace() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("markdown-inline-search.html")
+        func formula(_ source: String) -> String {
+            "<span class=\"math\" data-math-display=\"false\" data-reading-atomic data-reading-text=\"\(source)\"><span aria-hidden=\"true\">\(source)</span><span style=\"position:absolute;width:1px;height:1px;overflow:hidden\">\(source)</span></span>"
+        }
+        try fixture("""
+        <div data-markdown-block="markdown-block-0"><h1>Inline mathematics</h1></div>
+        <div data-markdown-block="markdown-block-1"><p id="spaced">Measure \(formula("x")) now.</p></div>
+        <div data-markdown-block="markdown-block-2"><p id="compact">a\(formula("x"))b</p></div>
+        <div data-markdown-block="markdown-block-3"><p id="several">Start \(formula("x")) plus \(formula("y")) end</p></div>
+        """).write(to: url, atomically: true, encoding: .utf8)
+        let session = try await ReadingTestSession(entryURL: url, documentKind: .markdown)
+        defer { session.close() }
+        try await session.load(url)
+        let originalBody = try await session.webView.evaluateJavaScript("document.body.innerHTML") as? String
+        for query in ["Measure x", "x now", "Measure x now", "axb", "Start x plus y end"] {
+            try await assertMarkdownSearch(query, count: 1, session: session)
+            let outlined = try await session.webView.evaluateJavaScript("""
+            (() => {
+                const parts = Array.from(document.querySelectorAll('[data-html-previewer-reading-overlay] > div'));
+                return parts.length >= 2 && parts.every(part => {
+                    const rect = part.getBoundingClientRect(); return rect.width > 0 && rect.height > 0;
+                });
+            })()
+            """) as? Bool
+            XCTAssertEqual(outlined, true, "The mixed phrase \(query) must visibly highlight both its text and formula.")
+        }
+        try await assertMarkdownSearch("x", count: 3, session: session)
+        try await assertMarkdownSearch("a x b", count: 0, session: session)
+        let unchangedBody = try await session.webView.evaluateJavaScript("document.body.innerHTML") as? String
+        XCTAssertEqual(unchangedBody, originalBody, "Cross-formula search must not change the rendered math or surrounding text.")
+    }
+
+    private func assertMarkdownSearch(_ query: String, count: Int, session: ReadingTestSession,
+                                      file: StaticString = #filePath, line: UInt = #line) async throws {
+        session.state.query = query
+        session.reader.synchronize()
+        // Flush this request through the same isolated world before checking a
+        // zero-result query; resetting the Swift count is not completion proof.
+        let value = try await session.webView.callDocumentJavaScript(
+            "return globalThis.__htmlPreviewReading.snapshot();", contentWorld: HTMLReadingController.contentWorld
+        )
+        let deadline = ContinuousClock.now + .seconds(10)
+        while session.state.matchCount != count || session.state.selectedMatch != (count > 0 ? 0 : -1) {
+            guard ContinuousClock.now < deadline else {
+                let current = try? await session.webView.callDocumentJavaScript(
+                    "return globalThis.__htmlPreviewReading.snapshot();", contentWorld: HTMLReadingController.contentWorld
+                )
+                XCTFail("Search \(query) expected \(count), got \(session.state.matchCount); initial DOM: \(String(describing: value)); current DOM: \(String(describing: current))", file: file, line: line)
+                throw ReadingTestError.timedOut
+            }
+            try await Task.sleep(for: .milliseconds(30))
+        }
+    }
+
+    func testMarkdownStructuralPositionSurvivesTypographyReflowAndRelaunch() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("markdown-position.html")
+        try fixture((0..<10).map { index in
+            """
+            <section data-markdown-block="markdown-block-\(index)" style="height:calc(700px * var(--reader-scale, 1))">
+              <h2 data-reading-heading-id="markdown-block-\(index)">Chapter \(index)</h2><p>Reader block \(index)</p>
+            </section>
+            """
+        }.joined()).write(to: url, atomically: true, encoding: .utf8)
+        let saved = ReadingPosition(anchorID: "markdown-block-4@0.3", progress: 0.45)
+        let session = try await ReadingTestSession(entryURL: url, position: saved, documentKind: .markdown)
+        defer { session.close() }
+        try await session.load(url)
+        let initial = try XCTUnwrap(MarkdownReadingIndex.StoredAnchor(session.state.position?.anchorID))
+        XCTAssertEqual(initial.blockID, "markdown-block-4")
+        XCTAssertEqual(initial.fraction, 0.3, accuracy: 0.015)
+
+        session.state.query = "Reader block"
+        session.reader.synchronize()
+        try await waitUntil { session.state.matchCount == 10 }
+        session.state.navigate(to: .heading("markdown-block-4"))
+        session.reader.synchronize()
+        try await waitUntil { (session.state.position?.progress ?? 0) > 0.35 }
+        _ = try await session.webView.evaluateJavaScript("window.scrollBy(0, 210)")
+        try await waitUntil {
+            guard let anchor = MarkdownReadingIndex.StoredAnchor(session.state.position?.anchorID) else { return false }
+            return anchor.blockID == "markdown-block-4" && abs(anchor.fraction - 198.0 / 700) < 0.015
+        }
+        let before = try XCTUnwrap(MarkdownReadingIndex.StoredAnchor(session.state.position?.anchorID))
+        try await session.reader.applyMarkdownAppearance(fontScale: 1.6, lineSpacing: 8, baseSize: 20)
+        let after = try XCTUnwrap(MarkdownReadingIndex.StoredAnchor(session.state.position?.anchorID))
+        XCTAssertEqual(after.blockID, before.blockID)
+        XCTAssertEqual(after.fraction, before.fraction, accuracy: 0.015)
+        XCTAssertEqual(session.state.matchCount, 10)
+        XCTAssertEqual(session.state.query, "Reader block")
+        let restoredPosition = try XCTUnwrap(session.state.position)
+        session.close()
+
+        let restored = try await ReadingTestSession(entryURL: url, position: restoredPosition, documentKind: .markdown)
+        defer { restored.close() }
+        try await restored.load(url)
+        let reopened = try XCTUnwrap(MarkdownReadingIndex.StoredAnchor(restored.state.position?.anchorID))
+        XCTAssertEqual(reopened.blockID, after.blockID)
+        XCTAssertEqual(reopened.fraction, after.fraction, accuracy: 0.015)
+        restored.state.navigate(to: .beginning)
+        restored.reader.synchronize()
+        try await waitUntil { (restored.state.position?.progress ?? 1) < 0.01 }
+    }
+
     private func fixture(_ body: String) -> String {
         """
-        <!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
+        <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
         <style>body { margin: 16px; font: 18px sans-serif; } h1, h2 { margin: 0 0 16px; }</style>
         </head><body>\(body)</body></html>
         """
@@ -375,14 +526,14 @@ private final class ReadingTestSession: NSObject, WKNavigationDelegate {
     private var continuation: CheckedContinuation<Void, Error>?
     private var timeout: Task<Void, Never>?
 
-    init(entryURL: URL, position: ReadingPosition? = nil) async throws {
+    init(entryURL: URL, position: ReadingPosition? = nil, documentKind: HTMLReadingController.DocumentKind = .html) async throws {
         state = DocumentReadingState(position: position)
         let configuration = try await HTMLPreviewConfiguration.make(mode: .safePreview)
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .first { $0.activationState == .foregroundActive }, "Reading tests require an active host scene.")
         webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 390, height: 600), configuration: configuration)
-        reader = HTMLReadingController(state: state, entryURL: entryURL)
+        reader = HTMLReadingController(state: state, entryURL: entryURL, documentKind: documentKind)
         window = UIWindow(windowScene: scene)
         previousKeyWindow = scene.windows.first { $0.isKeyWindow }
         super.init()

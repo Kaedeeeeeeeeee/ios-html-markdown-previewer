@@ -27,7 +27,13 @@ struct PDFExportService {
     }
 
     func export(markdown: MarkdownDocument, title: String) async throws -> URL {
-        let configuration = try await HTMLPreviewConfiguration.make(mode: .safePreview)
+        let enhanced = markdown.requiresEnhancedRendering
+        let configuration: WKWebViewConfiguration
+        if enhanced {
+            configuration = try await MarkdownWebResources.makeConfiguration()
+        } else {
+            configuration = try await HTMLPreviewConfiguration.make(mode: .safePreview)
+        }
         let webView = WKWebView(frame: Self.pageBounds, configuration: configuration)
         let loader = PDFWebViewLoader()
         webView.navigationDelegate = loader
@@ -36,9 +42,12 @@ struct PDFExportService {
             webView.navigationDelegate = nil
         }
         try await loader.load(
-            html: MarkdownPrintHTMLRenderer().render(markdown, title: title),
+            html: enhanced
+                ? MarkdownEnhancedHTMLRenderer().render(markdown, title: title, forPrinting: true)
+                : MarkdownPrintHTMLRenderer().render(markdown, title: title),
             in: webView
         )
+        if enhanced { try await MarkdownWebResources.waitUntilReady(in: webView) }
         try Task.checkCancellation()
         return try await export(webView: webView, title: title)
     }

@@ -1,0 +1,9 @@
+"pages" = "包内页面";
+"search" = "搜索页面";
+"back" = "返回上一页";
+"entry" = "入口页";
+"current" = "当前页";
+"noResults" = "没有匹配的页面";
+"noResultsDetail" = "试试其他页面标题或文件名。";
+"description" = "可打开包内任意页面，每一页的阅读位置都会保留。";
+"count" = "%ld 个页面";
