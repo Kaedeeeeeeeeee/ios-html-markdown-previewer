@@ -3,6 +3,9 @@ HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Mark
 当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 .html、.htm、.md、.markdown 或 .zip 文件时，可以直接在 iPhone 或 iPad 上查看。
 
 功能：
+- Markdown 代码语法高亮与一键复制
+- Markdown 中的 LaTeX 风格数学公式和 Mermaid 流程图，支持离线显示
+- 多页面 ZIP 报告支持搜索和切换 HTML、Markdown 页面
 - 新导入的 HTML 默认使用交互模式进行本地预览
 - 支持响应式布局、内嵌图形与 CSS 动画的丰富 HTML 渲染
 - 支持表格的 Markdown 阅读视图，宽表格可横向滚动

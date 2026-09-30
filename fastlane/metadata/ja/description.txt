@@ -3,6 +3,9 @@ HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端�
 「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから .html、.htm、.md、.markdown、.zip ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
 
 主な機能:
+- Markdownコードの構文ハイライトとワンタップコピー
+- Markdown内のLaTeX形式の数式とMermaid図をオフラインで表示
+- 複数ページのZIP内でHTML・Markdownページを検索して切り替え
 - 新しく取り込むHTMLを標準でインタラクティブモードで表示
 - レスポンシブ表示、埋め込みグラフィック、CSSアニメーションを含むリッチなHTML表示
 - 表に対応したMarkdown閲覧ビュー。横に長い表はスクロール可能
