@@ -1,0 +1,13 @@
+HTML Previewer is a paid local viewer for user-selected HTML, Markdown and ZIP report packages. No account, subscription or in-app purchase is required.
+
+Version 1.5 adds offline Markdown syntax highlighting, exact code copying, LaTeX-style mathematics and Mermaid diagrams, plus navigation between HTML and Markdown pages inside ZIP packages.
+
+Suggested review steps:
+1. Open Reading notes (Markdown) from Samples. Use Reading Tools > Table of Contents to jump to Code that reads clearly, A little mathematics or From idea to diagram. Code has a Copy Code button; equations and diagrams render without network access. Document search and PDF export include the new content.
+2. Open Reading week (ZIP). Tap the current-page bar above the report to open Package Pages. Search by title or path and select Reading in detail or Notes & method. Local links also switch pages; the package back arrow returns to the previous page. Reopen the ZIP to restore its last selected page and each page's reading position.
+3. Open Weekend plan (HTML). New HTML opens in Interactive mode. Select Safe Preview to block page scripts and external network resources. Both modes block external navigation and form navigation.
+4. Use Share File to export the current page as PDF or share the original file. ZIP original sharing includes the entire package with its local resources.
+
+Markdown code, math and diagram rendering uses libraries and fonts bundled with the app. User-authored HTML in Markdown is escaped; enhanced Markdown does not load external network resources. Mathematical notation supports a LaTeX math subset, rather than complete .tex documents.
+
+The app has no analytics, advertising or tracking SDKs and does not upload user-selected files to an app backend. In Interactive HTML mode, the document's own scripts and external resources may make network requests. iOS document type registration supports opening files from Files and other apps; menu visibility depends on iOS and the source app.

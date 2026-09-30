@@ -1,6 +1,5 @@
-- Full-screen reading gives your documents more room.
-- Adjust HTML zoom and Markdown text size and line spacing. Your display settings are remembered.
-- Open local Markdown images in a full-screen viewer with pinch-to-zoom.
-- Find files by name and filter your library by HTML, Markdown, or ZIP.
-- Pin frequently used files and change their display names without renaming the original files.
-- When importing a duplicate, choose to update the existing file, keep both copies, or cancel.
+- Code blocks now support syntax highlighting and exact one-tap copying.
+- Render LaTeX-style math and Mermaid diagrams in Markdown, entirely offline.
+- Search equations and diagrams, and include them in PDF exports.
+- Browse HTML and Markdown pages within ZIP packages using a searchable page list and back navigation.
+- ZIP packages remember the last page and each page’s reading position.

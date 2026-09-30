@@ -14,13 +14,13 @@
       },
       "03-markdown-preview": {
         "eyebrow": "MARKDOWN READER",
-        "title": "Markdown, made readable",
-        "subtitle": "Clean typography for notes, tables, lists, and code."
+        "title": "Code, math & diagrams",
+        "subtitle": "Highlight code. Render equations and diagrams offline."
       },
       "04-zip-report-preview": {
         "eyebrow": "ZIP REPORTS",
-        "title": "Reports, fully intact",
-        "subtitle": "Keep local HTML, CSS, and images together."
+        "title": "Every page, one package",
+        "subtitle": "Browse HTML and Markdown pages inside your ZIP."
       },
       "05-settings": {
         "eyebrow": "YOUR PREVIEW, YOUR CHOICE",
@@ -44,13 +44,13 @@
       },
       "03-markdown-preview": {
         "eyebrow": "MARKDOWN 阅读",
-        "title": "Markdown，阅读更舒服",
-        "subtitle": "标题、表格、列表与代码，层次清晰"
+        "title": "代码、公式与流程图",
+        "subtitle": "代码高亮，公式与流程图离线呈现"
       },
       "04-zip-report-preview": {
         "eyebrow": "ZIP 报告",
-        "title": "ZIP 报告，完整还原",
-        "subtitle": "本地 HTML、CSS 与图片一起打开"
+        "title": "多页报告，一个 ZIP",
+        "subtitle": "搜索、切换包内的 HTML 与 Markdown 页面"
       },
       "05-settings": {
         "eyebrow": "预览由你选择",
@@ -74,13 +74,13 @@
       },
       "03-markdown-preview": {
         "eyebrow": "MARKDOWN リーダー",
-        "title": "Markdownを、読みやすく",
-        "subtitle": "見出し・表・リスト・コードを美しく整形"
+        "title": "コードも、数式も、図も",
+        "subtitle": "構文ハイライト。数式と図をオフラインで表示。"
       },
       "04-zip-report-preview": {
         "eyebrow": "ZIP レポート",
-        "title": "ZIPレポートを、そのまま再現",
-        "subtitle": "ローカルHTML・CSS・画像をまとめて表示"
+        "title": "すべてのページを、ひとつに",
+        "subtitle": "ZIP内のHTML・Markdownを検索して切り替え。"
       },
       "05-settings": {
         "eyebrow": "プレビューを選べる",
