@@ -206,7 +206,7 @@ private struct HTMLWebView: UIViewRepresentable {
             // WebKit establishes its natural fit scale after viewport layout.
             // Preserve that baseline for pages both with and without viewport meta.
             webView.callDocumentJavaScript(
-                "await new Promise(resolve => { setTimeout(resolve, 250); requestAnimationFrame(() => requestAnimationFrame(resolve)); }); return null;",
+                "await new Promise(resolve => setTimeout(resolve, 250)); await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))); return null;",
                 in: nil, in: HTMLReadingController.contentWorld
             ) { [weak self] _ in
                 guard let self, self.navigationGeneration == generation else { return }
