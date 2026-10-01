@@ -19,6 +19,7 @@ Carthage/Build/
 
 # macOS
 .DS_Store
+node_modules/
 
 # App artifacts
 *.ipa

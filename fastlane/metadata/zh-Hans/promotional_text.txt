@@ -1,1 +1,1 @@
-在 iPhone 和 iPad 上阅读 HTML、Markdown 和 ZIP 报告。文内搜索、标题目录、记住阅读位置，让长文更好读；粘贴文本即可预览，也能将文档导出为 PDF。
+在 iPhone 和 iPad 上阅读 HTML、Markdown、YAML 和 ZIP 报告。展开 YAML 结构、搜索字段、查看高亮源码，文件在设备本地处理。

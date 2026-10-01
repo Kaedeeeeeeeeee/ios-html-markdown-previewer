@@ -6,8 +6,8 @@ options:
   createIntermediateGroups: true
 settings:
   base:
-    CURRENT_PROJECT_VERSION: 10
-    MARKETING_VERSION: 1.5
+    CURRENT_PROJECT_VERSION: 11
+    MARKETING_VERSION: 1.6
     SWIFT_VERSION: 6.0
 packages:
   ZIPFoundation:
@@ -25,7 +25,11 @@ targets:
       - path: HTMLMarkdownPreviewer
         excludes:
           - Resources/Markdown
+          - Resources/YAML
       - path: HTMLMarkdownPreviewer/Resources/Markdown
+        type: folder
+        buildPhase: resources
+      - path: HTMLMarkdownPreviewer/Resources/YAML
         type: folder
         buildPhase: resources
     dependencies:

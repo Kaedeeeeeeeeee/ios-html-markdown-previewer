@@ -70,6 +70,9 @@ struct DocumentPreviewView: View {
             case .rawText(let text):
                 RawTextPreview(text: text)
                     .id(generation)
+            case .yaml(let fileURL):
+                YAMLPreviewView(fileURL: fileURL, reading: reading)
+                    .id(generation)
             case .unsupported:
                 ContentUnavailableView(
                     AppStrings.Errors.previewUnavailableTitle,
@@ -339,6 +342,8 @@ struct DocumentPreviewView: View {
                         mode: previewMode.htmlPreviewMode
                     )
                 }
+            case .yaml:
+                state = .yaml(fileURL: entryFileURL)
             case .zipPackage, .plainText, .unsupported:
                 state = .unsupported
             }
@@ -593,6 +598,7 @@ private enum PreviewContentState {
     case markdown(MarkdownDocument)
     case html(fileURL: URL, readAccessRootURL: URL, mode: HTMLPreviewMode)
     case rawText(String)
+    case yaml(fileURL: URL)
     case unsupported
     case failed(String)
 }

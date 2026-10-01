@@ -1,5 +1,5 @@
-- Code blocks now support syntax highlighting and exact one-tap copying.
-- Render LaTeX-style math and Mermaid diagrams in Markdown, entirely offline.
-- Search equations and diagrams, and include them in PDF exports.
-- Browse HTML and Markdown pages within ZIP packages using a searchable page list and back navigation.
-- ZIP packages remember the last page and each page’s reading position.
+- Open .yaml and .yml files directly, or paste YAML text for an offline preview.
+- Browse nested objects and arrays, search fields and values, and copy values or field paths.
+- Read syntax-highlighted source with line numbers and jump from a field to its source.
+- Switch between multiple YAML documents and locate syntax errors by line and column.
+- Includes an app configuration sample and remembers your YAML reading position.

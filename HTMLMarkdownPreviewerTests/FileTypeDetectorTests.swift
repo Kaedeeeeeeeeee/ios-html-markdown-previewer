@@ -9,6 +9,8 @@ final class FileTypeDetectorTests: XCTestCase {
             ("legacy.HTM", .html),
             ("README.md", .markdown),
             ("notes.MARKDOWN", .markdown),
+            ("app.yaml", .yaml),
+            ("config.YML", .yaml),
             ("package.zip", .zipPackage)
         ]
 
@@ -32,12 +34,15 @@ final class FileTypeDetectorTests: XCTestCase {
         XCTAssertEqual(FileTypeDetector.documentType(for: .html), .html)
         XCTAssertEqual(FileTypeDetector.documentType(for: SupportedDocumentTypes.markdown), .markdown)
         XCTAssertEqual(FileTypeDetector.documentType(for: .zip), .zipPackage)
+        XCTAssertEqual(FileTypeDetector.documentType(for: SupportedDocumentTypes.yaml), .yaml)
+        XCTAssertEqual(FileTypeDetector.documentType(for: try! XCTUnwrap(UTType(filenameExtension: "yml"))), .yaml)
     }
 
     func testImportPickerScopesSeparateDocumentAndZipEntries() {
         XCTAssertTrue(ImportPickerScope.previewDocument.allowedContentTypes.contains(.html))
         XCTAssertTrue(ImportPickerScope.previewDocument.allowedContentTypes.contains(SupportedDocumentTypes.markdown))
         XCTAssertFalse(ImportPickerScope.previewDocument.allowedContentTypes.contains(.zip))
+        XCTAssertTrue(ImportPickerScope.previewDocument.allowedContentTypes.contains(SupportedDocumentTypes.yaml))
 
         XCTAssertEqual(ImportPickerScope.zipPackage.allowedContentTypes, [.zip])
         XCTAssertTrue(SupportedDocumentTypes.all.contains(.zip))

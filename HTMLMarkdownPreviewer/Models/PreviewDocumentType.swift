@@ -3,6 +3,7 @@ import Foundation
 enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable, Sendable {
     case html
     case markdown
+    case yaml
     case zipPackage
     case plainText
     case unsupported
@@ -17,6 +18,8 @@ enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable,
             AppStrings.DocumentTypes.html
         case .markdown:
             AppStrings.DocumentTypes.markdown
+        case .yaml:
+            "YAML"
         case .zipPackage:
             AppStrings.DocumentTypes.zip
         case .plainText:
@@ -32,6 +35,8 @@ enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable,
             "chevron.left.forwardslash.chevron.right"
         case .markdown:
             "text.alignleft"
+        case .yaml:
+            "list.bullet.indent"
         case .zipPackage:
             "archivebox"
         case .plainText:

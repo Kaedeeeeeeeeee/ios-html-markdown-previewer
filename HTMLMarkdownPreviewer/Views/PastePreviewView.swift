@@ -32,7 +32,7 @@ struct PastePreviewView: View {
                         .font(.system(.body, design: .monospaced))
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                        .frame(minHeight: 220)
+                        .frame(height: 220)
                         .accessibilityLabel(PasteStrings.content)
                         .accessibilityIdentifier("paste-text-editor")
                         .overlay(alignment: .topLeading) {

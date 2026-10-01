@@ -3,6 +3,26 @@ import XCTest
 @testable import HTMLMarkdownPreviewer
 
 final class PastedDocumentImportServiceTests: XCTestCase {
+    func testYAMLFencesManualFormatAndOriginalCommentPreservation() throws {
+        let yaml = "# 保留注释\napp:\n  port: 8080\n  name: Demo\n"
+        XCTAssertEqual(PastedDocumentImportService.suggestedFormat(for: "```yml\n\(yaml)```"), .yaml)
+        // Ordinary prose and Markdown remain Markdown; plain YAML is explicitly selected.
+        XCTAssertEqual(PastedDocumentImportService.suggestedFormat(for: "Note: read tomorrow"), .markdown)
+        let prepared = try PastedDocumentImportService.prepare(text: yaml, name: "配置.yml", format: .yaml)
+        XCTAssertEqual(prepared.content, yaml)
+        XCTAssertEqual(prepared.filename, "配置.yaml")
+        XCTAssertEqual(try PastedDocumentImportService.prepare(text: "```yaml\napp: demo\n```", name: "Config", format: .yaml).content, "app: demo")
+
+        let workspace = try makeWorkspace()
+        defer { try? FileManager.default.removeItem(at: workspace) }
+        let store = DocumentLibraryStore(rootURL: workspace.appendingPathComponent("library"))
+        let document = try PastedDocumentImportService(store: store).importDocument(text: yaml, name: "配置.yml", format: .yaml)
+        XCTAssertEqual(document.type, .yaml)
+        XCTAssertEqual(document.preferredPreviewMode, .safePreview)
+        XCTAssertEqual(try String(contentsOf: store.originalFileURL(for: document), encoding: .utf8), yaml)
+        XCTAssertEqual(try store.loadDocuments(), [document])
+    }
+
     func testSuggestsHTMLForDocumentsFragmentsAndWholeHTMLFences() {
         let htmlExamples = [
             "<!DOCTYPE html><html><body>Report</body></html>",

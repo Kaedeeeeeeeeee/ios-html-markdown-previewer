@@ -14,7 +14,7 @@ on:
         type: boolean
         default: true
       clean_screenshot_duplicates:
-        description: "Remove exact duplicate screenshots and require five images per locale and device family."
+        description: "Remove exact duplicate screenshots and require six images per locale and device family."
         required: false
         type: boolean
         default: true
@@ -35,8 +35,8 @@ jobs:
     env:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
       APP_STORE_CONNECT_APP_ID: "6785794966"
-      APP_STORE_CONNECT_VERSION_STRING: "1.5"
-      APP_STORE_CONNECT_BUILD_NUMBER: "10"
+      APP_STORE_CONNECT_VERSION_STRING: "1.6"
+      APP_STORE_CONNECT_BUILD_NUMBER: "11"
       APP_STORE_CONNECT_PLATFORM: IOS
       APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES: ${{ inputs.clean_screenshot_duplicates }}
       APP_STORE_CONNECT_SUBMIT_FOR_REVIEW: ${{ inputs.submit_for_review }}
@@ -178,8 +178,8 @@ jobs:
             cp -R "docs/app-store-screenshots/$locale" "$SCREENSHOT_STAGING/$locale"
           done
           screenshot_count="$(find "$SCREENSHOT_STAGING" -type f -name '*.png' | wc -l | tr -d ' ')"
-          if [[ "$screenshot_count" != "30" ]]; then
-            echo "Expected 30 localized App Store screenshots, found $screenshot_count." >&2
+          if [[ "$screenshot_count" != "36" ]]; then
+            echo "Expected 36 localized App Store screenshots, found $screenshot_count." >&2
             exit 1
           fi
           echo "FASTLANE_SCREENSHOTS_PATH=$SCREENSHOT_STAGING" >> "$GITHUB_ENV"

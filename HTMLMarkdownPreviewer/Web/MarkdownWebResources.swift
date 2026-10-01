@@ -6,6 +6,14 @@ import WebKit
 enum MarkdownWebResources {
     static let origin = "markdown-resource://bundle"
 
+    /// Resolve both existing paths at navigation time. A device's temporary
+    /// directory can use /private/var while WebKit navigates through /var.
+    static func isEntryNavigation(_ url: URL, entryURL: URL) -> Bool {
+        guard url.isFileURL, url.host == nil || url.host == "" || url.host == "localhost" else { return false }
+        return url.standardizedFileURL.resolvingSymlinksInPath().path
+            == entryURL.standardizedFileURL.resolvingSymlinksInPath().path
+    }
+
     @MainActor
     static func makeConfiguration() async throws -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()

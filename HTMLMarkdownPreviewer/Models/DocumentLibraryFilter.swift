@@ -1,7 +1,7 @@
 import Foundation
 
 enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
-    case all, html, markdown, zip
+    case all, html, markdown, yaml, zip
 
     var id: String { rawValue }
 
@@ -10,6 +10,7 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .all: LibraryStrings.allFiles
         case .html: PreviewDocumentType.html.displayName
         case .markdown: PreviewDocumentType.markdown.displayName
+        case .yaml: PreviewDocumentType.yaml.displayName
         case .zip: PreviewDocumentType.zipPackage.displayName
         }
     }
@@ -19,6 +20,7 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .all: "doc.on.doc"
         case .html: PreviewDocumentType.html.systemImage
         case .markdown: PreviewDocumentType.markdown.systemImage
+        case .yaml: PreviewDocumentType.yaml.systemImage
         case .zip: PreviewDocumentType.zipPackage.systemImage
         }
     }
@@ -28,6 +30,7 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .all: true
         case .html: document.type == .html
         case .markdown: document.type == .markdown
+        case .yaml: document.type == .yaml
         case .zip: document.type == .zipPackage
         }
     }

@@ -126,6 +126,7 @@ capture_set() {
   capture "$device" "$output_dir" "$prefix-03-markdown-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=markdown
   capture "$device" "$output_dir" "$prefix-04-zip-report-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=zipPackage
   capture "$device" "$output_dir" "$prefix-05-settings" "$language" "$apple_locale" --screenshot-reset-library --screenshot-settings
+  capture "$device" "$output_dir" "$prefix-06-yaml-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=yaml
 }
 
 for locale in $CAPTURE_LOCALES; do

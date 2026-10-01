@@ -1,8 +1,9 @@
-HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Markdown 和 ZIP 报告包。
+HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Markdown、YAML 和 ZIP 报告包。
 
-当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 .html、.htm、.md、.markdown 或 .zip 文件时，可以直接在 iPhone 或 iPad 上查看。
+当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 .html、.htm、.md、.markdown、.yaml、.yml 或 .zip 文件时，可以直接在 iPhone 或 iPad 上查看。
 
 功能：
+- YAML 结构视图：展开对象与数组、搜索字段和值、源码高亮、多文档切换与语法错误定位
 - Markdown 代码语法高亮与一键复制
 - Markdown 中的 LaTeX 风格数学公式和 Mermaid 流程图，支持离线显示
 - 多页面 ZIP 报告支持搜索和切换 HTML、Markdown 页面
@@ -13,11 +14,11 @@ HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Mark
 - 将 HTML 和 Markdown 预览导出为 PDF
 - HTML 和 Markdown 文内搜索、匹配结果切换与标题目录
 - 记住阅读位置，再次打开接着读
-- 粘贴 HTML 或 Markdown 文本，创建预览并保存到最近文件
+- 粘贴 HTML、Markdown 或 YAML 文本，创建预览并保存到最近文件
 - 最近文件列表
 - 原始文本备用查看
 - 文件详情
-- 内置 HTML、Markdown、ZIP 示例
+- 内置 HTML、Markdown、YAML、ZIP 示例
 
 隐私与商业模式：
 - 文件在设备本地处理

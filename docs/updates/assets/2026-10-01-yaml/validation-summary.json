@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-01",
+  "status": "local simulator validation passed",
+  "runtimeManifest": {
+    "schemaVersion": 1,
+    "global": "YAMLRuntime",
+    "target": "JavaScriptCore / iOS 17+",
+    "dependencies": [
+      {
+        "name": "yaml",
+        "version": "2.9.1",
+        "license": "ISC",
+        "source": "github:eemeli/yaml",
+        "tarball": "https://registry.npmjs.org/yaml/-/yaml-2.9.1.tgz",
+        "integrity": "sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw=="
+      },
+      {
+        "name": "highlight.js",
+        "version": "11.12.0",
+        "license": "BSD-3-Clause",
+        "source": {
+          "type": "git",
+          "url": "git://github.com/highlightjs/highlight.js.git"
+        },
+        "tarball": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.12.0.tgz",
+        "integrity": "sha512-nbfWpyRMcMrPMmDwJB+dhX/eiaPKtc2RB+0QZskqJ3WjRA/FDS0e9hZrx8EC/lbEv8gXy98FcDbNa/dspAaJMg=="
+      }
+    ],
+    "sourceSHA256": "ac1b6213253721c40aa216296acf426c9e7d68af2e3d280bc5f2031c2b942ef9",
+    "lockSHA256": "c783393b2efccbfc3b1fc2326ecb2a44ecc08486e6528b26898c47696f5e0cf4",
+    "assets": [
+      {
+        "path": "yaml-runtime.min.js",
+        "bytes": 123918,
+        "sha256": "a36eb431dbc7313c69bbb76d1d592ce484d339adfd012a77c611610e644af5dc"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "bundle": "DerivedData/YAMLFeature/yaml-parser-final.xcresult",
+      "coverage": "165 full unit/integration cases plus 2 localized UI cases after alias validation fix",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 167,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1790787271.314,
+        "passedTests": 167,
+        "result": "Passed",
+        "runtimeWarnings": [
+          {
+            "issueType": "Runtime Warning",
+            "message": "Thread running at User-interactive quality-of-service class waiting on a lower QoS thread running at Default quality-of-service class. Investigate ways to avoid priority inversions",
+            "sourceURL": "file:///Users/user/html_preview/HTMLMarkdownPreviewerTests/HTMLReadingTests.swift"
+          }
+        ],
+        "skippedTests": 0,
+        "startTime": 1790787050.516,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [
+          {
+            "category": "Longest Test Runs",
+            "impact": "21% of duration",
+            "text": "4 longest test runs with outlier durations exceeding 3.61s (three standard deviations)"
+          }
+        ],
+        "totalTestCount": 167
+      }
+    },
+    {
+      "bundle": "DerivedData/YAMLFeature/yaml-ipad-regression.xcresult",
+      "coverage": "8 YAML service cases plus 6 YAML UI cases after alias validation fix",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "7A3C8A64-C67B-41CC-8F7F-48BCD635C99C",
+              "deviceName": "HTML Previewer QA iPad",
+              "modelName": "iPad Air 11-inch (M3)",
+              "osBuildNumber": "23F77",
+              "osVersion": "26.5",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 14,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1790788207.826,
+        "passedTests": 14,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1790787983.159,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [],
+        "totalTestCount": 14
+      }
+    },
+    {
+      "bundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+      "coverage": "6 iPhone YAML UI cases after final scroll/restoration fix",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 6,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1790788691.458,
+        "passedTests": 6,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1790788423.089,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [],
+        "totalTestCount": 6
+      }
+    },
+    {
+      "bundle": "DerivedData/YAMLFeature/yaml-ipad-ui-verified.xcresult",
+      "coverage": "6 iPad YAML UI cases after final scroll/restoration fix",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "7A3C8A64-C67B-41CC-8F7F-48BCD635C99C",
+              "deviceName": "HTML Previewer QA iPad",
+              "modelName": "iPad Air 11-inch (M3)",
+              "osBuildNumber": "23F77",
+              "osVersion": "26.5",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 6,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1790789027.077,
+        "passedTests": 6,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1790788804.163,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [],
+        "totalTestCount": 6
+      }
+    }
+  ],
+  "javascriptParserCases": {
+    "passed": 6,
+    "failed": 0,
+    "command": "npm test --prefix scripts/vendor-yaml"
+  },
+  "staticChecks": [
+    "python3 scripts/audit-yaml-assets.py",
+    "scripts/portable-release-materials-audit.sh",
+    "plutil -lint (Info.plist and four YAML.strings tables)",
+    "git diff --check"
+  ],
+  "fileImportEvidence": "file-import-evidence.json",
+  "limitations": [
+    "Simulator only; no physical-device or release validation",
+    "Native Files roundtrip used On My iPad root; Save disabled in a newly created simulator subdirectory"
+  ],
+  "notes": [
+    "Initial long combined tool calls exceeded the 300-second MCP wait, but owned xcodebuild processes finished and xcresult terminal summaries confirmed passing results. Final individual UI calls completed successfully."
+  ]
+}

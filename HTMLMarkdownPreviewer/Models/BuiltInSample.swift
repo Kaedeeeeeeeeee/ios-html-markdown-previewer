@@ -3,6 +3,7 @@ import Foundation
 enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
     case html
     case markdown
+    case yaml
     case zipPackage
 
     var id: String {
@@ -15,6 +16,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             AppStrings.Samples.htmlTitle
         case .markdown:
             AppStrings.Samples.markdownTitle
+        case .yaml:
+            YAMLStrings.sampleTitle
         case .zipPackage:
             AppStrings.Samples.zipTitle
         }
@@ -26,6 +29,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             AppStrings.Samples.htmlSubtitle
         case .markdown:
             AppStrings.Samples.markdownSubtitle
+        case .yaml:
+            YAMLStrings.sampleSubtitle
         case .zipPackage:
             AppStrings.Samples.zipSubtitle
         }
@@ -37,6 +42,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             "weekend-plan.html"
         case .markdown:
             "reading-notes.md"
+        case .yaml:
+            "app-config.yaml"
         case .zipPackage:
             "reading-week.zip"
         }
@@ -48,6 +55,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             .html
         case .markdown:
             .markdown
+        case .yaml:
+            .yaml
         case .zipPackage:
             .zipPackage
         }

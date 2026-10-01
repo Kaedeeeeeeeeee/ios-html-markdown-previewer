@@ -6,6 +6,22 @@ import XCTest
 
 @MainActor
 final class MarkdownEnhancementTests: XCTestCase {
+    func testEntryNavigationAcceptsFileAliasesButRejectsOtherPagesAndRemoteURLs() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let directory = root.appendingPathComponent("pages")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let entry = directory.appendingPathComponent("index.html")
+        try "Local Markdown".write(to: entry, atomically: true, encoding: .utf8)
+        let alias = root.appendingPathComponent("alias")
+        try FileManager.default.createSymbolicLink(at: alias, withDestinationURL: directory)
+        let aliasEntry = alias.appendingPathComponent("index.html")
+        XCTAssertTrue(MarkdownWebResources.isEntryNavigation(entry, entryURL: aliasEntry))
+        XCTAssertTrue(MarkdownWebResources.isEntryNavigation(aliasEntry, entryURL: entry))
+        XCTAssertFalse(MarkdownWebResources.isEntryNavigation(directory.appendingPathComponent("other.html"), entryURL: entry))
+        XCTAssertFalse(MarkdownWebResources.isEntryNavigation(URL(string: "https://example.com\(entry.path)")!, entryURL: entry))
+    }
+
     func testOfflineMathLoadsBundledFontsAndProducesAccessibleInlineAndDisplayOutput() async throws {
         let document = MarkdownRenderService().render(markdown: #"""
         Inline $a^2 + b^2 = c^2$ remains readable.

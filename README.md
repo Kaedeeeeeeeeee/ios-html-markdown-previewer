@@ -1,6 +1,6 @@
 # HTML Previewer
 
-Local-first iOS/iPadOS app for previewing HTML, Markdown, and zipped HTML report packages.
+Local-first iOS/iPadOS app for previewing HTML, Markdown, YAML, and zipped HTML report packages.
 
 The product and implementation plan is in `ios-html-markdown-previewer-plan.md`.
 
@@ -8,16 +8,17 @@ The product and implementation plan is in `ios-html-markdown-previewer-plan.md`.
 
 MVP implementation is complete for the local core flow:
 
-- Document type declarations for HTML, Markdown, and ZIP.
-- Separate app file picker entries for HTML/Markdown files and ZIP report packages.
+- Document type declarations for HTML, Markdown, YAML (`.yaml` / `.yml`), and ZIP.
+- Separate app file picker entries for previewable documents and ZIP report packages.
 - New HTML imports open in Interactive WKWebView preview with page JavaScript and external resources enabled. Safe Preview remains available to block page scripts and external HTTP/HTTPS resources; both modes block external navigation and form navigation.
 - Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling. Documents with code, mathematics, or Mermaid diagrams use an offline enhanced reader.
 - Syntax highlighting for 19 code languages and exact one-tap copying; inline and display LaTeX math; Mermaid diagrams. Bundled libraries and fonts require no network connection.
+- Native YAML structure/source views with collapsible objects and arrays, scalar type labels, source highlighting and line numbers, field/source search, multiple-document selection, and syntax-error locations. Copy values, paths, or original source, and resume the selected document/view/position.
 - ZIP package import with local CSS/image resource loading, searchable HTML/Markdown page selection, and previous-page navigation.
 - Share original files or complete ZIP packages, preserving bundled CSS and images.
 - Export rendered HTML and Markdown to paginated A4 PDFs from the share menu.
 - Recent files before collapsible samples, details, raw text fallback, and delete cleanup.
-- Paste HTML or Markdown text with the system Paste button, choose a format and optional name, and keep the preview in Recent files.
+- Paste HTML, Markdown, or YAML text with the system Paste button, choose a format and optional name, and keep the preview in Recent files.
 - Find text, jump through a heading outline, and resume the last reading position in rendered HTML and Markdown previews.
 - Full-screen reading with a one-tap control restore button, HTML page zoom, and Markdown font-size and line-spacing controls.
 - Local Markdown images open in a full-screen viewer with pinch, pan, double-tap, and accessible zoom controls.
@@ -47,12 +48,22 @@ contains an overview, a nested HTML report, and a Markdown appendix. See
 [ZIP navigation](docs/updates/2026-09-27-zip-navigation.md) for behavior and validation.
 
 Paste to Preview accepts up to 2 MB of text and never reads the clipboard in the
-background. It can recognize HTML and Markdown wrapped in a single code fence;
+background. It can recognize HTML, Markdown, and YAML wrapped in a single code fence;
 the format can also be chosen explicitly. Pasting only a URL shows an explanation
 instead of fetching a webpage. Pasted content uses the same local storage,
 preview defaults, sharing, and PDF export as imported files. New pasted HTML and
 HTML entries inside ZIP packages open in Interactive mode; Markdown uses its
-rendered reading view. Reopening a document preserves its saved preview mode.
+rendered reading view. Plain YAML configuration text requires choosing YAML;
+an outer `yaml` or `yml` fence selects it automatically. Reopening a document
+preserves its saved preview mode.
+
+Open a YAML file through Open File, Paste to Preview, or the built-in YAML sample.
+Use Structure to browse typed fields and Source to read comments and original
+formatting. Long-press a field to copy its value/path or jump to its source line.
+The parser and highlighter are bundled offline. YAML sharing sends the original
+file; PDF export and ZIP page navigation remain available for HTML/Markdown.
+See [YAML preview changes and simulator screenshots](docs/updates/2026-10-01-yaml-preview.md)
+for usage, validation, and bounded preview limits.
 
 Markdown supports `$...$` and `\(...\)` for inline mathematics, `$$...$$`,
 `\[...\]`, or a `math` fenced block for display equations, and `mermaid`

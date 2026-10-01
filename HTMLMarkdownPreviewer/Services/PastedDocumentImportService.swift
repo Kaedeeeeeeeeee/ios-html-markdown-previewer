@@ -3,10 +3,15 @@ import Foundation
 enum PastedDocumentFormat: String, CaseIterable, Identifiable, Sendable {
     case markdown
     case html
+    case yaml
 
     var id: String { rawValue }
-    var displayName: String { self == .html ? "HTML" : "Markdown" }
-    var fileExtension: String { self == .html ? "html" : "md" }
+    var displayName: String {
+        switch self { case .html: "HTML"; case .markdown: "Markdown"; case .yaml: "YAML" }
+    }
+    var fileExtension: String {
+        switch self { case .html: "html"; case .markdown: "md"; case .yaml: "yaml" }
+    }
 }
 
 enum PastedDocumentError: Error, Equatable, LocalizedError {
@@ -131,6 +136,7 @@ final class PastedDocumentImportService {
         switch language {
         case "html", "htm", "xhtml": format = .html
         case "markdown", "md": format = .markdown
+        case "yaml", "yml": format = .yaml
         case "": format = nil
         default: return nil
         }
@@ -152,7 +158,7 @@ final class PastedDocumentImportService {
             let isControl = character.unicodeScalars.contains { CharacterSet.controlCharacters.contains($0) }
             return isControl || "/\\:".contains(character) ? "-" : character
         }).trimmingCharacters(in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: ".")))
-        let knownExtensions = ["html", "htm", "xhtml", "md", "markdown"]
+        let knownExtensions = ["html", "htm", "xhtml", "md", "markdown", "yaml", "yml"]
         if knownExtensions.contains((sanitized as NSString).pathExtension.lowercased()) {
             sanitized = (sanitized as NSString).deletingPathExtension
         }

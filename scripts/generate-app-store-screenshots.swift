@@ -67,7 +67,8 @@ private let specs = [
     ScreenshotSpec(key: "02-html-safe-preview", filenameSuffix: "02-html-safe-preview"),
     ScreenshotSpec(key: "03-markdown-preview", filenameSuffix: "03-markdown-preview"),
     ScreenshotSpec(key: "04-zip-report-preview", filenameSuffix: "04-zip-report-preview"),
-    ScreenshotSpec(key: "05-settings", filenameSuffix: "05-settings")
+    ScreenshotSpec(key: "05-settings", filenameSuffix: "05-settings"),
+    ScreenshotSpec(key: "06-yaml-preview", filenameSuffix: "06-yaml-preview")
 ]
 
 private let palettes = [
@@ -75,7 +76,8 @@ private let palettes = [
     Palette(start: NSColor(hex: 0x0A1230), end: NSColor(hex: 0x6139D7), glow: NSColor(hex: 0x42C8FF)),
     Palette(start: NSColor(hex: 0x071B2D), end: NSColor(hex: 0x0879AD), glow: NSColor(hex: 0x6EE7D8)),
     Palette(start: NSColor(hex: 0x11133A), end: NSColor(hex: 0x2859D8), glow: NSColor(hex: 0xA78BFA)),
-    Palette(start: NSColor(hex: 0x07111F), end: NSColor(hex: 0x1D4F91), glow: NSColor(hex: 0x60A5FA))
+    Palette(start: NSColor(hex: 0x07111F), end: NSColor(hex: 0x1D4F91), glow: NSColor(hex: 0x60A5FA)),
+    Palette(start: NSColor(hex: 0x101E31), end: NSColor(hex: 0x23698C), glow: NSColor(hex: 0x81E6D9))
 ]
 
 private extension NSColor {

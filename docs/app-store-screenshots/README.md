@@ -11,7 +11,7 @@ The command captures a separate, genuinely localized source set for each of
 those real app screenshots in a deterministic marketing canvas with matching
 localized headlines. The interface itself is never redrawn.
 
-Each locale contains five iPhone and five iPad images:
+Each locale contains six iPhone and six iPad images:
 
 1. `01-home` — opening files and choosing a built-in example.
 2. `02-html-safe-preview` — the animated weekend plan in Interactive mode.
@@ -19,6 +19,7 @@ Each locale contains five iPhone and five iPad images:
 3. `03-markdown-preview` — the redesigned reading notes, including a table.
 4. `04-zip-report-preview` — the redesigned reading journal and local chart.
 5. `05-settings` — native preview, storage, and privacy settings.
+6. `06-yaml-preview` — collapsible YAML configuration structure and source controls.
 
 Filenames use the `iphone-` or `ipad-` prefix, for example
 `zh-Hans/iphone-02-html-safe-preview.png`.

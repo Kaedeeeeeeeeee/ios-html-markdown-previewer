@@ -1,8 +1,9 @@
-HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端末内で閲覧するためのシンプルなファイルビューアです。
+HTMLプレビューは、HTML、Markdown、YAML、ZIPレポートパッケージを端末内で閲覧するためのシンプルなファイルビューアです。
 
-「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから .html、.htm、.md、.markdown、.zip ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
+「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから .html、.htm、.md、.markdown、.yaml、.yml、.zip ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
 
 主な機能:
+- YAMLの構造表示：オブジェクトと配列の展開、フィールドと値の検索、ソースの構文ハイライト、複数ドキュメントの切り替え、構文エラーの位置表示
 - Markdownコードの構文ハイライトとワンタップコピー
 - Markdown内のLaTeX形式の数式とMermaid図をオフラインで表示
 - 複数ページのZIP内でHTML・Markdownページを検索して切り替え
@@ -17,7 +18,7 @@ HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端�
 - 最近使ったファイル一覧
 - テキスト表示へのフォールバック
 - ファイル詳細
-- HTML、Markdown、ZIPの内蔵サンプル
+- HTML、Markdown、YAML、ZIPの内蔵サンプル
 
 プライバシーと購入方式:
 - ファイルは端末内で処理

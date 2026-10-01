@@ -65,25 +65,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paste HTML or Markdown text here."
+            "value": "Paste HTML, Markdown, or YAML text here."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在这里粘贴 HTML 或 Markdown 文本。"
+            "value": "在这里粘贴 HTML、Markdown 或 YAML 文本。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在這裡貼上 HTML 或 Markdown 文字。"
+            "value": "在此貼上 HTML、Markdown 或 YAML 文字。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "HTML または Markdown のテキストをここに貼り付けます。"
+            "value": "HTML、Markdown、YAML のテキストを貼り付けてください。"
           }
         }
       }
@@ -94,25 +94,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paste HTML or Markdown content. Text stays on this device."
+            "value": "Paste HTML, Markdown, or YAML content. Text stays on this device."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "粘贴 HTML 或 Markdown 正文。文本保存在此设备上。"
+            "value": "粘贴 HTML、Markdown 或 YAML 内容。文本仅保存在此设备上。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "貼上 HTML 或 Markdown 內容。文字會儲存在此裝置上。"
+            "value": "貼上 HTML、Markdown 或 YAML 內容。文字只會儲存在此裝置上。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "HTML または Markdown の内容を貼り付けます。テキストはこのデバイスに保存されます。"
+            "value": "HTML、Markdown、YAML を貼り付けます。テキストはこのデバイス内に保存されます。"
           }
         }
       }
@@ -239,25 +239,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The format is suggested from your text. You can change it before saving to Recent Files."
+            "value": "HTML and fenced formats are detected automatically. Choose YAML for plain configuration text."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已根据文本选择格式。你可以调整格式，然后保存到最近文件。"
+            "value": "自动识别 HTML 和代码块格式。普通配置文本请选择 YAML。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "已根據文字選擇格式。你可以調整格式，然後儲存到最近檔案。"
+            "value": "自動辨識 HTML 和程式碼區塊格式。一般設定文字請選擇 YAML。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "テキストから形式を判別します。形式を変更してから「最近使ったファイル」に保存できます。"
+            "value": "HTML とコードブロックの形式を自動判別します。通常の設定テキストには YAML を選んでください。"
           }
         }
       }
@@ -355,25 +355,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paste or enter some HTML or Markdown text first."
+            "value": "Paste or enter some HTML, Markdown, or YAML text first."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请先粘贴或输入 HTML 或 Markdown 文本。"
+            "value": "请先粘贴或输入 HTML、Markdown 或 YAML 文本。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請先貼上或輸入 HTML 或 Markdown 文字。"
+            "value": "請先貼上或輸入 HTML、Markdown 或 YAML 文字。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "HTML または Markdown のテキストを貼り付けるか入力してください。"
+            "value": "HTML、Markdown、YAML のテキストを貼り付けるか入力してください。"
           }
         }
       }
@@ -384,25 +384,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paste the HTML or Markdown content itself. Opening web links is not supported here."
+            "value": "Paste the document content itself. Opening web links is not supported here."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请粘贴 HTML 或 Markdown 正文。这里不支持直接打开网页链接。"
+            "value": "请粘贴文档内容本身，此处不支持打开网页链接。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請貼上 HTML 或 Markdown 內容。這裡不支援直接開啟網頁連結。"
+            "value": "請貼上文件內容本身，此處不支援開啟網頁連結。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "HTML または Markdown の内容を貼り付けてください。ここから Web リンクを開くことはできません。"
+            "value": "文書の内容を貼り付けてください。ここでは Web リンクを開けません。"
           }
         }
       }

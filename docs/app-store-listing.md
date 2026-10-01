@@ -24,30 +24,41 @@ Support URL: https://gist.github.com/Kaedeeeeeeeeee/394a005738e00a0f72bf9bd3a5ab
 
 ## en-US
 
-Name: HTML Previewer
+Name:
 
-Subtitle: Local HTML and Markdown viewer
+HTML Previewer
+
+Subtitle:
+
+Local HTML and Markdown viewer
 
 Promotional Text:
 
-Open HTML, Markdown, and ZIP reports on iPhone and iPad. New HTML files open in Interactive mode with scripts and external resources enabled. Safe Preview is available.
+Read HTML, Markdown, YAML, and ZIP reports on iPhone and iPad. Explore YAML structure, search fields, and check highlighted source, all on your device.
 
 Description:
 
-HTML Previewer is a focused local file viewer for HTML, Markdown, and ZIP report packages.
+HTML Previewer is a focused local file viewer for HTML, Markdown, YAML, and ZIP report packages.
 
-Use it when you receive an .html, .htm, .md, .markdown, or .zip file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
+Use it when you receive an .html, .htm, .md, .markdown, .yaml, .yml, or .zip file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
 
 Features:
+- YAML structure view with collapsible objects and arrays, field/value search, source highlighting, multi-document navigation, and syntax error locations
+- Syntax highlighting and one-tap copying for Markdown code blocks
+- Offline LaTeX-style math equations and Mermaid diagrams in Markdown
+- Searchable page navigation for multi-page HTML and Markdown ZIP packages
 - Local HTML preview with Interactive mode as the default for newly imported HTML
 - Rich HTML rendering for responsive layouts, inline graphics, and CSS animation
 - Markdown reading view with tables and horizontal scrolling for wide tables
 - Import and share complete ZIP report packages with local CSS and image assets
 - Export HTML and Markdown previews as PDF
+- Search within HTML and Markdown, jump between matches, and browse a heading outline
+- Remember your reading position when you reopen a document
+- Paste HTML, Markdown, or YAML text to create a preview and save it to Recent Files
 - Recent files list
 - Raw text fallback
 - File details
-- Built-in HTML, Markdown, and ZIP samples
+- Built-in HTML, Markdown, YAML, and ZIP samples
 
 Privacy and business model:
 - Files are processed on device
@@ -61,34 +72,45 @@ New HTML files, including HTML inside ZIP packages, open in Interactive mode wit
 
 Keywords:
 
-HTML viewer, Markdown viewer, local HTML, offline report, file preview, ZIP report, MD viewer
+HTML viewer,Markdown viewer,local HTML,offline report,file preview,ZIP report,MD viewer
 
 ## zh-Hans
 
-Name: HTML 预览器
+Name:
 
-Subtitle: 本地 HTML 与 Markdown 查看器
+HTML 预览器
+
+Subtitle:
+
+本地 HTML 与 Markdown 查看器
 
 Promotional Text:
 
-在 iPhone 和 iPad 上打开 HTML、Markdown 和 ZIP 报告。新导入的 HTML 默认使用交互模式，支持页面脚本和外部资源，也可切换到安全预览。
+在 iPhone 和 iPad 上阅读 HTML、Markdown、YAML 和 ZIP 报告。展开 YAML 结构、搜索字段、查看高亮源码，文件在设备本地处理。
 
 Description:
 
-HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Markdown 和 ZIP 报告包。
+HTML 预览器是一款专注于本地文件阅读的工具，支持 HTML、Markdown、YAML 和 ZIP 报告包。
 
-当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 .html、.htm、.md、.markdown 或 .zip 文件时，可以直接在 iPhone 或 iPad 上查看。
+当你从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 收到 .html、.htm、.md、.markdown、.yaml、.yml 或 .zip 文件时，可以直接在 iPhone 或 iPad 上查看。
 
 功能：
+- YAML 结构视图：展开对象与数组、搜索字段和值、源码高亮、多文档切换与语法错误定位
+- Markdown 代码语法高亮与一键复制
+- Markdown 中的 LaTeX 风格数学公式和 Mermaid 流程图，支持离线显示
+- 多页面 ZIP 报告支持搜索和切换 HTML、Markdown 页面
 - 新导入的 HTML 默认使用交互模式进行本地预览
 - 支持响应式布局、内嵌图形与 CSS 动画的丰富 HTML 渲染
 - 支持表格的 Markdown 阅读视图，宽表格可横向滚动
 - 导入和分享包含本地 CSS 与图片资源的完整 ZIP 报告包
 - 将 HTML 和 Markdown 预览导出为 PDF
+- HTML 和 Markdown 文内搜索、匹配结果切换与标题目录
+- 记住阅读位置，再次打开接着读
+- 粘贴 HTML、Markdown 或 YAML 文本，创建预览并保存到最近文件
 - 最近文件列表
 - 原始文本备用查看
 - 文件详情
-- 内置 HTML、Markdown、ZIP 示例
+- 内置 HTML、Markdown、YAML、ZIP 示例
 
 隐私与商业模式：
 - 文件在设备本地处理
@@ -106,30 +128,41 @@ HTML查看器,Markdown查看器,本地HTML,离线报告,文件预览,ZIP报告,M
 
 ## ja
 
-Name: HTMLプレビュー
+Name:
 
-Subtitle: ローカルHTML/Markdownビューア
+HTMLプレビュー
+
+Subtitle:
+
+ローカルHTML/Markdownビューア
 
 Promotional Text:
 
-iPhoneとiPadでHTML、Markdown、ZIPレポートを開けます。新しく取り込むHTMLは、スクリプトと外部リソースに対応するインタラクティブモードで開きます。安全プレビューにも切り替えられます。
+iPhoneとiPadでHTML、Markdown、YAML、ZIPレポートを閲覧。YAMLの構造を展開し、フィールド検索やソースの構文ハイライトを端末内で利用できます。
 
 Description:
 
-HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端末内で閲覧するためのシンプルなファイルビューアです。
+HTMLプレビューは、HTML、Markdown、YAML、ZIPレポートパッケージを端末内で閲覧するためのシンプルなファイルビューアです。
 
-「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから .html、.htm、.md、.markdown、.zip ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
+「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから .html、.htm、.md、.markdown、.yaml、.yml、.zip ファイルを受け取ったときに、iPhoneやiPadでそのまま確認できます。
 
 主な機能:
+- YAMLの構造表示：オブジェクトと配列の展開、フィールドと値の検索、ソースの構文ハイライト、複数ドキュメントの切り替え、構文エラーの位置表示
+- Markdownコードの構文ハイライトとワンタップコピー
+- Markdown内のLaTeX形式の数式とMermaid図をオフラインで表示
+- 複数ページのZIP内でHTML・Markdownページを検索して切り替え
 - 新しく取り込むHTMLを標準でインタラクティブモードで表示
 - レスポンシブ表示、埋め込みグラフィック、CSSアニメーションを含むリッチなHTML表示
 - 表に対応したMarkdown閲覧ビュー。横に長い表はスクロール可能
 - ローカルCSSや画像を含むZIPレポートパッケージの取り込みと共有
 - HTMLとMarkdownのプレビューをPDFとして書き出し
+- HTMLとMarkdownの文書内検索、検索結果の移動、見出しの目次
+- 読んでいた位置を保存して、次に開くときも続きから閲覧
+- HTMLやMarkdownのテキストを貼り付けてプレビューし、最近使ったファイルに保存
 - 最近使ったファイル一覧
 - テキスト表示へのフォールバック
 - ファイル詳細
-- HTML、Markdown、ZIPの内蔵サンプル
+- HTML、Markdown、YAML、ZIPの内蔵サンプル
 
 プライバシーと購入方式:
 - ファイルは端末内で処理
@@ -143,21 +176,21 @@ HTMLプレビューは、HTML、Markdown、ZIPレポートパッケージを端�
 
 Keywords:
 
-HTMLビューア,Markdownビューア,ローカルHTML,オフラインレポート,ファイルプレビュー,ZIPレポート,MDビューア
+HTMLビューア,Markdownビューア,ローカルHTML,オフラインレポート,ファイルプレビュー,ZIPレポート
 
 ## Review Notes
 
-This is a paid download app with no StoreKit or in-app purchases.
+This is a paid download app with no accounts, ads, subscriptions, or in-app purchases. Files are processed locally and are not uploaded.
 
-The app previews user-selected local files only. It does not require an account and does not upload user files.
+Use the built-in Samples on the home screen:
+1. Weekend plan (HTML): Interactive preview by default; Safe Preview is available.
+2. Reading notes (Markdown): offline code highlighting, math, diagrams, search and PDF export.
+3. Reading week (ZIP): package page navigation and local assets.
+4. App configuration (YAML, new in 1.6): expand services > web to see port 8080. Search 8080, switch Structure/Source, and use the document menu to view document 2 with port 3000. Long-press a value to copy it, copy the field path, or jump to its source line.
 
-For review, launch the app and use the built-in Samples section:
+Open File supports .yaml and .yml. In Paste Preview, select YAML for plain text; a yaml/yml fenced code block is detected automatically. YAML parsing and highlighting work offline. YAML shares the original file; PDF export applies to HTML and Markdown.
 
-1. Open Weekend plan (HTML) to test local HTML in the default Interactive mode. Switch to Safe Preview to test rendering with page scripts and external resources blocked.
-2. Open Reading notes (Markdown) to test native Markdown rendering.
-3. Open Reading week (ZIP) to test ZIP import and local asset loading.
-
-External file opening is supported through iOS document type registration for HTML, Markdown, and ZIP files. The exact appearance in third-party app share/open menus depends on iOS and the source app.
+External open/share menu availability depends on iOS and the source app.
 
 ## Privacy Labels Draft
 

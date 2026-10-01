@@ -1,1 +1,1 @@
-iPhoneとiPadでHTML、Markdown、ZIPレポートを閲覧。文書内検索、見出しの目次、読書位置の保存で長い文書も快適に。テキストを貼り付けてプレビューし、PDFで共有できます。
+iPhoneとiPadでHTML、Markdown、YAML、ZIPレポートを閲覧。YAMLの構造を展開し、フィールド検索やソースの構文ハイライトを端末内で利用できます。

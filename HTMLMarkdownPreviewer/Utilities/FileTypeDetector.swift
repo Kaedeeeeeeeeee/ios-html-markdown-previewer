@@ -20,6 +20,8 @@ enum FileTypeDetector {
             return .html
         case "md", "markdown":
             return .markdown
+        case "yaml", "yml":
+            return .yaml
         case "zip":
             return .zipPackage
         default:
@@ -44,6 +46,10 @@ enum FileTypeDetector {
 
         if type.conforms(to: .zip) {
             return .zipPackage
+        }
+
+        if type == SupportedDocumentTypes.yaml || type.conforms(to: SupportedDocumentTypes.yaml) {
+            return .yaml
         }
 
         return .unsupported

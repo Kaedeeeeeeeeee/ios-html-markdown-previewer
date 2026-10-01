@@ -153,12 +153,12 @@ final class ReadingAndPasteUITests: XCTestCase {
         openSearch(app)
         app.textFields["reading-search-field"].tap()
         let keyboard = app.keyboards.firstMatch
-        XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
         let keyboardContinue = keyboard.buttons["Continue"]
         if keyboardContinue.exists {
             keyboardContinue.tap()
         }
-        XCTAssertTrue(wait { keyboard.keys.count > 0 }, "The normal keyboard should be available after onboarding")
+        // Third-party keyboards can expose their keys as Other elements.
+        // Verify text entry and results rather than Apple's keyboard AX type.
         app.textFields["reading-search-field"].typeText("Saturday")
         waitForLabel("1 of 80", identifier: "reading-match-count", app: app)
         for identifier in actionIDs {
