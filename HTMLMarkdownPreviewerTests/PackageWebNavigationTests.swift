@@ -64,6 +64,8 @@ final class PackageWebNavigationTests: XCTestCase {
 
         _ = try await session.webView.evaluateJavaScript("document.getElementById('anchor').click()")
         try await waitUntil { session.webView.url?.fragment == "bottom" }
+        // WebKit updates the URL before committing the anchor's scroll.
+        try await waitUntil { session.webView.scrollView.contentOffset.y > 500 }
         XCTAssertTrue(session.events.pageRequests.isEmpty)
         let top = try await session.webView.evaluateJavaScript("window.scrollY") as? Double
         XCTAssertGreaterThan(top ?? 0, 500)
