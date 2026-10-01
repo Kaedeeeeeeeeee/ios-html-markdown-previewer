@@ -424,6 +424,7 @@ final class HTMLAppearanceTests: XCTestCase {
         }
         try await waitUntil { model.webView != nil && model.reading.isReady }
         let webView = try XCTUnwrap(model.webView)
+        try await waitForStableNaturalFit(in: webView)
         let baselineScale = webView.scrollView.zoomScale
         XCTAssertLessThan(baselineScale, 1)
         let original = try await markerMetrics(in: webView)
@@ -481,6 +482,29 @@ final class HTMLAppearanceTests: XCTestCase {
         let restored = try XCTUnwrap(reopened.webView).scrollView
         let restoredTop = (restored.contentOffset.y + restored.adjustedContentInset.top) / restored.zoomScale
         XCTAssertEqual(restoredTop, originalTop, accuracy: 5, "Reopening a zoomed document must restore its visual reading position.")
+    }
+
+    private func waitForStableNaturalFit(in webView: WKWebView) async throws {
+        let deadline = ContinuousClock.now + .seconds(8)
+        var previous: [Double] = []
+        var stableSince = ContinuousClock.now
+        while ContinuousClock.now < deadline {
+            let metrics = try await markerMetrics(in: webView)
+            let geometry = [webView.bounds.width, webView.bounds.height,
+                            webView.scrollView.minimumZoomScale, webView.scrollView.zoomScale,
+                            metrics["visualScale"] ?? 0, metrics["documentWidth"] ?? 0]
+            let agrees = abs(geometry[3] - geometry[4]) < 0.005
+                && geometry[2] > 0 && geometry[3] < 1 && geometry[5] >= 980
+            if !agrees || zip(previous, geometry).contains(where: { abs($0 - $1) > 0.005 }) || previous.isEmpty {
+                stableSince = .now
+            } else if ContinuousClock.now - stableSince >= .milliseconds(800) {
+                return
+            }
+            previous = geometry
+            try await Task.sleep(for: .milliseconds(100))
+        }
+        XCTFail("Desktop fixture did not reach a stable native and DOM natural fit geometry")
+        throw HTMLAppearanceTestError.timedOut
     }
 
     private func waitForNativeZoom(_ scale: Double, in webView: WKWebView) async throws {

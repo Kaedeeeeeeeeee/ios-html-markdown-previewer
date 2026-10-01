@@ -52,18 +52,18 @@ final class YAMLPreviewUITests: XCTestCase {
         let port = app.staticTexts["yaml-value-services.web.port"]
         XCTAssertTrue(port.waitForExistence(timeout: 5))
         port.press(forDuration: 1.1)
-        app.buttons["yaml-copy-value"].tap()
+        tapMenuAction("yaml-copy-value", app: app)
         assertCopiedText("8080", filename: "YAML Paste QA.yaml", app: app)
         if !port.exists { app.buttons["yaml-toggle-services.web"].tap() }
         port.press(forDuration: 1.1)
-        app.buttons["yaml-copy-path"].tap()
+        tapMenuAction("yaml-copy-path", app: app)
         assertCopiedText("services.web.port", filename: "YAML Paste QA.yaml", app: app)
         if !port.exists { app.buttons["yaml-toggle-services.web"].tap() }
         port.press(forDuration: 1.1)
-        app.buttons["yaml-show-source"].tap()
+        tapMenuAction("yaml-show-source", app: app)
         XCTAssertTrue(wait { self.sourceLine(4, app).isHittable })
         app.buttons["yaml-options-menu"].tap()
-        app.buttons["yaml-copy-source"].tap()
+        tapMenuAction("yaml-copy-source", app: app)
         assertCopiedText(yaml, filename: "YAML Paste QA.yaml", app: app)
         screenshot("Pasted YAML source preserves comments and Unicode", app)
     }
@@ -79,7 +79,7 @@ final class YAMLPreviewUITests: XCTestCase {
         XCTAssertTrue(sourceLine(3, app).label.contains("port: 8080"))
         screenshot("YAML syntax error line and readable source", app)
         app.buttons["yaml-options-menu"].tap()
-        app.buttons["yaml-copy-source"].tap()
+        tapMenuAction("yaml-copy-source", app: app)
         assertCopiedText(yaml, filename: "Broken YAML QA.yaml", app: app)
         app.buttons["share-file-button"].tap()
         app.buttons["Share Original File"].tap()
@@ -208,8 +208,18 @@ final class YAMLPreviewUITests: XCTestCase {
     }
     private func find(_ query: String, app: XCUIApplication) {
         let field = app.textFields["yaml-search-field"]
+        XCTAssertTrue(wait { field.isHittable })
         field.tap()
         field.typeText(query + "\n")
+        XCTAssertTrue(wait { field.value as? String == query })
+    }
+    private func tapMenuAction(_ identifier: String, app: XCUIApplication) {
+        let button = app.buttons[identifier]
+        XCTAssertTrue(wait { button.exists && button.isHittable })
+        button.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        // iOS 18 can return from tap before the context menu has finished
+        // dismissing. A following navigation tap is then intercepted by it.
+        XCTAssertTrue(wait { !button.exists })
     }
     private func paste(_ source: String, name: String, manualYAML: Bool = false, app: XCUIApplication) {
         XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 10))
@@ -254,6 +264,7 @@ final class YAMLPreviewUITests: XCTestCase {
         // Verify clipboard contents through the system Paste control. Direct
         // cross-app API reads trigger the runner's iOS paste permission prompt.
         app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(wait { app.buttons["paste-preview-button"].isHittable })
         app.buttons["paste-preview-button"].tap()
         let button = app.buttons["paste-system-button"]
         XCTAssertTrue(button.waitForExistence(timeout: 5))

@@ -215,7 +215,7 @@ final class SmokeUITests: XCTestCase {
 
         if repeatExport {
             if app.otherElements["PopoverDismissRegion"].exists {
-                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9)).tap()
+                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1)).tap()
             } else {
                 let close = app.buttons.matching(NSPredicate(
                     format: "label IN %@", ["Close", "閉じる", "关闭", "關閉"]
