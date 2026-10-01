@@ -321,6 +321,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
         tapSystemPaste(app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-open-button"]))
+        XCTAssertTrue(wait { (app.textViews["paste-text-editor"].value as? String) == "https://example.com/report" })
         app.buttons["paste-open-button"].tap()
         XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 5))
         screenshot("URL-only paste explanation", app: app)
@@ -381,6 +382,8 @@ final class ReadingAndPasteUITests: XCTestCase {
         setPasteboard(text, app: app)
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
         tapSystemPaste(app)
+        XCTAssertTrue(wait { (app.textViews["paste-text-editor"].value as? String) == text },
+                      "The system paste control must use the text just copied in the foreground runner.")
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-open-button"]))
         let nameField = app.textFields["paste-name-field"]
         scrollTo(nameField, app: app)

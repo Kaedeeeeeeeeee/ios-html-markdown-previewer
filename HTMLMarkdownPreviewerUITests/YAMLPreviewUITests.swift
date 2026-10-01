@@ -220,6 +220,7 @@ final class YAMLPreviewUITests: XCTestCase {
         XCTAssertTrue(wait { button.isEnabled })
         button.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0.5))
             .withOffset(CGVector(dx: min(48, button.frame.width / 2), dy: 0)).tap()
+        XCTAssertTrue(wait { (app.textViews["paste-text-editor"].value as? String) == source })
         XCTAssertLessThan(app.textViews["paste-text-editor"].frame.height, 300,
                           "Long pasted content must scroll within the editor and leave document controls reachable.")
         let nameField = app.textFields["paste-name-field"]
