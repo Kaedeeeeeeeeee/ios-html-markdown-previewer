@@ -40,6 +40,7 @@ final class HTMLAppearanceTests: XCTestCase {
         let baselineSelection = try XCTUnwrap(baselinePDF.findString("Updated live report", withOptions: []).first)
         let baselinePage = try XCTUnwrap(baselineSelection.pages.first)
         let baselineBounds = baselineSelection.bounds(for: baselinePage)
+        try await recordViewport(in: webView, stage: "before-reader-zoom")
         model.zoom = 1.5
         try await waitForNativeZoom(1.5, in: webView)
         XCTAssertTrue(model.webView === webView)
@@ -85,6 +86,7 @@ final class HTMLAppearanceTests: XCTestCase {
         try await waitForNativeZoom(3, in: webView)
         model.zoom = .nan
         try await waitForNativeZoom(1, in: webView)
+        try await recordViewport(in: webView, stage: "normalized-reader-reset")
 
         let linkedURL = directory.appendingPathComponent("linked.html")
         try """
@@ -509,17 +511,29 @@ final class HTMLAppearanceTests: XCTestCase {
 
     private func waitForNativeZoom(_ scale: Double, in webView: WKWebView) async throws {
         let deadline = ContinuousClock.now + .seconds(10)
+        var stableSamples = 0
         while true {
-            let visual = try await webView.evaluateJavaScript("visualViewport.scale") as? Double
+            let viewport = try await webView.evaluateJavaScript("[visualViewport.scale, visualViewport.width]") as? [Double]
+            // After printing and a rapid reset, WebKit can retain the previous
+            // scalar while its viewport has already returned to screen size.
+            // Check the DOM's actual visible width as well as UIKit's scale.
+            let visibleWidth = viewport?.last ?? 0
+            let effectiveScale = visibleWidth > 0 ? webView.bounds.width / visibleWidth : 0
             let animating: Bool
             if #available(iOS 17.4, *) { animating = webView.scrollView.isZoomAnimating }
             else { animating = webView.scrollView.isZooming }
             if !animating, abs(webView.scrollView.zoomScale - scale) < 0.005,
-               let visual, abs(visual - scale) < 0.005 { return }
+               abs(effectiveScale - scale) < 0.005 {
+                stableSamples += 1
+                if stableSamples >= 2 { return }
+            } else {
+                stableSamples = 0
+            }
             guard ContinuousClock.now < deadline else {
                 let diagnostic = try await webView.evaluateJavaScript("JSON.stringify({visualScale:visualViewport.scale,width:visualViewport.width,height:visualViewport.height,innerWidth,innerHeight,print:matchMedia('print').matches,scrollY,top:visualViewport.pageTop})")
                 print("Native zoom timeout diagnostic: \(String(describing: diagnostic))")
-                XCTFail("Timed out waiting for optical zoom \(scale); native \(webView.scrollView.zoomScale), visual \(String(describing: visual))")
+                try await recordViewport(in: webView, stage: "zoom-timeout-\(scale)")
+                XCTFail("Timed out waiting for optical zoom \(scale); native \(webView.scrollView.zoomScale), DOM width scale \(effectiveScale), reported scalar \(String(describing: viewport?.first))")
                 throw HTMLAppearanceTestError.timedOut
             }
             try await Task.sleep(for: .milliseconds(40))
@@ -558,6 +572,20 @@ final class HTMLAppearanceTests: XCTestCase {
         attachment.name = "HTML zoom baseline \(stage)"
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    private func recordViewport(in webView: WKWebView, stage: String) async throws {
+        let value = try await webView.evaluateJavaScript("JSON.stringify({scale:visualViewport.scale,width:visualViewport.width,height:visualViewport.height,innerWidth,innerHeight,scrollY})")
+        let text = "native: \(webView.scrollView.zoomScale), bounds: \(webView.bounds), DOM: \(String(describing: value))"
+        print("HTML viewport \(stage): \(text)")
+        let metrics = XCTAttachment(string: text)
+        metrics.name = "HTML viewport \(stage)"
+        metrics.lifetime = .keepAlways
+        add(metrics)
+        let screenshot = XCTAttachment(image: try await webView.takeSnapshot(configuration: nil))
+        screenshot.name = "HTML viewport \(stage) screen"
+        screenshot.lifetime = .keepAlways
+        add(screenshot)
     }
 
     private func waitUntil(file: StaticString = #filePath, line: UInt = #line,
