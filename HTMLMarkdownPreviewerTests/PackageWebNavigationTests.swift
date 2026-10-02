@@ -64,8 +64,9 @@ final class PackageWebNavigationTests: XCTestCase {
 
         _ = try await session.webView.evaluateJavaScript("document.getElementById('anchor').click()")
         try await waitUntil { session.webView.url?.fragment == "bottom" }
-        // WebKit updates the URL before committing the anchor's scroll.
-        try await waitUntil { session.webView.scrollView.contentOffset.y > 500 }
+        // URL, native viewport, and DOM scrolling commit in separate processes.
+        // Wait for both scroll readings rather than sampling DOM after native alone.
+        try await waitForAnchorScroll(session)
         XCTAssertTrue(session.events.pageRequests.isEmpty)
         let top = try await session.webView.evaluateJavaScript("window.scrollY") as? Double
         XCTAssertGreaterThan(top ?? 0, 500)
@@ -154,6 +155,45 @@ final class PackageWebNavigationTests: XCTestCase {
         try await waitUntil { session.events.pageRequests.count == 1 }
         XCTAssertEqual(session.events.pageRequests.last?.lastPathComponent, "details.html")
         XCTAssertFalse(session.webView.configuration.defaultWebpagePreferences.allowsContentJavaScript)
+    }
+
+    private func waitForAnchorScroll(_ session: PackageNavigationSession) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        var firstSample = true
+        var diagnostic = ""
+        while true {
+            let dom = try await session.webView.evaluateJavaScript("window.scrollY") as? Double ?? 0
+            let native = session.webView.scrollView.contentOffset.y
+            diagnostic = "anchor: \(session.webView.url?.fragment ?? "none"), native: \(native), DOM: \(dom)"
+            if firstSample {
+                print("Package anchor initial: \(diagnostic)")
+                firstSample = false
+            }
+            if session.webView.url?.fragment == "bottom", native > 500, dom > 500 {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(150) {
+                    print("Package anchor settled: \(diagnostic)")
+                    return
+                }
+            } else {
+                stableSince = nil
+            }
+            guard ContinuousClock.now < deadline else {
+                let attachment = XCTAttachment(string: diagnostic)
+                attachment.name = "Package anchor did not settle"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                if let image = try? await session.webView.takeSnapshot(configuration: nil) {
+                    let snapshot = XCTAttachment(image: image)
+                    snapshot.name = "Package anchor viewport on timeout"
+                    snapshot.lifetime = .keepAlways
+                    add(snapshot)
+                }
+                throw PackageNavigationError.timedOut
+            }
+            try await Task.sleep(for: .milliseconds(40))
+        }
     }
 
     private func waitUntil(_ condition: @MainActor () -> Bool) async throws {
