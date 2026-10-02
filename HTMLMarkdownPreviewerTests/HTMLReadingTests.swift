@@ -178,6 +178,7 @@ final class HTMLReadingTests: XCTestCase {
         let session = try await ReadingTestSession(entryURL: entry, position: ReadingPosition(progress: 0.4))
         defer { session.close() }
         try await session.load(entry)
+        try await waitForRestoredProgress(0.4, session: session)
         let saved = try XCTUnwrap(session.state.position)
         try await session.load(other)
         XCTAssertEqual(session.state.headings.map(\.title), ["Appendix", "End"])
@@ -188,6 +189,10 @@ final class HTMLReadingTests: XCTestCase {
         session.state.query = ""
         session.reader.synchronize()
         try await session.load(entry)
+        // Installation readiness and the UI-process scroll transaction are
+        // separate. Require the saved model and both actual viewport positions
+        // to settle before checking that the appendix did not overwrite them.
+        try await waitForRestoredProgress(saved.progress, session: session)
         XCTAssertEqual(session.state.position?.progress ?? -1, saved.progress, accuracy: 0.015)
         XCTAssertEqual(session.state.headings.count, 10)
     }
@@ -512,6 +517,54 @@ final class HTMLReadingTests: XCTestCase {
         while !condition() {
             guard ContinuousClock.now < deadline else { throw ReadingTestError.timedOut }
             try await Task.sleep(for: .milliseconds(30))
+        }
+    }
+
+    private func waitForRestoredProgress(_ expected: Double, session: ReadingTestSession) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        var firstSample = true
+        var diagnostic = ""
+        while true {
+            let value = try await session.webView.callDocumentJavaScript(
+                "return globalThis.__htmlPreviewReading?.snapshot().progress;",
+                arguments: [:], contentWorld: HTMLReadingController.contentWorld
+            )
+            let dom = try XCTUnwrap(value as? Double)
+            let scroll = session.webView.scrollView
+            let inset = scroll.adjustedContentInset
+            let extent = scroll.contentSize.height - scroll.bounds.height + inset.top + inset.bottom
+            let native = extent > 0 ? Double((scroll.contentOffset.y + inset.top) / extent) : 0
+            let model = session.state.position?.progress ?? -1
+            diagnostic = "expected: \(expected), model: \(model), DOM: \(dom), native: \(native), extent: \(extent)"
+            if firstSample {
+                print("Entry reading restoration initial: \(diagnostic)")
+                firstSample = false
+            }
+            if !session.webView.isLoading, [model, dom, native].allSatisfy({ abs($0 - expected) < 0.015 }) {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(150) {
+                    print("Entry reading restoration settled: \(diagnostic)")
+                    return
+                }
+            } else {
+                stableSince = nil
+            }
+            guard ContinuousClock.now < deadline else {
+                let attachment = XCTAttachment(string: diagnostic)
+                attachment.name = "Entry reading position did not settle"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                if let image = try? await session.webView.takeSnapshot(configuration: nil) {
+                    let snapshot = XCTAttachment(image: image)
+                    snapshot.name = "Entry reading viewport on timeout"
+                    snapshot.lifetime = .keepAlways
+                    add(snapshot)
+                }
+                XCTFail("Entry reading position did not settle: \(diagnostic)")
+                throw ReadingTestError.timedOut
+            }
+            try await Task.sleep(for: .milliseconds(40))
         }
     }
 }
