@@ -445,11 +445,17 @@ final class ReadingAndPasteUITests: XCTestCase {
 
     private func wait(_ predicate: @escaping () -> Bool) -> Bool {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in predicate() }, object: nil)
-        return XCTWaiter.wait(for: [expectation], timeout: 12) == .completed
+        // Hosted CI accessibility snapshots can themselves take over 20 seconds.
+        // Keep the condition exact while allowing the cross-process read to finish.
+        return XCTWaiter.wait(for: [expectation], timeout: 45) == .completed
     }
 
     private func waitForLabel(_ label: String, identifier: String, app: XCUIApplication) {
-        XCTAssertTrue(wait { app.staticTexts[identifier].exists && app.staticTexts[identifier].label == label })
+        let element = app.staticTexts[identifier]
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "exists == true AND label == %@", label), object: element
+        )
+        XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 45), .completed)
     }
 
     private func scrollTo(_ element: XCUIElement, app: XCUIApplication) {

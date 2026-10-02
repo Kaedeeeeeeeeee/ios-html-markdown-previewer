@@ -217,11 +217,11 @@ final class YAMLPreviewUITests: XCTestCase {
             let visible = frame.intersection(viewport.frame)
             return frame.height > 0 && visible.width > 0 && visible.height >= frame.height * 0.9
         }, object: nil)
-        return XCTWaiter.wait(for: [expectation], timeout: 30) == .completed
+        return XCTWaiter.wait(for: [expectation], timeout: 45) == .completed
     }
     private func wait(_ predicate: @escaping () -> Bool) -> Bool {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in predicate() }, object: nil)
-        return XCTWaiter.wait(for: [expectation], timeout: 12) == .completed
+        return XCTWaiter.wait(for: [expectation], timeout: 45) == .completed
     }
     private func find(_ query: String, app: XCUIApplication) {
         let field = app.textFields["yaml-search-field"]
