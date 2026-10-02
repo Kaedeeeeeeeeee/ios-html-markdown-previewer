@@ -85,13 +85,13 @@ final class ReadingAndPasteUITests: XCTestCase {
         waitForLabel("1 of 1", identifier: "reading-match-count", app: app)
         XCTAssertFalse(app.staticTexts["This formula could not be displayed. Its source is shown below."].exists)
         screenshot("LaTeX formula revealed by canonical-source search", app: app)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
         openSearch(app)
         app.textFields["reading-search-field"].typeText("AlphaNode\n")
         waitForLabel("1 of 1", identifier: "reading-match-count", app: app)
         XCTAssertFalse(app.staticTexts["This diagram could not be displayed. Its source is shown below."].exists)
         screenshot("Offline Mermaid diagram revealed by source search", app: app)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
 
         openContents(app)
         let heading = app.buttons["Final enhanced decision"]
@@ -170,7 +170,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertFalse(app.descendants(matching: .any)["preview-actions"].exists)
         XCTAssertTrue(app.buttons["reading-search-close"].isHittable)
         screenshot("Search replaces bottom actions above the keyboard", app: app)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
         XCTAssertTrue(wait { !app.keyboards.firstMatch.exists })
         XCTAssertFalse(app.textFields["reading-search-field"].exists)
         for action in actions {
@@ -212,7 +212,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         waitForLabel("2 of 2", identifier: "reading-match-count", app: app)
         XCTAssertTrue(eventuallyHittable(app.staticTexts["After the long paragraph"]))
         screenshot("Second match at the end of one long paragraph", app: app)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
         openSearch(app)
         app.textFields["reading-search-field"].typeText("farcolumn\n")
         waitForLabel("1 of 1", identifier: "reading-match-count", app: app)
@@ -432,9 +432,24 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 5))
     }
 
+    private func closeSearch(_ app: XCUIApplication) {
+        let close = app.buttons["reading-search-close"]
+        XCTAssertTrue(eventuallyHittable(close))
+        // CI recorded a 50-ms tap without the close action taking effect.
+        // Use a normal short press and verify the public state transition
+        // before querying the controls that replace the search bar.
+        close.press(forDuration: 0.2)
+        XCTAssertTrue(wait { !app.textFields["reading-search-field"].exists }, "Closing search must remove its input field.")
+        XCTAssertTrue(eventuallyEnabled(app.buttons["reading-tools-menu"]))
+    }
+
     private func openContents(_ app: XCUIApplication) {
-        app.buttons["reading-tools-menu"].tap()
-        app.buttons["reading-contents-button"].tap()
+        let menu = app.buttons["reading-tools-menu"]
+        XCTAssertTrue(eventuallyEnabled(menu))
+        menu.tap()
+        let contents = app.buttons["reading-contents-button"]
+        XCTAssertTrue(eventuallyHittable(contents))
+        contents.tap()
         XCTAssertTrue(app.buttons["reading-contents-done"].waitForExistence(timeout: 5))
     }
 
