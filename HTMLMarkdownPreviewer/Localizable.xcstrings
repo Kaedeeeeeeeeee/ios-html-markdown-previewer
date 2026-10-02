@@ -1312,25 +1312,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Current version supports HTML, Markdown, and ZIP files."
+            "value": "Current version supports HTML, Markdown, YAML, and ZIP files."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当前版本支持 HTML、Markdown 和 ZIP 文件。"
+            "value": "当前版本支持 HTML、Markdown、YAML 和 ZIP 文件。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "目前版本支援 HTML、Markdown 和 ZIP 檔案。"
+            "value": "目前版本支援 HTML、Markdown、YAML 和 ZIP 檔案。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "現在のバージョンは HTML、Markdown、ZIP ファイルに対応しています。"
+            "value": "現在のバージョンは HTML、Markdown、YAML、ZIP ファイルに対応しています。"
           }
         }
       }
@@ -1544,25 +1544,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Open an HTML, Markdown, or ZIP file."
+            "value": "Open an HTML, Markdown, YAML, or ZIP file."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开 HTML、Markdown 或 ZIP 文件。"
+            "value": "打开 HTML、Markdown、YAML 或 ZIP 文件。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "開啟 HTML、Markdown 或 ZIP 檔案。"
+            "value": "開啟 HTML、Markdown、YAML 或 ZIP 檔案。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "HTML、Markdown、またはZIPファイルを開きます。"
+            "value": "HTML、Markdown、YAML、ZIP ファイルを開いてください。"
           }
         }
       }

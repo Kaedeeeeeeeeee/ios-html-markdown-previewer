@@ -3,11 +3,13 @@ import UniformTypeIdentifiers
 enum SupportedDocumentTypes {
     static let markdown = UTType(importedAs: "net.daringfireball.markdown")
     static let xhtml = UTType(filenameExtension: "xhtml") ?? .html
+    static let yaml = UTType(importedAs: "public.yaml", conformingTo: .plainText)
 
     static let previewDocuments: [UTType] = [
         .html,
         xhtml,
-        markdown
+        markdown,
+        yaml
     ]
 
     static let zipPackages: [UTType] = [

@@ -5,7 +5,7 @@
       "01-home": {
         "eyebrow": "LOCAL FILE PREVIEW",
         "title": "Open. Preview. Done.",
-        "subtitle": "Open a file, or paste HTML and Markdown to preview."
+        "subtitle": "Open a file, or paste HTML, Markdown and YAML to preview."
       },
       "02-html-safe-preview": {
         "eyebrow": "RICH HTML",
@@ -26,6 +26,11 @@
         "eyebrow": "YOUR PREVIEW, YOUR CHOICE",
         "title": "Choose how HTML runs",
         "subtitle": "Interactive by default. Safe Preview when you need it."
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML CONFIGURATION",
+        "title": "See your configuration clearly",
+        "subtitle": "Expand structure, search fields, and read highlighted source."
       }
     }
   },
@@ -35,7 +40,7 @@
       "01-home": {
         "eyebrow": "本地文件预览",
         "title": "打开文件，即刻预览",
-        "subtitle": "打开文件，或粘贴 HTML、Markdown 即刻预览"
+        "subtitle": "打开文件，或粘贴 HTML、Markdown、YAML 预览"
       },
       "02-html-safe-preview": {
         "eyebrow": "丰富 HTML",
@@ -56,6 +61,11 @@
         "eyebrow": "预览由你选择",
         "title": "选择适合你的预览方式",
         "subtitle": "默认交互模式，也可切换到安全预览"
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML 配置",
+        "title": "配置结构，清晰可读",
+        "subtitle": "展开结构、搜索字段，查看高亮源码"
       }
     }
   },
@@ -65,7 +75,7 @@
       "01-home": {
         "eyebrow": "ローカルファイル",
         "title": "開いて、すぐプレビュー",
-        "subtitle": "ファイルを開く。HTMLやMarkdownを貼り付ける。"
+        "subtitle": "ファイルを開く。HTML・Markdown・YAMLを貼り付ける。"
       },
       "02-html-safe-preview": {
         "eyebrow": "リッチ HTML",
@@ -86,6 +96,11 @@
         "eyebrow": "プレビューを選べる",
         "title": "HTMLの表示方法を選ぶ",
         "subtitle": "標準はインタラクティブ。安全プレビューにも切り替え。"
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML 設定",
+        "title": "設定の構造を、見やすく",
+        "subtitle": "構造を展開。項目を検索。ソースも確認。"
       }
     }
   }

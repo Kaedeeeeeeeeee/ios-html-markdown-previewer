@@ -1,7 +1,9 @@
 import SwiftUI
+import UIKit
 
 struct PastePreviewView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
 
     let store: DocumentLibraryStore
     let onPrepared: (PreparedDocumentImport) -> Void
@@ -13,6 +15,7 @@ struct PastePreviewView: View {
     @State private var isImporting = false
     @State private var errorMessage: String?
     @State private var isTooLarge = false
+    @State private var pasteControlID = UUID()
 
     var body: some View {
         NavigationStack {
@@ -26,13 +29,14 @@ struct PastePreviewView: View {
                         }
                         text = value
                     }
+                    .id(pasteControlID)
                     .accessibilityIdentifier("paste-system-button")
 
                     TextEditor(text: $text)
                         .font(.system(.body, design: .monospaced))
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                        .frame(minHeight: 220)
+                        .frame(height: 220)
                         .accessibilityLabel(PasteStrings.content)
                         .accessibilityIdentifier("paste-text-editor")
                         .overlay(alignment: .topLeading) {
@@ -94,6 +98,14 @@ struct PastePreviewView: View {
             }
         }
         .interactiveDismissDisabled(isImporting)
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { pasteControlID = UUID() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in
+            // Refresh the native control's payload after copying in another
+            // app while this form stays open. This never reads clipboard data.
+            pasteControlID = UUID()
+        }
         .onChange(of: text) { _, newValue in
             isTooLarge = newValue.utf8.count > PastedDocumentImportService.maximumUTF8Bytes
             if !didChooseFormat && !isTooLarge {

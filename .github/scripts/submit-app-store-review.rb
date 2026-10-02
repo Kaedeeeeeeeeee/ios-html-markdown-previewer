@@ -27,6 +27,7 @@ EXPECTED_SCREENSHOTS = {
     iphone-03-markdown-preview.png
     iphone-04-zip-report-preview.png
     iphone-05-settings.png
+    iphone-06-yaml-preview.png
   ],
   "APP_IPAD_PRO_3GEN_129" => %w[
     ipad-01-home.png
@@ -34,6 +35,7 @@ EXPECTED_SCREENSHOTS = {
     ipad-03-markdown-preview.png
     ipad-04-zip-report-preview.png
     ipad-05-settings.png
+    ipad-06-yaml-preview.png
   ]
 }.freeze
 EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja].freeze

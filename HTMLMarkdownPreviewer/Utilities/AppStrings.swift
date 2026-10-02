@@ -44,7 +44,7 @@ enum AppStrings {
         static let noRecentFiles = AppStrings.localized("home.empty.title", defaultValue: "No Recent Files")
         static let noRecentFilesDescription = AppStrings.localized(
             "home.empty.description",
-            defaultValue: "Open an HTML, Markdown, or ZIP file."
+            defaultValue: "Open an HTML, Markdown, YAML, or ZIP file."
         )
     }
 
@@ -71,7 +71,7 @@ enum AppStrings {
         )
         static let unsupportedFileType = String(
             localized: "error.unsupportedFileType",
-            defaultValue: "Current version supports HTML, Markdown, and ZIP files."
+            defaultValue: "Current version supports HTML, Markdown, YAML, and ZIP files."
         )
         static let zipInvalidArchive = String(
             localized: "error.zip.invalidArchive",

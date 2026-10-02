@@ -38,6 +38,9 @@ jobs:
       - name: Run portable release materials audit
         run: scripts/portable-release-materials-audit.sh
 
+      - name: Verify bundled YAML assets and localizations
+        run: python3 scripts/audit-yaml-assets.py
+
       - name: Verify public privacy and support pages
         run: scripts/verify-public-pages.sh
 
@@ -227,6 +230,7 @@ jobs:
             -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}" \
             -derivedDataPath DerivedData \
             -parallel-testing-enabled NO \
+            -testLanguage en -testRegion US \
             -only-testing:HTMLMarkdownPreviewerTests
 
       - name: Reset simulator before UI smoke
@@ -250,7 +254,10 @@ jobs:
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedMarkdownSearchOutlineAndResumeAfterRelaunch \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testEnhancedMarkdownCopiesExactCodeAndKeepsMathDiagramSearchAndPosition \
-            -only-testing:HTMLMarkdownPreviewerUITests/ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch
+            -only-testing:HTMLMarkdownPreviewerUITests/ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch \
+            -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen \
+            -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testSystemPasteAutoDetectsYAMLFenceAndCopiesValuePathAndSource \
+            -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testInvalidYAMLPointsToErrorKeepsSourceAndAllowsOriginalSharing
 
       - name: Preserve test results and failure screenshots
         if: always()

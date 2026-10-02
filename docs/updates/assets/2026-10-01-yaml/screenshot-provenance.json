@@ -1,0 +1,158 @@
+[
+  {
+    "file": "iphone-07-japanese.png",
+    "sha256": "21ba370dd63d56f6188f1b6c3a15b9b4c3b2aac094658b65921b157fef9dcea4",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseErrorScreenshotAndJapaneseControls()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "E2BFFCBC-12C9-41A2-876C-9654D2DF78C4.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "Japanese YAML controls_0_CF91AEF2-6F8F-43A8-AE6C-E6543B9FD5F0.png",
+      "timestamp": 1790788491.132
+    }
+  },
+  {
+    "file": "iphone-06-error.png",
+    "sha256": "31b3617a64af821b5da7dc70aa936d9900779f9f3b9167102f3f9a108964fda3",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseErrorScreenshotAndJapaneseControls()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "095342FF-B097-47AC-9F58-C7BC391FA0C4.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "06 Chinese YAML syntax error_0_4F0BCDB4-4777-462F-9C14-A114C5456D9B.png",
+      "timestamp": 1790788480.23
+    }
+  },
+  {
+    "file": "iphone-05-library.png",
+    "sha256": "6819853abcea9b79e008eead861084dc256c4c673753949da48d506f5f389745",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "8805F210-A01A-4E64-903B-058D2333740D.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "05 Chinese YAML library filter_0_332F3963-850C-47A7-9E89-5FE258248D4A.png",
+      "timestamp": 1790788524.002
+    }
+  },
+  {
+    "file": "iphone-04-multi-document.png",
+    "sha256": "3198f1c357564f59357f06e5bfb81d05c653043bb372c0b31004d50249b2f380",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "14750946-12CF-4BF7-944A-2E6A1DA30443.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "04 Chinese YAML second document_0_ED3EEAA1-5404-40B4-AC57-C1920021F6C9.png",
+      "timestamp": 1790788517.991
+    }
+  },
+  {
+    "file": "iphone-03-source.png",
+    "sha256": "7b8cb11279f5d8db141dec2e532774a153570e5842237d8408601e0f0d884a17",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "8BECA0C2-F69F-4891-938D-DEE16589A576.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "03 Chinese YAML highlighted source_0_2B0345E7-FD7A-4436-816A-597330069358.png",
+      "timestamp": 1790788510.126
+    }
+  },
+  {
+    "file": "iphone-02-search.png",
+    "sha256": "d3f05100c6a181c6fd4952eb0125ef9f9a793eb034cc050c5f8bfb1e3b6de409",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "EB42B97D-2E5D-436B-A9DE-89F7BA5D5DF1.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "02 Chinese YAML field search_0_9D4D2446-03CF-4092-8FC3-1183D7E25453.png",
+      "timestamp": 1790788505.732
+    }
+  },
+  {
+    "file": "iphone-01-structure.png",
+    "sha256": "ea44e7a45e29a7d2b7d7806b0767f7336242ebbefb3039fc6f1519ee21223c9d",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-iphone-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "deviceName": "iPhone 18 Pro",
+      "exportedFileName": "C164D57B-D174-491C-AB3D-3CC5CB3CC3F3.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "01 Chinese YAML structure_0_EDE54A0C-75C3-4A74-A8B9-9D5306E5BB8A.png",
+      "timestamp": 1790788501.161
+    }
+  },
+  {
+    "file": "ipad-02-source.png",
+    "sha256": "6ba66ac3789775958e50272000c858f6ff0e99bffa162d69b4bc2df4eafdd29a",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-ipad-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "7A3C8A64-C67B-41CC-8F7F-48BCD635C99C",
+      "deviceName": "HTML Previewer QA iPad",
+      "exportedFileName": "BF657899-6902-4707-A80A-C0E98C2D71BD.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "03 Chinese YAML highlighted source_0_E656E893-0093-41CE-A8A3-9B6742596A72.png",
+      "timestamp": 1790788863.283
+    }
+  },
+  {
+    "file": "ipad-01-structure.png",
+    "sha256": "a4f81d3dad444bf0618fe7e602ee4865f1584c3c8890d6b27993e6704cd84972",
+    "sourceBundle": "DerivedData/YAMLFeature/yaml-ipad-ui-verified.xcresult",
+    "sourceTest": "YAMLPreviewUITests/testChineseScreenshotsAndYAMLLibraryFilter()",
+    "attachment": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "7A3C8A64-C67B-41CC-8F7F-48BCD635C99C",
+      "deviceName": "HTML Previewer QA iPad",
+      "exportedFileName": "77BBBBBC-F66A-4C2C-97AC-AE5D88690246.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "01 Chinese YAML structure_0_D927F4C7-784E-4042-93CC-28AB8AC239B5.png",
+      "timestamp": 1790788854.852
+    }
+  },
+  {
+    "file": "ipad-03-file-picker.png",
+    "sha256": "461ae0cc65ed1019098d017a72621164b90845e91faf620cad97d2d88de219ed",
+    "source": "Manual simulator interaction and simctl full-resolution screenshot",
+    "device": "iPad Air 11-inch (M3) / iPadOS 26.5",
+    "action": "Saved YAML selectable in native Files picker"
+  },
+  {
+    "file": "ipad-04-file-import.png",
+    "sha256": "8ecaceb1ea2088aa3777cf25b752ebbaa142a80246df84fea2fa91a9ba025c63",
+    "source": "Manual simulator interaction and simctl full-resolution screenshot",
+    "device": "iPad Air 11-inch (M3) / iPadOS 26.5",
+    "action": "Fresh library imported saved original through native Files picker; web expanded"
+  },
+  {
+    "file": "iphone-08-field-actions.png",
+    "sha256": "fb35740d8ad821040fb274a36d468042b44cbad622fd7b8b10fe28c5b18d17ce",
+    "source": "Manual simulator interaction and simctl full-resolution screenshot",
+    "device": "iPhone 18 Pro / iOS 27.0",
+    "action": "After final UI suite passed, Chinese sample web.port long-pressed; copy value/path/source menu verified"
+  }
+]

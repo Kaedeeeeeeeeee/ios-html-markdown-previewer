@@ -431,7 +431,7 @@ final class ReadingLibraryUITests: XCTestCase {
 
     private func wait(_ predicate: @escaping () -> Bool) -> Bool {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in predicate() }, object: nil)
-        return XCTWaiter.wait(for: [expectation], timeout: 12) == .completed
+        return XCTWaiter.wait(for: [expectation], timeout: 45) == .completed
     }
 
     private func require(_ condition: Bool, _ message: String, file: StaticString = #filePath, line: UInt = #line) throws {

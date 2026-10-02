@@ -1,0 +1,23 @@
+{
+  "device": "iPad Air 11-inch (M3) / iPadOS 26.5",
+  "flow": "Share Original File -> Save to Files -> On My iPad -> fresh test library -> Open File -> select saved YAML -> Structure",
+  "metadata": {
+    "displayName": "yaml-round trip",
+    "entryDocumentType": "yaml",
+    "entryFileRelativePath": "original/yaml-round trip.yaml",
+    "fileExtension": "yaml",
+    "fileSize": 544,
+    "id": "90630FDB-DE0B-47BC-96B8-5180AE6844E1",
+    "importSource": "fileImporter",
+    "importedAt": 812480606.074981,
+    "lastOpenedAt": 812480606.210078,
+    "localRootRelativePath": "Imports/90630FDB-DE0B-47BC-96B8-5180AE6844E1",
+    "originalFileRelativePath": "original/yaml-round trip.yaml",
+    "originalFilename": "yaml-round trip.yaml",
+    "preferredPreviewMode": "safePreview",
+    "type": "yaml"
+  },
+  "originalBytesPreserved": true,
+  "originalSHA256": "74aaf827d59697610461ca45191afd94933bcced7c91c8c8bd0d64b478fa7152",
+  "note": "Saving at the local root succeeded; Save was disabled inside a newly created simulator folder. This does not validate physical devices or cloud providers."
+}

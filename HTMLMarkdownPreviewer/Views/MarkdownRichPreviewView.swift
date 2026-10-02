@@ -335,7 +335,7 @@ private struct MarkdownRichWebView: UIViewRepresentable {
                 decisionHandler(.cancel)
                 return
             }
-            if url.isFileURL, url.standardizedFileURL.path == page.files.entryURL.path,
+            if MarkdownWebResources.isEntryNavigation(url, entryURL: page.files.entryURL),
                navigationAction.targetFrame?.isMainFrame == true {
                 decisionHandler(.allow)
             } else {

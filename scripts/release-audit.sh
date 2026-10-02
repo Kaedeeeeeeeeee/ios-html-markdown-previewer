@@ -83,14 +83,14 @@ require_file "scripts/serve-validation-samples.sh"
 require_file "scripts/verify-public-pages.sh"
 require_file "fastlane/Fastfile"
 require_text "project.yml" "type: bundle\\.ui-testing" "project.yml includes UI test target"
-require_text "project.yml" "CURRENT_PROJECT_VERSION: 10" "project.yml build number is 10"
-require_text "project.yml" "MARKETING_VERSION: 1\\.5" "project.yml marketing version is 1.5"
-require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.5;" "generated Xcode project marketing version is 1.5"
-require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 10;" "generated Xcode project build number is 10"
+require_text "project.yml" "CURRENT_PROJECT_VERSION: 11" "project.yml build number is 11"
+require_text "project.yml" "MARKETING_VERSION: 1\\.6" "project.yml marketing version is 1.6"
+require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.6;" "generated Xcode project marketing version is 1.6"
+require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 11;" "generated Xcode project build number is 11"
 require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "PRODUCT_BUNDLE_IDENTIFIER = com\\.kaede\\.htmlmarkdownpreviewer;" "bundle identifier is com.kaede.htmlmarkdownpreviewer"
 require_text "project.yml" "ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon" "AppIcon asset catalog is configured"
-require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_NUMBER: \"10\"" "App Store upload workflow targets build 10"
-require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_VERSION_STRING: \"1\\.5\"" "App Store upload workflow targets version 1.5"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_NUMBER: \"11\"" "App Store upload workflow targets build 11"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_VERSION_STRING: \"1\\.6\"" "App Store upload workflow targets version 1.6"
 require_text ".github/workflows/app-store-upload.yml" "Sync localized metadata and screenshots" "App Store upload workflow syncs localized store assets"
 require_text ".github/workflows/app-store-upload.yml" "submit_for_review:" "App Store upload workflow keeps review submission explicit"
 require_text ".github/workflows/app-store-upload.yml" "clean_screenshot_duplicates:" "App Store upload workflow cleans duplicate screenshots explicitly"
@@ -618,7 +618,8 @@ for name in \
   iphone-02-html-safe-preview \
   iphone-03-markdown-preview \
   iphone-04-zip-report-preview \
-  iphone-05-settings; do
+  iphone-05-settings \
+  iphone-06-yaml-preview; do
   check_png_dimensions "docs/app-store-screenshots/$name.png" 1320 2868
 done
 for name in \
@@ -626,7 +627,8 @@ for name in \
   ipad-02-html-safe-preview \
   ipad-03-markdown-preview \
   ipad-04-zip-report-preview \
-  ipad-05-settings; do
+  ipad-05-settings \
+  ipad-06-yaml-preview; do
   check_png_dimensions "docs/app-store-screenshots/$name.png" 2064 2752
 done
 for locale in en-US zh-Hans ja; do
@@ -635,7 +637,8 @@ for locale in en-US zh-Hans ja; do
     iphone-02-html-safe-preview \
     iphone-03-markdown-preview \
     iphone-04-zip-report-preview \
-    iphone-05-settings; do
+    iphone-05-settings \
+  iphone-06-yaml-preview; do
     check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 1320 2868
   done
   for name in \
@@ -643,7 +646,8 @@ for locale in en-US zh-Hans ja; do
     ipad-02-html-safe-preview \
     ipad-03-markdown-preview \
     ipad-04-zip-report-preview \
-    ipad-05-settings; do
+    ipad-05-settings \
+  ipad-06-yaml-preview; do
     check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 2064 2752
   done
 done
@@ -661,6 +665,7 @@ required_screenshots = {
     "03-markdown-preview",
     "04-zip-report-preview",
     "05-settings",
+    "06-yaml-preview",
 }
 if set(copy) != required_locales:
     raise SystemExit(f"unexpected screenshot locales: {sorted(copy)}")

@@ -1,8 +1,9 @@
-HTML Previewer is a focused local file viewer for HTML, Markdown, and ZIP report packages.
+HTML Previewer is a focused local file viewer for HTML, Markdown, YAML, and ZIP report packages.
 
-Use it when you receive an .html, .htm, .md, .markdown, or .zip file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
+Use it when you receive an .html, .htm, .md, .markdown, .yaml, .yml, or .zip file from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps and want to read it on iPhone or iPad.
 
 Features:
+- YAML structure view with collapsible objects and arrays, field/value search, source highlighting, multi-document navigation, and syntax error locations
 - Syntax highlighting and one-tap copying for Markdown code blocks
 - Offline LaTeX-style math equations and Mermaid diagrams in Markdown
 - Searchable page navigation for multi-page HTML and Markdown ZIP packages
@@ -13,11 +14,11 @@ Features:
 - Export HTML and Markdown previews as PDF
 - Search within HTML and Markdown, jump between matches, and browse a heading outline
 - Remember your reading position when you reopen a document
-- Paste HTML or Markdown text to create a preview and save it to Recent Files
+- Paste HTML, Markdown, or YAML text to create a preview and save it to Recent Files
 - Recent files list
 - Raw text fallback
 - File details
-- Built-in HTML, Markdown, and ZIP samples
+- Built-in HTML, Markdown, YAML, and ZIP samples
 
 Privacy and business model:
 - Files are processed on device

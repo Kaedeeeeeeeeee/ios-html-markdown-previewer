@@ -1,1 +1,1 @@
-Read HTML, Markdown, and ZIP reports on iPhone and iPad. Search, jump to headings, and resume reading. Paste text to preview, or share your document as a PDF.
+Read HTML, Markdown, YAML, and ZIP reports on iPhone and iPad. Explore YAML structure, search fields, and check highlighted source, all on your device.

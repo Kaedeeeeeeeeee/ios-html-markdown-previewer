@@ -1,0 +1,11 @@
+{
+  "name": "html-previewer-yaml-assets",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline YAML parsing and syntax highlighting for JavaScriptCore.",
+  "scripts": { "build": "node build.mjs", "test": "node --test runtime.test.mjs" },
+  "dependencies": { "yaml": "2.9.1", "highlight.js": "11.12.0" },
+  "devDependencies": { "esbuild": "0.28.2" },
+  "engines": { "node": ">=22.12.0" }
+}
