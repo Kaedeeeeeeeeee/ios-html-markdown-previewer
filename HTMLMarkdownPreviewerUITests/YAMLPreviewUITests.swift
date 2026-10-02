@@ -206,11 +206,13 @@ final class YAMLPreviewUITests: XCTestCase {
         element("yaml-source-line-\(number)", app)
     }
     private func waitForVisibleSourceLine(_ number: Int, app: XCUIApplication) -> Bool {
-        let line = sourceLine(number, app)
-        let viewport = element("yaml-source-content", app)
+        let viewport = app.scrollViews["yaml-source-content"].firstMatch
+        let line = viewport.otherElements["yaml-source-line-\(number)"].firstMatch
         // Source rows are read-only accessibility elements. Their visible
         // geometry verifies restoration; hittability asks for a touch target
         // and can time out while CI collects a slow accessibility snapshot.
+        // Restrict the query to the source ScrollView and the row's native type:
+        // a full-app Any query can time out resolving a frame after relaunch.
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
             guard line.exists, viewport.exists else { return false }
             let frame = line.frame
