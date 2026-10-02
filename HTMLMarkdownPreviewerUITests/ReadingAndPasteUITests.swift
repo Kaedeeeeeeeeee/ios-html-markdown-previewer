@@ -236,7 +236,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertTrue(eventuallyHittable(app.staticTexts["Final decision"]))
         app.buttons["reading-previous-match"].tap()
         waitForLabel("1 of 2", identifier: "reading-match-count", app: app)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
         openContents(app)
         let finalHeading = app.buttons.matching(NSPredicate(format: "label == %@", "Final decision")).firstMatch
         scrollTo(finalHeading, app: app)
@@ -279,7 +279,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         waitForLabel("2 of 2", identifier: "reading-match-count", app: app)
         XCTAssertTrue(eventuallyHittable(app.staticTexts["Final destination"]))
         screenshot("HTML second search result", app: app)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
         openContents(app)
         let finalHeading = app.buttons.matching(NSPredicate(format: "label == %@", "Final destination")).firstMatch
         scrollTo(finalHeading, app: app)
@@ -340,7 +340,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         app.textFields["reading-search-field"].typeText("zzzznotfoundzzzz")
         waitForLabel("No matches", identifier: "reading-match-count", app: app)
         XCTAssertFalse(app.buttons["reading-next-match"].isEnabled)
-        app.buttons["reading-search-close"].tap()
+        closeSearch(app)
         XCTAssertFalse(app.textFields["reading-search-field"].exists)
         XCTAssertTrue(app.staticTexts["Make room to read"].exists)
     }
@@ -405,10 +405,13 @@ final class ReadingAndPasteUITests: XCTestCase {
     }
 
     private func openSearch(_ app: XCUIApplication) {
-        XCTAssertTrue(eventuallyEnabled(app.buttons["reading-tools-menu"]))
-        app.buttons["reading-tools-menu"].tap()
-        app.buttons["reading-find-button"].tap()
-        XCTAssertTrue(app.textFields["reading-search-field"].waitForExistence(timeout: 5))
+        let menu = app.buttons["reading-tools-menu"]
+        XCTAssertTrue(eventuallyHittable(menu))
+        menu.press(forDuration: 0.2)
+        let find = app.buttons["reading-find-button"]
+        XCTAssertTrue(eventuallyHittable(find))
+        find.press(forDuration: 0.2)
+        XCTAssertTrue(eventuallyHittable(app.textFields["reading-search-field"]))
     }
 
     private func setPasteboard(_ text: String, app: XCUIApplication) {
@@ -445,12 +448,18 @@ final class ReadingAndPasteUITests: XCTestCase {
 
     private func openContents(_ app: XCUIApplication) {
         let menu = app.buttons["reading-tools-menu"]
-        XCTAssertTrue(eventuallyEnabled(menu))
-        menu.tap()
+        XCTAssertTrue(eventuallyHittable(menu))
+        menu.press(forDuration: 0.2)
         let contents = app.buttons["reading-contents-button"]
         XCTAssertTrue(eventuallyHittable(contents))
-        contents.tap()
-        XCTAssertTrue(app.buttons["reading-contents-done"].waitForExistence(timeout: 5))
+        // The CI recording showed this menu still open after a 50-ms tap.
+        // Issue one normal short press, then require the actual sheet transition.
+        contents.press(forDuration: 0.2)
+        let opened = eventuallyHittable(app.buttons["reading-contents-done"])
+        if !opened {
+            attachInterfaceSnapshot("Reading contents sheet did not open", app: app)
+        }
+        XCTAssertTrue(opened, "The contents action must present its navigable sheet.")
     }
 
     private func eventuallyEnabled(_ element: XCUIElement) -> Bool {
