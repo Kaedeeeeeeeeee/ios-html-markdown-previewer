@@ -4,6 +4,11 @@ import UIKit
 struct YAMLPreviewView: View {
     let fileURL: URL
     let reading: DocumentReadingState
+    var format: StructuredDocumentFormat = .yaml
+
+    private var optionsTitle: String { format == .json ? JSONStrings.options : YAMLStrings.options }
+    private var syntaxErrorTitle: String { format == .json ? JSONStrings.syntaxError : YAMLStrings.syntaxError }
+    private var emptyTitle: String { format == .json ? JSONStrings.empty : YAMLStrings.empty }
 
     @State private var document: YAMLDocument?
     @State private var loadError: String?
@@ -34,17 +39,26 @@ struct YAMLPreviewView: View {
         if mode == .source {
             return document?.lines.filter { $0.text.localizedStandardContains(trimmedQuery) }.map(\.id) ?? []
         }
-        return sheet?.rows.filter { $0.matches(trimmedQuery) }.map(\.id) ?? []
+        return visibleRows.filter { $0.matches(trimmedQuery) }.map(\.id)
     }
     private var selectedResult: String? {
         resultIDs.indices.contains(resultIndex) ? resultIDs[resultIndex] : nil
     }
     private var visibleRows: [YAMLRow] {
         guard let rows = sheet?.rows else { return [] }
-        let rootIsCollection = rows.first?.isCollection == true
+        let rootIsCollection = rows.first?.isExpandable == true
+        // Preserve the tree context without laying out unrelated branches during search.
+        // The saved collapse state is untouched, so clearing search restores it.
+        var searchIDs = Set<String>()
+        if !trimmedQuery.isEmpty {
+            for row in rows where row.matches(trimmedQuery) {
+                searchIDs.insert(row.id)
+                searchIDs.formUnion(row.parents)
+            }
+        }
         return rows.filter { row in
             if rootIsCollection && row.depth == 0 { return false }
-            if !trimmedQuery.isEmpty { return true } // Search reveals even deeply collapsed fields.
+            if !trimmedQuery.isEmpty { return searchIDs.contains(row.id) }
             return !row.parents.contains(where: { collapsed.contains($0) })
         }
     }
@@ -73,18 +87,26 @@ struct YAMLPreviewView: View {
                     .padding(.horizontal, 16).padding(.vertical, 10)
                     .background(.regularMaterial, in: Capsule())
                     .padding(16)
-                    .accessibilityIdentifier("yaml-copied-feedback")
+                    .accessibilityIdentifier("\(format.rawValue)-copied-feedback")
                     .allowsHitTesting(false)
             }
         }
         .task(id: fileURL) {
             let url = fileURL
-            let task = Task.detached(priority: .userInitiated) { try YAMLRenderService().render(fileURL: url) }
+            let selectedFormat = format
+            let task = Task.detached(priority: .userInitiated) {
+                switch selectedFormat {
+                case .json: return try JSONRenderService().render(fileURL: url)
+                case .yaml: return try YAMLRenderService().render(fileURL: url)
+                }
+            }
             do {
                 let parsed = try await withTaskCancellationHandler { try await task.value } onCancel: { task.cancel() }
                 try Task.checkCancellation()
                 document = parsed
-                if let saved = YAMLReadingLocation(reading.position), parsed.sheets.indices.contains(saved.documentIndex) {
+                if let saved = YAMLReadingLocation(reading.position, format: format),
+                   parsed.sheets.indices.contains(saved.documentIndex)
+                    || (parsed.sheets.isEmpty && saved.documentIndex == 0 && saved.mode == .source) {
                     sheetIndex = saved.documentIndex
                     mode = saved.mode
                     resetCollapse()
@@ -121,7 +143,7 @@ struct YAMLPreviewView: View {
                                 Label(YAMLStrings.document(sheet.index, count: document.sheets.count),
                                       systemImage: sheet.index == sheetIndex ? "checkmark" : "doc.text")
                             }
-                            .accessibilityIdentifier("yaml-document-\(sheet.index)")
+                            .accessibilityIdentifier("\(format.rawValue)-document-\(sheet.index)")
                         }
                     } label: {
                         HStack(spacing: 6) {
@@ -129,9 +151,9 @@ struct YAMLPreviewView: View {
                             Image(systemName: "chevron.down").font(.caption.weight(.semibold))
                         }
                     }
-                    .accessibilityIdentifier("yaml-document-menu")
+                    .accessibilityIdentifier("\(format.rawValue)-document-menu")
                 } else {
-                    Text("YAML").fontWeight(.semibold)
+                    Text(format.title).fontWeight(.semibold)
                 }
                 Spacer()
                 if let root = sheet?.rows.first {
@@ -141,33 +163,33 @@ struct YAMLPreviewView: View {
                 Menu {
                     Button(YAMLStrings.expandAll, systemImage: "arrow.down.right.and.arrow.up.left") { collapsed.removeAll() }
                         .disabled(mode != .structure || issue != nil)
-                        .accessibilityIdentifier("yaml-expand-all")
+                        .accessibilityIdentifier("\(format.rawValue)-expand-all")
                     Button(YAMLStrings.collapseAll, systemImage: "arrow.up.left.and.arrow.down.right") {
                         collapsed = Set((sheet?.rows ?? []).filter { $0.depth > 0 && $0.isExpandable }.map(\.id))
                     }
                     .disabled(mode != .structure || issue != nil || !trimmedQuery.isEmpty)
-                    .accessibilityIdentifier("yaml-collapse-all")
+                    .accessibilityIdentifier("\(format.rawValue)-collapse-all")
                     Divider()
                     Button(YAMLStrings.copySource, systemImage: "doc.on.doc") { copy(document.source) }
                         .disabled(document.issue?.code == "sizeLimit")
-                        .accessibilityIdentifier("yaml-copy-source")
+                        .accessibilityIdentifier("\(format.rawValue)-copy-source")
                 } label: {
                     Image(systemName: "ellipsis.circle").font(.title3)
                         .frame(minWidth: 44, minHeight: 44)
                 }
-                .accessibilityLabel(YAMLStrings.options)
-                .accessibilityIdentifier("yaml-options-menu")
+                .accessibilityLabel(optionsTitle)
+                .accessibilityIdentifier("\(format.rawValue)-options-menu")
             }
             .font(.subheadline)
 
-            Picker("YAML", selection: Binding(get: { mode }, set: { candidate in
+            Picker(format.title, selection: Binding(get: { mode }, set: { candidate in
                 if candidate != .structure || issue == nil { selectMode(candidate) }
             })) {
                 Text(YAMLStrings.structure).tag(YAMLPreviewMode.structure).disabled(issue != nil)
                 Text(YAMLStrings.source).tag(YAMLPreviewMode.source)
             }
             .pickerStyle(.segmented)
-            .accessibilityIdentifier("yaml-view-picker")
+            .accessibilityIdentifier("\(format.rawValue)-view-picker")
         }
         .padding(.horizontal, 16).padding(.bottom, 12)
         .background(Color(.secondarySystemGroupedBackground))
@@ -175,26 +197,26 @@ struct YAMLPreviewView: View {
 
     private func diagnostic(_ issue: YAMLIssue) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(issue.code == "syntax" ? YAMLStrings.syntaxError : YAMLStrings.structure,
+            Label(issue.code == "syntax" ? syntaxErrorTitle : YAMLStrings.structure,
                   systemImage: "exclamationmark.triangle")
                 .font(.subheadline.weight(.semibold))
-            Text(YAMLStrings.issue(issue))
-                .font(.footnote).accessibilityIdentifier("yaml-error-location")
+            Text(format == .json ? JSONStrings.issue(issue) : YAMLStrings.issue(issue))
+                .font(.footnote).accessibilityIdentifier("\(format.rawValue)-error-location")
             if issue.code == "syntax" {
                 Text(issue.message).font(.footnote).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityIdentifier("yaml-error-message")
+                    .accessibilityIdentifier("\(format.rawValue)-error-message")
                 Button(YAMLStrings.showError) { showSource(line: issue.line) }
                     .font(.footnote.weight(.semibold))
                     .frame(minHeight: 44, alignment: .leading)
-                    .accessibilityIdentifier("yaml-show-error")
+                    .accessibilityIdentifier("\(format.rawValue)-show-error")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
         .background(Color.orange.opacity(0.1))
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("yaml-diagnostic")
+        .accessibilityIdentifier("\(format.rawValue)-diagnostic")
     }
 
     private var searchBar: some View {
@@ -207,14 +229,14 @@ struct YAMLPreviewView: View {
                     .submitLabel(.search)
                     .focused($isSearchFocused)
                     .onSubmit { isSearchFocused = false }
-                    .accessibilityIdentifier("yaml-search-field")
+                    .accessibilityIdentifier("\(format.rawValue)-search-field")
                 if !query.isEmpty {
                     Button { query = "" } label: {
                         Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
                             .frame(width: 32, height: 32)
                     }
                     .accessibilityLabel(YAMLStrings.clearSearch)
-                    .accessibilityIdentifier("yaml-search-clear")
+                    .accessibilityIdentifier("\(format.rawValue)-search-clear")
                 }
             }
             .padding(.horizontal, 10).frame(minHeight: 40)
@@ -223,12 +245,12 @@ struct YAMLPreviewView: View {
                 HStack {
                     Text(YAMLStrings.results(resultIndex, count: resultIDs.count))
                         .font(.caption).foregroundStyle(.secondary)
-                        .accessibilityIdentifier("yaml-match-count")
+                        .accessibilityIdentifier("\(format.rawValue)-match-count")
                     Spacer()
                     Button { moveResult(forward: false) } label: { Image(systemName: "chevron.up").frame(width: 40, height: 32) }
-                        .accessibilityLabel(YAMLStrings.previous).accessibilityIdentifier("yaml-previous-result")
+                        .accessibilityLabel(YAMLStrings.previous).accessibilityIdentifier("\(format.rawValue)-previous-result")
                     Button { moveResult(forward: true) } label: { Image(systemName: "chevron.down").frame(width: 40, height: 32) }
-                        .accessibilityLabel(YAMLStrings.next).accessibilityIdentifier("yaml-next-result")
+                        .accessibilityLabel(YAMLStrings.next).accessibilityIdentifier("\(format.rawValue)-next-result")
                 }
                 .disabled(resultIDs.isEmpty)
             }
@@ -237,44 +259,71 @@ struct YAMLPreviewView: View {
     }
 
     private func content(_ document: YAMLDocument) -> some View {
-        ScrollViewReader { proxy in
-            ScrollView(mode == .source ? [.vertical, .horizontal] : [.vertical]) {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    if mode == .source {
-                        ForEach(document.lines) { line in
-                            sourceLine(line)
-                                .id(line.id)
-                        }
-                        if document.isSourceTruncated {
-                            Text(YAMLStrings.sourceLimited).font(.footnote).foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true).frame(maxWidth: 320, alignment: .leading)
-                                .padding(16)
-                        }
-                    } else if issue != nil || sheet?.rows.isEmpty != false {
-                        Text(YAMLStrings.empty).foregroundStyle(.secondary).padding(20)
-                    } else {
-                        ForEach(visibleRows) { row in
-                            treeRow(row)
-                                .id(row.id)
-                        }
+        GeometryReader { viewport in
+            ScrollViewReader { proxy in
+                ScrollView(mode == .source ? [.vertical, .horizontal] : [.vertical]) {
+                    contentRows(document, viewportWidth: viewport.size.width)
+                    .scrollTargetLayout()
+                    .padding(.bottom, 20)
+                    .frame(minWidth: viewport.size.width,
+                           maxWidth: mode == .structure ? .infinity : nil,
+                           minHeight: viewport.size.height, alignment: .topLeading)
+                }
+                .defaultScrollAnchor(.topLeading)
+                .scrollPosition(id: $visibleID, anchor: .topLeading)
+                .scrollDismissesKeyboard(.interactively)
+                .id(mode) // Source and tree use different row heights and scroll geometry.
+                .accessibilityIdentifier(mode == .source ? "\(format.rawValue)-source-content" : "\(format.rawValue)-structure-content")
+                .onChange(of: scrollRequest, initial: true) {
+                    let request = scrollRequest
+                    Task { @MainActor in
+                        // Let a source/structure switch and search expansion settle.
+                        try? await Task.sleep(for: .milliseconds(100))
+                        guard request == scrollRequest else { return }
+                        withAnimation(.easeInOut(duration: 0.2)) { proxy.scrollTo(request.target, anchor: .topLeading) }
                     }
                 }
-                .scrollTargetLayout()
-                .padding(.bottom, 20)
-                .frame(maxWidth: mode == .structure ? .infinity : nil, alignment: .leading)
             }
-            .scrollPosition(id: $visibleID, anchor: .topLeading)
-            .scrollDismissesKeyboard(.interactively)
-            .id(mode) // Source and tree use different row heights and scroll geometry.
-            .accessibilityIdentifier(mode == .source ? "yaml-source-content" : "yaml-structure-content")
-            .onChange(of: scrollRequest, initial: true) {
-                let request = scrollRequest
-                Task { @MainActor in
-                    // Let a source/structure switch and search expansion settle.
-                    try? await Task.sleep(for: .milliseconds(100))
-                    guard request == scrollRequest else { return }
-                    withAnimation(.easeInOut(duration: 0.2)) { proxy.scrollTo(request.target, anchor: .topLeading) }
-                }
+        }
+    }
+
+    @ViewBuilder
+    private func contentRows(_ document: YAMLDocument, viewportWidth: CGFloat) -> some View {
+        if mode == .structure && !trimmedQuery.isEmpty && visibleRows.count <= 200 {
+            // Exact heights keep scrollTo reliable when Dynamic Type wraps each row.
+            // Bound eager layout so broad searches and large documents remain lazy.
+            VStack(alignment: .leading, spacing: 0) {
+                rows(document, viewportWidth: viewportWidth)
+            }
+        } else {
+            LazyVStack(alignment: .leading, spacing: 0) {
+                rows(document, viewportWidth: viewportWidth)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func rows(_ document: YAMLDocument, viewportWidth: CGFloat) -> some View {
+        if mode == .source {
+            ForEach(document.lines) { line in
+                sourceLine(line)
+                    // Short lines must be full-width scroll targets;
+                    // otherwise a bidirectional scroll view can align
+                    // their narrow bounds in the middle of the viewport.
+                    .frame(minWidth: viewportWidth, alignment: .leading)
+                    .id(line.id)
+            }
+            if document.isSourceTruncated {
+                Text(YAMLStrings.sourceLimited).font(.footnote).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true).frame(maxWidth: 320, alignment: .leading)
+                    .padding(16)
+            }
+        } else if issue != nil || sheet?.rows.isEmpty != false {
+            Text(emptyTitle).foregroundStyle(.secondary).padding(20)
+        } else {
+            ForEach(visibleRows) { row in
+                treeRow(row)
+                    .id(row.id)
             }
         }
     }
@@ -293,7 +342,7 @@ struct YAMLPreviewView: View {
                             .font(.caption.weight(.semibold)).frame(width: 28, height: 30)
                     }
                     .accessibilityLabel("\(collapsed.contains(row.id) ? YAMLStrings.expandAll : YAMLStrings.collapseAll): \(row.label)")
-                    .accessibilityIdentifier("yaml-toggle-\(row.path)")
+                    .accessibilityIdentifier("\(format.rawValue)-toggle-\(row.path)")
                     .disabled(!trimmedQuery.isEmpty)
                 } else {
                     Image(systemName: row.kind == .alias ? "link" : "circle.fill")
@@ -302,7 +351,7 @@ struct YAMLPreviewView: View {
                 }
                 VStack(alignment: .leading, spacing: 5) {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text(row.label == "$" ? YAMLStrings.root : row.label)
+                        Text(row.depth == 0 ? YAMLStrings.root : row.label.isEmpty ? "\"\"" : row.label)
                             .font(.system(.subheadline, design: .monospaced).weight(.medium))
                             .foregroundStyle(.primary)
                         Spacer(minLength: 0)
@@ -315,7 +364,7 @@ struct YAMLPreviewView: View {
                             .foregroundStyle(row.kind == .string ? Color.primary : Color.accentColor)
                             .textSelection(.enabled)
                             .fixedSize(horizontal: false, vertical: true)
-                            .accessibilityIdentifier("yaml-value-\(row.path)")
+                            .accessibilityIdentifier("\(format.rawValue)-value-\(row.path)")
                     }
                     if !row.anchor.isEmpty {
                         Text("&\(row.anchor)").font(.system(.caption, design: .monospaced)).foregroundStyle(.secondary)
@@ -335,17 +384,19 @@ struct YAMLPreviewView: View {
         .background(selected ? Color.accentColor.opacity(0.15) : isMatch ? Color.yellow.opacity(0.12) : Color.clear)
         .overlay(alignment: .bottom) { Divider().padding(.leading, 16) }
         .contextMenu {
-            if !row.isCollection {
-                Button(YAMLStrings.copyValue, systemImage: "doc.on.doc") { copy(row.value) }
-                    .accessibilityIdentifier("yaml-copy-value")
+            if !row.isCollection || row.sourceRange != nil {
+                Button(YAMLStrings.copyValue, systemImage: "doc.on.doc") {
+                    if let text = document?.copyValue(for: row) { copy(text) }
+                }
+                .accessibilityIdentifier("\(format.rawValue)-copy-value")
             }
             Button(YAMLStrings.copyPath, systemImage: "point.3.connected.trianglepath.dotted") { copy(row.path) }
-                .accessibilityIdentifier("yaml-copy-path")
+                .accessibilityIdentifier("\(format.rawValue)-copy-path")
             Button(YAMLStrings.viewSource, systemImage: "text.alignleft") { showSource(line: row.line) }
-                .accessibilityIdentifier("yaml-show-source")
+                .accessibilityIdentifier("\(format.rawValue)-show-source")
         }
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("yaml-row-\(row.path)")
+        .accessibilityIdentifier("\(format.rawValue)-row-\(row.path)")
     }
 
     private func sourceLine(_ line: YAMLSourceLine) -> some View {
@@ -364,7 +415,7 @@ struct YAMLPreviewView: View {
         .background(error ? Color.orange.opacity(0.12) : selected ? Color.accentColor.opacity(0.12) : Color.clear)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(YAMLStrings.line(line.number)): \(line.text)")
-        .accessibilityIdentifier("yaml-source-line-\(line.number)")
+        .accessibilityIdentifier("\(format.rawValue)-source-line-\(line.number)")
     }
 
     private func styledLine(_ line: YAMLSourceLine) -> AttributedString {
@@ -415,7 +466,7 @@ struct YAMLPreviewView: View {
     private func scrollToStartOrResult() {
         resetSearch()
         if trimmedQuery.isEmpty {
-            requestScroll(mode == .source ? "yaml-line-\(sheet?.startLine ?? 1)" : visibleRows.first?.id ?? "")
+            requestScroll(mode == .source ? "\(format.rawValue)-line-\(sheet?.startLine ?? 1)" : visibleRows.first?.id ?? "")
         }
         persistLocation()
     }
@@ -436,12 +487,12 @@ struct YAMLPreviewView: View {
         query = ""
         mode = .source
         visibleID = nil
-        requestScroll("yaml-line-\(line)")
+        requestScroll("\(format.rawValue)-line-\(line)")
     }
     private func persistLocation() {
         guard document != nil else { return }
-        let target = visibleID ?? (mode == .source ? "yaml-line-\(sheet?.startLine ?? 1)" : visibleRows.first?.id ?? "")
-        reading.position = YAMLReadingLocation(documentIndex: sheetIndex, mode: mode, target: target).position
+        let target = visibleID ?? (mode == .source ? "\(format.rawValue)-line-\(sheet?.startLine ?? 1)" : visibleRows.first?.id ?? "")
+        reading.position = YAMLReadingLocation(documentIndex: sheetIndex, mode: mode, target: target, format: format).position
     }
     private func copy(_ text: String) {
         UIPasteboard.general.string = text

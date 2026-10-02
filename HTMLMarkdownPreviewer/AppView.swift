@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AppView: View {
     private let store: DocumentLibraryStore
-    private let importService: DocumentImportService
+    private let batchImportStager: BatchImportStager
     private let sampleProvider: BuiltInSampleProvider
 
     @AppStorage("home.samplesExpanded") private var areSamplesExpanded = false
@@ -14,7 +14,18 @@ struct AppView: View {
     @State private var isPastePreviewPresented = false
     @State private var pastedImport: PreparedDocumentImport?
     @State private var pendingImport: PreparedDocumentImport?
-    @State private var importQueue: [PreparedDocumentImport] = []
+    @State private var importQueue: [BatchImportSession] = []
+    @State private var preparationQueue: [BatchImportSourceRequest] = []
+    @State private var isPreparingImports = false
+    @State private var preparationCompletedCount = 0
+    @State private var preparationTotalCount = 0
+    @State private var activeImportSession: BatchImportSession?
+    @State private var inFlightImportID: UUID?
+    @State private var nextImportReview: PreparedDocumentImport?
+    @State private var batchImportSummary: BatchImportSummary?
+    @State private var pendingBatchImportSummary: BatchImportSummary?
+    @State private var isBatchSummaryDismissing = false
+    @State private var deferredImportError: String?
     @State private var isImportReviewDismissing = false
     @State private var renameDocument: PreviewDocument?
     @State private var searchText = ""
@@ -24,7 +35,7 @@ struct AppView: View {
 
     init(store: DocumentLibraryStore = DocumentLibraryStore()) {
         self.store = store
-        self.importService = DocumentImportService(store: store)
+        self.batchImportStager = BatchImportStager(libraryRootURL: store.importsURL.deletingLastPathComponent())
         self.sampleProvider = BuiltInSampleProvider()
     }
 
@@ -52,6 +63,8 @@ struct AppView: View {
                         Label(PasteStrings.title, systemImage: "doc.on.clipboard")
                     }
                     .accessibilityIdentifier("paste-preview-button")
+                } footer: {
+                    Text(BatchImportStrings.selectionHint)
                 }
 
                 if documents.isEmpty {
@@ -145,25 +158,50 @@ struct AppView: View {
                 }
             }
             .sheet(item: $pendingImport, onDismiss: importReviewDidDismiss) { prepared in
-                DuplicateImportView(prepared: prepared) { resolution in
-                    resolvePendingImport(prepared, as: resolution)
-                } onCancel: {
-                    cancelImport(prepared)
-                }
+                DuplicateImportView(
+                    prepared: prepared,
+                    onResolve: { resolvePendingImport(prepared, as: $0) },
+                    onCancel: { cancelImport(prepared) },
+                    cancelTitle: activeImportSession?.isBatch == true ? BatchImportStrings.skip : AppStrings.Actions.cancel
+                )
                 .interactiveDismissDisabled()
+            }
+            .sheet(item: $batchImportSummary, onDismiss: batchSummaryDidDismiss) { summary in
+                BatchImportSummaryView(summary: summary) {
+                    isBatchSummaryDismissing = true
+                    batchImportSummary = nil
+                }
+            }
+            .disabled(isPreparingImports || inFlightImportID != nil)
+            .overlay {
+                if isPreparingImports || inFlightImportID != nil {
+                    VStack(spacing: 12) {
+                        if isPreparingImports {
+                            ProgressView(value: Double(preparationCompletedCount), total: Double(max(preparationTotalCount, 1)))
+                            Text(BatchImportStrings.preparing(preparationCompletedCount, total: preparationTotalCount))
+                                .font(.subheadline)
+                        } else if let session = activeImportSession {
+                            ProgressView(value: Double(session.outcomes.count), total: Double(max(session.items.count, 1)))
+                            Text(BatchImportStrings.processing(session.outcomes.count, total: session.items.count))
+                                .font(.subheadline)
+                        }
+                    }
+                    .padding(24)
+                    .frame(maxWidth: 300)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier(isPreparingImports ? "batch-import-preparing" : "batch-import-processing")
+                }
             }
         }
         .fileImporter(
             isPresented: $isImporterPresented,
             allowedContentTypes: importPickerScope.allowedContentTypes,
-            allowsMultipleSelection: false
+            allowsMultipleSelection: true
         ) { result in
             switch result {
             case .success(let urls):
-                guard let url = urls.first else {
-                    return
-                }
-                importURL(url, source: .fileImporter)
+                importURLs(urls, source: .fileImporter)
             case .failure(let error):
                 showError(error)
             }
@@ -294,76 +332,177 @@ struct AppView: View {
     }
 
     private func importURL(_ url: URL, source: ImportSource) {
-        do {
-            importQueue.append(try importService.prepareImport(from: url, source: source))
+        importURLs([url], source: source)
+    }
+
+    private func importURLs(_ urls: [URL], source: ImportSource) {
+        guard !urls.isEmpty else { return }
+        preparationQueue.append(BatchImportSourceRequest(urls: urls, source: source))
+        guard !isPreparingImports else { return }
+        isPreparingImports = true
+        Task { @MainActor in
+            while !preparationQueue.isEmpty {
+                let request = preparationQueue.removeFirst()
+                preparationCompletedCount = 0
+                preparationTotalCount = request.urls.count
+                var items: [BatchImportItem] = []
+                for url in request.urls {
+                    let result = await batchImportStager.prepare(url: url, source: request.source)
+                    items.append(result.item)
+                    preparationCompletedCount += 1
+                }
+                request.releaseAccess()
+                importQueue.append(BatchImportSession(items: items))
+            }
+            isPreparingImports = false
             processImportQueue()
-        } catch {
-            showError(error)
         }
     }
 
     private func processImportQueue() {
         guard pendingImport == nil, !isImportReviewDismissing,
+              batchImportSummary == nil, !isBatchSummaryDismissing,
               !isPastePreviewPresented, !isSettingsPresented, renameDocument == nil,
-              !isImporterPresented, errorMessage == nil, !importQueue.isEmpty else { return }
-        acceptPreparedImport(importQueue.removeFirst())
-    }
+              !isImporterPresented, !isPreparingImports, inFlightImportID == nil,
+              errorMessage == nil else { return }
 
-    private func acceptPreparedImport(_ queuedImport: PreparedDocumentImport) {
-        let prepared: PreparedDocumentImport
-        do {
-            // Earlier queued imports or library actions may have changed the best duplicate match.
-            prepared = try importService.refreshDuplicate(for: queuedImport)
-        } catch {
-            try? importService.discard(queuedImport)
-            showError(error)
+        if let deferredImportError {
+            self.deferredImportError = nil
+            errorMessage = deferredImportError
             return
         }
-        if let duplicate = prepared.duplicate {
-            if prepared.document.importSource == .bundledSample, duplicate.document.importSource == .bundledSample {
-                // Samples are app-managed: reopen identical samples, refresh changed samples without accumulating copies.
-                if duplicate.hasIdenticalContents {
-                    do {
-                        try importService.discard(prepared)
-                        openDocument(duplicate.document)
-                        processImportQueue()
-                    } catch { showError(error) }
-                } else {
-                    resolveImport(prepared, as: .updateExisting)
+        if let pendingBatchImportSummary {
+            self.pendingBatchImportSummary = nil
+            batchImportSummary = pendingBatchImportSummary
+            return
+        }
+        if let nextImportReview {
+            self.nextImportReview = nil
+            if activeImportSession?.nextItem?.id == nextImportReview.id {
+                pendingImport = nextImportReview
+                return
+            }
+        }
+
+        if activeImportSession == nil {
+            guard !importQueue.isEmpty else { return }
+            activeImportSession = importQueue.removeFirst()
+        }
+        guard let session = activeImportSession else { return }
+        guard let item = session.nextItem else {
+            activeImportSession = nil
+            if session.isBatch {
+                path.removeAll()
+                searchText = ""
+                selectedFilter = .all
+                pendingBatchImportSummary = session.summary
+                reloadDocuments()
+                // Keep the summary queued behind any library read error.
+                if errorMessage == nil {
+                    batchImportSummary = pendingBatchImportSummary
+                    pendingBatchImportSummary = nil
                 }
             } else {
-                pendingImport = prepared
+                Task { @MainActor in
+                    await Task.yield()
+                    processImportQueue()
+                }
             }
-        } else {
-            resolveImport(prepared, as: .keepBoth)
+            return
+        }
+        switch item {
+        case .prepared(let prepared):
+            processPreparedImport(prepared, operation: .accept)
+        case .failed(let failure):
+            // Even a long run of preparation failures yields between files.
+            inFlightImportID = item.id
+            Task { @MainActor in
+                await Task.yield()
+                guard inFlightImportID == item.id else { return }
+                finishImport(itemID: item.id, outcome: .failed(failure))
+                inFlightImportID = nil
+                processImportQueue()
+            }
         }
     }
 
-    private func resolveImport(_ prepared: PreparedDocumentImport, as resolution: DocumentImportResolution) {
-        do {
-            let document = try importService.resolve(prepared, as: resolution)
-            openDocument(document)
-        } catch { showError(error) }
-        processImportQueue()
+    private enum ImportOperation {
+        case accept
+        case resolve(DocumentImportResolution)
+        case discard
+    }
+
+    private func processPreparedImport(_ prepared: PreparedDocumentImport, operation: ImportOperation) {
+        guard inFlightImportID == nil, activeImportSession?.nextItem?.id == prepared.id else { return }
+        inFlightImportID = prepared.id
+        Task { @MainActor in
+            let result: BatchImportProcessingResult
+            switch operation {
+            case .accept:
+                result = await batchImportStager.accept(prepared)
+            case .resolve(let resolution):
+                result = await batchImportStager.resolve(prepared, as: resolution)
+            case .discard:
+                result = await batchImportStager.discard(prepared)
+            }
+            guard inFlightImportID == prepared.id, activeImportSession?.nextItem?.id == prepared.id else { return }
+            switch result {
+            case .imported(let document):
+                finishImportedDocument(document, prepared: prepared)
+            case .review(let refreshed):
+                nextImportReview = refreshed
+            case .skipped:
+                finishImport(itemID: prepared.id, outcome: .skipped)
+            case .failure(let message):
+                finishImport(itemID: prepared.id, outcome: .failed(BatchImportFailure(
+                    filename: prepared.document.originalFilename, message: message
+                )))
+            }
+            // Publish progress, allow UI work, and only then release this item.
+            await Task.yield()
+            guard inFlightImportID == prepared.id else { return }
+            inFlightImportID = nil
+            processImportQueue()
+        }
     }
 
     private func resolvePendingImport(_ prepared: PreparedDocumentImport, as resolution: DocumentImportResolution) {
-        guard pendingImport?.id == prepared.id else { return }
+        guard pendingImport?.id == prepared.id, inFlightImportID == nil else { return }
         isImportReviewDismissing = true
         pendingImport = nil
-        resolveImport(prepared, as: resolution)
+        processPreparedImport(prepared, operation: .resolve(resolution))
     }
 
     private func cancelImport(_ prepared: PreparedDocumentImport) {
-        guard pendingImport?.id == prepared.id else { return }
+        guard pendingImport?.id == prepared.id, inFlightImportID == nil else { return }
         isImportReviewDismissing = true
         pendingImport = nil
-        do { try importService.discard(prepared) } catch { showError(error) }
+        processPreparedImport(prepared, operation: .discard)
     }
 
     private func importReviewDidDismiss() {
         isImportReviewDismissing = false
         processImportQueue()
+    }
+
+    private func batchSummaryDidDismiss() {
+        isBatchSummaryDismissing = false
+        processImportQueue()
+    }
+
+    private func finishImportedDocument(_ document: PreviewDocument, prepared: PreparedDocumentImport) {
+        let shouldOpen = activeImportSession?.isBatch != true
+        guard finishImport(itemID: prepared.id, outcome: .imported) else { return }
+        if shouldOpen { openDocument(document) }
+    }
+
+    @discardableResult
+    private func finishImport(itemID: UUID, outcome: BatchImportOutcome) -> Bool {
+        guard activeImportSession?.finish(itemID: itemID, outcome: outcome) == true else { return false }
+        if activeImportSession?.isBatch == false, case .failed(let failure) = outcome {
+            deferredImportError = failure.message
+        }
+        return true
     }
 
     private func openDocument(_ document: PreviewDocument) {
@@ -386,7 +525,7 @@ struct AppView: View {
     private func openPastedDocument() {
         if let prepared = pastedImport {
             pastedImport = nil
-            importQueue.append(prepared)
+            importQueue.append(BatchImportSession(items: [.prepared(prepared)]))
         }
         processImportQueue()
     }
@@ -398,7 +537,8 @@ struct AppView: View {
 
         didHandleLaunchArguments = true
         let arguments = CommandLine.arguments
-        if importQueue.isEmpty, pendingImport == nil, pastedImport == nil {
+        if importQueue.isEmpty, preparationQueue.isEmpty, !isPreparingImports,
+           activeImportSession == nil, pendingImport == nil, pastedImport == nil {
             try? store.clearAbandonedStaging()
         }
 
@@ -409,6 +549,13 @@ struct AppView: View {
         if PackageNavigationTestFixtures.handle(arguments: arguments, store: store) {
             reloadDocuments()
         }
+        do {
+            if let session = try BatchImportTestFixtures.handle(arguments: arguments, store: store, errorMessage: userFacingMessage) {
+                importQueue.append(session)
+            }
+            reloadDocuments()
+            processImportQueue()
+        } catch { showError(error) }
         #endif
 
         if arguments.contains("--screenshot-reset-library") {
@@ -478,33 +625,7 @@ struct AppView: View {
     }
 
     private func userFacingMessage(for error: Error) -> String {
-        if let importError = error as? DocumentImportError {
-            switch importError {
-            case .unsupportedFileType:
-                return AppStrings.Errors.unsupportedFileType
-            }
-        }
-
-        if let zipError = error as? ZipImportError {
-            switch zipError {
-            case .invalidArchive:
-                return AppStrings.Errors.zipInvalidArchive
-            case .unsafePath, .unsupportedEntry, .duplicatePath, .caseConflictingPath:
-                return AppStrings.Errors.zipUnsafeOrConflictingPath
-            case .archiveTooLarge:
-                return AppStrings.Errors.zipArchiveTooLarge
-            case .tooManyFiles:
-                return AppStrings.Errors.zipTooManyFiles
-            case .singleFileTooLarge:
-                return AppStrings.Errors.zipSingleFileTooLarge
-            case .expandedSizeTooLarge:
-                return AppStrings.Errors.zipExpandedSizeTooLarge
-            case .missingEntryFile:
-                return AppStrings.Errors.zipMissingEntryFile
-            }
-        }
-
-        return error.localizedDescription
+        BatchImportErrorMessage.message(for: error)
     }
 }
 

@@ -4,6 +4,7 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
     case html
     case markdown
     case yaml
+    case json
     case zipPackage
 
     var id: String {
@@ -18,6 +19,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             AppStrings.Samples.markdownTitle
         case .yaml:
             YAMLStrings.sampleTitle
+        case .json:
+            JSONStrings.sampleTitle
         case .zipPackage:
             AppStrings.Samples.zipTitle
         }
@@ -31,6 +34,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             AppStrings.Samples.markdownSubtitle
         case .yaml:
             YAMLStrings.sampleSubtitle
+        case .json:
+            JSONStrings.sampleSubtitle
         case .zipPackage:
             AppStrings.Samples.zipSubtitle
         }
@@ -44,6 +49,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             "reading-notes.md"
         case .yaml:
             "app-config.yaml"
+        case .json:
+            "api-response.json"
         case .zipPackage:
             "reading-week.zip"
         }
@@ -57,6 +64,8 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             .markdown
         case .yaml:
             .yaml
+        case .json:
+            .json
         case .zipPackage:
             .zipPackage
         }

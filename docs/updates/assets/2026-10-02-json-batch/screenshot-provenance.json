@@ -1,0 +1,129 @@
+[
+  {
+    "file": "iphone-json-structure.png",
+    "sha256": "5fec1d2a30a8e6bcb682162a1c3cd8a69f9c69d6e60da9d8ebe1144d36d7d505",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+      "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+      "exportedFileName": "E4A24D4A-AB83-437C-AED7-A1BE10BE5AE3.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "JSON 05 Chinese structure_0_09139586-CC88-490A-8D68-6143530ECE3E.png",
+      "timestamp": 1790924948.145,
+      "testIdentifier": "JSONPreviewUITests/testLocalizedStructureSourceAndLargeText()"
+    }
+  },
+  {
+    "file": "iphone-json-source.png",
+    "sha256": "095a458fb961a14aa6d596fadddc7c6544d530d03706ef50cc0cfe4618ab9735",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+      "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+      "exportedFileName": "A68D9919-A3AE-412F-B29E-4ED707AC2B6E.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "JSON 06 Chinese source_0_1F6A0313-75EC-4C3C-B146-DDE137364E8B.png",
+      "timestamp": 1790924949.933,
+      "testIdentifier": "JSONPreviewUITests/testLocalizedStructureSourceAndLargeText()"
+    }
+  },
+  {
+    "file": "iphone-json-error.png",
+    "sha256": "78cd750e9263319e3c4829fa9b6ce1ee19efa24ac8002dc985958727ed1f27b1",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+      "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+      "exportedFileName": "DBFC1B36-B81A-4BED-9AA0-E4D078F6BDE4.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "JSON 04 syntax error keeps readable source_0_95D1C11E-8E45-494D-953E-EEB4FD5E7061.png",
+      "timestamp": 1790924927.072,
+      "testIdentifier": "JSONPreviewUITests/testInvalidJSONShowsErrorLineAndPreservesOriginalSharing()"
+    }
+  },
+  {
+    "file": "iphone-system-multiselect.png",
+    "sha256": "1bf5e405d8c65815a6d5fdc4e61bdd485b39b5dc4f496e670745b7836779ce71",
+    "source": "simctl screenshot; manual system Files multi-select via Device Hub; isolated UITestLibrary; iOS18.5 D17454A3-3351-48DD-A61F-395E5E7EE3FF"
+  },
+  {
+    "file": "iphone-batch-summary.png",
+    "sha256": "fc51165712ac4ffd97f38ed96abe0a007d1002159dd8c8d8da21985dbb6d546a",
+    "source": "simctl screenshot; manual system Files multi-select via Device Hub; isolated UITestLibrary; iOS18.5 D17454A3-3351-48DD-A61F-395E5E7EE3FF"
+  },
+  {
+    "file": "iphone-imported-json.png",
+    "sha256": "0698d72c510b1f76b0a848bddfecb68016af95cc43215de0b312630af7a882b6",
+    "source": "simctl screenshot; manual system Files multi-select via Device Hub; isolated UITestLibrary; iOS18.5 D17454A3-3351-48DD-A61F-395E5E7EE3FF"
+  },
+  {
+    "file": "iphone-json-search.png",
+    "sha256": "b16a0339d9062343c6e0f7bd048a299b4fbc3c71f67a6f2afe9b8a6c6abab3cb",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+      "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+      "exportedFileName": "0334C3FA-25C7-4B32-B281-41FC0F2023D2.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "JSON 01 search reveals nested field_0_6C7B0C58-C5D0-49F2-BFA9-F1702CD883F7.png",
+      "timestamp": 1790926098.804,
+      "testIdentifier": "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()"
+    }
+  },
+  {
+    "file": "iphone-yaml-large-text-search.png",
+    "sha256": "2155e290de980232b25c9a37e0d66392181b39ee0491d3e954ad2413a7735eac",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+      "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+      "exportedFileName": "D9468598-7019-4040-AE21-1B47205DA384.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "YAML search at accessibility text size_0_CBF4CD86-7149-4F3C-8CE7-8975E79C51AD.png",
+      "timestamp": 1790926128.711,
+      "testIdentifier": "YAMLPreviewUITests/testAccessibilityLargeTextKeepsReadingControlsUsable()"
+    }
+  },
+  {
+    "file": "ipad-json-source.png",
+    "sha256": "c1ae45612af7042d4837ace9b45e329a56718e4ac6765212ae0f4062935627b0",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "deviceName": "Passnote ASO iPad Pro 12.9",
+      "exportedFileName": "B0F64327-1EFC-483B-A1F4-867F3C2543AB.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "JSON 06 Chinese source_0_1C117023-E07F-4007-8205-4E70BBD2894C.png",
+      "timestamp": 1790927044.234,
+      "testIdentifier": "JSONPreviewUITests/testLocalizedStructureSourceAndLargeText()"
+    }
+  },
+  {
+    "file": "ipad-json-structure.png",
+    "sha256": "bc26b4eecd8b6559a956afaea92d8460d622420f9d12b1e14930d39f519c7db9",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "deviceName": "Passnote ASO iPad Pro 12.9",
+      "exportedFileName": "1F0D61BB-B335-4022-8AF2-3A5C005D81C1.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "JSON 05 Chinese structure_0_8584A23B-81D7-4576-97FA-6B973627DF3A.png",
+      "timestamp": 1790927042.299,
+      "testIdentifier": "JSONPreviewUITests/testLocalizedStructureSourceAndLargeText()"
+    }
+  },
+  {
+    "file": "ipad-batch-partial-summary.png",
+    "sha256": "8454a9a69dcb471f92414f93444e6a4bf56cf9f813c1701b7801baef2e4b4c3a",
+    "source": {
+      "configurationName": "Test Scheme Action",
+      "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "deviceName": "Passnote ASO iPad Pro 12.9",
+      "exportedFileName": "4CB263D6-6AA9-4E7E-A220-328748422CF9.png",
+      "isAssociatedWithFailure": false,
+      "suggestedHumanReadableName": "Batch import results with a failure and a skipped duplicate_0_D246AF6B-7DED-48DD-B372-2C1FE2C385DA.png",
+      "timestamp": 1790926602.777,
+      "testIdentifier": "BatchImportUITests/testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary()"
+    }
+  }
+]

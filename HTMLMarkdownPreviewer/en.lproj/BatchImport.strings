@@ -1,0 +1,12 @@
+"batch.title" = "Import Complete";
+"batch.imported" = "Imported";
+"batch.skipped" = "Skipped";
+"batch.failed" = "Failed";
+"batch.failures" = "Files That Could Not Be Imported";
+"batch.libraryHint" = "Imported files are ready in your library.";
+"batch.skip" = "Skip This File";
+"batch.done" = "View Library";
+"batch.skipHint" = "Cancel skips this file and continues with the remaining files.";
+"batch.selectionHint" = "You can select more than one file.";
+"batch.preparing" = "Preparing files… %1$ld of %2$ld";
+"batch.processing" = "Importing files… %1$ld of %2$ld";

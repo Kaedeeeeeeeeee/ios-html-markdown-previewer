@@ -4,6 +4,7 @@ enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable,
     case html
     case markdown
     case yaml
+    case json
     case zipPackage
     case plainText
     case unsupported
@@ -20,6 +21,8 @@ enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable,
             AppStrings.DocumentTypes.markdown
         case .yaml:
             "YAML"
+        case .json:
+            "JSON"
         case .zipPackage:
             AppStrings.DocumentTypes.zip
         case .plainText:
@@ -37,6 +40,8 @@ enum PreviewDocumentType: String, CaseIterable, Codable, Hashable, Identifiable,
             "text.alignleft"
         case .yaml:
             "list.bullet.indent"
+        case .json:
+            "curlybraces"
         case .zipPackage:
             "archivebox"
         case .plainText:

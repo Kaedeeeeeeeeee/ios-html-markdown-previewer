@@ -1,6 +1,7 @@
 import Foundation
 
 final class DocumentLibraryStore {
+    private let transactionLock: NSRecursiveLock
     private let fileManager: FileManager
     private let rootURL: URL
     private let metadataFilename = "metadata.json"
@@ -14,7 +15,10 @@ final class DocumentLibraryStore {
         }
     ) {
         self.fileManager = fileManager
-        self.rootURL = rootURL ?? Self.defaultRootURL(fileManager: fileManager)
+        let canonicalRoot = (rootURL ?? Self.defaultRootURL(fileManager: fileManager))
+            .standardizedFileURL.resolvingSymlinksInPath()
+        self.rootURL = canonicalRoot
+        self.transactionLock = LibraryTransactionLocks.shared.lock(for: canonicalRoot)
         self.metadataWriter = metadataWriter
     }
 
@@ -35,6 +39,8 @@ final class DocumentLibraryStore {
     }
 
     func loadDocuments() throws -> [PreviewDocument] {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         guard fileManager.fileExists(atPath: importsURL.path) else {
             return []
         }
@@ -66,6 +72,8 @@ final class DocumentLibraryStore {
     }
 
     func save(_ document: PreviewDocument) throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let documentRootURL = documentRootURL(for: document)
         try fileManager.createDirectory(at: documentRootURL, withIntermediateDirectories: true)
 
@@ -76,6 +84,8 @@ final class DocumentLibraryStore {
     }
 
     func setPinned(_ isPinned: Bool, for document: PreviewDocument, at date: Date = Date()) throws -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         var updated = latestStoredDocument(for: document)
         updated.pinnedAt = isPinned ? updated.pinnedAt ?? date : nil
         try save(updated)
@@ -94,6 +104,8 @@ final class DocumentLibraryStore {
     }
 
     func rename(_ document: PreviewDocument, to name: String) throws -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         var updated = latestStoredDocument(for: document)
         updated.displayName = try Self.validatedDisplayName(name)
         try save(updated)
@@ -102,6 +114,8 @@ final class DocumentLibraryStore {
 
     /// Files stay staged until the user makes a decision. Only committed roots appear in the library.
     func commitStagedDocument(_ document: PreviewDocument) throws -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let stagedRoot = documentRootURL(for: document)
         let destination = documentRootURL(for: document.id)
         var committed = document
@@ -123,6 +137,8 @@ final class DocumentLibraryStore {
         with stagedDocument: PreviewDocument,
         preservingReadingPosition: Bool
     ) throws -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let root = documentRootURL(for: document)
         guard let data = try? Data(contentsOf: metadataURL(for: document)),
               let current = try? JSONDecoder().decode(PreviewDocument.self, from: data),
@@ -172,6 +188,8 @@ final class DocumentLibraryStore {
     }
 
     func discardStagedDocument(_ document: PreviewDocument) throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let stagedRoot = stagedDocumentRootURL(for: document.id)
         if fileManager.fileExists(atPath: stagedRoot.path) {
             try fileManager.removeItem(at: stagedRoot)
@@ -179,12 +197,16 @@ final class DocumentLibraryStore {
     }
 
     func clearAbandonedStaging() throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         if fileManager.fileExists(atPath: stagingURL.path) {
             try fileManager.removeItem(at: stagingURL)
         }
     }
 
     func markOpened(_ document: PreviewDocument, at date: Date = Date()) throws -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         var updatedDocument = latestStoredDocument(for: document)
         updatedDocument.lastOpenedAt = date
         try save(updatedDocument)
@@ -192,6 +214,8 @@ final class DocumentLibraryStore {
     }
 
     func updatePreferredPreviewMode(_ mode: PreviewMode, for document: PreviewDocument) throws -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         var updatedDocument = latestStoredDocument(for: document)
         updatedDocument.preferredPreviewMode = mode
         try save(updatedDocument)
@@ -199,10 +223,14 @@ final class DocumentLibraryStore {
     }
 
     func readingPosition(for document: PreviewDocument) -> ReadingPosition? {
-        latestStoredDocument(for: document).readingPosition
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
+        return latestStoredDocument(for: document).readingPosition
     }
 
     func updateReadingPosition(_ position: ReadingPosition, for document: PreviewDocument) throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         // Merge with disk so an older navigation value never overwrites mode or recency.
         var updatedDocument = latestStoredDocument(for: document)
         // A disappearing preview may still reference the payload replaced by a duplicate import.
@@ -214,6 +242,8 @@ final class DocumentLibraryStore {
     }
 
     func savedPackagePageRelativePath(for document: PreviewDocument) -> String? {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let current = latestStoredDocument(for: document)
         guard current.type == .zipPackage, let path = current.savedPackagePageRelativePath,
               packageCatalog(for: current).page(relativePath: path) != nil else { return nil }
@@ -221,6 +251,8 @@ final class DocumentLibraryStore {
     }
 
     func packageReadingPosition(forPage relativePath: String, in document: PreviewDocument) -> ReadingPosition? {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let current = latestStoredDocument(for: document)
         guard current.type == .zipPackage, PackagePageCatalog.isValidRelativePath(relativePath) else { return nil }
         let catalog = packageCatalog(for: current)
@@ -235,6 +267,8 @@ final class DocumentLibraryStore {
         position: ReadingPosition? = nil,
         for document: PreviewDocument
     ) throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         guard document.type == .zipPackage,
               fileManager.fileExists(atPath: metadataURL(for: document).path),
               PackagePageCatalog.isValidRelativePath(pageRelativePath) else { return }
@@ -256,10 +290,14 @@ final class DocumentLibraryStore {
     }
 
     private func packageCatalog(for document: PreviewDocument) -> PackagePageCatalog {
-        PackagePageCatalog(rootURL: readAccessRootURL(for: document), entryURL: entryFileURL(for: document))
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
+        return PackagePageCatalog(rootURL: readAccessRootURL(for: document), entryURL: entryFileURL(for: document))
     }
 
     func delete(_ document: PreviewDocument) throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         let documentRootURL = documentRootURL(for: document)
         if fileManager.fileExists(atPath: documentRootURL.path) {
             try fileManager.removeItem(at: documentRootURL)
@@ -267,6 +305,8 @@ final class DocumentLibraryStore {
     }
 
     func deleteAll() throws {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         if fileManager.fileExists(atPath: importsURL.path) {
             try fileManager.removeItem(at: importsURL)
         }
@@ -306,6 +346,8 @@ final class DocumentLibraryStore {
     }
 
     private func latestStoredDocument(for document: PreviewDocument) -> PreviewDocument {
+        transactionLock.lock()
+        defer { transactionLock.unlock() }
         guard let data = try? Data(contentsOf: metadataURL(for: document)),
               let storedDocument = try? JSONDecoder().decode(PreviewDocument.self, from: data) else {
             return document
@@ -332,5 +374,30 @@ final class DocumentLibraryStore {
             Bundle.main.bundleIdentifier ?? "HTMLMarkdownPreviewer",
             isDirectory: true
         )
+    }
+}
+
+/// Stores for the same canonical library share a recursive transaction lock. Nested
+/// helpers (including save) can reenter it; independent libraries remain independent.
+/// Weak entries avoid retaining a lock for every temporary/test library forever.
+private final class LibraryTransactionLocks: @unchecked Sendable {
+    static let shared = LibraryTransactionLocks()
+    private let registryLock = NSLock()
+    private var locks: [String: WeakLock] = [:]
+
+    private final class WeakLock {
+        weak var value: NSRecursiveLock?
+        init(_ value: NSRecursiveLock) { self.value = value }
+    }
+
+    func lock(for root: URL) -> NSRecursiveLock {
+        registryLock.lock()
+        defer { registryLock.unlock() }
+        let key = root.path
+        if let existing = locks[key]?.value { return existing }
+        locks = locks.filter { $0.value.value != nil }
+        let lock = NSRecursiveLock()
+        locks[key] = WeakLock(lock)
+        return lock
     }
 }

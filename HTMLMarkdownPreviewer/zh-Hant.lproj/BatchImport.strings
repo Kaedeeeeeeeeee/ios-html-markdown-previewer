@@ -1,0 +1,12 @@
+"batch.title" = "匯入完成";
+"batch.imported" = "已匯入";
+"batch.skipped" = "已略過";
+"batch.failed" = "失敗";
+"batch.failures" = "無法匯入的檔案";
+"batch.libraryHint" = "已匯入的檔案可以在檔案庫中開啟。";
+"batch.skip" = "略過此檔案";
+"batch.done" = "查看檔案庫";
+"batch.skipHint" = "取消會略過目前的檔案，並繼續匯入其餘檔案。";
+"batch.selectionHint" = "可以一次選取多個檔案。";
+"batch.preparing" = "正在準備檔案… %1$ld / %2$ld";
+"batch.processing" = "正在匯入檔案… %1$ld / %2$ld";

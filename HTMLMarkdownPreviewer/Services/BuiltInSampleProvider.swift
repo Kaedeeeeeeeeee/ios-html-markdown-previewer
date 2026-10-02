@@ -29,6 +29,8 @@ final class BuiltInSampleProvider {
             try Self.markdownSample.write(to: sampleURL, atomically: true, encoding: .utf8)
         case .yaml:
             try Self.yamlSample.write(to: sampleURL, atomically: true, encoding: .utf8)
+        case .json:
+            try Self.jsonSample.write(to: sampleURL, atomically: true, encoding: .utf8)
         case .zipPackage:
             try writeZipSample(to: sampleURL)
         }

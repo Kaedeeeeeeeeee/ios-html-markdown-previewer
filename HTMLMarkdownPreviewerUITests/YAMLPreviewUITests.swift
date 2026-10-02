@@ -263,8 +263,8 @@ final class YAMLPreviewUITests: XCTestCase {
         if manualYAML {
             let control = app.segmentedControls["paste-format-picker"]
             // SwiftUI Form can expose a segment with the entire row's frame.
-            // Select the visible third segment inside its native control.
-            control.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
+            // Select YAML, the third of the four visible format segments.
+            control.coordinate(withNormalizedOffset: CGVector(dx: 0.625, dy: 0.5)).tap()
             XCTAssertTrue(app.buttons["YAML"].isSelected)
         }
         nameField.tap()

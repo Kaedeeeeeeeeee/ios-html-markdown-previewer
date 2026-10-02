@@ -220,6 +220,66 @@ final class DocumentLibraryManagementTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: store.originalFileURL(for: updated).path))
     }
 
+    func testReadingSaveSerializesWithReplacementAcrossCanonicalRootAliases() throws {
+        let store = makeStore()
+        let original = try importFile("report.md", "# Original", store: store)
+        let prepared = try DocumentImportService(store: store).prepareImport(
+            from: sourceFile("report.md", "# Replacement"), source: .fileImporter
+        )
+        let alias = workspace.appendingPathComponent("library-alias")
+        try FileManager.default.createSymbolicLink(at: alias, withDestinationURL: workspace.appendingPathComponent("library"))
+        let enteredWriter = DispatchSemaphore(value: 0)
+        let releaseWriter = DispatchSemaphore(value: 0)
+        let replacementStarted = DispatchSemaphore(value: 0)
+        let replacementFinished = DispatchSemaphore(value: 0)
+        let readStarted = DispatchSemaphore(value: 0)
+        let readFinished = DispatchSemaphore(value: 0)
+        let savingFinished = expectation(description: "Reading save completed")
+        let updatingFinished = expectation(description: "Replacement completed")
+        let loadingFinished = expectation(description: "Library read completed")
+        let readingStore = DocumentLibraryStore(rootURL: alias, metadataWriter: { data, url in
+            enteredWriter.signal()
+            guard releaseWriter.wait(timeout: .now() + 5) == .success else {
+                throw CocoaError(.fileWriteUnknown)
+            }
+            try data.write(to: url, options: .atomic)
+        })
+        DispatchQueue.global().async {
+            defer { savingFinished.fulfill() }
+            do { try readingStore.updateReadingPosition(ReadingPosition(progress: 0.8), for: original) }
+            catch { XCTFail("Reading save failed: \(error)") }
+        }
+        XCTAssertEqual(enteredWriter.wait(timeout: .now() + 5), .success)
+        DispatchQueue.global().async {
+            defer { replacementFinished.signal(); updatingFinished.fulfill() }
+            replacementStarted.signal()
+            do { _ = try store.replaceContents(of: original, with: prepared.document, preservingReadingPosition: false) }
+            catch { XCTFail("Replacement failed: \(error)") }
+        }
+        XCTAssertEqual(replacementStarted.wait(timeout: .now() + 5), .success)
+        DispatchQueue.global().async {
+            defer { readFinished.signal(); loadingFinished.fulfill() }
+            readStarted.signal()
+            do { _ = try store.loadDocuments() }
+            catch { XCTFail("Library read failed: \(error)") }
+        }
+        XCTAssertEqual(readStarted.wait(timeout: .now() + 5), .success)
+        // The writer is paused inside its transaction. Neither replacement nor
+        // metadata reads may observe or modify the library until that save commits.
+        XCTAssertEqual(replacementFinished.wait(timeout: .now() + 0.05), .timedOut)
+        XCTAssertEqual(readFinished.wait(timeout: .now() + 0.05), .timedOut)
+        releaseWriter.signal()
+        wait(for: [savingFinished, updatingFinished, loadingFinished], timeout: 5)
+        let updated = try XCTUnwrap(store.loadDocuments().first)
+        XCTAssertEqual(updated.id, original.id)
+        XCTAssertNil(updated.readingPosition)
+        XCTAssertEqual(try read(updated, store: store), "# Replacement")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.originalFileURL(for: original).path))
+        // A callback arriving after replacement also cannot resurrect old metadata.
+        try store.updateReadingPosition(ReadingPosition(progress: 0.9), for: original)
+        XCTAssertEqual(try store.loadDocuments().first, updated)
+    }
+
     func testLibraryLocalizationKeysMatchAcrossAllSupportedLanguages() throws {
         let sourceRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("HTMLMarkdownPreviewer")

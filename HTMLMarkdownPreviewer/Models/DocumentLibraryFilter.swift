@@ -1,7 +1,7 @@
 import Foundation
 
 enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
-    case all, html, markdown, yaml, zip
+    case all, html, markdown, yaml, json, zip
 
     var id: String { rawValue }
 
@@ -11,6 +11,7 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .html: PreviewDocumentType.html.displayName
         case .markdown: PreviewDocumentType.markdown.displayName
         case .yaml: PreviewDocumentType.yaml.displayName
+        case .json: PreviewDocumentType.json.displayName
         case .zip: PreviewDocumentType.zipPackage.displayName
         }
     }
@@ -21,6 +22,7 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .html: PreviewDocumentType.html.systemImage
         case .markdown: PreviewDocumentType.markdown.systemImage
         case .yaml: PreviewDocumentType.yaml.systemImage
+        case .json: PreviewDocumentType.json.systemImage
         case .zip: PreviewDocumentType.zipPackage.systemImage
         }
     }
@@ -31,6 +33,7 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .html: document.type == .html
         case .markdown: document.type == .markdown
         case .yaml: document.type == .yaml
+        case .json: document.type == .json
         case .zip: document.type == .zipPackage
         }
     }
