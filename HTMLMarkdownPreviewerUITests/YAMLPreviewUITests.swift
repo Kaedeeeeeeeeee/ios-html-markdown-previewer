@@ -23,6 +23,8 @@ final class YAMLPreviewUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["yaml-value-services.web.port"].label, "3000")
         app.buttons["Source"].tap()
         XCTAssertTrue(sourceLine(27, app).waitForExistence(timeout: 5))
+        XCTAssertTrue(waitForVisibleSourceLine(27, app: app),
+                      "Confirm the second document is visible before saving its reading position.")
         screenshot("Second YAML document source", app)
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
@@ -31,7 +33,8 @@ final class YAMLPreviewUITests: XCTestCase {
         recent.tap()
         XCTAssertTrue(element("yaml-source-content", app).waitForExistence(timeout: 10))
         XCTAssertEqual(app.buttons["yaml-document-menu"].label, "Document 2 of 2")
-        XCTAssertTrue(wait { self.sourceLine(27, app).isHittable })
+        XCTAssertTrue(waitForVisibleSourceLine(27, app: app))
+        screenshot("YAML source reading position survives reopening", app)
         app.terminate()
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -39,7 +42,7 @@ final class YAMLPreviewUITests: XCTestCase {
         recent.tap()
         XCTAssertTrue(element("yaml-source-content", app).waitForExistence(timeout: 10))
         XCTAssertEqual(app.buttons["yaml-document-menu"].label, "Document 2 of 2")
-        XCTAssertTrue(wait { self.sourceLine(27, app).isHittable })
+        XCTAssertTrue(waitForVisibleSourceLine(27, app: app))
         screenshot("YAML source and selected document survive relaunch", app)
     }
 
@@ -201,6 +204,20 @@ final class YAMLPreviewUITests: XCTestCase {
     }
     private func sourceLine(_ number: Int, _ app: XCUIApplication) -> XCUIElement {
         element("yaml-source-line-\(number)", app)
+    }
+    private func waitForVisibleSourceLine(_ number: Int, app: XCUIApplication) -> Bool {
+        let line = sourceLine(number, app)
+        let viewport = element("yaml-source-content", app)
+        // Source rows are read-only accessibility elements. Their visible
+        // geometry verifies restoration; hittability asks for a touch target
+        // and can time out while CI collects a slow accessibility snapshot.
+        let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            guard line.exists, viewport.exists else { return false }
+            let frame = line.frame
+            let visible = frame.intersection(viewport.frame)
+            return frame.height > 0 && visible.width > 0 && visible.height >= frame.height * 0.9
+        }, object: nil)
+        return XCTWaiter.wait(for: [expectation], timeout: 30) == .completed
     }
     private func wait(_ predicate: @escaping () -> Bool) -> Bool {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in predicate() }, object: nil)
