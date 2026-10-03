@@ -1,1 +1,1 @@
-JSON,YAML,Markdown,ZIP,レポート,ノート,設定,ソース,閲覧,オフライン
+YAML,Markdown,ZIP,設定,ソース,閲覧,オフライン

@@ -77,7 +77,7 @@ New HTML files, including HTML inside ZIP packages, open in Interactive mode wit
 
 Keywords:
 
-markdown,json,yaml,zip,reader,report,notes,config,source,code,offline,preview
+markdown,yaml,zip,reader,config,source,code,offline,preview
 
 Release Notes:
 
@@ -142,7 +142,7 @@ JSON 与 YAML 为只读预览，可分享原文件；PDF 导出适用于 HTML �
 
 Keywords:
 
-JSON,YAML,Markdown,ZIP,报告,笔记,配置,源码,阅读,离线
+YAML,Markdown,ZIP,源码,离线
 
 Release Notes:
 
@@ -207,7 +207,7 @@ JSONとYAMLは読み取り専用で、元のファイルを共有できます。
 
 Keywords:
 
-JSON,YAML,Markdown,ZIP,レポート,ノート,設定,ソース,閲覧,オフライン
+YAML,Markdown,ZIP,設定,ソース,閲覧,オフライン
 
 Release Notes:
 

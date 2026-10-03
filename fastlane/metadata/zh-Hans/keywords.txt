@@ -1,1 +1,1 @@
-JSON,YAML,Markdown,ZIP,报告,笔记,配置,源码,阅读,离线
+YAML,Markdown,ZIP,源码,离线

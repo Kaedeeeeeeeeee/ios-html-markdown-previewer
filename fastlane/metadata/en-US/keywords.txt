@@ -1,1 +1,1 @@
-markdown,json,yaml,zip,reader,report,notes,config,source,code,offline,preview
+markdown,yaml,zip,reader,config,source,code,offline,preview
