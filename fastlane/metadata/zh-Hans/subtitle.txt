@@ -1,1 +1,1 @@
-本地 HTML 与 Markdown 查看器
+阅读报告、笔记与 JSON 配置

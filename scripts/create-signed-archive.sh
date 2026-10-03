@@ -262,8 +262,8 @@ if not errors:
     expected_archive = {
         "ApplicationPath": "Applications/HTMLMarkdownPreviewer.app",
         "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
-        "CFBundleShortVersionString": "1.6",
-        "CFBundleVersion": "11",
+        "CFBundleShortVersionString": "1.7",
+        "CFBundleVersion": "12",
     }
     for key, expected in expected_archive.items():
         if properties.get(key) != expected:
@@ -276,8 +276,8 @@ if not errors:
     expected_app = {
         "CFBundleDisplayName": "HTML Previewer",
         "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
-        "CFBundleShortVersionString": "1.6",
-        "CFBundleVersion": "11",
+        "CFBundleShortVersionString": "1.7",
+        "CFBundleVersion": "12",
         "CFBundleSupportedPlatforms": ["iPhoneOS"],
         "MinimumOSVersion": "17.0",
         "ITSAppUsesNonExemptEncryption": False,
@@ -299,6 +299,7 @@ if not errors:
         "public.xhtml",
         "net.daringfireball.markdown",
         "public.yaml",
+        "public.json",
         "public.zip-archive",
     }
     missing_document_types = sorted(required_document_types - document_types)

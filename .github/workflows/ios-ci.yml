@@ -230,6 +230,7 @@ jobs:
             -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}" \
             -derivedDataPath DerivedData \
             -parallel-testing-enabled NO \
+            -maximum-concurrent-test-simulator-destinations 1 \
             -testLanguage en -testRegion US \
             -only-testing:HTMLMarkdownPreviewerTests
 
@@ -248,6 +249,7 @@ jobs:
             -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}" \
             -derivedDataPath DerivedData \
             -parallel-testing-enabled NO \
+            -maximum-concurrent-test-simulator-destinations 1 \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \
@@ -257,7 +259,10 @@ jobs:
             -only-testing:HTMLMarkdownPreviewerUITests/ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch \
             -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen \
             -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testSystemPasteAutoDetectsYAMLFenceAndCopiesValuePathAndSource \
-            -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testInvalidYAMLPointsToErrorKeepsSourceAndAllowsOriginalSharing
+            -only-testing:HTMLMarkdownPreviewerUITests/YAMLPreviewUITests/testInvalidYAMLPointsToErrorKeepsSourceAndAllowsOriginalSharing \
+            -only-testing:HTMLMarkdownPreviewerUITests/JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch \
+            -only-testing:HTMLMarkdownPreviewerUITests/JSONPreviewUITests/testSystemPasteDetectsJSONAndCopiesExactNumberAndCollection \
+            -only-testing:HTMLMarkdownPreviewerUITests/BatchImportUITests/testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary
 
       - name: Preserve test results and failure screenshots
         if: always()

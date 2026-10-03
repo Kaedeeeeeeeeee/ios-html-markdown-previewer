@@ -4,13 +4,14 @@ enum PastedDocumentFormat: String, CaseIterable, Identifiable, Sendable {
     case markdown
     case html
     case yaml
+    case json
 
     var id: String { rawValue }
     var displayName: String {
-        switch self { case .html: "HTML"; case .markdown: "Markdown"; case .yaml: "YAML" }
+        switch self { case .html: "HTML"; case .markdown: "Markdown"; case .yaml: "YAML"; case .json: "JSON" }
     }
     var fileExtension: String {
-        switch self { case .html: "html"; case .markdown: "md"; case .yaml: "yaml" }
+        switch self { case .html: "html"; case .markdown: "md"; case .yaml: "yaml"; case .json: "json" }
     }
 }
 
@@ -76,7 +77,9 @@ final class PastedDocumentImportService {
         let normalized = normalizedLineEndings(text)
         var content = normalized
         if let fence = outerFence(in: normalized),
-           fence.format == format || (fence.format == nil && format == .html && looksLikeHTML(fence.content)) {
+           fence.format == format || (fence.format == nil &&
+                ((format == .html && looksLikeHTML(fence.content)) ||
+                 format == .json)) {
             content = fence.content
         }
 
@@ -97,9 +100,18 @@ final class PastedDocumentImportService {
         let normalized = normalizedLineEndings(text)
         if let fence = outerFence(in: normalized) {
             if let format = fence.format { return format }
+            if looksLikeJSONContainer(fence.content) { return .json }
             return looksLikeHTML(fence.content) ? .html : .markdown
         }
+        if looksLikeJSONContainer(normalized) { return .json }
         return looksLikeHTML(normalized) ? .html : .markdown
+    }
+
+    // Restrict automatic detection to complete objects/arrays. Ordinary numbers,
+    // quoted prose and Markdown links stay Markdown; JSON scalars remain
+    // available by explicitly choosing JSON or using a json code fence.
+    private static func looksLikeJSONContainer(_ text: String) -> Bool {
+        JSONRenderService.isValidContainer(text)
     }
 
     private static func normalizedLineEndings(_ text: String) -> String {
@@ -137,6 +149,7 @@ final class PastedDocumentImportService {
         case "html", "htm", "xhtml": format = .html
         case "markdown", "md": format = .markdown
         case "yaml", "yml": format = .yaml
+        case "json": format = .json
         case "": format = nil
         default: return nil
         }
@@ -158,7 +171,7 @@ final class PastedDocumentImportService {
             let isControl = character.unicodeScalars.contains { CharacterSet.controlCharacters.contains($0) }
             return isControl || "/\\:".contains(character) ? "-" : character
         }).trimmingCharacters(in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: ".")))
-        let knownExtensions = ["html", "htm", "xhtml", "md", "markdown", "yaml", "yml"]
+        let knownExtensions = ["html", "htm", "xhtml", "md", "markdown", "yaml", "yml", "json"]
         if knownExtensions.contains((sanitized as NSString).pathExtension.lowercased()) {
             sanitized = (sanitized as NSString).deletingPathExtension
         }

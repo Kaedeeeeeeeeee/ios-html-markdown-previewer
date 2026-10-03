@@ -36,6 +36,9 @@ struct YAMLRow: Decodable, Identifiable, Sendable {
     let count: Int
     let anchor: String
     let tag: String
+    /// Byte offsets into the original UTF-8 source, used by JSON to copy
+    /// collections without re-encoding numbers or storing every subtree twice.
+    let sourceRange: StructuredSourceRange?
 
     var isCollection: Bool { kind == .object || kind == .array }
     var isExpandable: Bool { isCollection && count > 0 }
@@ -55,7 +58,8 @@ struct YAMLIssue: Decodable, Sendable {
 struct YAMLSourceLine: Identifiable, Sendable {
     let number: Int
     var tokens: [YAMLSourceToken]
-    var id: String { "yaml-line-\(number)" }
+    var format: StructuredDocumentFormat = .yaml
+    var id: String { "\(format.rawValue)-line-\(number)" }
     var text: String { tokens.map(\.text).joined() }
 }
 
@@ -70,23 +74,25 @@ struct YAMLReadingLocation {
     let documentIndex: Int
     let mode: YAMLPreviewMode
     let target: String
+    let format: StructuredDocumentFormat
 
-    init(documentIndex: Int, mode: YAMLPreviewMode, target: String) {
+    init(documentIndex: Int, mode: YAMLPreviewMode, target: String, format: StructuredDocumentFormat = .yaml) {
         self.documentIndex = documentIndex
         self.mode = mode
         self.target = target
+        self.format = format
     }
 
-    init?(_ position: ReadingPosition?) {
+    init?(_ position: ReadingPosition?, format: StructuredDocumentFormat = .yaml) {
         guard let encoded = position?.anchorID else { return nil }
         let parts = encoded.split(separator: ":", maxSplits: 3).map(String.init)
-        guard parts.count == 4, parts[0] == "yaml", let index = Int(parts[1]), index >= 0,
+        guard parts.count == 4, parts[0] == format.rawValue, let index = Int(parts[1]), index >= 0,
               let mode = YAMLPreviewMode(rawValue: parts[2]),
-              parts[3].hasPrefix(mode == .source ? "yaml-line-" : "yaml-\(index)-") else { return nil }
-        self.init(documentIndex: index, mode: mode, target: parts[3])
+              parts[3].hasPrefix(mode == .source ? "\(format.rawValue)-line-" : "\(format.rawValue)-\(index)-") else { return nil }
+        self.init(documentIndex: index, mode: mode, target: parts[3], format: format)
     }
 
     var position: ReadingPosition {
-        ReadingPosition(anchorID: "yaml:\(documentIndex):\(mode.rawValue):\(target)", progress: 0)
+        ReadingPosition(anchorID: "\(format.rawValue):\(documentIndex):\(mode.rawValue):\(target)", progress: 0)
     }
 }

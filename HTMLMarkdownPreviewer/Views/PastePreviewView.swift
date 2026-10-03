@@ -15,6 +15,7 @@ struct PastePreviewView: View {
     @State private var isImporting = false
     @State private var errorMessage: String?
     @State private var isTooLarge = false
+    @State private var isDetectingFormat = false
     @State private var pasteControlID = UUID()
 
     var body: some View {
@@ -84,7 +85,7 @@ struct PastePreviewView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(PasteStrings.preview) { importText() }
-                        .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isTooLarge)
+                        .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isTooLarge || isDetectingFormat)
                         .accessibilityIdentifier("paste-open-button")
                 }
             }
@@ -108,9 +109,20 @@ struct PastePreviewView: View {
         }
         .onChange(of: text) { _, newValue in
             isTooLarge = newValue.utf8.count > PastedDocumentImportService.maximumUTF8Bytes
-            if !didChooseFormat && !isTooLarge {
-                format = PastedDocumentImportService.suggestedFormat(for: newValue)
+            isDetectingFormat = !didChooseFormat && !isTooLarge
+        }
+        .task(id: text) {
+            guard !didChooseFormat, !isTooLarge else { return }
+            let candidate = text
+            do { try await Task.sleep(for: .milliseconds(120)) }
+            catch { return }
+            let detection = Task.detached(priority: .userInitiated) {
+                PastedDocumentImportService.suggestedFormat(for: candidate)
             }
+            let detected = await withTaskCancellationHandler { await detection.value } onCancel: { detection.cancel() }
+            guard !Task.isCancelled, candidate == text, !didChooseFormat else { return }
+            format = detected
+            isDetectingFormat = false
         }
         .alert(PasteStrings.cannotPreview, isPresented: Binding(
             get: { errorMessage != nil },
@@ -128,6 +140,7 @@ struct PastePreviewView: View {
             set: {
                 format = $0
                 didChooseFormat = true
+                isDetectingFormat = false
             }
         )
     }

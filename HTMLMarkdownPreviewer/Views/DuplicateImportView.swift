@@ -4,6 +4,7 @@ struct DuplicateImportView: View {
     let prepared: PreparedDocumentImport
     let onResolve: (DocumentImportResolution) -> Void
     let onCancel: () -> Void
+    var cancelTitle: String = AppStrings.Actions.cancel
 
     var body: some View {
         NavigationStack {
@@ -63,7 +64,7 @@ struct DuplicateImportView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(AppStrings.Actions.cancel, action: onCancel)
+                    Button(cancelTitle, action: onCancel)
                         .accessibilityIdentifier("duplicate-cancel-button")
                 }
             }

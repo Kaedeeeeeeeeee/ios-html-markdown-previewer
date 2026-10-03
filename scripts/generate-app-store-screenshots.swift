@@ -63,11 +63,11 @@ private enum GeneratorError: LocalizedError {
 }
 
 private let specs = [
-    ScreenshotSpec(key: "01-home", filenameSuffix: "01-home"),
-    ScreenshotSpec(key: "02-html-safe-preview", filenameSuffix: "02-html-safe-preview"),
-    ScreenshotSpec(key: "03-markdown-preview", filenameSuffix: "03-markdown-preview"),
-    ScreenshotSpec(key: "04-zip-report-preview", filenameSuffix: "04-zip-report-preview"),
-    ScreenshotSpec(key: "05-settings", filenameSuffix: "05-settings"),
+    ScreenshotSpec(key: "01-html-report", filenameSuffix: "01-html-report"),
+    ScreenshotSpec(key: "02-batch-import", filenameSuffix: "02-batch-import"),
+    ScreenshotSpec(key: "03-json-preview", filenameSuffix: "03-json-preview"),
+    ScreenshotSpec(key: "04-markdown-preview", filenameSuffix: "04-markdown-preview"),
+    ScreenshotSpec(key: "05-library", filenameSuffix: "05-library"),
     ScreenshotSpec(key: "06-yaml-preview", filenameSuffix: "06-yaml-preview")
 ]
 

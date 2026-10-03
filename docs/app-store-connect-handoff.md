@@ -72,7 +72,7 @@ Fields that require account-owner input:
 - Copyright owner
 - Price
 - Availability countries or regions
-- Release timing: manual release, automatic release after approval, or scheduled release
+- Release timing: 1.7 uses automatic release after approval (`AFTER_APPROVAL`); verify the saved App Store Connect value before review submission.
 
 ## Screenshots
 
@@ -89,10 +89,19 @@ The root screenshot files are an `en-US` compatibility copy for release audits.
 
 | App Store Connect slot | Files |
 |---|---|
-| iPhone 6.9-inch display | `iphone-01-home.png`, `iphone-02-html-safe-preview.png`, `iphone-03-markdown-preview.png`, `iphone-04-zip-report-preview.png`, `iphone-05-settings.png` |
-| iPad Pro 13-inch display | `ipad-01-home.png`, `ipad-02-html-safe-preview.png`, `ipad-03-markdown-preview.png`, `ipad-04-zip-report-preview.png`, `ipad-05-settings.png` |
+| iPhone 6.9-inch display | `iphone-01-html-report.png`, `iphone-02-batch-import.png`, `iphone-03-json-preview.png`, `iphone-04-markdown-preview.png`, `iphone-05-library.png`, `iphone-06-yaml-preview.png` |
+| iPad Pro 13-inch display | `ipad-01-html-report.png`, `ipad-02-batch-import.png`, `ipad-03-json-preview.png`, `ipad-04-markdown-preview.png`, `ipad-05-library.png`, `ipad-06-yaml-preview.png` |
+
+The six-image order is HTML report, batch import, JSON preview, Markdown notes,
+file library, and YAML preview. Each locale has six images per device family
+(36 localized images total). JSON is read-only standard JSON; JSONC and JSON PDF
+export are outside this update. Batch import includes individual duplicate-file
+decisions and imported/skipped/failed counts. Library search is filename search.
 
 `scripts/release-audit.sh` verifies the current screenshot dimensions.
+The 1.7 release target is version `1.7`, build `12`. Keep current release
+verification and App Store Connect readback evidence with that build; historical
+screenshot verification reports do not validate these updated assets.
 
 ## App Privacy
 

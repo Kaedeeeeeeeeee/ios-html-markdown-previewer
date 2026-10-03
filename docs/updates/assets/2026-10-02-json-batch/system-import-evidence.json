@@ -1,0 +1,27 @@
+{
+  "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+  "entry": "system fileImporter multiple selection",
+  "displayedResult": {
+    "imported": 2,
+    "skipped": 0,
+    "failed": 0
+  },
+  "files": [
+    {
+      "name": "API response.json",
+      "type": "json",
+      "importSource": "fileImporter",
+      "bytes": 94,
+      "sha256": "4ed6abd69dd7faf14295321ec78b2a7f3da303dd40fbc0b47dee94ad957968ed",
+      "matchesOriginal": true
+    },
+    {
+      "name": "Release notes.md",
+      "type": "markdown",
+      "importSource": "fileImporter",
+      "bytes": 129,
+      "sha256": "259d802dc56eac0f3bbbf66d25a3998d76ebc265b1cdc96e7a287b8789892020",
+      "matchesOriginal": true
+    }
+  ]
+}

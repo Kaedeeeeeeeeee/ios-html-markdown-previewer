@@ -22,6 +22,8 @@ enum FileTypeDetector {
             return .markdown
         case "yaml", "yml":
             return .yaml
+        case "json":
+            return .json
         case "zip":
             return .zipPackage
         default:
@@ -50,6 +52,10 @@ enum FileTypeDetector {
 
         if type == SupportedDocumentTypes.yaml || type.conforms(to: SupportedDocumentTypes.yaml) {
             return .yaml
+        }
+
+        if type.conforms(to: .json) {
+            return .json
         }
 
         return .unsupported

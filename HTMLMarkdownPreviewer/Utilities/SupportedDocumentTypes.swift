@@ -9,7 +9,8 @@ enum SupportedDocumentTypes {
         .html,
         xhtml,
         markdown,
-        yaml
+        yaml,
+        .json
     ]
 
     static let zipPackages: [UTType] = [

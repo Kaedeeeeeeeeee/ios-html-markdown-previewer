@@ -1,0 +1,12 @@
+"batch.title" = "导入完成";
+"batch.imported" = "已导入";
+"batch.skipped" = "已跳过";
+"batch.failed" = "失败";
+"batch.failures" = "未能导入的文件";
+"batch.libraryHint" = "已导入的文件可以在文件库中打开。";
+"batch.skip" = "跳过此文件";
+"batch.done" = "查看文件库";
+"batch.skipHint" = "取消会跳过当前文件，并继续导入其余文件。";
+"batch.selectionHint" = "可以一次选择多个文件。";
+"batch.preparing" = "正在准备文件… %1$ld / %2$ld";
+"batch.processing" = "正在导入文件… %1$ld / %2$ld";

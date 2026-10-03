@@ -1,6 +1,6 @@
 # HTML Previewer
 
-Local-first iOS/iPadOS app for previewing HTML, Markdown, YAML, and zipped HTML report packages.
+Local-first iOS/iPadOS app for previewing HTML, Markdown, YAML, JSON, and zipped HTML report packages.
 
 The product and implementation plan is in `ios-html-markdown-previewer-plan.md`.
 
@@ -8,22 +8,24 @@ The product and implementation plan is in `ios-html-markdown-previewer-plan.md`.
 
 MVP implementation is complete for the local core flow:
 
-- Document type declarations for HTML, Markdown, YAML (`.yaml` / `.yml`), and ZIP.
+- Document type declarations for HTML, Markdown, YAML (`.yaml` / `.yml`), JSON (`.json`), and ZIP.
 - Separate app file picker entries for previewable documents and ZIP report packages.
 - New HTML imports open in Interactive WKWebView preview with page JavaScript and external resources enabled. Safe Preview remains available to block page scripts and external HTTP/HTTPS resources; both modes block external navigation and form navigation.
 - Native Markdown reading view, including GFM tables with column alignment and horizontal scrolling. Documents with code, mathematics, or Mermaid diagrams use an offline enhanced reader.
 - Syntax highlighting for 19 code languages and exact one-tap copying; inline and display LaTeX math; Mermaid diagrams. Bundled libraries and fonts require no network connection.
 - Native YAML structure/source views with collapsible objects and arrays, scalar type labels, source highlighting and line numbers, field/source search, multiple-document selection, and syntax-error locations. Copy values, paths, or original source, and resume the selected document/view/position.
+- Native JSON structure/source views with strict offline parsing, exact number text, typed fields, collapsible objects and arrays, field/source search, and syntax-error locations. Copy decoded scalar values, exact collection source, or field paths without rounding large numeric IDs.
 - ZIP package import with local CSS/image resource loading, searchable HTML/Markdown page selection, and previous-page navigation.
 - Share original files or complete ZIP packages, preserving bundled CSS and images.
 - Export rendered HTML and Markdown to paginated A4 PDFs from the share menu.
 - Recent files before collapsible samples, details, raw text fallback, and delete cleanup.
-- Paste HTML, Markdown, or YAML text with the system Paste button, choose a format and optional name, and keep the preview in Recent files.
+- Paste HTML, Markdown, YAML, or JSON text with the system Paste button, choose a format and optional name, and keep the preview in Recent files.
 - Find text, jump through a heading outline, and resume the last reading position in rendered HTML and Markdown previews.
 - Full-screen reading with a one-tap control restore button, HTML page zoom, and Markdown font-size and line-spacing controls.
 - Local Markdown images open in a full-screen viewer with pinch, pan, double-tap, and accessible zoom controls.
 - Search the document library, filter by type, pin frequent documents, and rename display titles without changing source filenames or asset paths.
 - Review repeated imports before choosing to update an existing document or keep another copy.
+- Select multiple files in either document or ZIP import. Review duplicates one at a time, skip an individual file, and see imported/skipped/failed totals after the selection finishes.
 - App icon, privacy manifest, App Store listing draft, and screenshot assets.
 
 PDF export uses the loaded HTML page and its print styles, or a locally rendered
@@ -48,7 +50,7 @@ contains an overview, a nested HTML report, and a Markdown appendix. See
 [ZIP navigation](docs/updates/2026-09-27-zip-navigation.md) for behavior and validation.
 
 Paste to Preview accepts up to 2 MB of text and never reads the clipboard in the
-background. It can recognize HTML, Markdown, and YAML wrapped in a single code fence;
+background. It can recognize HTML, Markdown, YAML, and JSON wrapped in a single code fence;
 the format can also be chosen explicitly. Pasting only a URL shows an explanation
 instead of fetching a webpage. Pasted content uses the same local storage,
 preview defaults, sharing, and PDF export as imported files. New pasted HTML and
@@ -56,6 +58,21 @@ HTML entries inside ZIP packages open in Interactive mode; Markdown uses its
 rendered reading view. Plain YAML configuration text requires choosing YAML;
 an outer `yaml` or `yml` fence selects it automatically. Reopening a document
 preserves its saved preview mode.
+
+JSON files and complete pasted objects/arrays open in the same native structured
+reader as YAML, using an independent strict parser. Plain numbers, quoted text,
+and Markdown links are not automatically treated as JSON; choose JSON explicitly
+for scalar documents. JSONC comments and trailing commas are reported as errors.
+The source and original-file sharing remain available when parsing fails.
+JSON uses UTF-8 (an initial BOM is accepted), with a 2 MB structure limit,
+64 levels of nesting, and 12,000 tree nodes. Source previews are bounded to
+200,000 characters and 20,000 lines. The original imported bytes remain unchanged.
+JSON and YAML do not offer PDF export or ZIP page navigation.
+
+The upcoming-version [store copy](docs/plans/2026-10-02-store-positioning-1.7.md)
+and [usage measurement proposal](docs/plans/2026-10-02-usage-measurement.md) are
+local preparation. Usage analytics have not been integrated; the app still
+does not collect usage events or upload user documents.
 
 Open a YAML file through Open File, Paste to Preview, or the built-in YAML sample.
 Use Structure to browse typed fields and Source to read comments and original
@@ -201,6 +218,7 @@ scripts/final-submission-preflight.sh
 
 ## Release Materials
 
+- JSON and batch import development notes and real UI evidence: `docs/updates/2026-10-02-json-batch.md`
 - App Store listing draft: `docs/app-store-listing.md`
 - App Store Connect handoff: `docs/app-store-connect-handoff.md`
 - Release checklist: `docs/release-checklist.md`

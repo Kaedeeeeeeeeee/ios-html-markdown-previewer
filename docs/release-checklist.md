@@ -36,8 +36,8 @@
 - GitHub Actions verifies the public privacy/support URLs on push and pull request.
 - GitHub Actions runs a generic iOS Release device build and archive preflight on push and pull request.
 - Built-in HTML, Markdown, and ZIP samples are available for first launch and App Review.
-- App marketing version is set to `1.6` and build number is `11`.
-- Release simulator build verifies `CFBundleShortVersionString=1.6`, `CFBundleVersion=11`, app icon assets, and privacy manifest in the app bundle.
+- App marketing version is set to `1.7` and build number is `12`.
+- Verify the final Release simulator build has `CFBundleShortVersionString=1.7`, `CFBundleVersion=12`, app icon assets, and privacy manifest in the app bundle.
 
 ## Required Before App Store Submission
 

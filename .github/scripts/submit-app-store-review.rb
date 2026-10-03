@@ -20,21 +20,22 @@ KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
 SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRIES", "4"))
 CLEAN_SCREENSHOT_DUPLICATES = ENV.fetch("APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES", "false") == "true"
 SUBMIT_FOR_REVIEW = ENV.fetch("APP_STORE_CONNECT_SUBMIT_FOR_REVIEW", "false") == "true"
+RELEASE_TYPE = ENV.fetch("APP_STORE_CONNECT_RELEASE_TYPE", "AFTER_APPROVAL")
 EXPECTED_SCREENSHOTS = {
   "APP_IPHONE_67" => %w[
-    iphone-01-home.png
-    iphone-02-html-safe-preview.png
-    iphone-03-markdown-preview.png
-    iphone-04-zip-report-preview.png
-    iphone-05-settings.png
+    iphone-01-html-report.png
+    iphone-02-batch-import.png
+    iphone-03-json-preview.png
+    iphone-04-markdown-preview.png
+    iphone-05-library.png
     iphone-06-yaml-preview.png
   ],
   "APP_IPAD_PRO_3GEN_129" => %w[
-    ipad-01-home.png
-    ipad-02-html-safe-preview.png
-    ipad-03-markdown-preview.png
-    ipad-04-zip-report-preview.png
-    ipad-05-settings.png
+    ipad-01-html-report.png
+    ipad-02-batch-import.png
+    ipad-03-json-preview.png
+    ipad-04-markdown-preview.png
+    ipad-05-library.png
     ipad-06-yaml-preview.png
   ]
 }.freeze
@@ -725,6 +726,31 @@ rescue AscError => e
   app_store_version_context("After submission")
 end
 
+def configure_and_verify_release_type
+  raise "Unsupported release type #{RELEASE_TYPE}" unless RELEASE_TYPE == "AFTER_APPROVAL"
+
+  request(
+    :patch,
+    "/v1/appStoreVersions/#{app_store_version_id}",
+    body: {
+      data: {
+        type: "appStoreVersions",
+        id: app_store_version_id,
+        attributes: { releaseType: RELEASE_TYPE }
+      }
+    }
+  )
+  version = request(
+    :get,
+    "/v1/appStoreVersions/#{app_store_version_id}",
+    query: { "fields[appStoreVersions]" => "versionString,releaseType" }
+  ).fetch("data")
+  actual = version.fetch("attributes").fetch("releaseType")
+  raise "Release type mismatch: expected #{RELEASE_TYPE}, got #{actual}" unless actual == RELEASE_TYPE
+
+  puts "Verified App Store version #{APP_STORE_VERSION_STRING} releaseType=#{actual}."
+end
+
 def run
   build = wait_for_valid_build
   build_id = build.fetch("id")
@@ -734,6 +760,7 @@ def run
     clean_duplicate_screenshots!
   end
   if SUBMIT_FOR_REVIEW
+    configure_and_verify_release_type
     submit_app_store_version
   else
     context = app_store_version_context("After build attachment")

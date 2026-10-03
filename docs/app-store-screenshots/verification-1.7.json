@@ -1,0 +1,318 @@
+{
+  "version": "1.7",
+  "build": "12",
+  "sourceBaseCommit": "fdf1fdb6fb44e924da633a5e5227b3741fd70b20",
+  "workingTreeAtCapture": "release preparation changes including Debug-only screenshot fixtures",
+  "devices": [
+    {
+      "model": "iPhone 16 Pro Max",
+      "runtime": "iOS 18.5",
+      "udid": "ED576109-EEC6-4F86-A927-635B96DDF97E",
+      "reused": true,
+      "initialState": "Booted",
+      "finalState": "Booted"
+    },
+    {
+      "model": "iPad Pro 12.9-inch (6th generation)",
+      "runtime": "iOS 18.5",
+      "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "reused": true,
+      "initialState": "Shutdown",
+      "finalState": "Shutdown"
+    }
+  ],
+  "captureMode": "Debug isolated UITestLibrary, real native UI and synthetic built-in samples",
+  "generatedDateJST": "2026-10-03",
+  "newOrDeletedDevices": [],
+  "screenshotCount": 36,
+  "screenshots": [
+    {
+      "locale": "en-US",
+      "filename": "ipad-01-html-report.png",
+      "sourceSHA256": "d244e5c4a52a4d12e4dbe01ea032d01cdc3246ad9cea11251e32b5ebabeb1b1c",
+      "renderedSHA256": "8d2007aea8dcab2adca776929d09c95d8531907770ebdc2b4b54db6edad70058",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/ipad-01-html-report.png",
+      "releasePath": "docs/app-store-screenshots/en-US/ipad-01-html-report.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "ipad-02-batch-import.png",
+      "sourceSHA256": "25f312cca68d600d0f331502abab83b971319407b39ba80c42a65a91e1bf4e7c",
+      "renderedSHA256": "e563e24042f93f475f622c4e8d38d2f81040f963d1eaba181770b565a725b869",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/ipad-02-batch-import.png",
+      "releasePath": "docs/app-store-screenshots/en-US/ipad-02-batch-import.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "ipad-03-json-preview.png",
+      "sourceSHA256": "c9f69fbdcd1cad2032891d83cd2ad39a9c647945b3b53488d244c04edf29d8bc",
+      "renderedSHA256": "21a55bc750a37ebadf0408e44a536381ef761ca0f354a72bf5590914a9da975f",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/ipad-03-json-preview.png",
+      "releasePath": "docs/app-store-screenshots/en-US/ipad-03-json-preview.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "ipad-04-markdown-preview.png",
+      "sourceSHA256": "c56bfd298f7f62c6a6e537cf26037d0861c22ec250e3c58ec7a11c1259762076",
+      "renderedSHA256": "766f267c5f9a665a79d6eac4fbf83392b30727ed70b3455ba808805522a0f477",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/ipad-04-markdown-preview.png",
+      "releasePath": "docs/app-store-screenshots/en-US/ipad-04-markdown-preview.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "ipad-05-library.png",
+      "sourceSHA256": "946011e866bd2ed3cd87eedd317f30de5c537fe8339fcb7a9ce0c4468953b175",
+      "renderedSHA256": "23a08f989ae77e66d00273ab32e94e566b23fd35ec65a2a68f40420468b0920f",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/ipad-05-library.png",
+      "releasePath": "docs/app-store-screenshots/en-US/ipad-05-library.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "ipad-06-yaml-preview.png",
+      "sourceSHA256": "0ffd190825672545d48b2f4cc4f9d4d459bdfbb76c4a29c98b91fb5428a801d8",
+      "renderedSHA256": "557277c4ede1f399d01463877b216db515d4532da9cb548f39b43271d2ef7cee",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/ipad-06-yaml-preview.png",
+      "releasePath": "docs/app-store-screenshots/en-US/ipad-06-yaml-preview.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "iphone-01-html-report.png",
+      "sourceSHA256": "7d7048e40e7fb5a18100cb481d5c1b586fc1f03b3c2291ddf66b1addb1427b2a",
+      "renderedSHA256": "3f6e36bc0af3751ceb00b2ce36650220f2974b61cc9b01ec0c1e547e5f781a4c",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/iphone-01-html-report.png",
+      "releasePath": "docs/app-store-screenshots/en-US/iphone-01-html-report.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "iphone-02-batch-import.png",
+      "sourceSHA256": "25ed8e9ce4641be34186414200b525da970e20e5ab8597b4082795fd3fd8ad9b",
+      "renderedSHA256": "f6ecf2b34b09736d1be627139f24dd54445dec597092b8465b9520d031b720c2",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/iphone-02-batch-import.png",
+      "releasePath": "docs/app-store-screenshots/en-US/iphone-02-batch-import.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "iphone-03-json-preview.png",
+      "sourceSHA256": "07aa273fb90668bae232ecc0c873ff4c24e79e6898dd0ede4b187c92df2bdcb1",
+      "renderedSHA256": "057ea06e4c8cced4be2222b649b7002456385d762371c53658b678ced4bc7044",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/iphone-03-json-preview.png",
+      "releasePath": "docs/app-store-screenshots/en-US/iphone-03-json-preview.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "iphone-04-markdown-preview.png",
+      "sourceSHA256": "0ed12178c92e161a58ae6e0dcd7364a8a154e79e317c82e95c56b1281ab41ada",
+      "renderedSHA256": "a1a85f0e3cda2ac7ef139c58c23cbb4f6ca2b68bb16adfd4acdccfa9b287ca78",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/iphone-04-markdown-preview.png",
+      "releasePath": "docs/app-store-screenshots/en-US/iphone-04-markdown-preview.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "iphone-05-library.png",
+      "sourceSHA256": "f761657875de6a505f6a97096e9c5e8c2d784283d6cfd8e06150dde3144a7d81",
+      "renderedSHA256": "e8ca82319ce53a51582151047a8b1ee0cb133bd0a6c70d40f6c5f366f1100887",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/iphone-05-library.png",
+      "releasePath": "docs/app-store-screenshots/en-US/iphone-05-library.png"
+    },
+    {
+      "locale": "en-US",
+      "filename": "iphone-06-yaml-preview.png",
+      "sourceSHA256": "e28469c7dddb3d0a271cadca879e318535510961d30dbd472eee72ee3f553b5e",
+      "renderedSHA256": "0cc5e2cd7a3c232b007b002772dd364f696a65217eb3c596967fc3b1364a2229",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/en-US/iphone-06-yaml-preview.png",
+      "releasePath": "docs/app-store-screenshots/en-US/iphone-06-yaml-preview.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "ipad-01-html-report.png",
+      "sourceSHA256": "b789646ade570245bf8a556d200396711d98ec9a1eb5740f1af4df7aa03f372b",
+      "renderedSHA256": "267d03d7d40d496e904648bcbee6bd86e3ebc1a1b93650ea17f7a8e1d1fb5bdd",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/ipad-01-html-report.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/ipad-01-html-report.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "ipad-02-batch-import.png",
+      "sourceSHA256": "3cae49cdb42432df8f22d99f087dd2441a5b9156279b9dfe7e06386c77d82b44",
+      "renderedSHA256": "e312c1caaa1581f421d6a70f2acc3a8e839bb3695dafea45bf6f9d6930361f13",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/ipad-02-batch-import.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/ipad-02-batch-import.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "ipad-03-json-preview.png",
+      "sourceSHA256": "2217643b1a42ba4684149f663314670046e5343c41de97675d11c0d56e1f1962",
+      "renderedSHA256": "070308cd78211ac0afb917b960d5df6794e83bbe293d1f2a7d87d0c132f33644",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/ipad-03-json-preview.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/ipad-03-json-preview.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "ipad-04-markdown-preview.png",
+      "sourceSHA256": "4d8d89eadfaa2ec92becf49368d7f365d6966293ed35619524875e91db9271ae",
+      "renderedSHA256": "c9e205f6058d9a7e028a1ef73bfb3366badab3281478d1351030f4c08d6f94f0",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/ipad-04-markdown-preview.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/ipad-04-markdown-preview.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "ipad-05-library.png",
+      "sourceSHA256": "bd843c267943b381f14c0a26c3b3b56eea1935e48888e8d828249a1b68b165be",
+      "renderedSHA256": "5e8188dc91a2a521fdcd38bc875a477c402fc0683707fe7de27fabf4d9143a9e",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/ipad-05-library.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/ipad-05-library.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "ipad-06-yaml-preview.png",
+      "sourceSHA256": "6df97fcad6189a481a9978f1b0d7767d1ed98a80ed12f84f6448a09c991182e6",
+      "renderedSHA256": "6722d0bef1980e84ba24b6d2d449eea50a891230c1914d896515ba649cc0b8eb",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/ipad-06-yaml-preview.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/ipad-06-yaml-preview.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "iphone-01-html-report.png",
+      "sourceSHA256": "a376cb12a7ffb9dc5948438756e40b7ef72fb39a3bddce30cb9d43175cf6b635",
+      "renderedSHA256": "7501ea299556dbccf7b4e91875330e9b64372d6d821867255376d49188a98ac0",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/iphone-01-html-report.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/iphone-01-html-report.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "iphone-02-batch-import.png",
+      "sourceSHA256": "358b68ca5b1d69ba3c06376285724089e3cdc6777020ce3da040944b4fae07a2",
+      "renderedSHA256": "841a8c1fe1721d0a41d3f3f661c7c031396f921c0cac510d783ed9a4f4767dd4",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/iphone-02-batch-import.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/iphone-02-batch-import.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "iphone-03-json-preview.png",
+      "sourceSHA256": "4f0590977b67517f34d8196e2d113c4c111cd450869dfc38b036a32f811c2773",
+      "renderedSHA256": "6e42f84888dc19b83151996b510b5408447d9fb688f6c8a42a4bc05b6d75275f",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/iphone-03-json-preview.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/iphone-03-json-preview.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "iphone-04-markdown-preview.png",
+      "sourceSHA256": "2aff00958dcdafa96af7f14b94a4f453477f98c268c126b0185bee75c756e178",
+      "renderedSHA256": "cabb9926fb493be46e28eeb0377760a274d1812c51441dc3560cf4fafb9ce272",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/iphone-04-markdown-preview.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/iphone-04-markdown-preview.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "iphone-05-library.png",
+      "sourceSHA256": "adfe7ce314684f1e0c43ef6faf62436a50bf423355278a5e42da1136760148d9",
+      "renderedSHA256": "3208cd7da8603971999ea28c261c7c207088ff079cb2557ba430a6706bc02315",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/iphone-05-library.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/iphone-05-library.png"
+    },
+    {
+      "locale": "zh-Hans",
+      "filename": "iphone-06-yaml-preview.png",
+      "sourceSHA256": "f6268cd72b896a3a3d345a87453fdd22ab77b460ca82aebfee9c18522ad2beeb",
+      "renderedSHA256": "fcd097dc3192fbbc936225aa6098e1bd6dc4d80a899de2867c81460bc7c44def",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/zh-Hans/iphone-06-yaml-preview.png",
+      "releasePath": "docs/app-store-screenshots/zh-Hans/iphone-06-yaml-preview.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "ipad-01-html-report.png",
+      "sourceSHA256": "37d9a0d3d9277fc2aca3b62e574e6cf528353a80ee85aafadfdcb90a56a70d74",
+      "renderedSHA256": "9d56748c7b772b0287ca42c332e5872ae9fb1f00008e6102aa3ecaba03586ea3",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/ipad-01-html-report.png",
+      "releasePath": "docs/app-store-screenshots/ja/ipad-01-html-report.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "ipad-02-batch-import.png",
+      "sourceSHA256": "0d332a050dca277c04d4a8fff31e5aa5c979f0e43b6e8d1edbbad5c19e61af6b",
+      "renderedSHA256": "381a6764de6f05fc9d6efbe7260c8523e0e1f7efedee8ead433cc92d202e1d59",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/ipad-02-batch-import.png",
+      "releasePath": "docs/app-store-screenshots/ja/ipad-02-batch-import.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "ipad-03-json-preview.png",
+      "sourceSHA256": "f69f9505c26079054a10888ab9df0fd47d562d3cee47a5297d4855a6d46a0951",
+      "renderedSHA256": "adce2fd1f81a90b56083cccf7e6d63ab40f36bc5bb596067c2911a38ba7b1e56",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/ipad-03-json-preview.png",
+      "releasePath": "docs/app-store-screenshots/ja/ipad-03-json-preview.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "ipad-04-markdown-preview.png",
+      "sourceSHA256": "13de7e4a7e02f522bd9482f508aba59df200fdeb19fbecde25afcb25daa34bad",
+      "renderedSHA256": "bf149ebdabdef6d2339c1332fbf49457a29d3e85cd778e28ac210519d3701650",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/ipad-04-markdown-preview.png",
+      "releasePath": "docs/app-store-screenshots/ja/ipad-04-markdown-preview.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "ipad-05-library.png",
+      "sourceSHA256": "42ac48728a38af44fc997d35b0e76bd05a9a5e7c13bd4d341ac843b2ff852483",
+      "renderedSHA256": "505ffd156a5956e0fe575a050e19a4f9cb916b4ed5b20128cb4b7218325c4b3f",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/ipad-05-library.png",
+      "releasePath": "docs/app-store-screenshots/ja/ipad-05-library.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "ipad-06-yaml-preview.png",
+      "sourceSHA256": "e2434ac2ccdd8d3620ad5dd2f7920a50f4781d297a5ed8572e9c716790aa04d3",
+      "renderedSHA256": "26ef46312ef7a5a5582d1bb87bde1ffced007b10956620b6f54558144069b16c",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/ipad-06-yaml-preview.png",
+      "releasePath": "docs/app-store-screenshots/ja/ipad-06-yaml-preview.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "iphone-01-html-report.png",
+      "sourceSHA256": "469778960c683b3ae1529d2ca04b1b2e63bb4b9263a67b2a978ce4e6902a420e",
+      "renderedSHA256": "4199a48584d6c5bc5ddf5f5174af79553db40903eaab4a215716a6a38a81b129",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/iphone-01-html-report.png",
+      "releasePath": "docs/app-store-screenshots/ja/iphone-01-html-report.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "iphone-02-batch-import.png",
+      "sourceSHA256": "3e3e3040a3a8cd5987598deab50c9a9054df789a02f61c86ac6e3e96e5a63596",
+      "renderedSHA256": "3367080bdd0113936809a652e6e23713716e116d5dd2161480fd56d6e4b577ac",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/iphone-02-batch-import.png",
+      "releasePath": "docs/app-store-screenshots/ja/iphone-02-batch-import.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "iphone-03-json-preview.png",
+      "sourceSHA256": "7d6cde79d588969447643059199ef2b1ee2a47e62ed1711e2768569ac825d5a1",
+      "renderedSHA256": "589f09b2867af6456189aee8ada6d4723053e89ba3cce604476a344f634e0b81",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/iphone-03-json-preview.png",
+      "releasePath": "docs/app-store-screenshots/ja/iphone-03-json-preview.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "iphone-04-markdown-preview.png",
+      "sourceSHA256": "6f4353b500bdc61d665b22162cf94e265986d4ac94417ea83162e46c441bf186",
+      "renderedSHA256": "ccaaa0d7b4025f9c3403b5ec53dd2b2b1c61daf46221ca2024d581d16f1f38bc",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/iphone-04-markdown-preview.png",
+      "releasePath": "docs/app-store-screenshots/ja/iphone-04-markdown-preview.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "iphone-05-library.png",
+      "sourceSHA256": "afff4f5986c26ce4f283e9538c62155ea8f6802bde6d0464b6cd70304a17085b",
+      "renderedSHA256": "3784a2bf60d1e31b25b8fd6761d0e1350ff76f0a621440edda06db0ca65c8519",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/iphone-05-library.png",
+      "releasePath": "docs/app-store-screenshots/ja/iphone-05-library.png"
+    },
+    {
+      "locale": "ja",
+      "filename": "iphone-06-yaml-preview.png",
+      "sourceSHA256": "084667b7b30dc69440a5781831ee891644dab929361a5f490227f36040dca661",
+      "renderedSHA256": "dbb0711124cc572bfeb7d062faa06dbbb070efd6a1e1078736eb5d3fa5886fee",
+      "sourcePath": "DerivedData/Release1.7/ScreenshotSources/ja/iphone-06-yaml-preview.png",
+      "releasePath": "docs/app-store-screenshots/ja/iphone-06-yaml-preview.png"
+    }
+  ]
+}

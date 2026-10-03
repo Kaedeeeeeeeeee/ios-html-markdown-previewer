@@ -73,6 +73,9 @@ struct DocumentPreviewView: View {
             case .yaml(let fileURL):
                 YAMLPreviewView(fileURL: fileURL, reading: reading)
                     .id(generation)
+            case .json(let fileURL):
+                YAMLPreviewView(fileURL: fileURL, reading: reading, format: .json)
+                    .id(generation)
             case .unsupported:
                 ContentUnavailableView(
                     AppStrings.Errors.previewUnavailableTitle,
@@ -344,6 +347,8 @@ struct DocumentPreviewView: View {
                 }
             case .yaml:
                 state = .yaml(fileURL: entryFileURL)
+            case .json:
+                state = .json(fileURL: entryFileURL)
             case .zipPackage, .plainText, .unsupported:
                 state = .unsupported
             }
@@ -599,6 +604,7 @@ private enum PreviewContentState {
     case html(fileURL: URL, readAccessRootURL: URL, mode: HTMLPreviewMode)
     case rawText(String)
     case yaml(fileURL: URL)
+    case json(fileURL: URL)
     case unsupported
     case failed(String)
 }

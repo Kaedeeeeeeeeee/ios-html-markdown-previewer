@@ -1,0 +1,12 @@
+"batch.title" = "読み込み完了";
+"batch.imported" = "読み込み済み";
+"batch.skipped" = "スキップ";
+"batch.failed" = "失敗";
+"batch.failures" = "読み込めなかったファイル";
+"batch.libraryHint" = "読み込んだファイルはライブラリで開けます。";
+"batch.skip" = "このファイルをスキップ";
+"batch.done" = "ライブラリを見る";
+"batch.skipHint" = "キャンセルするとこのファイルをスキップし、残りのファイルの読み込みを続けます。";
+"batch.selectionHint" = "複数のファイルをまとめて選択できます。";
+"batch.preparing" = "ファイルを準備中… %1$ld / %2$ld";
+"batch.processing" = "ファイルを読み込み中… %1$ld / %2$ld";

@@ -1,17 +1,17 @@
 import Foundation
 
-struct PreparedDocumentImport: Identifiable {
+struct PreparedDocumentImport: Identifiable, Sendable {
     let document: PreviewDocument
     let duplicate: DocumentImportDuplicate?
     var id: UUID { document.id }
 }
 
-struct DocumentImportDuplicate {
+struct DocumentImportDuplicate: Sendable {
     let document: PreviewDocument
     let hasIdenticalContents: Bool
 }
 
-enum DocumentImportResolution {
+enum DocumentImportResolution: Sendable {
     case keepBoth
     case updateExisting
 }
