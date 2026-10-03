@@ -2,103 +2,103 @@
   "en-US": {
     "storefront": "English (U.S.)",
     "screenshots": {
-      "01-home": {
-        "eyebrow": "LOCAL FILE PREVIEW",
-        "title": "Open. Preview. Done.",
-        "subtitle": "Open a file, or paste HTML, Markdown and YAML to preview."
+      "01-html-report": {
+        "eyebrow": "REPORTS ON THE GO",
+        "title": "Open reports anywhere",
+        "subtitle": "Read HTML and ZIP reports on iPhone and iPad."
       },
-      "02-html-safe-preview": {
-        "eyebrow": "RICH HTML",
-        "title": "HTML, beautifully rendered",
-        "subtitle": "Animations and scripts. Interactive by default."
+      "02-batch-import": {
+        "eyebrow": "MULTIPLE FILES",
+        "title": "Import a group at once",
+        "subtitle": "See import counts and any failed files."
       },
-      "03-markdown-preview": {
-        "eyebrow": "MARKDOWN READER",
-        "title": "Code, math & diagrams",
-        "subtitle": "Highlight code. Render equations and diagrams offline."
+      "03-json-preview": {
+        "eyebrow": "JSON STRUCTURE",
+        "title": "Make sense of JSON",
+        "subtitle": "Explore nested data. Copy large IDs without rounding."
       },
-      "04-zip-report-preview": {
-        "eyebrow": "ZIP REPORTS",
-        "title": "Every page, one package",
-        "subtitle": "Browse HTML and Markdown pages inside your ZIP."
+      "04-markdown-preview": {
+        "eyebrow": "MARKDOWN NOTES",
+        "title": "Give your notes room to read",
+        "subtitle": "Read tables, highlight code, and view equations offline."
       },
-      "05-settings": {
-        "eyebrow": "YOUR PREVIEW, YOUR CHOICE",
-        "title": "Choose how HTML runs",
-        "subtitle": "Interactive by default. Safe Preview when you need it."
+      "05-library": {
+        "eyebrow": "YOUR FILE LIBRARY",
+        "title": "Keep useful files close",
+        "subtitle": "Find files by name, pin favorites, and read again."
       },
       "06-yaml-preview": {
         "eyebrow": "YAML CONFIGURATION",
-        "title": "See your configuration clearly",
-        "subtitle": "Expand structure, search fields, and read highlighted source."
+        "title": "See your settings clearly",
+        "subtitle": "Expand structure, search fields, and check source."
       }
     }
   },
   "zh-Hans": {
     "storefront": "简体中文",
     "screenshots": {
-      "01-home": {
-        "eyebrow": "本地文件预览",
-        "title": "打开文件，即刻预览",
-        "subtitle": "打开文件，或粘贴 HTML、Markdown、YAML 预览"
+      "01-html-report": {
+        "eyebrow": "随手阅读报告",
+        "title": "收到报告，随手打开",
+        "subtitle": "在 iPhone 和 iPad 上阅读 HTML 与 ZIP 报告"
       },
-      "02-html-safe-preview": {
-        "eyebrow": "丰富 HTML",
-        "title": "复杂 HTML，也能漂亮呈现",
-        "subtitle": "动画与脚本，默认以交互模式呈现"
+      "02-batch-import": {
+        "eyebrow": "批量导入",
+        "title": "一次选好，一起导入",
+        "subtitle": "查看导入、跳过、失败数量与失败原因"
       },
-      "03-markdown-preview": {
-        "eyebrow": "MARKDOWN 阅读",
-        "title": "代码、公式与流程图",
-        "subtitle": "代码高亮，公式与流程图离线呈现"
+      "03-json-preview": {
+        "eyebrow": "JSON 结构",
+        "title": "JSON 结构，一眼看清",
+        "subtitle": "展开嵌套数据，大整数复制不丢位"
       },
-      "04-zip-report-preview": {
-        "eyebrow": "ZIP 报告",
-        "title": "多页报告，一个 ZIP",
-        "subtitle": "搜索、切换包内的 HTML 与 Markdown 页面"
+      "04-markdown-preview": {
+        "eyebrow": "MARKDOWN 笔记",
+        "title": "笔记里的重点，看得清",
+        "subtitle": "阅读表格、查看代码高亮，公式离线呈现"
       },
-      "05-settings": {
-        "eyebrow": "预览由你选择",
-        "title": "选择适合你的预览方式",
-        "subtitle": "默认交互模式，也可切换到安全预览"
+      "05-library": {
+        "eyebrow": "你的文件库",
+        "title": "常用文件，下次接着看",
+        "subtitle": "按文件名搜索、置顶资料，再次打开继续阅读"
       },
       "06-yaml-preview": {
         "eyebrow": "YAML 配置",
         "title": "配置结构，清晰可读",
-        "subtitle": "展开结构、搜索字段，查看高亮源码"
+        "subtitle": "展开结构、搜索字段，核对高亮源码"
       }
     }
   },
   "ja": {
     "storefront": "日本語",
     "screenshots": {
-      "01-home": {
-        "eyebrow": "ローカルファイル",
-        "title": "開いて、すぐプレビュー",
-        "subtitle": "ファイルを開く。HTML・Markdown・YAMLを貼り付ける。"
+      "01-html-report": {
+        "eyebrow": "レポートを手元に",
+        "title": "届いたレポートをすぐ読む",
+        "subtitle": "iPhoneとiPadでHTML・ZIPレポートを閲覧。"
       },
-      "02-html-safe-preview": {
-        "eyebrow": "リッチ HTML",
-        "title": "リッチなHTMLも、美しく表示",
-        "subtitle": "動きもスクリプトも。標準でインタラクティブ。"
+      "02-batch-import": {
+        "eyebrow": "まとめて取り込み",
+        "title": "複数ファイルを一度に",
+        "subtitle": "取り込み件数と失敗した理由を確認。"
       },
-      "03-markdown-preview": {
-        "eyebrow": "MARKDOWN リーダー",
-        "title": "コードも、数式も、図も",
-        "subtitle": "構文ハイライト。数式と図をオフラインで表示。"
+      "03-json-preview": {
+        "eyebrow": "JSONの構造",
+        "title": "JSONの中身を見やすく",
+        "subtitle": "入れ子を展開。大きな整数IDも正確にコピー。"
       },
-      "04-zip-report-preview": {
-        "eyebrow": "ZIP レポート",
-        "title": "すべてのページを、ひとつに",
-        "subtitle": "ZIP内のHTML・Markdownを検索して切り替え。"
+      "04-markdown-preview": {
+        "eyebrow": "MARKDOWNノート",
+        "title": "ノートの内容を読みやすく",
+        "subtitle": "表とコードを読みやすく。数式をオフライン表示。"
       },
-      "05-settings": {
-        "eyebrow": "プレビューを選べる",
-        "title": "HTMLの表示方法を選ぶ",
-        "subtitle": "標準はインタラクティブ。安全プレビューにも切り替え。"
+      "05-library": {
+        "eyebrow": "ファイル一覧",
+        "title": "よく使うファイルを手元に",
+        "subtitle": "名前で検索して固定。次回もすぐに開ける。"
       },
       "06-yaml-preview": {
-        "eyebrow": "YAML 設定",
+        "eyebrow": "YAML設定",
         "title": "設定の構造を、見やすく",
         "subtitle": "構造を展開。項目を検索。ソースも確認。"
       }

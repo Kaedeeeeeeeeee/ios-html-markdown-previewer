@@ -13,19 +13,22 @@ localized headlines. The interface itself is never redrawn.
 
 Each locale contains six iPhone and six iPad images:
 
-1. `01-home` — opening files and choosing a built-in example.
-2. `02-html-safe-preview` — the animated weekend plan in Interactive mode.
-   The legacy filename is retained for upload compatibility.
-3. `03-markdown-preview` — the redesigned reading notes, including a table.
-4. `04-zip-report-preview` — the redesigned reading journal and local chart.
-5. `05-settings` — native preview, storage, and privacy settings.
+1. `01-html-report` — a locally processed HTML report.
+2. `02-batch-import` — multi-file import counts and any failure reasons.
+3. `03-json-preview` — read-only JSON structure and source controls.
+4. `04-markdown-preview` — Markdown reading notes, tables, and code.
+5. `05-library` — filename search, pinned files, and reopening documents.
 6. `06-yaml-preview` — collapsible YAML configuration structure and source controls.
 
 Filenames use the `iphone-` or `ipad-` prefix, for example
-`zh-Hans/iphone-02-html-safe-preview.png`.
+`zh-Hans/iphone-03-json-preview.png`. Each locale contains 12 images; the
+three localized sets total 36 images. The final `en-US` set is also mirrored
+byte-for-byte into this directory under the same filenames for release audits.
 
-The final `en-US` screenshots are also mirrored byte-for-byte into this directory
-under the legacy root filenames used by release audits.
+JSON is read-only standard JSON, without JSONC or PDF export. Batch import
+processes duplicate-file decisions individually and reports imported, skipped,
+and failed files. Library search means filename search, not cross-file full-text
+search. Captions must reflect these implemented boundaries.
 
 ## Dimensions
 
@@ -42,21 +45,17 @@ passes `HTML_PREVIEWER_UI_TESTS=1` through `SIMCTL_CHILD_` on every launch. The
 sample/reset arguments therefore operate on the isolated UI-test library and
 preferences, preserving the normal app library. Only simulators are used.
 
-The verified 1.4 sources are in the primary checkout at
-`/Users/user/html_preview/DerivedData/Release1.4/ScreenshotSources/<locale>/`. Screenshots use dark
-appearance and a fixed 09:41 status bar. The six current contact sheets are in
-`/Users/user/html_preview/DerivedData/Release1.4/ScreenshotPreviews/`:
-`en-US-iphone.png`, `en-US-ipad.png`, `zh-Hans-iphone.png`,
-`zh-Hans-ipad.png`, `ja-iphone.png`, and `ja-ipad.png`.
-The generic `DerivedData/AppStoreScreenshotSources/` and
-`DerivedData/AppStoreScreenshotPreviews/` folders still contain the older 1.2
-capture; do not use them as evidence for the current release. Review the sources and
-contact sheets for the correct language, rendered sample, and absence of loading
-or transition screens before uploading.
+The 1.7 source captures and contact sheets are stored under
+`DerivedData/Release1.7/ScreenshotSources/<locale>/` and
+`DerivedData/Release1.7/ScreenshotPreviews/`. Review the current sources and
+contact sheets for language, rendered content, and absence of loading or
+transition screens before uploading. Historical 1.2–1.4 folders and verification
+reports describe their respective releases and are not current 1.7 evidence.
 
-Marketing copy lives in `copy.json`. The 1.4 set shows the file search and paste entries, animated weekend plan, reading notes,
-reading journal, bottom-right preview actions, and current Interactive default.
-The HTML and Settings captions describe the available preview modes.
+Marketing copy lives in `copy.json`. The 1.7 set follows the six-image order
+above and uses actual localized app UI. Keep capture/build provenance with the
+1.7 release evidence; generating promotional canvases does not establish an
+App Store upload or release.
 
 Override `OUT_DIR`, `SOURCE_OUT_DIR` (the parent of the three locale directories),
 `PREVIEW_OUT_DIR`, `COPY_FILE`, `DERIVED_DATA`, `IPHONE_DEVICE`, `IPAD_DEVICE`,
@@ -64,24 +63,22 @@ Override `OUT_DIR`, `SOURCE_OUT_DIR` (the parent of the three locale directories
 setup. `CAPTURE_LOCALES` can restrict recapture to a space-separated subset; all
 three source sets must exist before composition.
 
-The 1.4 capture uses the retained iPhone 18 Pro on iOS 27.0 and iPad Pro 12.9-inch
-(6th generation) on iOS 18.5. Pass their device IDs with `IPHONE_DEVICE` and `IPAD_DEVICE`.
-The compositor accepts native portrait screenshots and preserves their aspect
-ratio while fitting the entire device into the fixed marketing canvas. The
-App Store canvas sizes above are independent of the source simulator resolution.
-The completed set and its build provenance are recorded in
-[`verification-1.4.md`](verification-1.4.md). Previous capture evidence remains in
-[`verification-1.3.md`](verification-1.3.md) and
+Pass explicit existing simulator device IDs with `IPHONE_DEVICE` and
+`IPAD_DEVICE`. The compositor preserves native portrait screenshot aspect ratio
+within the fixed marketing canvas. Canvas dimensions are independent of the
+source simulator resolution. Previous release evidence remains in
+[`verification-1.4.md`](verification-1.4.md),
+[`verification-1.3.md`](verification-1.3.md), and
 [`verification-1.2.md`](verification-1.2.md).
 
 To regenerate the marketing canvases from existing localized sources:
 
 ```sh
 xcrun swift scripts/generate-app-store-screenshots.swift \
-  --source-dir /Users/user/html_preview/DerivedData/Release1.4/ScreenshotSources \
+  --source-dir /Users/user/html_preview/DerivedData/Release1.7/ScreenshotSources \
   --output-dir docs/app-store-screenshots \
   --copy-file docs/app-store-screenshots/copy.json \
-  --preview-dir /Users/user/html_preview/DerivedData/Release1.4/ScreenshotPreviews
+  --preview-dir /Users/user/html_preview/DerivedData/Release1.7/ScreenshotPreviews
 ```
 
 Add `--locales en-US` (or a comma-separated subset) to compose one completed

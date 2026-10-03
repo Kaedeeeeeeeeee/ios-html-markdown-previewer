@@ -1,0 +1,46 @@
+{
+  "sourceCommit": "fdf1fdb6fb44e924da633a5e5227b3741fd70b20",
+  "device": "iPhone 17",
+  "os": "iOS 27.0 (24A437)",
+  "physicalDevice": true,
+  "resultBundle": "DerivedData/JSONBatchDeviceQA/iphone-ui.xcresult",
+  "screenshots": [
+    {
+      "file": "iphone-json-structure.png",
+      "attachment": "5001385C-3435-42A7-ABBC-C3424F45538C.png",
+      "sha256": "74daacd69327d155f1493b613372cc86b813afee71b00c8d0128b8b15c6255b6"
+    },
+    {
+      "file": "iphone-json-source.png",
+      "attachment": "64E65694-B209-4CA4-A581-290DD31E0AC2.png",
+      "sha256": "a6905f919b7b1624a4ddf633192c47ceade3e2c6aaff1a0de22abb867f90b089"
+    },
+    {
+      "file": "iphone-batch-summary.png",
+      "attachment": "FD27B97F-379D-4F86-A760-1E6054A3DEE4.png",
+      "sha256": "d909dd6b2196f0bc73ae21580b732d6f400e10fba61c5552e82cb0e8d15a61eb"
+    },
+    {
+      "file": "iphone-files-picker-summary.png",
+      "attachment": "E62285D4-3D06-4C9E-A94D-929BDD5ED75A.png",
+      "resultBundle": "DerivedData/JSONBatchDeviceQA/iphone-files-picker.xcresult",
+      "sha256": "4d21d8739781bdf39ffb1e471a40cb9b692d49a118c958262a2d0c2770d9becf"
+    },
+    {
+      "file": "iphone-files-picker-json.png",
+      "attachment": "B8080866-C7D0-4CEB-A932-F502445A9082.png",
+      "resultBundle": "DerivedData/JSONBatchDeviceQA/iphone-files-picker.xcresult",
+      "sha256": "7687e252b1e2dafe5119acb039df1f960a138226a0e045c433df4ef591cf1d7b"
+    }
+  ],
+  "actualFilesPicker": {
+    "status": "passed",
+    "imported": 2,
+    "skipped": 0,
+    "failed": 0,
+    "harness": "DerivedData/JSONBatchDeviceQA/physical-picker-test.swift",
+    "temporaryTestRemoved": true,
+    "fileSource": "On My iPhone/HTMLPreviewerQA",
+    "originalBytesPreserved": true
+  }
+}

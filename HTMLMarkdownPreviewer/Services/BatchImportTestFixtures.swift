@@ -31,7 +31,10 @@ enum BatchImportTestFixtures {
             return url
         }
         let urls: [URL]
-        if arguments.contains("--batch-import-scenario=all-failed") {
+        if arguments.contains("--batch-import-scenario=showcase") {
+            let provider = BuiltInSampleProvider()
+            urls = try [BuiltInSample.html, .markdown, .json, .yaml].map { try provider.makeSampleURL(for: $0) }
+        } else if arguments.contains("--batch-import-scenario=all-failed") {
             urls = [try write("Unsupported.bin", "\(token)"), try write("Broken.zip", "not an archive \(token)")]
         } else if arguments.contains("--batch-import-scenario=single") {
             urls = [try write("Single.md", "# Batch single preview\n\n\(token)")]

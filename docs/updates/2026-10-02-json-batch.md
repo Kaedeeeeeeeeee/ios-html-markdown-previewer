@@ -52,7 +52,7 @@ JSON 原文件按字节保留，UTF-8 BOM 与 CRLF 不会在导入时重写。�
 - 离线 YAML 资源校验、四语言键核对、可移植发布材料审计与 `git diff --check` 通过。
 - 现有 `ReadingHTTPProbe` 测试辅助工具报告了一项 QoS 警告，该测试通过；本次未修改这个辅助工具。
 
-详细测试包与设备信息见 [验证汇总](assets/2026-10-02-json-batch/validation-summary.json)。本轮不涉及真实设备测试。
+详细测试包与设备信息见 [验证汇总](assets/2026-10-02-json-batch/validation-summary.json)。10 月 2 日这一轮仅使用模拟器；后续 [10 月 3 日 iPhone 17 真机验证](../physical-device-validation-results/2026-10-03-json-batch-iphone-17.md)已完成 12 项原有自动测试的最终通过验证，另完成真机系统“文件”实际多选导入（2 / 0 / 0），原始字节一致并已恢复正常资料库；中断与重试细节见该报告。
 
 复用既有 iPhone `D17454A3-3351-48DD-A61F-395E5E7EE3FF` 与 iPad `9216FE52-CA0E-4113-8ED5-19B4BF9755CE`，按设备串行测试。结束时两台均为 Shutdown；未新建、克隆、抹除或删除模拟器。系统导入样例已从模拟器移回本地验证目录，原始测试文件仍保留。
 

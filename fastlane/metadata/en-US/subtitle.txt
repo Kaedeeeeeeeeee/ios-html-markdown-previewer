@@ -1,1 +1,1 @@
-Local HTML and Markdown viewer
+Reports, Notes & JSON

@@ -50,10 +50,29 @@ print(matches[0][2])
 PY
 }
 
-IPHONE_RUNTIME_VERSION="${IPHONE_RUNTIME_VERSION:-27-0}"
-IPAD_RUNTIME_VERSION="${IPAD_RUNTIME_VERSION:-27-0}"
-IPHONE_DEVICE="${IPHONE_DEVICE:-$(select_device "iPhone 18 Pro Max" "$IPHONE_RUNTIME_VERSION")}"
-IPAD_DEVICE="${IPAD_DEVICE:-$(select_device "iPad Pro 13-inch (M5)" "$IPAD_RUNTIME_VERSION")}"
+IPHONE_RUNTIME_VERSION="${IPHONE_RUNTIME_VERSION:-18-5}"
+IPAD_RUNTIME_VERSION="${IPAD_RUNTIME_VERSION:-18-5}"
+IPHONE_DEVICE="${IPHONE_DEVICE:-$(select_device "iPhone 16 Pro Max" "$IPHONE_RUNTIME_VERSION")}"
+IPAD_DEVICE="${IPAD_DEVICE:-$(select_device "iPad Pro (12.9-inch) (6th generation)" "$IPAD_RUNTIME_VERSION")}"
+
+CURRENT_DEVICE=""
+CURRENT_WAS_BOOTED=""
+CURRENT_APPEARANCE=""
+
+restore_device() {
+  if [[ -n "$CURRENT_DEVICE" ]]; then
+    xcrun simctl terminate "$CURRENT_DEVICE" "$BUNDLE_ID" >/dev/null 2>&1 || true
+    xcrun simctl status_bar "$CURRENT_DEVICE" clear >/dev/null 2>&1 || true
+    if [[ "$CURRENT_APPEARANCE" == "light" || "$CURRENT_APPEARANCE" == "dark" ]]; then
+      xcrun simctl ui "$CURRENT_DEVICE" appearance "$CURRENT_APPEARANCE" >/dev/null 2>&1 || true
+    fi
+    if [[ "$CURRENT_WAS_BOOTED" != "Booted" ]]; then
+      xcrun simctl shutdown "$CURRENT_DEVICE" >/dev/null 2>&1 || true
+    fi
+    CURRENT_DEVICE=""
+  fi
+}
+trap restore_device EXIT
 
 APP_PATH="$DERIVED_DATA/Build/Products/Debug-iphonesimulator/HTMLMarkdownPreviewer.app"
 
@@ -68,6 +87,8 @@ xcodebuild build \
 
 boot_and_install() {
   local device="$1"
+  CURRENT_DEVICE="$device"
+  CURRENT_WAS_BOOTED="$(xcrun simctl list devices --json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["state"] for group in d["devices"].values() for x in group if x["udid"]==sys.argv[1]))' "$device")"
   xcrun simctl boot "$device" >/dev/null 2>&1 || true
   python3 - "$device" "${BOOTSTATUS_TIMEOUT_SECONDS:-45}" <<'PY'
 import subprocess
@@ -81,7 +102,8 @@ except subprocess.TimeoutExpired:
     print(f"warning: bootstatus timed out for {device}; continuing", file=sys.stderr)
 PY
   xcrun simctl install "$device" "$APP_PATH"
-  xcrun simctl ui "$device" appearance dark
+  CURRENT_APPEARANCE="$(xcrun simctl ui "$device" appearance)"
+  xcrun simctl ui "$device" appearance light
   xcrun simctl status_bar "$device" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
 }
 
@@ -99,6 +121,8 @@ capture() {
     -AppleLanguages "($language)" \
     -AppleLocale "$apple_locale" \
     "$@" >/dev/null
+  # Reapply after launch so the first frame also uses the presentation status bar.
+  xcrun simctl status_bar "$device" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
 
   wait_seconds="${SCREENSHOT_WAIT_SECONDS:-8}"
   for argument in "$@"; do
@@ -120,27 +144,33 @@ capture_set() {
   local language="$4"
   local apple_locale="$5"
 
-  boot_and_install "$device"
-  capture "$device" "$output_dir" "$prefix-01-home" "$language" "$apple_locale" --screenshot-reset-library
-  capture "$device" "$output_dir" "$prefix-02-html-safe-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=html
-  capture "$device" "$output_dir" "$prefix-03-markdown-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=markdown
-  capture "$device" "$output_dir" "$prefix-04-zip-report-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=zipPackage
-  capture "$device" "$output_dir" "$prefix-05-settings" "$language" "$apple_locale" --screenshot-reset-library --screenshot-settings
+  xcrun simctl ui "$device" appearance light
+  capture "$device" "$output_dir" "$prefix-01-html-report" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=html
+  capture "$device" "$output_dir" "$prefix-02-batch-import" "$language" "$apple_locale" --screenshot-reset-library "--batch-import-fixture=$(uuidgen)" --batch-import-scenario=showcase
+  capture "$device" "$output_dir" "$prefix-03-json-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=json
+  capture "$device" "$output_dir" "$prefix-04-markdown-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=markdown
+  capture "$device" "$output_dir" "$prefix-05-library" "$language" "$apple_locale" --screenshot-reset-library --screenshot-library
+  xcrun simctl ui "$device" appearance dark
   capture "$device" "$output_dir" "$prefix-06-yaml-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=yaml
 }
 
-for locale in $CAPTURE_LOCALES; do
-  case "$locale" in
-    en-US) language="en"; apple_locale="en_US" ;;
-    zh-Hans) language="zh-Hans"; apple_locale="zh_CN" ;;
-    ja) language="ja"; apple_locale="ja_JP" ;;
-    *) echo "Unsupported screenshot locale: $locale" >&2; exit 1 ;;
-  esac
-  echo "Capturing $locale iPhone source screenshots on $IPHONE_DEVICE..."
-  capture_set "$IPHONE_DEVICE" "iphone" "$SOURCE_OUT_DIR/$locale" "$language" "$apple_locale"
-
-  echo "Capturing $locale iPad source screenshots on $IPAD_DEVICE..."
-  capture_set "$IPAD_DEVICE" "ipad" "$SOURCE_OUT_DIR/$locale" "$language" "$apple_locale"
+for family in iphone ipad; do
+  if [[ "$family" == "iphone" ]]; then device="$IPHONE_DEVICE"; else device="$IPAD_DEVICE"; fi
+  boot_and_install "$device"
+  for locale in $CAPTURE_LOCALES; do
+    case "$locale" in
+      en-US) language="en"; apple_locale="en_US" ;;
+      zh-Hans) language="zh-Hans"; apple_locale="zh_CN" ;;
+      ja) language="ja"; apple_locale="ja_JP" ;;
+      *) echo "Unsupported screenshot locale: $locale" >&2; exit 1 ;;
+    esac
+    echo "Capturing $locale $family source screenshots on $device..."
+    capture_set "$device" "$family" "$SOURCE_OUT_DIR/$locale" "$language" "$apple_locale"
+  done
+  # All fixtures live in the independent Debug test library.
+  SIMCTL_CHILD_HTML_PREVIEWER_UI_TESTS=1 xcrun simctl launch --terminate-running-process "$device" "$BUNDLE_ID" --screenshot-reset-library >/dev/null
+  sleep 2
+  restore_device
 done
 
 echo "Composing localized App Store screenshots..."

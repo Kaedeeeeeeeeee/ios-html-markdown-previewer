@@ -1,0 +1,29 @@
+{
+  "sourceCommit": "fdf1fdb6fb44e924da633a5e5227b3741fd70b20",
+  "device": "iPhone 17",
+  "os": "iOS 27.0 (24A437)",
+  "physicalDevice": true,
+  "imported": 2,
+  "skipped": 0,
+  "failed": 0,
+  "files": [
+    {
+      "filename": "api-response.json",
+      "bytes": 449,
+      "originalSHA256": "049d66959f6527242cd37d341d5cf484fae2273faa35ac4fa9622627d16d0567",
+      "importedSHA256": "049d66959f6527242cd37d341d5cf484fae2273faa35ac4fa9622627d16d0567",
+      "byteIdentical": true,
+      "importSource": "fileImporter",
+      "type": "json"
+    },
+    {
+      "filename": "reading-notes.md",
+      "bytes": 1199,
+      "originalSHA256": "476efdf5e643d156c99062dd58ed762dfdaedc4e8de66e763be4e37d1ef34c39",
+      "importedSHA256": "476efdf5e643d156c99062dd58ed762dfdaedc4e8de66e763be4e37d1ef34c39",
+      "byteIdentical": true,
+      "importSource": "fileImporter",
+      "type": "markdown"
+    }
+  ]
+}

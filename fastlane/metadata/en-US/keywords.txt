@@ -1,1 +1,1 @@
-HTML viewer,Markdown viewer,local HTML,offline report,file preview,ZIP report,MD viewer
+markdown,json,yaml,zip,reader,report,notes,config,source,code,offline,preview

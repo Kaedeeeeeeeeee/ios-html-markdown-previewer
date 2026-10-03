@@ -1,5 +1,5 @@
-- Open .yaml and .yml files directly, or paste YAML text for an offline preview.
-- Browse nested objects and arrays, search fields and values, and copy values or field paths.
-- Read syntax-highlighted source with line numbers and jump from a field to its source.
-- Switch between multiple YAML documents and locate syntax errors by line and column.
-- Includes an app configuration sample and remembers your YAML reading position.
+- Added read-only JSON previews: expand objects and arrays, search fields, and view highlighted source with line numbers.
+- Copy JSON values and field paths without rounding large numeric IDs, and locate syntax errors by line and column.
+- Import multiple documents or ZIP packages in one selection. Update duplicates, keep both copies, or skip individual files.
+- Review imported, skipped, and failed totals with failure details; one failed file does not stop the batch.
+- Added a JSON sample, JSON library filter, and JSON support in Paste Preview. Files continue to be processed on device.

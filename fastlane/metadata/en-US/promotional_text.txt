@@ -1,1 +1,1 @@
-Read HTML, Markdown, YAML, and ZIP reports on iPhone and iPad. Explore YAML structure, search fields, and check highlighted source, all on your device.
+Read reports, notes, and JSON on iPhone and iPad. Import multiple files, explore JSON structure, and copy large numeric IDs without rounding.

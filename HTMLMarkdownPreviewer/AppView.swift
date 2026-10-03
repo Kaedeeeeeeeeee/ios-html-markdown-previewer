@@ -542,6 +542,13 @@ struct AppView: View {
             try? store.clearAbandonedStaging()
         }
 
+        if arguments.contains("--screenshot-reset-library") {
+            for document in documents {
+                try? store.delete(document)
+            }
+            reloadDocuments()
+        }
+
         #if DEBUG
         if ReadingLibraryTestFixtures.handle(arguments: arguments, store: store) {
             reloadDocuments()
@@ -558,12 +565,19 @@ struct AppView: View {
         } catch { showError(error) }
         #endif
 
-        if arguments.contains("--screenshot-reset-library") {
-            for document in documents {
-                try? store.delete(document)
-            }
-            reloadDocuments()
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["HTML_PREVIEWER_UI_TESTS"] == "1",
+           arguments.contains("--screenshot-library") {
+            let provider = BuiltInSampleProvider()
+            let service = DocumentImportService(store: store)
+            do {
+                for sample in BuiltInSample.allCases {
+                    _ = try service.importDocument(from: provider.makeSampleURL(for: sample), source: .bundledSample)
+                }
+                reloadDocuments()
+            } catch { showError(error) }
         }
+        #endif
 
         if let sample = screenshotSample(from: arguments) {
             importSample(sample)
