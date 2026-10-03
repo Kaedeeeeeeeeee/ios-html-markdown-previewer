@@ -1,9 +1,13 @@
+import StoreKit
 import SwiftUI
 
 struct AppView: View {
     private let store: DocumentLibraryStore
     private let batchImportStager: BatchImportStager
     private let sampleProvider: BuiltInSampleProvider
+
+    @State private var reviewPrompt: ReviewPromptController
+    @Environment(\.requestReview) private var requestReview
 
     @AppStorage("home.samplesExpanded") private var areSamplesExpanded = false
     @State private var documents: [PreviewDocument] = []
@@ -37,6 +41,10 @@ struct AppView: View {
         self.store = store
         self.batchImportStager = BatchImportStager(libraryRootURL: store.importsURL.deletingLastPathComponent())
         self.sampleProvider = BuiltInSampleProvider()
+        let environment = ProcessInfo.processInfo.environment
+        self._reviewPrompt = State(initialValue: ReviewPromptController(
+            isEnabled: environment["HTML_PREVIEWER_UI_TESTS"] != "1" && environment["XCTestConfigurationFilePath"] == nil
+        ))
     }
 
     var body: some View {
@@ -117,11 +125,20 @@ struct AppView: View {
                     }
                 }
             }
+            .background {
+                ReviewPromptRequestView(controller: reviewPrompt, isAvailable: isReviewRequestAvailable) {
+                    requestReview()
+                }
+            }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: LibraryStrings.searchPlaceholder)
             .scrollDismissesKeyboard(.interactively)
             .navigationTitle(AppStrings.App.title)
             .navigationDestination(for: PreviewDocument.self) { document in
-                DocumentPreviewView(document: document, store: store)
+                DocumentPreviewView(document: document, store: store) { activeSeconds in
+                    guard path.isEmpty else { return }
+                    reviewPrompt.recordCompletedReading(documentID: document.id, source: document.importSource,
+                                                        activeSeconds: activeSeconds)
+                }
                     .onAppear {
                         markOpened(document)
                     }
@@ -228,6 +245,15 @@ struct AppView: View {
 
     private var filteredDocuments: [PreviewDocument] {
         selectedFilter.documents(in: documents, matching: searchText)
+    }
+
+    private var isReviewRequestAvailable: Bool {
+        path.isEmpty && searchText.isEmpty && !isImporterPresented && !isSettingsPresented && !isPastePreviewPresented
+            && pastedImport == nil && renameDocument == nil && pendingImport == nil && nextImportReview == nil
+            && batchImportSummary == nil && pendingBatchImportSummary == nil && !isBatchSummaryDismissing
+            && !isImportReviewDismissing && !isPreparingImports && inFlightImportID == nil
+            && activeImportSession == nil && importQueue.isEmpty && preparationQueue.isEmpty
+            && errorMessage == nil && deferredImportError == nil
     }
 
     private var pinnedDocuments: [PreviewDocument] { filteredDocuments.filter(\.isPinned) }

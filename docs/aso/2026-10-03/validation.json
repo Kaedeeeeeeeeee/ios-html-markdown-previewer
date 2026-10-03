@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-03",
+  "status": "pass",
+  "scope": "Metadata limits, exact case-insensitive keyword duplicates, exact Latin term reuse, JSON structure and six-slot locale coverage. Does not verify search volume, search ranking, rendered screenshot layout or live ASC acceptance.",
+  "locales": [
+    {
+      "locale": "en-US",
+      "counts": {
+        "name": 14,
+        "subtitle": 27,
+        "keywords": 93,
+        "promotional_text": 147,
+        "description": 2339
+      },
+      "limits": {
+        "name": 30,
+        "subtitle": 30,
+        "keywords": 100,
+        "promotional_text": 170,
+        "description": 4000
+      },
+      "duplicateKeywordTerms": [],
+      "latinTermsRepeatedFromNameOrSubtitle": []
+    },
+    {
+      "locale": "zh-Hans",
+      "counts": {
+        "name": 8,
+        "subtitle": 27,
+        "keywords": 67,
+        "promotional_text": 79,
+        "description": 1002
+      },
+      "limits": {
+        "name": 30,
+        "subtitle": 30,
+        "keywords": 100,
+        "promotional_text": 170,
+        "description": 4000
+      },
+      "duplicateKeywordTerms": [],
+      "latinTermsRepeatedFromNameOrSubtitle": []
+    },
+    {
+      "locale": "ja",
+      "counts": {
+        "name": 9,
+        "subtitle": 21,
+        "keywords": 80,
+        "promotional_text": 93,
+        "description": 1256
+      },
+      "limits": {
+        "name": 30,
+        "subtitle": 30,
+        "keywords": 100,
+        "promotional_text": 170,
+        "description": 4000
+      },
+      "duplicateKeywordTerms": [],
+      "latinTermsRepeatedFromNameOrSubtitle": []
+    },
+    {
+      "locale": "zh-Hant",
+      "counts": {
+        "name": 8,
+        "subtitle": 27,
+        "keywords": 71,
+        "promotional_text": 80,
+        "description": 1023
+      },
+      "limits": {
+        "name": 30,
+        "subtitle": 30,
+        "keywords": 100,
+        "promotional_text": 170,
+        "description": 4000
+      },
+      "duplicateKeywordTerms": [],
+      "latinTermsRepeatedFromNameOrSubtitle": []
+    }
+  ],
+  "screenshotSlots": 6,
+  "errors": [],
+  "materialsValidation": "materials/validation.json",
+  "completedScreenshotCount": 48,
+  "integrationValidation": "materials/integration-validation.json"
+}

@@ -24,25 +24,25 @@ RELEASE_TYPE = ENV.fetch("APP_STORE_CONNECT_RELEASE_TYPE", "AFTER_APPROVAL")
 EXPECTED_SCREENSHOTS = {
   "APP_IPHONE_67" => %w[
     iphone-01-html-report.png
-    iphone-02-batch-import.png
+    iphone-02-markdown-preview.png
     iphone-03-json-preview.png
-    iphone-04-markdown-preview.png
-    iphone-05-library.png
-    iphone-06-yaml-preview.png
+    iphone-04-yaml-preview.png
+    iphone-05-batch-import.png
+    iphone-06-library.png
   ],
   "APP_IPAD_PRO_3GEN_129" => %w[
     ipad-01-html-report.png
-    ipad-02-batch-import.png
+    ipad-02-markdown-preview.png
     ipad-03-json-preview.png
-    ipad-04-markdown-preview.png
-    ipad-05-library.png
-    ipad-06-yaml-preview.png
+    ipad-04-yaml-preview.png
+    ipad-05-batch-import.png
+    ipad-06-library.png
   ]
 }.freeze
-EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja].freeze
+EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja zh-Hant].freeze
 DEFAULT_WHATS_NEW = ENV.fetch(
   "APP_STORE_CONNECT_WHATS_NEW",
-  "Adds richer built-in HTML and ZIP samples with refreshed App Store visuals."
+  "Adds occasional App Store rating requests after repeated reading and returning to the library."
 )
 
 class AscError < StandardError
@@ -751,7 +751,38 @@ def configure_and_verify_release_type
   puts "Verified App Store version #{APP_STORE_VERSION_STRING} releaseType=#{actual}."
 end
 
+def verify_previous_version_approved
+  previous = ENV["APP_STORE_CONNECT_PREVIOUS_VERSION_STRING"]
+  return if previous.to_s.empty?
+
+  versions = request(
+    :get,
+    "/v1/apps/#{APP_ID}/appStoreVersions",
+    query: {
+      "filter[versionString]" => previous,
+      "filter[platform]" => PLATFORM,
+      "fields[appStoreVersions]" => "versionString,platform,appStoreState",
+      "limit" => "200"
+    }
+  ).fetch("data")
+  version = versions.find do |item|
+    attrs = item.fetch("attributes")
+    attrs["versionString"] == previous && attrs["platform"] == PLATFORM
+  end
+  raise "Previous version #{previous} was not found; release gate remains closed." unless version
+
+  state = version.fetch("attributes").fetch("appStoreState")
+  approved_states = %w[READY_FOR_DISTRIBUTION READY_FOR_SALE PENDING_DEVELOPER_RELEASE PENDING_APPLE_RELEASE]
+  unless approved_states.include?(state)
+    raise "Previous version #{previous} is #{state}; wait for approval before uploading or changing store materials."
+  end
+  puts "Previous version #{previous} is #{state}; next-release preparation gate passed."
+end
+
 def run
+  verify_previous_version_approved
+  return if ENV["APP_STORE_CONNECT_CHECK_RELEASE_GATE_ONLY"] == "true"
+
   build = wait_for_valid_build
   build_id = build.fetch("id")
   patch_build_encryption(build_id)

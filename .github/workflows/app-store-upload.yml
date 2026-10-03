@@ -35,8 +35,9 @@ jobs:
     env:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
       APP_STORE_CONNECT_APP_ID: "6785794966"
-      APP_STORE_CONNECT_VERSION_STRING: "1.7"
-      APP_STORE_CONNECT_BUILD_NUMBER: "12"
+      APP_STORE_CONNECT_VERSION_STRING: "1.7.1"
+      APP_STORE_CONNECT_BUILD_NUMBER: "13"
+      APP_STORE_CONNECT_PREVIOUS_VERSION_STRING: "1.7"
       APP_STORE_CONNECT_PLATFORM: IOS
       APP_STORE_CONNECT_RELEASE_TYPE: AFTER_APPROVAL
       APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES: ${{ inputs.clean_screenshot_duplicates }}
@@ -49,6 +50,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Verify integrated release materials
+        run: python3 scripts/audit-integrated-release-materials.py
 
       - name: Prepare build paths
         run: |
@@ -86,6 +90,11 @@ jobs:
           printf '%s' "$ASC_API_KEY_BASE64" | base64 -D -o "$API_KEY_PATH"
           chmod 600 "$API_KEY_PATH"
           echo "ASC_API_KEY_PATH=$API_KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Require approval of the previous version
+        env:
+          APP_STORE_CONNECT_CHECK_RELEASE_GATE_ONLY: "true"
+        run: ruby .github/scripts/submit-app-store-review.rb
 
       - name: Resolve Swift packages
         if: ${{ github.event.inputs.submit_only != 'true' }}
@@ -175,12 +184,12 @@ jobs:
           set -euo pipefail
           SCREENSHOT_STAGING="$RUNNER_TEMP/AppStoreScreenshots"
           mkdir -p "$SCREENSHOT_STAGING"
-          for locale in en-US zh-Hans ja; do
+          for locale in en-US zh-Hans ja zh-Hant; do
             cp -R "docs/app-store-screenshots/$locale" "$SCREENSHOT_STAGING/$locale"
           done
           screenshot_count="$(find "$SCREENSHOT_STAGING" -type f -name '*.png' | wc -l | tr -d ' ')"
-          if [[ "$screenshot_count" != "36" ]]; then
-            echo "Expected 36 localized App Store screenshots, found $screenshot_count." >&2
+          if [[ "$screenshot_count" != "48" ]]; then
+            echo "Expected 48 localized App Store screenshots, found $screenshot_count." >&2
             exit 1
           fi
           echo "FASTLANE_SCREENSHOTS_PATH=$SCREENSHOT_STAGING" >> "$GITHUB_ENV"
