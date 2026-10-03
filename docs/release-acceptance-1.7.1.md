@@ -18,6 +18,7 @@
 | --- | --- |
 | 单元和集成测试 | 206 项通过，其中评分策略测试 10 项 |
 | 完整 UI 回归 | 36 项全部通过，零失败；本轮共 242 项测试通过 |
+| iOS 26.5 UI 补充验证 | 首轮 CI 的搜索输入、长按重命名两项失败；同版模拟器原样复现与加强测试同步后的两轮定向测试各 2 项通过。功能代码未改；以最新 CI 为最终结果 |
 | 本地商店物料 | 四语言、48 张图片通过，尺寸分别为 1320×2868 / 2064×2752，RGB 无透明通道；逐文件与准备包一致 |
 | 发布审计 | Release audit、portable audit、公开支持与隐私页面检查通过 |
 | 上传前审核状态检查 | 12 个批准、未批准、缺失版本、只读检查案例通过 |
@@ -28,6 +29,8 @@
 本轮回归复用了现有模拟器 `HTML Previewer 1.6 Geometry iOS18.5`
 （iPhone 16 / iOS 18.5），UDID `D17454A3-3351-48DD-A61F-395E5E7EE3FF`。
 采用一个明确 destination，关闭并行测试；没有创建、删除或抹除模拟器。
+CI 失败排查另复用了 `HTML Previewer Release iPhone iOS26.5`（iPhone 17），
+UDID `2CFB4656-369B-4D63-B713-1DAC57B0C1A2`，两个模拟器顺序使用。
 完成测试后已关闭本任务启动的模拟器。
 
 Xcode 在用例结束后等待附加的 `simctl diagnose` 日志采集。仅停止该采集子进程后，
@@ -55,6 +58,7 @@ ASO 原始截图来自 1.7（12）标记的 Debug 模拟器包，已包含并行
 关联记录：
 
 - [评分策略、真机截图与记录](updates/2026-10-03-review-prompts.md)
+- [iOS 26.5 排查与验证](updates/assets/2026-10-03-review-prompts/ios26-ui-validation.json)
 - [完整回归记录](updates/assets/2026-10-03-review-prompts/full-regression.json)
 - [归档与 IPA 校验](updates/assets/2026-10-03-review-prompts/archive-validation.json)
 - [商店文件集成校验](app-store-screenshots/verification-1.7.1.json)

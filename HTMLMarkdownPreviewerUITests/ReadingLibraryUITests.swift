@@ -133,7 +133,7 @@ final class ReadingLibraryUITests: XCTestCase {
             try require(wait { htmlRow.exists && markdownRow.exists && htmlRow.frame.minY < markdownRow.frame.minY }, "Pinned document should sort above the unpinned fixture")
             screenshot("Pinned QA report in the filtered document library", app: app)
 
-            try contextAction("library-rename-button", on: htmlRow, app: app)
+            try contextAction("library-rename-button", on: row(fixture.htmlFilename, app: app), app: app)
             let renamedTitle = "QA renamed \(fixture.token)"
             let nameField = app.textFields["library-rename-field"]
             try require(nameField.waitForExistence(timeout: 5), "Rename should present a name field")
@@ -353,7 +353,8 @@ final class ReadingLibraryUITests: XCTestCase {
 
     private func contextAction(_ identifier: String, on documentRow: XCUIElement, app: XCUIApplication) throws {
         try require(documentRow.exists && documentRow.isHittable, "QA row should be available for its context action")
-        documentRow.press(forDuration: 1)
+        // Leave enough hold time for the context recognizer on a busy CI simulator.
+        documentRow.press(forDuration: 2)
         try tap(identifier, app: app)
     }
 
