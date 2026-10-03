@@ -1,0 +1,81 @@
+{
+  "preparedAtUTC": "2026-10-03T06:24:36.834601+00:00",
+  "status": "local_materials_not_uploaded",
+  "target": "next small release; version number not assigned by this task",
+  "build": {
+    "configuration": "Debug simulator",
+    "bundleID": "com.kaede.htmlmarkdownpreviewer",
+    "marketingVersion": "1.7",
+    "buildNumber": "12",
+    "executableSHA256": "b143ca9f932640e94faa97c2cf4153432741235dccb4a12dcf613a094b7f3eb7",
+    "buildLog": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-0a68f0590b32/logs/build_run_sim_2026-10-03T06-07-29-493Z_pid70848_798ef108.log",
+    "gitHEAD": "3f3cf0ebb2b2e1e1b618e4e68412eb74f25e7a5e",
+    "workingTreeWasDirty": true,
+    "limitation": "Includes concurrent local review-prompt implementation. Working-tree state is not a final reviewed release commit. Screen captures prove the visible app state only; not final-archive equivalence or a new full regression."
+  },
+  "devices": [
+    {
+      "family": "iphone",
+      "name": "HTML Previewer Release iPhone iOS26.5",
+      "model": "iPhone 17",
+      "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2",
+      "OS": "26.5",
+      "nativePixels": [
+        1206,
+        2622
+      ],
+      "initialState": "Shutdown"
+    },
+    {
+      "family": "ipad",
+      "name": "Passnote ASO iPad Pro 12.9",
+      "model": "iPad Pro 12.9-inch 6th generation",
+      "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "OS": "18.5",
+      "nativePixels": [
+        2048,
+        2732
+      ],
+      "initialState": "Shutdown"
+    }
+  ],
+  "capturePolicy": {
+    "renderer": "Actual SwiftUI app and bundled WebKit renderer; UI pixels are not redrawn",
+    "isolation": "HTML_PREVIEWER_UI_TESTS=1, independent UITestLibrary and preferences",
+    "documents": "Synthetic fixtures in fixtures/ and built-in JSON/YAML/ZIP samples",
+    "fixtureSeeding": "New report / Markdown documents and pinned metadata seeded in the isolated test library, then opened through live UI buttons. This is content staging, not Files import validation.",
+    "lightScenes": [
+      "HTML",
+      "Markdown",
+      "JSON",
+      "Import",
+      "Library"
+    ],
+    "darkScene": "YAML",
+    "statusBar": "9:41 / charged / Wi-Fi",
+    "ordering": "Source filenames stay stable. Final filenames encode the new six-slot order."
+  },
+  "appleRequirements": {
+    "checkedDate": "2026-10-03",
+    "url": "https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications",
+    "finalPixels": {
+      "iphone": [
+        1320,
+        2868
+      ],
+      "ipad": [
+        2064,
+        2752
+      ]
+    },
+    "alphaChannel": false
+  },
+  "releaseActions": {
+    "uploaded": false,
+    "submitted": false,
+    "published": false,
+    "integrationPatchApplied": false
+  },
+  "completedCaptureState": "Both reused simulators returned to Shutdown; status bar overrides cleared. No devices created, deleted, or erased.",
+  "visualReview": "All eight language/device contact sheets inspected; actual custom report and Markdown scenes checked. Final UI/version match remains a release gate."
+}

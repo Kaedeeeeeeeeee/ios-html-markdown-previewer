@@ -20,6 +20,7 @@ private struct Options {
     let copyFile: URL
     let previewDirectory: URL?
     let locales: [String]
+    let screenshotOrder: [String]?
 }
 
 private struct ScreenshotSpec {
@@ -115,7 +116,8 @@ private func parseOptions() throws -> Options {
         outputDirectory: URL(fileURLWithPath: output, isDirectory: true),
         copyFile: URL(fileURLWithPath: copy),
         previewDirectory: values["--preview-dir"].map { URL(fileURLWithPath: $0, isDirectory: true) },
-        locales: (values["--locales"] ?? "en-US,zh-Hans,ja").split(separator: ",").map(String.init)
+        locales: (values["--locales"] ?? "en-US,zh-Hans,ja").split(separator: ",").map(String.init),
+        screenshotOrder: values["--order"].map { $0.split(separator: ",").map(String.init) }
     )
 }
 
@@ -125,8 +127,8 @@ private func makeBitmap(width: Int, height: Int) throws -> NSBitmapImageRep {
         pixelsWide: width,
         pixelsHigh: height,
         bitsPerSample: 8,
-        samplesPerPixel: 4,
-        hasAlpha: true,
+        samplesPerPixel: 3,
+        hasAlpha: false,
         isPlanar: false,
         colorSpaceName: .deviceRGB,
         bytesPerRow: 0,
@@ -199,7 +201,9 @@ private func fittedFont(
     var size = startingSize
     while size > minimumSize {
         let font = NSFont.systemFont(ofSize: size, weight: weight)
-        let width = (text as NSString).size(withAttributes: [.font: font]).width
+        let width = text.components(separatedBy: "\n")
+            .map { ($0 as NSString).size(withAttributes: [.font: font]).width }
+            .max() ?? 0
         if width <= maximumWidth {
             return font
         }
@@ -476,8 +480,17 @@ private func run() throws {
     )
     let locales = options.locales
     guard !locales.isEmpty, Set(locales).count == locales.count,
-          locales.allSatisfy({ ["en-US", "zh-Hans", "ja"].contains($0) }) else {
-        throw GeneratorError.usage("--locales must contain unique values from en-US,zh-Hans,ja")
+          locales.allSatisfy({ ["en-US", "zh-Hans", "ja", "zh-Hant"].contains($0) }) else {
+        throw GeneratorError.usage("--locales must contain unique values from en-US,zh-Hans,ja,zh-Hant")
+    }
+    let orderedSpecs: [ScreenshotSpec]
+    if let order = options.screenshotOrder {
+        guard order.count == specs.count, Set(order) == Set(specs.map(\.key)) else {
+            throw GeneratorError.usage("--order must list all six existing screenshot keys exactly once")
+        }
+        orderedSpecs = order.map { key in specs.first { $0.key == key }! }
+    } else {
+        orderedSpecs = specs
     }
     let devices: [(prefix: String, size: CGSize, isPhone: Bool)] = [
         ("iphone", CGSize(width: 1320, height: 2868), true),
@@ -491,14 +504,16 @@ private func run() throws {
         var renderedByDevice: [String: [URL]] = [:]
 
         for device in devices {
-            for (index, spec) in specs.enumerated() {
+            for (index, spec) in orderedSpecs.enumerated() {
                 guard let marketingCopy = localeCopy.screenshots[spec.key] else {
                     throw GeneratorError.missingCopy(locale: locale, key: spec.key)
                 }
-                let filename = "\(device.prefix)-\(spec.filenameSuffix).png"
+                // Source names remain stable; the output prefix encodes upload order.
+                let suffix = String(format: "%02d", index + 1) + "-" + String(spec.filenameSuffix.dropFirst(3))
+                let filename = "\(device.prefix)-\(suffix).png"
                 let sourceURL = options.sourceDirectory
                     .appendingPathComponent(locale, isDirectory: true)
-                    .appendingPathComponent(filename)
+                    .appendingPathComponent("\(device.prefix)-\(spec.filenameSuffix).png")
                 let outputURL = options.outputDirectory
                     .appendingPathComponent(locale, isDirectory: true)
                     .appendingPathComponent(filename)
@@ -513,7 +528,7 @@ private func run() throws {
                 )
                 renderedByDevice[device.prefix, default: []].append(outputURL)
 
-                if locale == "en-US" {
+                if locale == "en-US", options.screenshotOrder == nil {
                     let compatibilityURL = options.outputDirectory.appendingPathComponent(filename)
                     try FileManager.default.createDirectory(at: options.outputDirectory, withIntermediateDirectories: true)
                     if FileManager.default.fileExists(atPath: compatibilityURL.path) {

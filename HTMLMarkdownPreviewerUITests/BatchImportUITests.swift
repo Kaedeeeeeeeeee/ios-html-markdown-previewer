@@ -109,7 +109,7 @@ final class BatchImportUITests: XCTestCase {
     }
 
     private func search(_ text: String, app: XCUIApplication) throws {
-        let field = app.searchFields.firstMatch
+        var field = app.searchFields.firstMatch
         if !field.isHittable { app.swipeDown() }
         try require(field.waitForExistence(timeout: 5), "Library search should be available")
         field.tap()
@@ -117,8 +117,23 @@ final class BatchImportUITests: XCTestCase {
             // A tap can place the caret inside a long filename. Clear the
             // whole query rather than backspacing only its prefix.
             let clear = field.buttons.matching(NSPredicate(format: "label IN %@", ["Clear text", "Clear Text", "Clear"])).firstMatch
-            if clear.exists && clear.isHittable { clear.tap() }
+            let usesClearButton = clear.exists && clear.isHittable
+            if usesClearButton { clear.tap() }
             else { field.typeKey("a", modifierFlags: .command) }
+            if usesClearButton {
+                let emptyQuery = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                    let current = app.searchFields.firstMatch
+                    guard current.exists else { return false }
+                    let value = current.value as? String ?? ""
+                    return value.isEmpty || value == current.placeholderValue
+                }, object: nil)
+                try require(XCTWaiter.wait(for: [emptyQuery], timeout: 5) == .completed,
+                            "Clearing library search must finish before typing")
+                // Clearing updates the query and accessibility tree. Resolve
+                // and focus the current field before sending the next filename.
+                field = app.searchFields.firstMatch
+                field.tap()
+            }
         }
         field.typeText(text)
         let exactQuery = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.value as? String == text }, object: nil)

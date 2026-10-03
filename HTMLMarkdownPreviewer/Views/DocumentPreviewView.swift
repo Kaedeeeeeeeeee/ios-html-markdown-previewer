@@ -3,6 +3,10 @@ import WebKit
 
 struct DocumentPreviewView: View {
     let store: DocumentLibraryStore
+    private let onReadingFinished: (TimeInterval) -> Void
+
+    @State private var reviewReading = ReviewReadingSession()
+    @State private var isReaderVisible = false
 
     @State private var document: PreviewDocument
     @State private var state: PreviewContentState = .loading
@@ -11,6 +15,7 @@ struct DocumentPreviewView: View {
     @State private var isDetailsPresented = false
     @State private var loadedWebView: WKWebView?
     @State private var isExporting = false
+    @State private var isSharing = false
     @State private var exportError: String?
     @State private var reading: DocumentReadingState
     @State private var isSearchPresented = false
@@ -30,8 +35,10 @@ struct DocumentPreviewView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    init(document: PreviewDocument, store: DocumentLibraryStore) {
+    init(document: PreviewDocument, store: DocumentLibraryStore,
+         onReadingFinished: @escaping (TimeInterval) -> Void = { _ in }) {
         self.store = store
+        self.onReadingFinished = onReadingFinished
         self._document = State(initialValue: document)
         self._previewMode = State(initialValue: document.preferredPreviewMode)
         self._reading = State(initialValue: DocumentReadingState(position: store.readingPosition(for: document)))
@@ -192,10 +199,20 @@ struct DocumentPreviewView: View {
             }
         }
         .onChange(of: reading.isReady) { applyPackageMarkdownAnchor() }
+        .onAppear {
+            isReaderVisible = true
+            reviewReading.setActive(canAccumulateReviewReadingTime)
+        }
+        .onChange(of: canAccumulateReviewReadingTime) {
+            reviewReading.setActive(canAccumulateReviewReadingTime)
+        }
         .onChange(of: scenePhase) {
             if scenePhase != .active { saveReadingPosition() }
         }
         .onDisappear {
+            isReaderVisible = false
+            reviewReading.setActive(false)
+            if isReviewContentReady { onReadingFinished(reviewReading.activeSeconds) }
             readingSaveTask?.cancel()
             saveReadingPosition()
         }
@@ -224,6 +241,20 @@ struct DocumentPreviewView: View {
                              prefersLargePresentation: horizontalSizeClass == .regular,
                              onSelect: selectPackagePage)
         }
+    }
+
+    private var isReviewContentReady: Bool {
+        switch state {
+        case .rawText: true
+        case .markdown, .html, .yaml, .json: reading.isReady
+        case .loading, .unsupported, .failed: false
+        }
+    }
+
+    private var canAccumulateReviewReadingTime: Bool {
+        isReaderVisible && scenePhase == .active && isReviewContentReady
+            && !isInteractiveConfirmationPresented && !isDetailsPresented && !isExporting && !isSharing && exportError == nil
+            && readingSheet == nil && !isAppearancePresented && !isPackagePagesPresented
     }
 
     private var previewActions: some View {
@@ -292,7 +323,8 @@ struct DocumentPreviewView: View {
                     ? AppStrings.Actions.shareZIPPackage : AppStrings.Actions.shareOriginalFile,
                 exportPDF: canExportPDF ? exportPDF : nil,
                 onExporting: { isExporting = $0 },
-                onExportError: { exportError = $0.localizedDescription }
+                onExportError: { exportError = $0.localizedDescription },
+                onSharing: { isSharing = $0 }
             )
             .frame(width: 44, height: 44)
 

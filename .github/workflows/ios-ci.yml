@@ -41,6 +41,9 @@ jobs:
       - name: Verify bundled YAML assets and localizations
         run: python3 scripts/audit-yaml-assets.py
 
+      - name: Verify integrated next-release store materials
+        run: python3 scripts/audit-integrated-release-materials.py
+
       - name: Verify public privacy and support pages
         run: scripts/verify-public-pages.sh
 
@@ -74,6 +77,9 @@ jobs:
 
       - name: Run release audit
         run: scripts/release-audit.sh
+
+      - name: Verify previous-version approval gate
+        run: ruby .github/scripts/test-release-gate.rb
 
   public-pages:
     name: Public App Store Pages

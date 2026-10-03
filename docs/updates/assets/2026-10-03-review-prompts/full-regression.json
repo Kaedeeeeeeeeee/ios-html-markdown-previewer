@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "xcodebuildExitCode": 0,
+  "unitAndIntegrationTests": 206,
+  "uiTests": 36,
+  "failed": 0,
+  "skipped": 0,
+  "sourceEquivalentToCommit": "e3910abfbe2548475f5fdacd40e69569fc98cd16",
+  "sourceNote": "Tests began before this commit. App, project and test source remained unchanged throughout the run; later changes only prepared scripts and evidence documents.",
+  "simulator": {
+    "name": "HTML Previewer 1.6 Geometry iOS18.5",
+    "model": "iPhone 16",
+    "os": "18.5",
+    "udid": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+    "created": false,
+    "erased": false,
+    "shutdownAfterTests": true
+  },
+  "parallelTesting": false,
+  "diagnosticCollection": "After all tests completed, Xcode waited on its owned simctl diagnose child (PID 53136). Only that supplemental collector was stopped. xcodebuild then exited 0 and finalized a readable result bundle. Auxiliary simulator diagnostics are incomplete; test outcomes and attachments remain in the bundle.",
+  "resultBundlePath": "/Users/user/.codex/worktrees/review-aso-release/html_preview/DerivedData/Release1.7.1/FullRegression.xcresult",
+  "logSHA256": "c7a9382a1e2bcfc9852e182d5fbbef2caa43a1566585d51e5e2fabd43ce7a533",
+  "xcresultSummary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+          "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+          "modelName": "iPhone 16",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 242,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1791013356.803,
+    "passedTests": 242,
+    "result": "Passed",
+    "runtimeWarnings": [
+      {
+        "issueType": "Runtime Warning",
+        "message": "Thread running at User-interactive quality-of-service class waiting on a lower QoS thread running at Default quality-of-service class. Investigate ways to avoid priority inversions"
+      }
+    ],
+    "skippedTests": 0,
+    "startTime": 1791011623.849,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - HTMLMarkdownPreviewer",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "9% of duration",
+        "text": "1 longest test run with outlier durations exceeding 123.40s (three standard deviations)"
+      },
+      {
+        "category": "Longest Test Runs",
+        "impact": "28% of duration",
+        "text": "4 longest test runs with outlier durations exceeding 2.79s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 242
+  }
+}

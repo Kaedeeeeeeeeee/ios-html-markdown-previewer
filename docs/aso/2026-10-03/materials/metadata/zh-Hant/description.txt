@@ -1,0 +1,29 @@
+在 iPhone 和 iPad 上開啟收到的 HTML 與 ZIP 報告、閱讀 Markdown 筆記、檢視 JSON 和 YAML 設定。檔案在裝置本機處理。
+
+閱讀內容，也保留排版
+- 呈現 HTML 版面配置、圖形與動畫。
+- 閱讀 Markdown 表格與醒目提示的程式碼，一鍵複製程式碼內容。
+- 離線顯示 Markdown 數學公式和 Mermaid 流程圖。
+- 在 ZIP 報告中切換 HTML 與 Markdown 頁面，保留本機 CSS 和圖片資源。
+- 文內搜尋、標題目錄與閱讀外觀調整，再次開啟接著讀。
+
+看清 JSON 與 YAML 結構
+- 展開巢狀物件和陣列，搜尋欄位與值，核對附行號的原始碼。
+- 複製值或欄位路徑，從欄位跳到對應原始碼行。
+- 顯示和複製 JSON 大整數 ID 時保留原始數字，不進行四捨五入。
+- 語法錯誤定位到具體行與欄；YAML 支援切換多份文件。
+
+匯入、整理與分享
+- 從「檔案」、郵件、AirDrop、訊息 App、雲端硬碟或其他 App 開啟檔案。開啟或分享選單的可用性取決於 iOS 和來源 App。
+- 一次選擇多份文件或 ZIP 報告包。重複檔案可更新、保留兩份或逐份略過，完成後查看匯入結果。
+- 貼上 HTML、Markdown、JSON 或 YAML 文字，建立本機預覽。
+- 依檔名尋找資料，釘選常用檔案，修改顯示名稱。
+- 分享原始檔案或完整 ZIP 報告包，將 HTML 與 Markdown 預覽匯出為 PDF。
+- 內建 HTML、Markdown、JSON、YAML 與 ZIP 範例。
+
+支援 .html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSON 與 YAML 為唯讀預覽，可分享原始檔案；JSON 不支援 JSONC 註解和結尾逗號。PDF 匯出適用於 HTML 與 Markdown。
+
+隱私與購買方式
+檔案在裝置本機處理，App 不會上傳你的檔案。無帳號、無廣告。付費下載，無訂閱，無 App 內購買。
+
+新匯入的 HTML（包括 ZIP 中的 HTML）預設使用互動模式，允許頁面 JavaScript 和外部資源，HTML 內容可以發出網路請求。可切換至安全預覽，阻擋頁面指令碼和外部 HTTP/HTTPS 資源。兩種模式都會繼續阻擋外部跳轉和表單跳轉。再次開啟檔案時，會保留已儲存的預覽模式。
