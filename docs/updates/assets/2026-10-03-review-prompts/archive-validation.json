@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "generatedAtUTC": "2026-10-03T07:30:09.517416+00:00",
+  "sourceCommit": "e3910abfbe2548475f5fdacd40e69569fc98cd16",
+  "sourceWorkingTree": "clean at archive creation",
+  "version": "1.7.1",
+  "build": "13",
+  "bundleID": "com.kaede.htmlmarkdownpreviewer",
+  "minimumOS": "17.0",
+  "sdk": "iphoneos27.0",
+  "signing": "Apple Distribution",
+  "teamID": "Y4FV6WUU4V",
+  "profileName": "HTML Markdown Previewer App Store",
+  "profileExpires": "2027-05-17T07:10:10Z",
+  "getTaskAllow": false,
+  "provisionedDevices": false,
+  "executableSHA256": "01ee40f39232a8dc8018f909e90dfc6360e57501a5857bfa28e75d96c6d50570",
+  "ipaSHA256": "65b86549d79f1d985a59f93f8258ad892cb2c85000a2c4b5ec67a33d3ffbd0d7",
+  "ipaBytes": 5299194,
+  "archivePath": "/Users/user/.codex/worktrees/review-aso-release/html_preview/DerivedData/Release1.7.1/HTMLPreviewer.xcarchive",
+  "ipaPath": "/Users/user/.codex/worktrees/review-aso-release/html_preview/DerivedData/Release1.7.1/Export/HTMLMarkdownPreviewer.ipa",
+  "scope": "Local signed archive and local-only IPA export verified. No Apple processing, TestFlight install, upload or submission has occurred."
+}
