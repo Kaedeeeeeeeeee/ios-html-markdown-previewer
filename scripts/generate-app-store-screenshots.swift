@@ -12,6 +12,7 @@ private struct MarketingCopy: Decodable {
 private struct StorefrontCopy: Decodable {
     let storefront: String
     let screenshots: [String: MarketingCopy]
+    let deviceScreenshots: [String: [String: MarketingCopy]]?
 }
 
 private struct Options {
@@ -20,6 +21,30 @@ private struct Options {
     let copyFile: URL
     let previewDirectory: URL?
     let locales: [String]
+    let screenshotOrder: [String]?
+    let deviceConfig: URL?
+    let families: [String]?
+    let sourceKeys: [String]?
+}
+
+private struct DeviceFrame: Decodable {
+    let width: Int
+    let height: Int
+    let sourceWidth: Int?
+    let sourceHeight: Int?
+}
+
+private struct ScreenshotDevice: Decodable {
+    let prefix: String
+    let label: String
+    let width: Int
+    let height: Int
+    let isPhone: Bool
+    let frames: [String: DeviceFrame]?
+}
+
+private struct DeviceConfiguration: Decodable {
+    let devices: [ScreenshotDevice]
 }
 
 private struct ScreenshotSpec {
@@ -115,7 +140,11 @@ private func parseOptions() throws -> Options {
         outputDirectory: URL(fileURLWithPath: output, isDirectory: true),
         copyFile: URL(fileURLWithPath: copy),
         previewDirectory: values["--preview-dir"].map { URL(fileURLWithPath: $0, isDirectory: true) },
-        locales: (values["--locales"] ?? "en-US,zh-Hans,ja").split(separator: ",").map(String.init)
+        locales: (values["--locales"] ?? "en-US,zh-Hans,ja").split(separator: ",").map(String.init),
+        screenshotOrder: values["--order"].map { $0.split(separator: ",").map(String.init) },
+        deviceConfig: values["--device-config"].map { URL(fileURLWithPath: $0) },
+        families: values["--families"].map { $0.split(separator: ",").map(String.init) },
+        sourceKeys: values["--keys"].map { $0.split(separator: ",").map(String.init) }
     )
 }
 
@@ -125,8 +154,8 @@ private func makeBitmap(width: Int, height: Int) throws -> NSBitmapImageRep {
         pixelsWide: width,
         pixelsHigh: height,
         bitsPerSample: 8,
-        samplesPerPixel: 4,
-        hasAlpha: true,
+        samplesPerPixel: 3,
+        hasAlpha: false,
         isPlanar: false,
         colorSpaceName: .deviceRGB,
         bytesPerRow: 0,
@@ -199,7 +228,9 @@ private func fittedFont(
     var size = startingSize
     while size > minimumSize {
         let font = NSFont.systemFont(ofSize: size, weight: weight)
-        let width = (text as NSString).size(withAttributes: [.font: font]).width
+        let width = text.components(separatedBy: "\n")
+            .map { ($0 as NSString).size(withAttributes: [.font: font]).width }
+            .max() ?? 0
         if width <= maximumWidth {
             return font
         }
@@ -330,7 +361,8 @@ private func render(
     palette: Palette,
     isPhone: Bool,
     expectedSize: CGSize,
-    index: Int
+    index: Int,
+    duoFrame: DeviceFrame? = nil
 ) throws {
     guard FileManager.default.fileExists(atPath: sourceURL.path) else {
         throw GeneratorError.missingFile(sourceURL)
@@ -341,10 +373,17 @@ private func render(
     }
     let actual = CGSize(width: representation.pixelsWide, height: representation.pixelsHigh)
     let aspect = actual.width / actual.height
-    let supportedAspect = isPhone ? (0.43...0.50) : (0.65...0.80)
-    guard actual.width > 0, actual.height > actual.width,
-          supportedAspect.contains(Double(aspect)) else {
-        throw GeneratorError.invalidDimensions(sourceURL, actual: actual, expected: expectedSize)
+    if let frame = duoFrame {
+        guard actual.width == CGFloat(frame.sourceWidth ?? frame.width),
+              actual.height == CGFloat(frame.sourceHeight ?? frame.height) else {
+            throw GeneratorError.invalidDimensions(sourceURL, actual: actual, expected: CGSize(width: frame.sourceWidth ?? frame.width, height: frame.sourceHeight ?? frame.height))
+        }
+    } else {
+        let supportedAspect = isPhone ? (0.43...0.50) : (0.65...0.80)
+        guard actual.width > 0, actual.height > actual.width,
+              supportedAspect.contains(Double(aspect)) else {
+            throw GeneratorError.invalidDimensions(sourceURL, actual: actual, expected: expectedSize)
+        }
     }
     image.size = actual
 
@@ -360,6 +399,27 @@ private func render(
     context.saveGraphicsState()
     context.imageInterpolation = .high
     drawBackground(size: expectedSize, palette: palette, index: index)
+    if duoFrame != nil {
+        // Both Duo screens share one store group. Preserve the entire native
+        // image; only the surrounding marketing canvas differs by scene.
+        let landscape = expectedSize.width > expectedSize.height
+        let margin: CGFloat = landscape ? 100 : 76
+        let titleTop: CGFloat = 110
+        let titleHeight: CGFloat = landscape ? 200 : 220
+        let font = fittedFont(text: copy.title, maximumWidth: expectedSize.width - margin * 2,
+                              startingSize: landscape ? 94 : 80, minimumSize: 64, weight: .bold)
+        drawText(copy.eyebrow, in: rectFromTop(left: margin, top: 46, width: expectedSize.width - margin * 2, height: 45, canvasHeight: expectedSize.height), font: .systemFont(ofSize: landscape ? 28 : 24, weight: .semibold), color: .white)
+        drawText(copy.title, in: rectFromTop(left: margin, top: titleTop, width: expectedSize.width - margin * 2, height: titleHeight, canvasHeight: expectedSize.height), font: font, color: .white, lineHeightMultiple: 0.92)
+        drawText(copy.subtitle, in: rectFromTop(left: margin, top: landscape ? 312 : 334, width: expectedSize.width - margin * 2, height: 100, canvasHeight: expectedSize.height), font: .systemFont(ofSize: landscape ? 38 : 32, weight: .medium), color: NSColor.white.withAlphaComponent(0.8), lineHeightMultiple: 1.08)
+        let imageTop: CGFloat = landscape ? 466 : 482
+        let scale = min((expectedSize.width - margin * 2) / actual.width,
+                        (expectedSize.height - imageTop - 62) / actual.height)
+        let imageSize = CGSize(width: actual.width * scale, height: actual.height * scale)
+        let imageRect = rectFromTop(left: (expectedSize.width - imageSize.width) / 2, top: imageTop,
+                                    width: imageSize.width, height: imageSize.height, canvasHeight: expectedSize.height)
+        image.draw(in: imageRect, from: NSRect(origin: .zero, size: actual), operation: .sourceOver,
+                   fraction: 1, respectFlipped: true, hints: [.interpolation: NSImageInterpolation.high])
+    } else {
     drawBadge(copy: copy, size: expectedSize, isPhone: isPhone)
 
     let horizontalMargin: CGFloat = isPhone ? 96 : 132
@@ -405,6 +465,7 @@ private func render(
     )
 
     drawDevice(image: image, size: expectedSize, isPhone: isPhone)
+    }
     context.restoreGraphicsState()
     NSGraphicsContext.current = previousContext
 
@@ -426,9 +487,11 @@ private func renderContactSheet(
         guard let image = NSImage(contentsOf: url) else { throw GeneratorError.invalidImage(url) }
         return image
     }
-    guard let first = images.first else { return }
+    guard !images.isEmpty else { return }
     let thumbnailHeight: CGFloat = 720
-    let thumbnailWidth = thumbnailHeight * first.size.width / first.size.height
+    // Duo contact sheets mix portrait and landscape canvases. Fit each image
+    // independently instead of stretching every image to the first one's ratio.
+    let thumbnailWidth = thumbnailHeight * images.map { $0.size.width / $0.size.height }.max()!
     let gap: CGFloat = 34
     let margin: CGFloat = 56
     let header: CGFloat = 126
@@ -452,7 +515,9 @@ private func renderContactSheet(
     )
     for (index, image) in images.enumerated() {
         let x = margin + CGFloat(index) * (thumbnailWidth + gap)
-        let rect = NSRect(x: x, y: margin, width: thumbnailWidth, height: thumbnailHeight)
+        let scale = min(thumbnailWidth / image.size.width, thumbnailHeight / image.size.height)
+        let fitted = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let rect = NSRect(x: x + (thumbnailWidth - fitted.width) / 2, y: margin + (thumbnailHeight - fitted.height) / 2, width: fitted.width, height: fitted.height)
         image.draw(in: rect, from: .zero, operation: .sourceOver, fraction: 1, respectFlipped: true, hints: [.interpolation: NSImageInterpolation.high])
     }
     context.restoreGraphicsState()
@@ -476,13 +541,34 @@ private func run() throws {
     )
     let locales = options.locales
     guard !locales.isEmpty, Set(locales).count == locales.count,
-          locales.allSatisfy({ ["en-US", "zh-Hans", "ja"].contains($0) }) else {
-        throw GeneratorError.usage("--locales must contain unique values from en-US,zh-Hans,ja")
+          locales.allSatisfy({ ["en-US", "zh-Hans", "ja", "zh-Hant"].contains($0) }) else {
+        throw GeneratorError.usage("--locales must contain unique values from en-US,zh-Hans,ja,zh-Hant")
     }
-    let devices: [(prefix: String, size: CGSize, isPhone: Bool)] = [
-        ("iphone", CGSize(width: 1320, height: 2868), true),
-        ("ipad", CGSize(width: 2064, height: 2752), false)
+    let orderedSpecs: [ScreenshotSpec]
+    if let order = options.screenshotOrder {
+        guard order.count == specs.count, Set(order) == Set(specs.map(\.key)) else {
+            throw GeneratorError.usage("--order must list all six existing screenshot keys exactly once")
+        }
+        orderedSpecs = order.map { key in specs.first { $0.key == key }! }
+    } else {
+        orderedSpecs = specs
+    }
+    if let keys = options.sourceKeys, !Set(keys).isSubset(of: Set(specs.map(\.key))) {
+        throw GeneratorError.usage("--keys contains an unknown source key")
+    }
+    var devices = [
+        ScreenshotDevice(prefix: "iphone", label: "iPhone 6.9-inch", width: 1320, height: 2868, isPhone: true, frames: nil),
+        ScreenshotDevice(prefix: "ipad", label: "iPad 13-inch", width: 2064, height: 2752, isPhone: false, frames: nil)
     ]
+    if let config = options.deviceConfig {
+        devices = try JSONDecoder().decode(DeviceConfiguration.self, from: Data(contentsOf: config)).devices
+    }
+    if let families = options.families {
+        guard Set(families).isSubset(of: Set(devices.map(\.prefix))) else {
+            throw GeneratorError.usage("--families contains a device absent from --device-config")
+        }
+        devices = devices.filter { families.contains($0.prefix) }
+    }
 
     for locale in locales {
         guard let localeCopy = copy[locale] else {
@@ -491,14 +577,20 @@ private func run() throws {
         var renderedByDevice: [String: [URL]] = [:]
 
         for device in devices {
-            for (index, spec) in specs.enumerated() {
-                guard let marketingCopy = localeCopy.screenshots[spec.key] else {
+            for (index, spec) in orderedSpecs.enumerated() {
+                if let keys = options.sourceKeys, !keys.contains(spec.key) { continue }
+                guard let marketingCopy = localeCopy.deviceScreenshots?[device.prefix]?[spec.key] ?? localeCopy.screenshots[spec.key] else {
                     throw GeneratorError.missingCopy(locale: locale, key: spec.key)
                 }
-                let filename = "\(device.prefix)-\(spec.filenameSuffix).png"
+                if device.prefix == "duo", device.frames?[spec.key] == nil {
+                    throw GeneratorError.usage("Duo requires a canvas/source frame for every screenshot key")
+                }
+                // Source names remain stable; the output prefix encodes upload order.
+                let suffix = String(format: "%02d", index + 1) + "-" + String(spec.filenameSuffix.dropFirst(3))
+                let filename = "\(device.prefix)-\(suffix).png"
                 let sourceURL = options.sourceDirectory
                     .appendingPathComponent(locale, isDirectory: true)
-                    .appendingPathComponent(filename)
+                    .appendingPathComponent("\(device.prefix)-\(spec.filenameSuffix).png")
                 let outputURL = options.outputDirectory
                     .appendingPathComponent(locale, isDirectory: true)
                     .appendingPathComponent(filename)
@@ -508,12 +600,13 @@ private func run() throws {
                     copy: marketingCopy,
                     palette: palettes[index],
                     isPhone: device.isPhone,
-                    expectedSize: device.size,
-                    index: index
+                    expectedSize: CGSize(width: device.frames?[spec.key]?.width ?? device.width, height: device.frames?[spec.key]?.height ?? device.height),
+                    index: index,
+                    duoFrame: device.prefix == "duo" ? device.frames?[spec.key] : nil
                 )
                 renderedByDevice[device.prefix, default: []].append(outputURL)
 
-                if locale == "en-US" {
+                if locale == "en-US", options.screenshotOrder == nil {
                     let compatibilityURL = options.outputDirectory.appendingPathComponent(filename)
                     try FileManager.default.createDirectory(at: options.outputDirectory, withIntermediateDirectories: true)
                     if FileManager.default.fileExists(atPath: compatibilityURL.path) {
@@ -531,7 +624,7 @@ private func run() throws {
                     imageURLs: renderedByDevice[device.prefix, default: []],
                     locale: locale,
                     storefront: localeCopy.storefront,
-                    device: device.isPhone ? "iPhone 6.9-inch" : "iPad 13-inch",
+                    device: device.label,
                     outputURL: previewDirectory.appendingPathComponent("\(locale)-\(device.prefix).png")
                 )
             }

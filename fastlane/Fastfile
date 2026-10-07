@@ -1,29 +1,10 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Upload localized App Store metadata and screenshots without submitting for review"
-  lane :sync_store_assets do
-    api_key = app_store_connect_api_key(
-      key_id: ENV.fetch("ASC_API_KEY_ID"),
-      issuer_id: ENV.fetch("ASC_API_ISSUER_ID"),
-      key_filepath: ENV.fetch("ASC_API_KEY_PATH"),
-      duration: 1200,
-      in_house: false
-    )
-
-    deliver(
-      api_key: api_key,
-      app_identifier: ENV.fetch("APP_IDENTIFIER"),
-      app_version: ENV.fetch("APP_STORE_CONNECT_VERSION_STRING"),
-      platform: "ios",
-      metadata_path: ENV.fetch("FASTLANE_METADATA_PATH"),
-      screenshots_path: ENV.fetch("FASTLANE_SCREENSHOTS_PATH"),
-      skip_binary_upload: true,
-      skip_app_version_update: false,
-      overwrite_screenshots: true,
-      submit_for_review: false,
-      run_precheck_before_submit: false,
-      force: true
-    )
+  desc "Read-only verification of pre-synchronized four-locale metadata and 72 modern Asset Library screenshots"
+  lane :verify_store_assets do
+    # Screenshot mutations use scripts/asset-library/upload_assets.py with an
+    # approved plan hash and explicit scope. Never fall back to legacy deliver.
+    sh("env", "APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY=true", "ruby", ".github/scripts/submit-app-store-review.rb")
   end
 end

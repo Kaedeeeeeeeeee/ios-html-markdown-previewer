@@ -89,6 +89,7 @@ struct PastePreviewView: View {
                         .accessibilityIdentifier("paste-open-button")
                 }
             }
+            .modifier(PersistentModalNavigationToolbar())
             .disabled(isImporting)
             .overlay {
                 if isImporting {

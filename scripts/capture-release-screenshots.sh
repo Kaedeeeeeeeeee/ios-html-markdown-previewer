@@ -2,12 +2,15 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/select-release-toolchain.sh"
 PROJECT="$ROOT_DIR/HTMLMarkdownPreviewer.xcodeproj"
 DERIVED_DATA="${DERIVED_DATA:-$ROOT_DIR/DerivedData/ScreenshotCapture}"
 OUT_DIR="${OUT_DIR:-$ROOT_DIR/docs/app-store-screenshots}"
 SOURCE_OUT_DIR="${SOURCE_OUT_DIR:-$ROOT_DIR/DerivedData/AppStoreScreenshotSources}"
 PREVIEW_OUT_DIR="${PREVIEW_OUT_DIR:-$ROOT_DIR/DerivedData/AppStoreScreenshotPreviews}"
-CAPTURE_LOCALES="${CAPTURE_LOCALES:-en-US zh-Hans ja}"
+CAPTURE_LOCALES="${CAPTURE_LOCALES:-en-US zh-Hans ja zh-Hant}"
+CAPTURE_FAMILIES="${CAPTURE_FAMILIES:-iphone ipad}"
+SCREENSHOT_ORDER="${SCREENSHOT_ORDER:-01-html-report,04-markdown-preview,03-json-preview,06-yaml-preview,02-batch-import,05-library}"
 COPY_FILE="${COPY_FILE:-$ROOT_DIR/docs/app-store-screenshots/copy.json}"
 BUNDLE_ID="com.kaede.htmlmarkdownpreviewer"
 SCHEME="HTMLMarkdownPreviewer"
@@ -74,8 +77,9 @@ restore_device() {
 }
 trap restore_device EXIT
 
-APP_PATH="$DERIVED_DATA/Build/Products/Debug-iphonesimulator/HTMLMarkdownPreviewer.app"
+APP_PATH="${APP_PATH:-$DERIVED_DATA/Build/Products/Debug-iphonesimulator/HTMLMarkdownPreviewer.app}"
 
+if [[ "${SKIP_BUILD:-0}" != "1" ]]; then
 echo "Building $SCHEME for simulator screenshots..."
 xcodebuild build \
   -project "$PROJECT" \
@@ -84,6 +88,8 @@ xcodebuild build \
   -destination "platform=iOS Simulator,id=$IPHONE_DEVICE" \
   -derivedDataPath "$DERIVED_DATA" \
   >/tmp/html-previewer-screenshot-build.log
+fi
+[[ -d "$APP_PATH" ]] || { echo "Missing built app: $APP_PATH" >&2; exit 1; }
 
 boot_and_install() {
   local device="$1"
@@ -154,13 +160,15 @@ capture_set() {
   capture "$device" "$output_dir" "$prefix-06-yaml-preview" "$language" "$apple_locale" --screenshot-reset-library --screenshot-sample=yaml
 }
 
-for family in iphone ipad; do
+for family in $CAPTURE_FAMILIES; do
+  [[ "$family" == "iphone" || "$family" == "ipad" ]] || { echo "Unsupported device family: $family" >&2; exit 1; }
   if [[ "$family" == "iphone" ]]; then device="$IPHONE_DEVICE"; else device="$IPAD_DEVICE"; fi
   boot_and_install "$device"
   for locale in $CAPTURE_LOCALES; do
     case "$locale" in
       en-US) language="en"; apple_locale="en_US" ;;
       zh-Hans) language="zh-Hans"; apple_locale="zh_CN" ;;
+      zh-Hant) language="zh-Hant"; apple_locale="zh_TW" ;;
       ja) language="ja"; apple_locale="ja_JP" ;;
       *) echo "Unsupported screenshot locale: $locale" >&2; exit 1 ;;
     esac
@@ -173,12 +181,18 @@ for family in iphone ipad; do
   restore_device
 done
 
+if [[ "${SKIP_COMPOSE:-0}" == "1" ]]; then exit 0; fi
+
 echo "Composing localized App Store screenshots..."
-xcrun swift "$ROOT_DIR/scripts/generate-app-store-screenshots.swift" \
+compose_arguments=( \
   --source-dir "$SOURCE_OUT_DIR" \
   --output-dir "$OUT_DIR" \
   --copy-file "$COPY_FILE" \
-  --preview-dir "$PREVIEW_OUT_DIR"
+  --preview-dir "$PREVIEW_OUT_DIR" \
+  --locales "${CAPTURE_LOCALES// /,}" \
+)
+if [[ -n "$SCREENSHOT_ORDER" ]]; then compose_arguments+=(--order "$SCREENSHOT_ORDER"); fi
+xcrun swift "$ROOT_DIR/scripts/generate-app-store-screenshots.swift" "${compose_arguments[@]}"
 
 echo "Source screenshots written to $SOURCE_OUT_DIR"
 echo "Localized App Store screenshots written to $OUT_DIR"

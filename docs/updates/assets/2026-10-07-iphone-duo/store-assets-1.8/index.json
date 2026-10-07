@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "appId": "6785794966",
+    "versionString": "1.8",
+    "versionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+    "placementGroup": "IPHONE_DUO_PROFILE",
+    "locales": [
+      "en-US",
+      "zh-Hans",
+      "ja",
+      "zh-Hant"
+    ],
+    "screenshotsPerLocale": 6,
+    "totalScreenshots": 24
+  },
+  "status": "uploaded-placed-ordered-and-independently-verified",
+  "scopeBoundary": "Only Duo24 is covered; ordinary iPhone/iPad48 and full72 gate are tracked separately.",
+  "checks": {
+    "localFileSha256": 24,
+    "sourceAlphaFree": 24,
+    "deliveryPixelExact": 24,
+    "exactImageMetadataAndSpecReadback": 24,
+    "orderedGroups": 4,
+    "screenshotsPerGroup": 6,
+    "deletes": 0,
+    "unknownOrPendingOperations": 0,
+    "published1.7PlacementIdImageIdOrderUnchanged": [
+      {
+        "locale": "zh-Hans",
+        "screenshotPlacements": 12,
+        "idsAndImagesUnchanged": true
+      },
+      {
+        "locale": "en-US",
+        "screenshotPlacements": 12,
+        "idsAndImagesUnchanged": true
+      },
+      {
+        "locale": "ja",
+        "screenshotPlacements": 12,
+        "idsAndImagesUnchanged": true
+      }
+    ]
+  },
+  "approvedPlanSha256": "2f99c2f037e58f8be4853a43765af3d3878615538317bbb6693d2c2d1f50e9f6",
+  "approvedResumeReviewSha256": "6b9fc38f02cd0210106e88603a9d377c8454420b629a74186279f9f73020bbd6",
+  "approvedInitialReceiptSha256": "6cc1cf98e73c5a37f31e5c4f9d2f413a67e162602ea5a8a5032275cfcfaca0c0",
+  "resume": {
+    "reusedImages": 4,
+    "newReservationsOnResume": 20,
+    "duplicateReservations": 0
+  },
+  "transientProcessing": {
+    "observations": 6,
+    "observedMechanism": "ASC returned COMPLETE with null specId and imageAsset dimensions; bounded GET polling later observed PREPARE_FOR_SUBMISSION with expected specId and dimensions.",
+    "recoveryPolicy": "Continue GET-only within the original 300-second deadline; permanent mismatch fails; unknown mutation results require explicit reconciliation.",
+    "evidence": [
+      {
+        "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+        "fileName": "duo-01-html-report.png",
+        "observations": [
+          {
+            "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+            "state": "COMPLETE",
+            "specId": null,
+            "width": null,
+            "height": null,
+            "fileSize": 2635591
+          },
+          {
+            "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+            "state": "COMPLETE",
+            "specId": null,
+            "width": null,
+            "height": null,
+            "fileSize": 2635591
+          }
+        ],
+        "eventualState": "PREPARE_FOR_SUBMISSION",
+        "eventualSpecId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+        "eventualDimensions": [
+          2853,
+          2007
+        ]
+      },
+      {
+        "imageId": "77400019-4770-8396-8006-6718509ee819",
+        "fileName": "duo-02-markdown-preview.png",
+        "observations": [
+          {
+            "imageId": "77400019-4770-8396-8006-6718509ee819",
+            "state": "COMPLETE",
+            "specId": null,
+            "width": null,
+            "height": null,
+            "fileSize": 1385566
+          }
+        ],
+        "eventualState": "PREPARE_FOR_SUBMISSION",
+        "eventualSpecId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+        "eventualDimensions": [
+          1398,
+          2034
+        ]
+      },
+      {
+        "imageId": "d4000019-4770-8396-8009-09aaddec8b0c",
+        "fileName": "duo-05-batch-import.png",
+        "observations": [
+          {
+            "imageId": "d4000019-4770-8396-8009-09aaddec8b0c",
+            "state": "COMPLETE",
+            "specId": null,
+            "width": null,
+            "height": null,
+            "fileSize": 1276187
+          }
+        ],
+        "eventualState": "PREPARE_FOR_SUBMISSION",
+        "eventualSpecId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+        "eventualDimensions": [
+          1398,
+          2034
+        ]
+      },
+      {
+        "imageId": "7d000019-4770-8396-8002-6d9a5215eec7",
+        "fileName": "duo-03-json-preview.png",
+        "observations": [
+          {
+            "imageId": "7d000019-4770-8396-8002-6d9a5215eec7",
+            "state": "COMPLETE",
+            "specId": null,
+            "width": null,
+            "height": null,
+            "fileSize": 2169715
+          }
+        ],
+        "eventualState": "PREPARE_FOR_SUBMISSION",
+        "eventualSpecId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+        "eventualDimensions": [
+          2853,
+          2007
+        ]
+      },
+      {
+        "imageId": "87800019-4770-8396-8024-210b2424c8d3",
+        "fileName": "duo-03-json-preview.png",
+        "observations": [
+          {
+            "imageId": "87800019-4770-8396-8024-210b2424c8d3",
+            "state": "COMPLETE",
+            "specId": null,
+            "width": null,
+            "height": null,
+            "fileSize": 2162088
+          }
+        ],
+        "eventualState": "PREPARE_FOR_SUBMISSION",
+        "eventualSpecId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+        "eventualDimensions": [
+          2853,
+          2007
+        ]
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "file": "duo24-completion.json",
+      "sha256": "32ef0464d089ec569696c139780fbddc8f219e9ff12b41a75cbe5208b18a0639"
+    },
+    {
+      "file": "duo24-receipt.json",
+      "sha256": "00cdac2106e57442810c16a932d967dffb5c1636ef96a3308e41fb888280c923"
+    },
+    {
+      "file": "duo24-verify.json",
+      "sha256": "b158982b71b8b8ebdc121da6eaa7d0b6883a38b8d491fda7e3d3edeceaa20b06"
+    }
+  ],
+  "privacyAudit": {
+    "containsJwt": false,
+    "containsSignedUrls": false,
+    "containsDeliveryUrls": false,
+    "containsAccountCredentialFields": false,
+    "includesFullApiSnapshot": false
+  }
+}

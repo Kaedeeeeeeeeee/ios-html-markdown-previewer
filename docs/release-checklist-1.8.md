@@ -1,0 +1,144 @@
+# HTML Previewer 1.8 (13) — release preparation
+
+Prepared on 2026-10-07. This update includes the current Duo/reader changes,
+the pending local review-request implementation, and ASO preparation. Version
+1.7 is already released according to the release operator's live ASC check.
+This checklist does not change historical 1.7 evidence or first-release issues.
+
+## Prepared locally
+
+- Version/build: 1.8 / 13; minimum iOS 17.0 and iPhone/iPad support retained.
+- CI and archive/upload workflows require Xcode 27.1 and both iOS SDKs 27.1.
+  `scripts/select-release-toolchain.sh` checks reported versions, supports installed
+  Xcode app names with different separators, and never changes `xcode-select`.
+  An explicit invalid `DEVELOPER_DIR` fails; no older toolchain fallback occurs.
+  Workflow auto-selection first clears the runner's inherited `DEVELOPER_DIR`,
+  then exports the verified installation through `GITHUB_ENV`. Local explicit
+  overrides retain their strict validation semantics.
+- Archive validators require the new version/build and `DTSDKName=iphoneos27.1`.
+  Signing settings remain unchanged. Modern AppAssetLibrary screenshot groups
+  are verified as `IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE`, `IPAD_13_PROFILE`, and
+  `IPHONE_DUO_PROFILE`; the legacy ScreenshotSets overwrite route is disabled.
+- English, Simplified Chinese, Japanese, and Traditional Chinese notes are active in
+  `fastlane/metadata/<locale>/release_notes.txt`. See
+  [notes and localization boundary](updates/1.8-release-notes.md).
+- Existing Duo QA and its limits remain in
+  [the October 7 record](updates/2026-10-07-iphone-duo.md).
+  Debug simulator acceptance does not prove Release/archive equivalence.
+
+## Toolchain prerequisite
+
+Apple distinguishes compatibility from full Duo layout: older SDK builds run on
+Duo; iOS 27 expands inner-display usage; iOS **27.1** enables edge-to-edge layout
+and vertical standard bars. See [Prepare your app for iPhone Duo, 0:30–1:17](https://developer.apple.com/videos/play/tech-talks/111461/?time=30).
+
+The two build/test CI jobs use the official standard `xcode-27` hosted label.
+The [official image list](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md),
+checked on 2026-10-07 (image `20260928.0222.1`), lists macOS 27 and Xcode 27.1
+build `27A9269` with both SDKs 27.1. This image is a public preview; actual job
+availability/results remain unverified until CI runs. `macos-27` is not a
+documented label. The existing `macos-26` image only lists Xcode 26.x.
+[GitHub's runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+lists `xcode-27` as a standard runner, free for this public repository; no larger
+runner or new self-hosted registration is used.
+
+Distribution uses the verified local Xcode 27.1 RC build `27A9275`. The upload
+workflow also targets `xcode-27`, but sets `RELEASE_XCODE_BUILD=27A9275` so the
+currently listed earlier beta cannot silently produce a distribution archive.
+It stops before archive until the matching build is installed. Local archive
+and upload remain the usable release route; existing-build `submit_only` skips
+toolchain/archive/upload. This is separate from CI's SDK-level build/test checks.
+
+On the verified local host, select without changing the global default:
+
+```sh
+export DEVELOPER_DIR=/Applications/Xcode-27.1.app/Contents/Developer
+export RELEASE_XCODE_BUILD=27A9275
+bash scripts/select-release-toolchain.sh
+```
+
+The installed toolchain is Xcode 27.1 RC (27A9275). ASC acceptance of the new
+archive remains to be established by actual upload/processing validation.
+
+## Verified local build and repository route
+
+- Read-only repository audit: `Kaedeeeeeeeeee/ios-html-markdown-previewer` is
+  public, remote/local `main` both at `3f3cf0e` at the audit time. The branch API
+  reports no protection and the ruleset list is empty; neither was changed.
+  The only registered self-hosted runner is the existing online Linux
+  `ubuntu-zhang` runner, so it cannot provide the Xcode build route.
+- The new workflows retain PR #23's integrated-materials audit and previous-
+  version release gate. Their script content and the new screenshot inventory
+  must be integrated before final CI; changing the runner does not bypass them.
+- Generic iOS **unsigned** Release build passed locally on 2026-10-07, using
+  Xcode 27.1 RC and `CODE_SIGNING_ALLOWED=NO` in
+  `DerivedData/Release1.8/CIEquivalent`. Bundle metadata is 1.8 (13),
+  `iphoneos27.1`, `DTXcode=2710`, `DTXcodeBuild=27A9275`, minimum iOS 17.0,
+  device families `[1, 2]`. Binary, `Assets.car`, and privacy manifest are present.
+  Log: `/tmp/html-release-1.8-generic27.1-build-20261007.log` (exit 0).
+- This build is not a signed archive, simulator test result, final-commit CI,
+  hosted-runner execution result, or upload. The executable next route is local
+  RC validation/signing/archive/upload plus the existing standard hosted
+  `xcode-27` CI jobs after the release operator integrates and pushes the source.
+
+## Required before submission
+
+- [x] Synchronize the four locales (`en-US`, `zh-Hans`, `ja`, `zh-Hant`) to the
+  editable 1.8 version and draft AppInfo. Exact remote readback passed for all
+  32 metadata fields. Published 1.7 metadata and AppInfo were unchanged.
+  Target version ID: `e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5`.
+- [x] Complete the latest 212 unit tests and the existing five targeted UI
+  regressions on the reused ordinary iPhone simulator; the separately added
+  immediate-navigation/reflow test also passed (1/1, both HTML and rich Markdown).
+  See the [permanent release QA record](updates/assets/2026-10-07-iphone-duo/release-1.8-validation.json),
+  extracted from xcresult and logs with source content hashes. The original
+  combined run remains Failed (209 unit passes / 3 failures, all five UI passes);
+  its viewport timing failures are covered by the subsequent 3/3 focused and
+  212/212 full-unit passes. These are Debug results, not one 213-test suite.
+  The older [Duo 12/13 aggregate](updates/assets/2026-10-07-iphone-duo/duo-validation-results.json)
+  retains its automated rotation-geometry failure; ordinary iPhone results do
+  not replace it.
+- [x] Pass offline release-script checks: previous-version gate (12 checks),
+  modern assets gate (12 tests / 95 assertions), and CLI authentication
+  (6 tests / 68 assertions). Ruby/Fastfile syntax and diff whitespace checks pass.
+  `ASC_USE_CLI_TOKEN=true` uses the existing authorized asc keychain profile,
+  keeps JWTs in memory, and avoids exporting a private key. Default CI private-
+  key authentication remains unchanged. This does not establish a passing live
+  72-image gate.
+- [ ] Confirm final scope and commit; retain the unrelated existing changes.
+- [ ] Verify CI on that commit with recorded Xcode/SDK versions; preserve the
+  known automated rotation-geometry limitation and its native QA evidence.
+- [x] Finish the four-locale, three-family screenshot inventory: six images per
+  family per locale, 72 total, plus 18 byte-identical English compatibility copies.
+  All 12 contact sheets passed independent and root visual review. Source and
+  final hashes, dimensions, opaque RGB, six-slot order, and the integrated,
+  portable, and macOS release-materials audits passed. See
+  [material validation](aso/2026-10-07-duo/materials/integration-validation.json).
+- [ ] Finish all Asset Library placements and the live 72-image gate. The Duo
+  subset is complete: 24 pixel-identical delivered images, four groups of six,
+  exact order, no deletions or duplicate reservations; published 1.7 placements
+  are unchanged. See [Duo upload evidence](updates/assets/2026-10-07-iphone-duo/store-assets-1.8/index.json).
+  Ordinary iPhone/iPad 48-image synchronization is running separately. The uploader
+  now waits within a bounded deadline when Apple reports COMPLETE before spec
+  and dimensions converge; strict scope and approved-receipt resume remain enforced.
+- [x] Review the final four-language release notes and store copy; wording and
+  actual rendered sample content match the shipped feature scope.
+- [ ] Create a new Distribution-signed 1.8 (13) Release archive using SDK 27.1;
+  verify bundle/version/SDK, signing, assets, privacy manifest, and source commit.
+- [x] Record final optimized Release simulator smoke on the reused Duo: native
+  sample import, HTML search/selected-match continuity across fold, Markdown
+  rendering, JSON expansion/exact value, YAML second-document continuity, and
+  PDF generation/share presentation passed. Six original captures and matching
+  built/installed binary hashes are in the [Release smoke record](updates/assets/2026-10-07-iphone-duo/release-1.8-smoke.json).
+  No external share occurred. Four task-created samples were recoverably moved
+  after testing, restoring the previously empty normal library. This is not a
+  physical-device/TestFlight installation of the Distribution archive; that
+  evidence is not claimed for 1.8. Review prompt logic remains covered by unit
+  tests and the unchanged feature code from the earlier candidate validation.
+- [ ] Verify ASC 1.8 metadata, screenshot identities/order/delivery, privacy/export
+  fields, build processing/attachment, and actual `AFTER_APPROVAL` configuration.
+- [ ] Record review submission and later public release separately.
+
+Signed archive/export/upload, final-commit CI, and review submission remain
+pending. Authorized ASC metadata and Duo placements have completed; ordinary
+iPhone/iPad placements are still syncing. Submission and public release are separate.

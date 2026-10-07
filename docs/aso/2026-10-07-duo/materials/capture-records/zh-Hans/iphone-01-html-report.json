@@ -1,0 +1,27 @@
+{
+  "capturedAtUTC": "2026-10-07T08:25:30.488483+00:00",
+  "path": "sources/zh-Hans/iphone-01-html-report.png",
+  "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+  "family": "iphone",
+  "sourceKey": "01-html-report",
+  "locale": "zh-Hans",
+  "displayId": null,
+  "pixels": [
+    1206,
+    2622
+  ],
+  "mode": "RGBA",
+  "sha256": "197d7810652ec35ca40ebe45a8e91344ca86ac54653340688ac601f3af92883c",
+  "appVersion": "1.8",
+  "buildNumber": "13",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+    "HTMLMarkdownPreviewer.debug.dylib": "f209cfa36ecc6dffe536bdcb6fd5b3f832a73540b34f1417f9ed759f731309dd"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "contact_sheet_review_passed",
+  "sourcePixelsEdited": false,
+  "visualReviewScope": "Four-language final iPhone contact sheets visually inspected: localized UI/headings, rendered HTML/code/formula/JSON/YAML, imported4/skipped0/failed0 result, real library, readable marketing titles and proportional source. Structural geometry/opacity/identity checked separately."
+}

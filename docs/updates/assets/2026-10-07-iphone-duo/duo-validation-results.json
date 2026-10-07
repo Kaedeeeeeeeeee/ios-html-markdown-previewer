@@ -1,0 +1,1875 @@
+{
+  "schemaVersion": 1,
+  "documentPurpose": "Permanent record of Duo QA runs and root-verified manual evidence; validation remains incomplete with direction-driver prerequisites and additional manual scenarios pending.",
+  "createdAtUTC": "2026-10-07T04:24:43.128487+00:00",
+  "projectPath": "/Volumes/DevSSD/Projects/html_preview",
+  "updateRules": {
+    "appendRuns": "Append new run records; retain the initial failing run unchanged.",
+    "latestResultKey": "testIdentifier|deviceId|toolchainId|osVersionWithBuild",
+    "latestStatus": "Update only after the named test completed on the same device/toolchain/OS; pending or prepared source edits never convert failed to passed.",
+    "manualEvidence": "Manual entries supplement automated evidence and never overwrite automated statuses."
+  },
+  "devices": {
+    "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7": {
+      "name": "iPhone Duo",
+      "modelCode": "iPhone19,4",
+      "platform": "com.apple.platform.iphonesimulator",
+      "osVersion": "27.1",
+      "osBuild": "24A94232",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "architecture": "arm64",
+      "lifecycle": "Existing Duo reused and booted again by root after desktop unlock for final native QA; earlier verified Shutdown event remains historical. Final lifecycle inventory is pending.",
+      "finalState": null,
+      "lifecycleEvents": [
+        {
+          "action": "shutdown",
+          "status": "succeeded",
+          "source": "Root explicit inventory recheck report; manifest writer did not run simulator commands.",
+          "reason": "Dedicated Duo testing finished; restore initial simulator state.",
+          "createdOrDeletedDevice": false,
+          "shutdownCommandExactTime": null,
+          "stateVerifiedAtUTC": "2026-10-07T04:46:29Z",
+          "stateVerifiedAtJST": "2026-10-07T13:46:29+09:00"
+        },
+        {
+          "action": "reused_and_booted",
+          "status": "root_reported_booted",
+          "exactTime": null,
+          "source": "root current session/lifecycle report",
+          "reason": "Unlocked final native acceptance",
+          "createdOrDeletedDevice": false
+        }
+      ],
+      "currentState": "Booted"
+    }
+  },
+  "toolchains": {
+    "xcode-27.1-27A9275-iphonesimulator27.1": {
+      "xcodePath": "/Applications/Xcode-27.1.app",
+      "version": "27.1",
+      "productBuildVersion": "27A9275",
+      "bundleVersion": "25183.120.5",
+      "sdkIdentifier": "iphonesimulator27.1",
+      "coreSimulatorVersion": "1174.9.2",
+      "coreSimulatorVersionSource": "root verified installed shared components"
+    }
+  },
+  "runs": [
+    {
+      "runId": "duo-initial-ui-13-20261007T130453+0900",
+      "kind": "automated_ui",
+      "status": "failed",
+      "startedAt": "2026-10-07T13:04:53.177+0900",
+      "endedAt": "2026-10-07T13:13:15.781+0900",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "execution": {
+        "project": "HTMLMarkdownPreviewer.xcodeproj",
+        "scheme": "HTMLMarkdownPreviewer",
+        "configuration": "Debug",
+        "destination": "platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+        "parallelTestingEnabled": false,
+        "maximumConcurrentSimulatorDestinations": 1,
+        "codeSigningAllowed": false,
+        "derivedDataPath": "/Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA",
+        "testLaunchEnvironment": {
+          "HTML_PREVIEWER_UI_TESTS": "1"
+        }
+      },
+      "build": {
+        "status": "succeeded",
+        "metrics": {
+          "analyzerWarningCount": "0",
+          "errorCount": "0",
+          "testsCount": "0",
+          "testsFailedCount": "0",
+          "testsSkippedCount": "0",
+          "warningCount": "10"
+        },
+        "bundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
+        "appVersion": "1.7",
+        "appBuild": "12",
+        "minimumOSVersion": "17.0",
+        "sdkName": "iphonesimulator27.1",
+        "sdkBuild": "24A94232",
+        "xcodeBuild": "27A9275",
+        "executableSHA256CapturedAtManifest": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+        "fingerprintScope": "Captured from current DerivedData product after this run; root must match final provenance before publication.",
+        "sourceRevision": "3f3cf0ebb2b2e1e1b618e4e68412eb74f25e7a5e",
+        "sourceRevisionScope": "Current HEAD captured at manifest creation; tested source also included uncommitted changes."
+      },
+      "summary": {
+        "totalTests": 13,
+        "passedTests": 4,
+        "failedTests": 9,
+        "skippedTests": 0,
+        "assertionFailureRecords": 12,
+        "unexpectedFailureRecords": 3,
+        "countsSource": "Legacy ActionTestMetadata statuses; log distinguishes 9 failed tests from 12 failure records."
+      },
+      "artifacts": {
+        "log": "/tmp/html-duo-27-ui-regression-20261007.log",
+        "xcresult": "/tmp/html-duo-27-ui-regression-20261007.xcresult",
+        "attachmentsManifest": "/tmp/html-duo-27-ui-regression-attachments/manifest.json",
+        "legacyInvocationJSON": "/tmp/html-duo-27-legacy-result.json",
+        "legacyTestsJSON": "/tmp/html-duo-27-legacy-tests.json",
+        "legacyStatusJSON": "/tmp/html-duo-27-legacy-test-status.json"
+      },
+      "collectorNotes": {
+        "modernTestResultsSummary": "xcresulttool get test-results summary failed with DBError0 (root report).",
+        "workingReader": "xcresulttool get object --legacy; recursively read testsRef. Export attachments also succeeded."
+      },
+      "tests": [
+        {
+          "testIdentifier": "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 30.692,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/JSONPreviewUITests.swift#EndingLineNumber=24&StartingLineNumber=24"
+            }
+          ],
+          "failureClassification": {
+            "category": "back_selector",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "Legacy navigation selection did not return to the library; the expected recent JSON row was absent.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 32.504,
+          "failureRecords": [
+            {
+              "message": "Failed to tap \"paste-open-button\" Button: No matches found for Elements matching predicate '\"paste-open-button\" IN identifiers' from input {(\n    Button, identifier: 'shift', label: 'shift', Selected,\n    Button, identifier: 'emoji', label: 'Emoji',\n    Button, identifier: 'dictation', label: 'Dictate',\n    Button, identifier: 'Return', label: 'return',\n    Button,\n    Button,\n    Button,\n    Button, label: 'Markdown', Selected,\n    Button, label: 'HTML',\n    Button, label: 'YAML',\n    Button, label: 'JSON',\n    Button, identifier: 'open-file-button', label: 'Open File',\n    Button, identifier: 'open-zip-package-button', label: 'Open ZIP Package',\n    Button, identifier: 'paste-preview-button', label: 'Paste to Preview',\n    Button, identifier: 'sample-html', label: 'Weekend plan: HTML · A day at your own pace',\n    Button, identifier: 'sample-markdown', label: 'Reading notes: Markdown · Notes, lists & tables',\n    Button, identifier: 'settings-button', label: 'Settings'\n)}\nPossibly caused by runtime issues:\nAutomation type mismatch: computed Button from legacy attributes vs Key from modern attribute. Input attributes and values: {\n    \"XC_kAXXCAttributeAutomationType\" = 20;\n    \"XC_kAXXCAttributeElementBaseType\" = UIAccessibilityElement;\n    \"XC_kAXXCAttributeElementType\" = UIAccessibilityElementKBKey;\n    \"XC_kAXXCAttributeTraits\" = 8589934649;\n}\nAutomation type mismatch: computed Button from legacy attributes vs Key from modern attribute. Input attributes and values: {\n    \"XC_kAXXCAttributeAutomationType\" = 20;\n    \"XC_kAXXCAttributeElementBaseType\" = UIAccessibilityElement;\n    \"XC_kAXXCAttributeElementType\" = UIAccessibilityElementKBKey;\n    \"XC_kAXXCAttributeTraits\" = 8589934641;\n}\nAutomation type mismatch: computed Button from legacy attributes vs Key from modern attribute. Input attributes and values: {\n    \"XC_kAXXCAttributeAutomationType\" = 20;\n    \"XC_kAXXCAttributeElementBaseType\" = UIAccessibilityElement;\n    \"XC_kAXXCAttributeElementType\" = UIAccessibilityElementKBKey;\n    \"XC_kAXXCAttributeTraits\" = 8589936689;\n}\nSee test report attachments for more detail.",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift#EndingLineNumber=499&StartingLineNumber=499"
+            }
+          ],
+          "failureClassification": {
+            "category": "toolbar_minimization",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "After naming pasted content, paste-open-button was absent while the keyboard was visible; reader toolbar assertions had not yet run.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testHTMLPageZoomPersistsAndFullScreenCanRestore()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 65.222,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Document should have a library back button",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=433&StartingLineNumber=433"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"Document should have a library back button\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=405&StartingLineNumber=405"
+            }
+          ],
+          "failureClassification": {
+            "category": "back_selector",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "Zoom and full-screen checks passed; the legacy HTML Previewer-labelled Back lookup failed.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testMarkdownAppearancePersistsAndLocalImageOpens()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 54.02,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Document should have a library back button",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=433&StartingLineNumber=433"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"Document should have a library back button\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=405&StartingLineNumber=405"
+            }
+          ],
+          "failureClassification": {
+            "category": "back_selector",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "Font/spacing and rendered-text changes passed; the legacy Back lookup failed before reopening and image checks.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 85.898,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Window and screen geometry must match the requested orientation and remain stable before capturing evidence",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=600&StartingLineNumber=600"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"Window and screen geometry must match the requested orientation and remain stable before capturing evidence\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=405&StartingLineNumber=405"
+            }
+          ],
+          "failureClassification": {
+            "category": "rotation_setup",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "Device was set Portrait before launch, but app launch changed the interface to LandscapeRight. Initial portrait geometry timed out before the rotation loop; report 2 of 2 and the exact link visibility had passed.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 20.03,
+          "failureRecords": [
+            {
+              "message": "Failed to tap \"settings-done-button\" Button: No matches found for Elements matching predicate '\"settings-done-button\" IN identifiers' from input {(\n    Button, identifier: 'open-file-button', label: 'Open File',\n    Button, identifier: 'open-zip-package-button', label: 'Open ZIP Package',\n    Button, identifier: 'paste-preview-button', label: 'Paste to Preview',\n    Button, identifier: 'sample-html', label: 'Weekend plan: HTML · A day at your own pace',\n    Button, identifier: 'sample-markdown', label: 'Reading notes: Markdown · Notes, lists & tables',\n    Button, identifier: 'settings-button', label: 'Settings'\n)}",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/SmokeUITests.swift#EndingLineNumber=189&StartingLineNumber=189"
+            }
+          ],
+          "failureClassification": {
+            "category": "toolbar_minimization",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "settings-done-button was absent at the tap. This run did not reach built-in sample navigation; it is not a Back-selector failure.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testHTMLPDFExportShowsShareSheet()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 31.087,
+          "failureRecords": [
+            {
+              "message": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\")",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/SmokeUITests.swift#EndingLineNumber=229&StartingLineNumber=229"
+            }
+          ],
+          "failureClassification": {
+            "category": "pdf_dismiss_coordinates",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "First PDF share options appeared; repeat-export setup failed while dismissing/recovering the reader controls using the old share-sheet dismissal coordinate fallback.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testMarkdownPDFExportShowsShareSheet()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 22.703,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "SmokeUITests/testPreviewShareSheetShowsVisibleOptions()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 17.009,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "SmokeUITests/testZIPPDFExportShowsShareSheet()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 17.372,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "SmokeUITests/testZIPShareOffersCompletePackage()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 27.678,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 32.156,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/YAMLPreviewUITests.swift#EndingLineNumber=31&StartingLineNumber=31"
+            }
+          ],
+          "failureClassification": {
+            "category": "back_selector",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "The expected recent YAML row was absent after legacy navigation; reopen checks were not completed.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 20.725,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ZIPNavigationUITests.swift#EndingLineNumber=34&StartingLineNumber=34"
+            }
+          ],
+          "failureClassification": {
+            "category": "zip_search_button",
+            "basis": "initial run log/legacy failure record and root agent diagnosis",
+            "description": "Page picker showed its entries, but the test expected an immediately expanded search field; the native Search button path was not exercised.",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        }
+      ]
+    },
+    {
+      "runId": "duo-ui-rerun-9-20261007T132338+0900",
+      "kind": "automated_ui",
+      "status": "failed",
+      "startedAt": "2026-10-07T13:23:38.716+0900",
+      "endedAt": "2026-10-07T13:35:57.985+0900",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "execution": {
+        "project": "HTMLMarkdownPreviewer.xcodeproj",
+        "scheme": "HTMLMarkdownPreviewer",
+        "configuration": "Debug",
+        "destination": "platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+        "parallelTestingEnabled": false,
+        "maximumConcurrentSimulatorDestinations": 1,
+        "codeSigningAllowed": false,
+        "derivedDataPath": "/Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA",
+        "testLaunchEnvironment": {
+          "HTML_PREVIEWER_UI_TESTS": "1"
+        }
+      },
+      "build": {
+        "status": "succeeded",
+        "metrics": {
+          "analyzerWarningCount": "0",
+          "errorCount": "0",
+          "testsCount": "0",
+          "testsFailedCount": "0",
+          "testsSkippedCount": "0",
+          "warningCount": "10"
+        },
+        "sdkIdentifier": "iphonesimulator27.1",
+        "exactAppBinarySHA256": null,
+        "sourceRevision": null,
+        "provenanceLimit": "No exact binary/source hash is assigned from a later DerivedData inspection."
+      },
+      "summary": {
+        "totalTests": 9,
+        "passedTests": 5,
+        "failedTests": 4,
+        "skippedTests": 0,
+        "assertionFailureRecords": 6,
+        "unexpectedFailureRecords": 2,
+        "countsSource": "Formal legacy ActionTestMetadata statuses and ActionResult metrics; log reports 6 failure records across 4 failed tests."
+      },
+      "artifacts": {
+        "log": "/tmp/html-duo-27-ui-rerun-20261007.log",
+        "xcresult": "/tmp/html-duo-27-ui-rerun-20261007.xcresult",
+        "legacyInvocationJSON": "/tmp/html-duo-27-rerun-legacy-result.json",
+        "legacyTestsJSON": "/tmp/html-duo-27-rerun-legacy-tests.json",
+        "legacyStatusJSON": "/tmp/html-duo-27-rerun-legacy-test-status.json",
+        "rootRotationActiveDisplayCapture": "/tmp/html-duo-27-rerun-rotation-active-display.png"
+      },
+      "postTestCollection": {
+        "source": "Root agent report",
+        "event": "After testcases finished, Xcode sysdiagnose collection stalled for about three minutes. Root sent SIGINT only to the confirmed simctl diagnose child process.",
+        "resultBundle": "Normally finalized and readable through legacy records.",
+        "xcodebuildExitCode": 65,
+        "terminalOutcome": "TEST FAILED",
+        "effectOnRecordedTestcases": "No testcase status changed by the post-test collector interruption."
+      },
+      "collectorNotes": {
+        "workingReader": "xcresulttool get object --legacy with testsRef; no simulator commands used by manifest writer."
+      },
+      "tests": [
+        {
+          "testIdentifier": "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 38.975,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 52.012,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - The landscape window must settle before exercising modal scrolling and reading controls",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift#EndingLineNumber=127&StartingLineNumber=127"
+            }
+          ],
+          "failureClassification": {
+            "category": "orientation_driver_actual_display_mismatch",
+            "basis": "Formal legacy failure record plus root actual-display diagnosis",
+            "description": "XCTest accepted the landscape direction request, but the active outer display remained portrait. Landscape geometry setup failed before modal scrolling and reader toolbar checks.",
+            "analysisStatus": "root_confirmed_actual_display_orientation",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testHTMLPageZoomPersistsAndFullScreenCanRestore()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 101.098,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testMarkdownAppearancePersistsAndLocalImageOpens()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 104.762,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - The image center must lie in the reader viewport without toolbar or navigation overlap",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=241&StartingLineNumber=241"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"The image center must lie in the reader viewport without toolbar or navigation overlap\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=409&StartingLineNumber=409"
+            }
+          ],
+          "failureClassification": {
+            "category": "markdown_image_center_geometry",
+            "basis": "Formal legacy image-center assertion failure",
+            "description": "The image-center assertion requiring reader-viewport containment and no toolbar/navigation overlap failed. Toolbar agent video analysis was still pending when this manifest was updated.",
+            "analysisStatus": "pending_toolbar_agent_video_confirmation",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 90.541,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Window and screen geometry must match the requested orientation and remain stable before capturing evidence",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=654&StartingLineNumber=654"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"Window and screen geometry must match the requested orientation and remain stable before capturing evidence\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=409&StartingLineNumber=409"
+            }
+          ],
+          "failureClassification": {
+            "category": "rotation_active_display_geometry",
+            "basis": "Formal legacy geometry failure plus root active-display screenshot",
+            "description": "The geometry helper failed. Root captured actual display 1 in portrait with report query, 2 of 2 and the selected report fully visible. The failure does not establish a missing reader match; screen/app-window coordinate diagnostics still need resolution.",
+            "analysisStatus": "active_display_reader_visible_but_geometry_driver_unresolved",
+            "evidencePath": "/tmp/html-duo-27-rerun-rotation-active-display.png",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 21.092,
+          "failureRecords": [
+            {
+              "message": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\") - App and window must settle in landscape before testing short-viewport library scrolling",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/SmokeUITests.swift#EndingLineNumber=132&StartingLineNumber=132"
+            }
+          ],
+          "failureClassification": {
+            "category": "orientation_driver_actual_display_mismatch",
+            "basis": "Formal legacy failure record plus root actual-display diagnosis",
+            "description": "The direction request was accepted, but the active outer display remained portrait. The landscape setup assertion failed before the library/sample/settings flow.",
+            "analysisStatus": "root_confirmed_actual_display_orientation",
+            "resolutionStatus": "requires_rerun",
+            "resolvedByRunId": null,
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testHTMLPDFExportShowsShareSheet()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 30.084,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 43.013,
+          "failureRecords": []
+        },
+        {
+          "testIdentifier": "ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 100.236,
+          "failureRecords": []
+        }
+      ]
+    },
+    {
+      "runId": "duo-ui-final4-20261007T133940+0900",
+      "kind": "automated_ui",
+      "status": "failed",
+      "startedAt": "2026-10-07T13:39:40.485+0900",
+      "endedAt": "2026-10-07T13:44:15.212+0900",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "execution": {
+        "project": "HTMLMarkdownPreviewer.xcodeproj",
+        "scheme": "HTMLMarkdownPreviewer",
+        "configuration": "Debug",
+        "destination": "platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+        "parallelTestingEnabled": false,
+        "maximumConcurrentSimulatorDestinations": 1,
+        "codeSigningAllowed": false,
+        "derivedDataPath": "/Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA",
+        "testLaunchEnvironment": {
+          "HTML_PREVIEWER_UI_TESTS": "1"
+        },
+        "collectTestDiagnostics": "never"
+      },
+      "build": {
+        "status": "succeeded",
+        "metrics": {
+          "analyzerWarningCount": "0",
+          "errorCount": "0",
+          "testsCount": "0",
+          "testsFailedCount": "0",
+          "testsSkippedCount": "0",
+          "warningCount": "1"
+        },
+        "sdkIdentifier": "iphonesimulator27.1",
+        "exactAppBinarySHA256": null,
+        "sourceRevision": null,
+        "provenanceLimit": "No exact binary/source hash assigned. Root plans to remove the unsuccessful intermediate-orientation workaround after this run while retaining diagnostics; this tested test-driver binary must not be described as that later final source."
+      },
+      "summary": {
+        "totalTests": 4,
+        "passedTests": 1,
+        "failedTests": 3,
+        "skippedTests": 0,
+        "assertionFailureRecords": 4,
+        "unexpectedFailureRecords": 1,
+        "countsSource": "Formal legacy ActionTestMetadata statuses and ActionResult metrics; log reports 4 failure records across 3 failed tests, including one caught requirement failure."
+      },
+      "artifacts": {
+        "log": "/tmp/html-duo-27-ui-final4-20261007.log",
+        "xcresult": "/tmp/html-duo-27-ui-final4-20261007.xcresult",
+        "legacyInvocationJSON": "/tmp/html-duo-27-final4-legacy-result.json",
+        "legacyTestsJSON": "/tmp/html-duo-27-final4-legacy-tests.json",
+        "legacyStatusJSON": "/tmp/html-duo-27-final4-legacy-test-status.json",
+        "legacyDetailedSummaryJSONs": [
+          "/tmp/html-duo-27-final4-test-summary-0.json",
+          "/tmp/html-duo-27-final4-test-summary-1.json",
+          "/tmp/html-duo-27-final4-test-summary-2.json",
+          "/tmp/html-duo-27-final4-test-summary-3.json"
+        ]
+      },
+      "processOutcome": {
+        "exitCode": 65,
+        "testCommandOutcome": "TEST FAILED",
+        "source": "root completion report, corroborated by finalized xcresult and log"
+      },
+      "orientationDriverInvestigation": {
+        "intermediateOrientationExperiment": "Did not settle required geometry; root will remove this workaround from final source and retain diagnostics.",
+        "desktopState": "Locked macOS desktop prevents direct DeviceHub orientation inspection and adjustment.",
+        "rootCauseStatus": "not_fully_determined",
+        "unprovenClaims": [
+          "General iOS 27.1 SDK bug",
+          "Duo product feature failure",
+          "Complete rotation or fold acceptance"
+        ]
+      },
+      "tests": [
+        {
+          "testIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 51.326,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - The landscape window must settle before exercising modal scrolling and reading controls",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift#EndingLineNumber=143&StartingLineNumber=143"
+            }
+          ],
+          "legacySummaryRef": "0~_HfqdO6-TYnBJK5pwh592U9Ck0tzQFNVJaDZLc0x5F_1Az5OGl3r2aNnPNib1ZXc9Xme1b96uCvsF-cYU8b80A==",
+          "failureClassification": {
+            "category": "orientation_driver_geometry_precondition",
+            "basis": "Formal legacy failure records plus root report of locked desktop and unsuccessful intermediate-orientation experiment.",
+            "description": "Landscape setup before modal scrolling and reading-control assertions.",
+            "resolutionStatus": "needs_manual_validation",
+            "blockingReason": "blocked_by_locked_desktop",
+            "rootCauseStatus": "not_fully_determined",
+            "scopeLimit": "The orientation request was accepted but required app/window/screen geometry did not settle. This is not evidence of a general SDK defect or a product failure.",
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testMarkdownAppearancePersistsAndLocalImageOpens()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 103.165,
+          "failureRecords": [],
+          "legacySummaryRef": "0~ONSpqvgWQ9Wv0Jz-68-hBpNjp8oCr9Ssn-9YvkCwjtgv_HkyLwg_ypNhZgMErr9g2J_VQE_CASrwdRHRRgwTuA==",
+          "verification": {
+            "status": "passed_in_recorded_run",
+            "previousFailureExplanation": "Prior rerun treated a full-window native toolbar AX container as a visible obstruction. Video frame at 79 seconds showed the image center in the unobscured reader; current checks use actual visible buttons and real chrome margins.",
+            "explanationSource": "root and toolbar-agent diagnosis; completed legacy Success independently verified here.",
+            "previousRunId": "duo-ui-rerun-9-20261007T132338+0900",
+            "previousVideoPath": "/tmp/html-duo-27-ui-rerun-attachments/markdown/E8B0FB4D-C736-49F3-9C51-9C1D48F33737.mp4",
+            "previousVideoFramePath": "/tmp/html-duo-toolbar-forensics/md-79.png",
+            "previousVideoFrameSeconds": 79,
+            "passedBehaviors": [
+              "Markdown appearance persists after reopening",
+              "Local image center is within the reader and avoids actual visible toolbar buttons and chrome",
+              "Open actual local image viewer",
+              "Zoom in with button, reset zoom, pinch zoom and reset",
+              "Close image viewer and return to reading"
+            ],
+            "legacyDetailedSummaryJSON": "/tmp/html-duo-27-final4-test-summary-1.json"
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 90.446,
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Window and screen geometry must match the requested orientation and remain stable before capturing evidence",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=680&StartingLineNumber=680"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"Window and screen geometry must match the requested orientation and remain stable before capturing evidence\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=453&StartingLineNumber=453"
+            }
+          ],
+          "legacySummaryRef": "0~B7jr-8vjFePDcdAB0KdEvY5ReAGMr_UTfNMUkMRKJEVwxJIMPz1Grao6NG27DpHby0UBO_folE8kHUDAmDRCNw==",
+          "failureClassification": {
+            "category": "orientation_driver_geometry_precondition",
+            "basis": "Formal legacy failure records plus root report of locked desktop and unsuccessful intermediate-orientation experiment.",
+            "description": "Stable requested-orientation geometry before capturing rotation evidence; this result does not establish a reader-content regression.",
+            "resolutionStatus": "needs_manual_validation",
+            "blockingReason": "blocked_by_locked_desktop",
+            "rootCauseStatus": "not_fully_determined",
+            "scopeLimit": "The orientation request was accepted but required app/window/screen geometry did not settle. This is not evidence of a general SDK defect or a product failure.",
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 21.474,
+          "failureRecords": [
+            {
+              "message": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\") - App and window must settle in landscape before testing short-viewport library scrolling",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/SmokeUITests.swift#EndingLineNumber=134&StartingLineNumber=134"
+            }
+          ],
+          "legacySummaryRef": "0~SWN45Xrgi3hF43LqRwkFFovpbONifCIdDBRTeQayWN-SAVLVwEhZ1Xj39FaT7T2tyDMiLOOxr-NJnGiPlIkQJA==",
+          "failureClassification": {
+            "category": "orientation_driver_geometry_precondition",
+            "basis": "Formal legacy failure records plus root report of locked desktop and unsuccessful intermediate-orientation experiment.",
+            "description": "Landscape setup before short-viewport built-in sample/settings flow.",
+            "resolutionStatus": "needs_manual_validation",
+            "blockingReason": "blocked_by_locked_desktop",
+            "rootCauseStatus": "not_fully_determined",
+            "scopeLimit": "The orientation request was accepted but required app/window/screen geometry did not settle. This is not evidence of a general SDK defect or a product failure.",
+            "sourceChangesAreNotPassingEvidence": true
+          }
+        }
+      ]
+    },
+    {
+      "runId": "duo-ui-unlocked-5-20261007T142749+0900",
+      "kind": "automated_ui",
+      "status": "failed",
+      "startedAt": "2026-10-07T14:27:49.666+0900",
+      "endedAt": "2026-10-07T14:32:46.303+0900",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "execution": {
+        "project": "HTMLMarkdownPreviewer.xcodeproj",
+        "scheme": "HTMLMarkdownPreviewer",
+        "configuration": "Debug",
+        "destination": "platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+        "parallelTestingEnabled": false,
+        "maximumConcurrentSimulatorDestinations": 1,
+        "codeSigningAllowed": false,
+        "derivedDataPath": "/Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA",
+        "testLaunchEnvironment": {
+          "HTML_PREVIEWER_UI_TESTS": "1"
+        },
+        "collectTestDiagnostics": "never",
+        "operation": "test-without-building"
+      },
+      "build": {
+        "operation": "Previously completed build-for-testing reused",
+        "status": "succeeded",
+        "log": "/tmp/html-duo-27-keyboard-final-build-20261007.log",
+        "verifiedLogMarker": "** TEST BUILD SUCCEEDED **",
+        "source": "Root identified this build as the binary used for these five tests; manifest writer verified its success marker.",
+        "exactAppBinarySHA256": null,
+        "sourceRevision": null,
+        "provenanceLimit": "Later source-only LongTitle/Smoke test fixes were not in this completed run; shared focus repair remained pending."
+      },
+      "summary": {
+        "totalTests": 5,
+        "passedTests": 2,
+        "failedTests": 3,
+        "skippedTests": 0,
+        "assertionFailureRecords": 4,
+        "unexpectedFailureRecords": 1,
+        "countsSource": "Formal legacy ActionTestMetadata/ActionResult metrics and completed log; four failure records across three failed tests."
+      },
+      "artifacts": {
+        "log": "/tmp/html-duo-27-unlocked-regression-20261007.log",
+        "xcresult": "/tmp/html-duo-27-unlocked-regression-20261007.xcresult",
+        "legacyInvocationJSON": "/tmp/html-duo-27-unlocked-legacy-result.json",
+        "legacyTestsJSON": "/tmp/html-duo-27-unlocked-legacy-tests.json",
+        "legacyStatusJSON": "/tmp/html-duo-27-unlocked-legacy-test-status.json",
+        "smokeAttachmentsManifest": "/tmp/html-duo-27-unlocked-smoke-attachments/manifest.json"
+      },
+      "processOutcome": {
+        "exitCode": 65,
+        "testCommandOutcome": "TEST EXECUTE FAILED",
+        "source": "root completion report and finalized legacy/log record"
+      },
+      "environment": {
+        "desktopState": "unlocked",
+        "deviceReused": true,
+        "rootOwnsNativeSimulatorSession": true,
+        "hostIssue": "DeviceHub host toolbar layout recovered after maximizing its host window; not classified as an iOS app defect.",
+        "rootNativeEvidenceNotes": "/tmp/html-duo-unlocked-evidence-notes-20261007.json"
+      },
+      "tests": [
+        {
+          "testIdentifier": "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 39.516,
+          "legacySummaryRef": "0~fO-EidWlbalVf3WXtv0pOyXYWPj9yCKym4FyvBPkYBOVEsaLgxKFkkEvFN4nKx_jGdBh_PULmJQbrJQ3brwnZw==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-test-summary-0.json",
+          "failureRecords": [],
+          "verification": {
+            "status": "passed_in_recorded_run",
+            "scope": "The named format search/source/reopen regression passed using the keyboard-fix build. This does not independently prove every compact keyboard/fold manual scenario."
+          }
+        },
+        {
+          "testIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 80.407,
+          "legacySummaryRef": "0~6w2cjvXEnOpwUaiwOmG5a99J1nDQfT3-OafSdmGEKmGlSs_clfZG3uR22JGSLvpwWNV39dqqwBMRAAC8Y2BDRQ==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-test-summary-1.json",
+          "failureRecords": [
+            {
+              "message": "Failed to get matching snapshot: No matches found for Elements matching predicate '\"document-title-button\" IN identifiers' from input {(\n    Button, identifier: 'BackButton',\n    Button, identifier: 'reading-tools-menu', label: 'Reading Tools',\n    Button, identifier: 'preview-mode-menu', label: 'Preview Mode',\n    Button, identifier: 'share-file-button', label: 'Share File',\n    Button, identifier: 'file-details-button', label: 'File Details'\n)}\nPossibly caused by runtime issues:\nAutomation type mismatch: computed Other from legacy attributes vs Button from modern attribute. Input attributes and values: {\n    \"XC_kAXXCAttributeAutomationType\" = 9;\n    \"XC_kAXXCAttributeElementBaseType\" = \"_UIButtonBarButton\";\n    \"XC_kAXXCAttributeElementType\" = \"_UIButtonBarButton\";\n    \"XC_kAXXCAttributeTraits\" = 8724152320;\n}\nSee test report attachments for more detail.",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift#EndingLineNumber=257&StartingLineNumber=257"
+            }
+          ],
+          "failureClassification": {
+            "resolutionStatus": "requires_rerun",
+            "sourceChangesAreNotPassingEvidence": true,
+            "productFailureEstablished": false,
+            "category": "test_harness_minimized_title_snapshot",
+            "description": "Actual landscape/Paste/long-title details/search/keyboard/closeSearch stages completed. At the final note, native scrolling minimized the document title and the helper unconditionally fetched its nonexistent AX frame.",
+            "basis": "Finalized log580–667 and formal legacy failure record show BackButton and four native action buttons but no document-title-button.",
+            "preparedFix": "Only inspect title overlap when the title exists and is hittable; retain full note viewport and real toolbar band checks, and assert final File Details reachability.",
+            "preparedFixFile": "HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift",
+            "preparedFixValidation": "git diff --check passed; fix was made after this test binary was built and has no completed rerun yet."
+          }
+        },
+        {
+          "testIdentifier": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 62.838,
+          "legacySummaryRef": "0~eYwlYgWzeVsGmyZiXfs8yWZeX_C-W3_qcXXvfcgkkGkDiZgDmYy8UVc9Z-mwrQZ_dXOaZ6uxkE_Wof1ztxA8Tw==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-test-summary-2.json",
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Window and screen geometry must match the requested orientation and remain stable before capturing evidence",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=680&StartingLineNumber=680"
+            },
+            {
+              "message": "failed: caught error: \"requirement(\"Window and screen geometry must match the requested orientation and remain stable before capturing evidence\")\"",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift#EndingLineNumber=453&StartingLineNumber=453"
+            }
+          ],
+          "failureClassification": {
+            "resolutionStatus": "requires_rerun",
+            "sourceChangesAreNotPassingEvidence": true,
+            "productFailureEstablished": false,
+            "category": "orientation_driver_geometry_precondition",
+            "description": "Stable window/screen geometry check still failed during rotation; selected-search content acceptance is not inferred from this failed test. Root had independently verified native Closed landscape with fully visible second match.",
+            "basis": "Formal legacy assertion/caught requirement and root native screenshot report.",
+            "rootCauseStatus": "not_fully_determined",
+            "scopeLimit": "No general SDK bug or product failure claimed."
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 49.879,
+          "legacySummaryRef": "0~x2-wgBq81KcNEBhNn2-oT2X8NgIt4dCX5QxGT317alsd-JQwuI1tNRCsJPVL5i54Xh5_PsWs81_OiAfX7z8JYQ==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-test-summary-3.json",
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Missing sample button: sample-markdown",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/SmokeUITests.swift#EndingLineNumber=221&StartingLineNumber=221"
+            }
+          ],
+          "failureClassification": {
+            "resolutionStatus": "requires_rerun",
+            "sourceChangesAreNotPassingEvidence": true,
+            "productFailureEstablished": false,
+            "category": "test_harness_offscreen_collapsed_samples",
+            "description": "Settings scrolling/Done and HTML Interactive→Safe→Back passed. Returning library had a collapsed Samples group. The helper skipped expansion when the disclosure was absent from the initial lazy List AX tree, then repeatedly scrolled for a nonexistent Markdown row.",
+            "basis": "Finalized log35.32–49.55s, failure AX explicitly includes collapsed disclosure image, and video47s shows visible collapsed Samples.",
+            "evidence": {
+              "ax": "/tmp/html-duo-27-unlocked-smoke-attachments/62CBF8D1-45E4-4745-95E6-125A4A7CC1FF.txt",
+              "video": "/tmp/html-duo-27-unlocked-smoke-attachments/C89F4DFA-183F-4E3A-8EED-021505059D41.mp4",
+              "frame47": "/tmp/html-duo-27-unlocked-smoke-frame47.png",
+              "attachmentManifest": "/tmp/html-duo-27-unlocked-smoke-attachments/manifest.json"
+            },
+            "preparedFix": "Reveal the actual disclosure button before inspecting collapsed/expanded image state; expand only when collapsed, with older-state-less fallback preserving expanded-row lookup and final hittable/tap assertions.",
+            "preparedFixFile": "HTMLMarkdownPreviewerUITests/SmokeUITests.swift",
+            "preparedFixValidation": "git diff --check passed; no completed rerun of the prepared helper fix."
+          }
+        },
+        {
+          "testIdentifier": "YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 46.382,
+          "legacySummaryRef": "0~KXg8iWWoFNAMA0bHJdFZNFD0E8Z_vMkhz0Su8hyt94HucJFKavZlZVKjch3RM5SXf9xgB6-FuWvkfZ1ABKVWxw==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-test-summary-4.json",
+          "failureRecords": [],
+          "verification": {
+            "status": "passed_in_recorded_run",
+            "scope": "The named format search/source/reopen regression passed using the keyboard-fix build. This does not independently prove every compact keyboard/fold manual scenario."
+          }
+        }
+      ]
+    },
+    {
+      "runId": "duo-ui-unlocked-final2-20261007T143731+0900",
+      "kind": "automated_ui",
+      "status": "failed",
+      "startedAt": "2026-10-07T14:37:31.971+0900",
+      "endedAt": "2026-10-07T14:40:08.807+0900",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "execution": {
+        "project": "HTMLMarkdownPreviewer.xcodeproj",
+        "scheme": "HTMLMarkdownPreviewer",
+        "configuration": "Debug",
+        "destination": "platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+        "parallelTestingEnabled": false,
+        "maximumConcurrentSimulatorDestinations": 1,
+        "codeSigningAllowed": false,
+        "derivedDataPath": "/Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA",
+        "testLaunchEnvironment": {
+          "HTML_PREVIEWER_UI_TESTS": "1"
+        },
+        "collectTestDiagnostics": "never",
+        "operation": "test-without-building"
+      },
+      "build": {
+        "operation": "Previously completed build-for-testing reused",
+        "status": "succeeded",
+        "log": "/tmp/html-duo-27-focus-final-build-20261007.log",
+        "verifiedLogMarker": "** TEST BUILD SUCCEEDED **",
+        "source": "Root reported unified focus + LongTitle + first Smoke helper build; manifest writer verified its success marker.",
+        "exactAppBinarySHA256": null,
+        "sourceRevision": null,
+        "provenanceLimit": "The library-top Smoke helper adjustment and planned focus-observer removal were made/planned after this test build; this run is not evidence for that later source."
+      },
+      "summary": {
+        "totalTests": 2,
+        "passedTests": 1,
+        "failedTests": 1,
+        "skippedTests": 0,
+        "assertionFailureRecords": 1,
+        "unexpectedFailureRecords": 0,
+        "countsSource": "Formal legacy ActionTestMetadata/ActionResult metrics and completed log."
+      },
+      "artifacts": {
+        "log": "/tmp/html-duo-27-unlocked-final2-20261007.log",
+        "xcresult": "/tmp/html-duo-27-unlocked-final2-20261007.xcresult",
+        "legacyInvocationJSON": "/tmp/html-duo-27-unlocked-final2-legacy-result.json",
+        "legacyTestsJSON": "/tmp/html-duo-27-unlocked-final2-legacy-tests.json",
+        "legacyStatusJSON": "/tmp/html-duo-27-unlocked-final2-legacy-test-status.json",
+        "smokeAttachmentsManifest": "/tmp/html-duo-27-unlocked-final2-smoke-attachments/manifest.json"
+      },
+      "processOutcome": {
+        "exitCode": 65,
+        "testCommandOutcome": "TEST EXECUTE FAILED",
+        "source": "root completion report and finalized legacy/log record"
+      },
+      "environment": {
+        "desktopState": "unlocked",
+        "deviceReused": true,
+        "rootOwnsNativeSimulatorSession": true,
+        "hostIssue": "DeviceHub host toolbar layout recovered after maximizing its host window; not classified as an iOS app defect.",
+        "rootNativeEvidenceNotes": "/tmp/html-duo-unlocked-evidence-notes-20261007.json"
+      },
+      "tests": [
+        {
+          "testIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 84.013,
+          "legacySummaryRef": "0~lEqso5jdNqTm5i4GTW-ZySeDXk78FK_5tmvGLeI1rQucjvIWuVW1FJEuCyJplNt2-JDL-rTUQX3PiIQHU4z7xg==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-final2-test-summary-0.json",
+          "failureRecords": [],
+          "verification": {
+            "status": "passed_in_recorded_run",
+            "previousRunId": "duo-ui-unlocked-5-20261007T142749+0900",
+            "previousFailureCategory": "test_harness_minimized_title_snapshot",
+            "scope": "Real landscape/Paste, initial full multilingual title and title/details interaction, four accessible actions, search/keyboard/closeSearch, final note entirely in reader/app viewport and outside actual toolbar band, and final accessible File Details entry. Visible title overlap is checked when the native title exists and is hittable.",
+            "doesNotImplyUnrelatedManualAcceptance": true
+          }
+        },
+        {
+          "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "failed",
+          "legacyStatus": "Failure",
+          "durationSeconds": 66.329,
+          "legacySummaryRef": "0~9MIzEE-_PEmOaHh_sP8XtaF7rXjV0GJtRHohgCCsjhU6_P9SejYRo2ZqpXvyCfZLyec9h3tQJPXGYmtt50VMMg==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-final2-test-summary-1.json",
+          "failureRecords": [
+            {
+              "message": "XCTAssertTrue failed - Back must return to the document library",
+              "sourceLocation": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerUITests/SmokeUITests.swift#EndingLineNumber=391&StartingLineNumber=391"
+            }
+          ],
+          "failureClassification": {
+            "category": "test_harness_preserved_library_scroll_position",
+            "description": "Settings, HTML sample Interactive→Safe→Back, Samples expansion, Markdown sample render and Raw Text passed. Back returned to the real library at its preserved expanded Samples scroll position. The top Paste row was outside the lazy List AX tree, so the immediate paste wait asserted failure.",
+            "basis": "Formal legacy assertion plus failure AX with HTML Previewer navigation and expanded Samples/all sample rows; video60s visually confirms the returned library.",
+            "resolutionStatus": "requires_rerun",
+            "sourceChangesAreNotPassingEvidence": true,
+            "productFailureEstablished": false,
+            "preparedFix": "After actual Back and library navigation confirmation, swipe down toward the library top until Paste is materialized and hittable; retain strict existence and visible accessibility assertions.",
+            "preparedFixFile": "HTMLMarkdownPreviewerUITests/SmokeUITests.swift",
+            "preparedFixValidation": "git diff --check passed; prepared after this completed run and not yet rerun.",
+            "evidence": {
+              "ax": "/tmp/html-duo-27-unlocked-final2-smoke-attachments/DEAD5848-C000-4C9D-BB0B-3DED3CF8BF1A.txt",
+              "video": "/tmp/html-duo-27-unlocked-final2-smoke-attachments/19A67863-9B66-4DC2-AB04-60A6DF050162.mp4",
+              "frame60": "/tmp/html-duo-27-unlocked-final2-smoke-frame60.png",
+              "attachmentManifest": "/tmp/html-duo-27-unlocked-final2-smoke-attachments/manifest.json"
+            },
+            "previousRunIssueProgress": "Prior collapsed-disclosure helper failure did not recur; expansion reached the real Markdown sample, but complete Smoke acceptance still requires a passed rerun."
+          }
+        }
+      ]
+    },
+    {
+      "runId": "duo-ui-unlocked-smoke-final-20261007T144617+0900",
+      "kind": "automated_ui",
+      "status": "succeeded",
+      "startedAt": "2026-10-07T14:46:17.806+0900",
+      "endedAt": "2026-10-07T14:47:48.375+0900",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "execution": {
+        "project": "HTMLMarkdownPreviewer.xcodeproj",
+        "scheme": "HTMLMarkdownPreviewer",
+        "configuration": "Debug",
+        "destination": "platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+        "parallelTestingEnabled": false,
+        "maximumConcurrentSimulatorDestinations": 1,
+        "codeSigningAllowed": false,
+        "derivedDataPath": "/Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA",
+        "testLaunchEnvironment": {
+          "HTML_PREVIEWER_UI_TESTS": "1"
+        },
+        "collectTestDiagnostics": "never",
+        "operation": "test-without-building"
+      },
+      "build": {
+        "operation": "Previously completed build-for-testing reused",
+        "status": "succeeded",
+        "log": "/tmp/html-duo-27-final-focus-build-20261007.log",
+        "verifiedLogMarker": "** TEST BUILD SUCCEEDED **",
+        "source": "Root identified this unified build containing the focus observer removal and final Smoke helper; success marker independently read.",
+        "exactAppBinarySHA256": null,
+        "sourceRevision": null,
+        "provenanceLimit": "No exact binary/source hash is assigned. A passed Smoke does not establish unrelated native focus/Split View/overflow/in-flight share acceptance."
+      },
+      "summary": {
+        "totalTests": 1,
+        "passedTests": 1,
+        "failedTests": 0,
+        "skippedTests": 0,
+        "assertionFailureRecords": 0,
+        "unexpectedFailureRecords": 0,
+        "countsSource": "Formal legacy ActionTestMetadata Success, ActionResult metrics and completed TEST EXECUTE SUCCEEDED log."
+      },
+      "artifacts": {
+        "log": "/tmp/html-duo-27-unlocked-smoke-final-20261007.log",
+        "xcresult": "/tmp/html-duo-27-unlocked-smoke-final-20261007.xcresult",
+        "legacyInvocationJSON": "/tmp/html-duo-27-unlocked-smoke-final-legacy-result.json",
+        "legacyTestsJSON": "/tmp/html-duo-27-unlocked-smoke-final-legacy-tests.json",
+        "legacyStatusJSON": "/tmp/html-duo-27-unlocked-smoke-final-legacy-test-status.json",
+        "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-smoke-final-test-summary.json"
+      },
+      "processOutcome": {
+        "exitCode": 0,
+        "testCommandOutcome": "TEST EXECUTE SUCCEEDED",
+        "source": "root completion report and finalized legacy/log record"
+      },
+      "environment": {
+        "desktopState": "unlocked",
+        "deviceReused": true,
+        "rootOwnsNativeSimulatorSession": true,
+        "hostIssue": "DeviceHub host toolbar layout recovered after maximizing its host window; not classified as an iOS app defect.",
+        "rootNativeEvidenceNotes": "/tmp/html-duo-unlocked-evidence-notes-20261007.json"
+      },
+      "tests": [
+        {
+          "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+          "target": "HTMLMarkdownPreviewerUITests",
+          "status": "passed",
+          "legacyStatus": "Success",
+          "durationSeconds": 81.6,
+          "legacySummaryRef": "0~GfLR6UBIpwFE1yf7bSZw60pkx18gUTwKsvAXVKVOgowSH2xd4fqrDb1ofU91x0ZQI1WlDM36oza6ChGJ__cEXw==",
+          "legacyDetailedSummaryJSON": "/tmp/html-duo-27-unlocked-smoke-final-test-summary.json",
+          "failureRecords": [],
+          "verification": {
+            "status": "passed_in_recorded_run",
+            "previousRunId": "duo-ui-unlocked-final2-20261007T143731+0900",
+            "previousFailureCategory": "test_harness_preserved_library_scroll_position",
+            "scope": "Actual landscape setup, Settings scrolling/Done, HTML Interactive→Safe, true library Back and visible top Paste entry, disclosure expansion, Markdown render/Raw Text, ZIP render/Back and recent ZIP row all passed.",
+            "doesNotImplyUnrelatedManualAcceptance": true
+          }
+        }
+      ]
+    }
+  ],
+  "latestAutomatedResults": {
+    "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-unlocked-5-20261007T142749+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900",
+        "duo-ui-unlocked-5-20261007T142749+0900"
+      ]
+    },
+    "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-unlocked-final2-20261007T143731+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900",
+        "duo-ui-final4-20261007T133940+0900",
+        "duo-ui-unlocked-5-20261007T142749+0900",
+        "duo-ui-unlocked-final2-20261007T143731+0900"
+      ]
+    },
+    "ReadingLibraryUITests/testHTMLPageZoomPersistsAndFullScreenCanRestore()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "ReadingLibraryUITests/testHTMLPageZoomPersistsAndFullScreenCanRestore()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-rerun-9-20261007T132338+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900"
+      ]
+    },
+    "ReadingLibraryUITests/testMarkdownAppearancePersistsAndLocalImageOpens()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "ReadingLibraryUITests/testMarkdownAppearancePersistsAndLocalImageOpens()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-final4-20261007T133940+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900",
+        "duo-ui-final4-20261007T133940+0900"
+      ]
+    },
+    "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-unlocked-5-20261007T142749+0900",
+      "latestStatus": "failed",
+      "failureCategory": "orientation_driver_geometry_precondition",
+      "resolutionStatus": "native_equivalent_verified_automated_geometry_unresolved",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900",
+        "duo-ui-final4-20261007T133940+0900",
+        "duo-ui-unlocked-5-20261007T142749+0900"
+      ],
+      "nativeEquivalentAcceptanceScenarioId": "html-native-rotation-back-reopen-equivalence"
+    },
+    "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-unlocked-smoke-final-20261007T144617+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900",
+        "duo-ui-final4-20261007T133940+0900",
+        "duo-ui-unlocked-5-20261007T142749+0900",
+        "duo-ui-unlocked-final2-20261007T143731+0900",
+        "duo-ui-unlocked-smoke-final-20261007T144617+0900"
+      ]
+    },
+    "SmokeUITests/testHTMLPDFExportShowsShareSheet()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "SmokeUITests/testHTMLPDFExportShowsShareSheet()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-rerun-9-20261007T132338+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900"
+      ]
+    },
+    "SmokeUITests/testMarkdownPDFExportShowsShareSheet()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "SmokeUITests/testMarkdownPDFExportShowsShareSheet()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-initial-ui-13-20261007T130453+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run"
+    },
+    "SmokeUITests/testPreviewShareSheetShowsVisibleOptions()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "SmokeUITests/testPreviewShareSheetShowsVisibleOptions()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-initial-ui-13-20261007T130453+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run"
+    },
+    "SmokeUITests/testZIPPDFExportShowsShareSheet()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "SmokeUITests/testZIPPDFExportShowsShareSheet()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-initial-ui-13-20261007T130453+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run"
+    },
+    "SmokeUITests/testZIPShareOffersCompletePackage()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "SmokeUITests/testZIPShareOffersCompletePackage()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-initial-ui-13-20261007T130453+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run"
+    },
+    "YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-unlocked-5-20261007T142749+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900",
+        "duo-ui-unlocked-5-20261007T142749+0900"
+      ]
+    },
+    "ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch()|F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7|xcode-27.1-27A9275-iphonesimulator27.1|27.1 (24A94232)": {
+      "testIdentifier": "ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch()",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "osVersionWithBuild": "27.1 (24A94232)",
+      "latestRunId": "duo-ui-rerun-9-20261007T132338+0900",
+      "latestStatus": "passed",
+      "failureCategory": null,
+      "resolutionStatus": "passed_in_recorded_run",
+      "historyRunIds": [
+        "duo-initial-ui-13-20261007T130453+0900",
+        "duo-ui-rerun-9-20261007T132338+0900"
+      ]
+    }
+  },
+  "manualAcceptances": [
+    {
+      "scenarioId": "html-pose-search",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root agent task message specifying actually verified manual acceptance scenarios",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified HTML search in Closed, Open and Partially Open postures.",
+      "posesReported": [
+        "Closed",
+        "Open",
+        "Partially Open"
+      ],
+      "evidencePaths": [
+        "/tmp/html-duo-actual-20261007/closed-search-result.png",
+        "/tmp/html-duo-actual-20261007/open-search-result.png",
+        "/tmp/html-duo-actual-20261007/partial-rotated-search.png"
+      ],
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only the behavior explicitly reported by root is accepted; no additional assertion inferred from filenames.",
+      "artifactAssociation": "Matching screenshot filenames in root evidence directory; root final provenance review remains pending."
+    },
+    {
+      "scenarioId": "markdown-quiet-fold",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root agent task message specifying actually verified manual acceptance scenarios",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified the Markdown quiet-fold/search scenario.",
+      "posesReported": [
+        "Closed",
+        "Partially Open"
+      ],
+      "evidencePaths": [
+        "/tmp/html-duo-actual-20261007/closed-markdown-search.png",
+        "/tmp/html-duo-actual-20261007/partial-markdown-search.png"
+      ],
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only the behavior explicitly reported by root is accepted; no additional assertion inferred from filenames.",
+      "artifactAssociation": "Matching screenshot filenames in root evidence directory; root final provenance review remains pending."
+    },
+    {
+      "scenarioId": "html-original-share-closed-to-open",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root agent task message specifying actually verified manual acceptance scenarios",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified the HTML original-file share sheet in Closed and after transition to Open.",
+      "posesReported": [
+        "Closed",
+        "Open"
+      ],
+      "evidencePaths": [
+        "/tmp/html-duo-actual-20261007/closed-original-share-pass.png",
+        "/tmp/html-duo-actual-20261007/open-original-share-pass.png"
+      ],
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only the behavior explicitly reported by root is accepted; no additional assertion inferred from filenames.",
+      "artifactAssociation": "Matching screenshot filenames in root evidence directory; root final provenance review remains pending."
+    },
+    {
+      "scenarioId": "html-pdf-share-open",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root agent task message specifying actually verified manual acceptance scenarios",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified PDF share-sheet visibility in Open posture.",
+      "posesReported": [
+        "Open"
+      ],
+      "evidencePaths": [
+        "/tmp/html-duo-actual-20261007/open-pdf-share-pass.png"
+      ],
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only the behavior explicitly reported by root is accepted; no additional assertion inferred from filenames.",
+      "artifactAssociation": "Matching screenshot filenames in root evidence directory; root final provenance review remains pending."
+    },
+    {
+      "scenarioId": "zip-detail-page-pose-continuity",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root agent task message specifying actually verified manual acceptance scenarios",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified the selected ZIP detail page in Closed/Open and through Partially Open back to Closed.",
+      "posesReported": [
+        "Closed",
+        "Open",
+        "Partially Open",
+        "Closed"
+      ],
+      "evidencePaths": [
+        "/tmp/html-duo-actual-20261007/open-zip-selected-page.png",
+        "/tmp/html-duo-actual-20261007/closed-zip-selected-page.png"
+      ],
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only the behavior explicitly reported by root is accepted; no additional assertion inferred from filenames.",
+      "artifactAssociation": "Matching screenshot filenames in root evidence directory; root final provenance review remains pending."
+    },
+    {
+      "scenarioId": "json-compact-keyboard-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root actual native QA plus explicit individual original-screenshot view",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root visually verified query 247 / 1 of 1, full minutes 247 row/path above software keyboard in actual Closed landscape and settled portrait, with caret/keyboard retained through rotation.",
+      "evidencePaths": [
+        "/tmp/html-duo-json-scrollfix-landscape-keyboard.png",
+        "/tmp/html-duo-json-scrollfix-portrait-keyboard-settled.png"
+      ],
+      "evidenceMetadata": [
+        {
+          "sourcePath": "/tmp/html-duo-json-scrollfix-landscape-keyboard.png",
+          "rawPixels": {
+            "width": 2034,
+            "height": 1398
+          },
+          "sha256": "21cabec53d3e399af272eb2614f9f512b8e2f93f5d974a33fbe1b14d7a1e3e80",
+          "sourceMtimeUTC": "2026-10-07T05:34:25.927791+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-json-scrollfix-portrait-keyboard-settled.png",
+          "rawPixels": {
+            "width": 1398,
+            "height": 2034
+          },
+          "sha256": "2c7d640447ec65d3f22c6b4bad097f79bdeb8a9dbf3b976ab5744dd1fd75a3b2",
+          "sourceMtimeUTC": "2026-10-07T05:35:15.232364+00:00"
+        }
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only these root-reported scenes are accepted. No general keyboard/focus or whole-app fold acceptance inferred. The unsettled JSON portrait-named landscape capture is excluded.",
+      "artifactAssociation": "Original bytes permanently copied; sha256/mtime/pixels recorded in duo-screenshot-provenance.json.",
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-json-scrollfix-landscape-keyboard.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-json-scrollfix-portrait-keyboard-settled.png"
+      ]
+    },
+    {
+      "scenarioId": "yaml-source-fold-keyboard-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "root actual native QA plus explicit individual original-screenshot view",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root visually verified document 2 / Source / query 3000 / 1 of 1 / line 29 port 3000 above software keyboard in Closed landscape and Open portrait after actual Hide Sidebar; caret/keyboard remained through expansion.",
+      "evidencePaths": [
+        "/tmp/html-duo-yaml-source-closed-keyboard-final.png",
+        "/tmp/html-duo-yaml-source-open-sidebar-hidden-final.png"
+      ],
+      "evidenceMetadata": [
+        {
+          "sourcePath": "/tmp/html-duo-yaml-source-closed-keyboard-final.png",
+          "rawPixels": {
+            "width": 2034,
+            "height": 1398
+          },
+          "sha256": "c96505ac75728b985e52ac7307e86f210683393abb8bac5dcdc9849ce6b5ed7a",
+          "sourceMtimeUTC": "2026-10-07T05:42:17.486198+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-yaml-source-open-sidebar-hidden-final.png",
+          "rawPixels": {
+            "width": 2007,
+            "height": 2853
+          },
+          "sha256": "2716098087c30b8545647f804d6a2be6f8d6cc885328534e3060c3ea7995fc99",
+          "sourceMtimeUTC": "2026-10-07T05:45:38.624538+00:00"
+        }
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only these root-reported scenes are accepted. No general keyboard/focus or whole-app fold acceptance inferred. The unsettled JSON portrait-named landscape capture is excluded.",
+      "artifactAssociation": "Original bytes permanently copied; sha256/mtime/pixels recorded in duo-screenshot-provenance.json.",
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-yaml-source-closed-keyboard-final.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-yaml-source-open-sidebar-hidden-final.png"
+      ]
+    },
+    {
+      "scenarioId": "html-racefix-focus-and-next-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "Root actual native interaction and individual original-image inspection",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified native Closed landscape→Open portrait keyboard/caret continuity by tapping software x without refocusing (Saturdayx) then deleting; Partial+rotation also retained focus/keyboard. Closed runtime hid the software keyboard while caret/editing intent persisted. Next intentionally ended editing; native portrait result 2 of 2 remained visible without keyboard.",
+      "evidencePaths": [
+        "/tmp/html-duo-racefix-html-before-open.png",
+        "/tmp/html-duo-racefix-html-open-keyboard-typing-pass.png",
+        "/tmp/html-duo-racefix-html-partial-rotated-keyboard.png",
+        "/tmp/html-duo-racefix-html-next-portrait.png"
+      ],
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-racefix-html-before-open.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-racefix-html-open-keyboard-typing-pass.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-racefix-html-partial-rotated-keyboard.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-racefix-html-next-portrait.png"
+      ],
+      "evidenceMetadata": [
+        {
+          "sourcePath": "/tmp/html-duo-racefix-html-before-open.png",
+          "rawPixels": {
+            "width": 2034,
+            "height": 1398
+          },
+          "sha256": "17a16e397ea9d27ff31116a4791dc4ffd2f30235d1346f16bde661637997e2ff",
+          "sourceMtimeUTC": "2026-10-07T06:03:39.615955+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-racefix-html-open-keyboard-typing-pass.png",
+          "rawPixels": {
+            "width": 2007,
+            "height": 2853
+          },
+          "sha256": "6427d4c6a383b4e803c5013df163ff541d1507bd85ab49ab84f73779eb430a8a",
+          "sourceMtimeUTC": "2026-10-07T06:04:44.123445+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-racefix-html-partial-rotated-keyboard.png",
+          "rawPixels": {
+            "width": 2853,
+            "height": 2007
+          },
+          "sha256": "f1721b71b845701a52825f2394fc6eeab66e2c1b296f941ca0c618786160ecc5",
+          "sourceMtimeUTC": "2026-10-07T06:05:11.808241+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-racefix-html-next-portrait.png",
+          "rawPixels": {
+            "width": 1398,
+            "height": 2034
+          },
+          "sha256": "fd654f23e39486ede9fb3676fcbee58893ab10457f340fe89dd3b65f902d4cf1",
+          "sourceMtimeUTC": "2026-10-07T06:07:32.625623+00:00"
+        }
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only named native scenes accepted. All-pose software keyboard visibility is not claimed. Exact final post-trace-removal binary and independent Markdown/system Split View/in-flight share acceptance remain unproven.",
+      "artifactAssociation": "Permanent raw copies and exact source provenance in duo-screenshot-provenance.json."
+    },
+    {
+      "scenarioId": "html-native-rotation-back-reopen-equivalence",
+      "status": "verified_by_root_manual",
+      "verificationSource": "Root actual native interaction and individual original-image inspection",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified the complete orange second Saturday result 2 of 2 in native portrait/landscape and Open wide after ending editing, with keyboard dismissed; Closed Back→recent weekend-plan reopened content and four toolbar actions. Query normally ends on Back.",
+      "evidencePaths": [
+        "/tmp/html-duo-racefix-html-next-portrait.png",
+        "/tmp/html-duo-final-html-next-open-dismissed.png",
+        "/tmp/html-duo-final-html-reopen.png"
+      ],
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-racefix-html-next-portrait.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-html-next-open-dismissed.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-html-reopen.png"
+      ],
+      "evidenceMetadata": [
+        {
+          "sourcePath": "/tmp/html-duo-racefix-html-next-portrait.png",
+          "rawPixels": {
+            "width": 1398,
+            "height": 2034
+          },
+          "sha256": "fd654f23e39486ede9fb3676fcbee58893ab10457f340fe89dd3b65f902d4cf1",
+          "sourceMtimeUTC": "2026-10-07T06:07:32.625623+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-final-html-next-open-dismissed.png",
+          "rawPixels": {
+            "width": 2853,
+            "height": 2007
+          },
+          "sha256": "1b6ae02fe94418bb7ea3087911c5ec861be2cf6f554e8da51540784e3bd84506",
+          "sourceMtimeUTC": "2026-10-07T06:10:58.694109+00:00"
+        },
+        {
+          "sourcePath": "/tmp/html-duo-final-html-reopen.png",
+          "rawPixels": {
+            "width": 1398,
+            "height": 2034
+          },
+          "sha256": "569d34d3f91d08db4998b4bfc30bb2f131877a5bdce0974d4e9b417ef48d595b",
+          "sourceMtimeUTC": "2026-10-07T06:11:32.176852+00:00"
+        }
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only named native scenes accepted. All-pose software keyboard visibility is not claimed. Exact final post-trace-removal binary and independent Markdown/system Split View/in-flight share acceptance remain unproven.",
+      "artifactAssociation": "Permanent raw copies and exact source provenance in duo-screenshot-provenance.json."
+    },
+    {
+      "scenarioId": "markdown-final-focus-fold-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "Root actual software-keyboard x/Delete/submit interaction, AX inspection and individual screenshot view",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified Closed quiet search→Open landscape by tapping native software x without refocusing (quietx / No Matches), then deleting to restore quiet. Through Partially Open→Closed, query/count/caret/keyboard and complete orange quiet result remained visible. Software Search explicitly ended editing; reopening to Open did not make the keyboard reappear, verified through AX.",
+      "evidencePaths": [
+        "/tmp/html-duo-final-markdown-open-typing.png",
+        "/tmp/html-duo-final-markdown-reclosed-keyboard.png"
+      ],
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-markdown-open-typing.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-markdown-reclosed-keyboard.png"
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": "Only the stated active-edit/fold and deliberate-submit scenes are accepted. In-flight sharing/system Split View not inferred; invalid initial-match screenshot excluded.",
+      "artifactAssociation": "Permanent unchanged PNG copies; source sha256/mtime/pixels in duo-screenshot-provenance.json."
+    },
+    {
+      "scenarioId": "system-split-view-reader-left-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "Root actual native UI interaction and explicit original-image view",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root visually verified the app reader on the left and the separate Settings app on the right in real system two-app Split View. Both apps rendered correctly and all four native reading-toolbar controls were visible.",
+      "evidencePaths": [
+        "/tmp/html-duo-final-system-split-left.png"
+      ],
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-system-split-left.png"
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": [
+        "Reader placement on the right was still being attempted; no right-side pass inferred.",
+        "This is system two-app Split View, distinct from library/reader columns inside NavigationSplitView."
+      ],
+      "artifactAssociation": "Permanent unchanged copies; exact raw image metadata in duo-screenshot-provenance.json."
+    },
+    {
+      "scenarioId": "pdf-share-presentation-rotation-fold-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "Root actual native UI interaction and explicit original-image view",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "On the final trace-free installed build, root invoked PDF export in Open landscape, then immediately used native RotateRight. Open portrait showed the 38 KB PDF share sheet, Closed landscape retained the sheet, and returning Open portrait kept it presented. Root clicked X and successfully dismissed.",
+      "evidencePaths": [
+        "/tmp/html-duo-final-pdf-share-rotated.png",
+        "/tmp/html-duo-final-pdf-share-closed.png"
+      ],
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-pdf-share-rotated.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-pdf-share-closed.png"
+      ],
+      "exactBinarySHA256": null,
+      "doesNotOverrideAutomatedTestStatus": true,
+      "scopeLimit": [
+        "Export completed quickly; exact rotation during PDF generation was not established.",
+        "Still captures do not independently prove temporary-file deletion or completion of an external share activity.",
+        "Dismissal is root actual native interaction evidence, not a separate screenshot or automated testcase in this capture set."
+      ],
+      "artifactAssociation": "Permanent unchanged copies; exact raw image metadata in duo-screenshot-provenance.json.",
+      "rotationPhase": "share_presentation_and_migration",
+      "generationPhaseRotationVerified": false,
+      "finalBuildLog": "/tmp/html-duo-final-clean-build-20261007.log",
+      "verifiedExecutableSHA256": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+      "verifiedDebugCodeImageSHA256": "347d4933fa9ef784d1a3ed64ca021f87bfbd35acb2b632f59523bce9086feaa4"
+    },
+    {
+      "scenarioId": "system-split-view-reader-right-native",
+      "status": "verified_by_root_manual",
+      "verificationSource": "Root actual native two-app Split View/menu/search/divider interactions plus original PNG view",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "verifiedBehavior": "Root verified HTML app on the right with the separate Settings app on the left, correct safe areas, Back and all four native toolbar actions. Root opened Reading Tools, invoked Find, typed Saturday with hardware-simulated input while software keyboard was hidden and caret retained, then Next showed the complete orange second match. Closing Search restored all four native action buttons.",
+      "evidencePaths": [
+        "/tmp/html-duo-final-system-split-right-settled.png",
+        "/tmp/html-duo-final-system-split-right-search.png",
+        "/tmp/html-duo-final-system-split-right-tools.png"
+      ],
+      "permanentEvidencePaths": [
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-system-split-right-settled.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-system-split-right-search.png",
+        "docs/updates/assets/2026-10-07-iphone-duo/duo-final-system-split-right-tools.png"
+      ],
+      "verifiedExecutableSHA256": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+      "verifiedDebugCodeImageSHA256": "347d4933fa9ef784d1a3ed64ca021f87bfbd35acb2b632f59523bce9086feaa4",
+      "doesNotOverrideAutomatedTestStatus": true,
+      "toolbarWidthCoverage": "Root tried narrowing the native divider; the system snapped it back to half width. All four action buttons fit and remained reachable at the available width.",
+      "systemOverflowTriggered": false,
+      "scopeLimit": "Tested actual available system widths with all four actions reachable. Reading Tools menu is recorded as application commands. No overflow presentation is claimed because the system never surfaced one; excluded unsettled image is not used.",
+      "artifactAssociation": "Permanent unchanged source copies with exact provenance in duo-screenshot-provenance.json."
+    }
+  ],
+  "notClaimed": [
+    "JSON/YAML keyboard behavior beyond the exact root-verified scenes",
+    "Any failing UI test resolved before a completed rerun",
+    "Complete Duo test pass",
+    "App/window frame values inferred solely from rendered screenshots",
+    "A general iOS 27.1 SDK bug",
+    "A Duo product feature failure based only on failed orientation geometry prerequisites",
+    "Unverified native Markdown focus, system Split View, native overflow or in-flight rotation acceptance"
+  ],
+  "rotationFailureEvidence": {
+    "testIdentifier": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+    "initialDeviceOrientationRequest": "Portrait before launch",
+    "appInterfaceAfterLaunch": "LandscapeRight",
+    "parentWindowSizePointsFromSynthesizedEvent": {
+      "width": 678,
+      "height": 466
+    },
+    "synthesizedEventPath": "/tmp/html-duo-27-ui-regression-attachments/435B8A38-35AF-48A9-ADAD-651D28F0561F",
+    "failureScreenshotPath": "/tmp/html-duo-27-ui-regression-attachments/54CC2AEA-DE3A-4E2B-AFF1-4A47BA3272C7.png",
+    "failureScreenshotRawPixels": {
+      "width": 2034,
+      "height": 1398
+    },
+    "failureScreenshotEXIFOrientation": 8,
+    "videoPath": "/tmp/html-duo-27-ui-regression-attachments/2BA5EDA1-DF47-44A6-9FD5-F2FB30AA24DF.mp4",
+    "videoFrame70Path": "/tmp/html-duo-27-rotation-frame70.png",
+    "limitation": "Current failed run did not capture exact app.frame, window.frame or XCUIScreen.screens sizes. Diagnostics were prepared for a later rerun; none of these missing measurements is fabricated."
+  },
+  "latestAutomatedSummary": {
+    "targetTests": 13,
+    "passedTests": 12,
+    "failedTests": 1,
+    "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+    "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+    "calculation": "Latest completed result per test/device/toolchain/OS across six immutable runs: 12 passed / 1 failed. Final Smoke passed; the only remaining failed targeted test is HTML search rotation geometry. This aggregate is not one full-suite passing run."
+  },
+  "updatedAtUTC": "2026-10-07T06:28:53.744785+00:00",
+  "validationStatus": "native_acceptance_complete_with_automation_geometry_limit",
+  "nextVerification": {
+    "status": "completed_with_documented_coverage_limits",
+    "blockingReason": null,
+    "testIdentifiers": [
+      "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()"
+    ],
+    "rootCauseStatus": "Local implementation, recorded native validation, final build and lifecycle restoration are complete. Automated rotation geometry remains unresolved; equivalent native interaction passed. No all-automated-tests-passed claim.",
+    "manualScenariosPending": [],
+    "finalCompletionClaimed": true,
+    "unverifiedBoundaries": [
+      "Exact rotation while initial load or PDF generation is executing was not established; PDF share presentation/migration was verified.",
+      "System toolbar overflow was not triggered at tested widths; all four native actions remained reachable."
+    ]
+  },
+  "blockingReason": null,
+  "manualEvidenceProvenance": {
+    "manifest": "docs/updates/assets/2026-10-07-iphone-duo/duo-screenshot-provenance.json",
+    "verifiedScreenshots": 28,
+    "scenarioCount": 13,
+    "scope": "Twenty-eight unchanged root-verified screenshots across thirteen manual scenes. Both system Split View placements and all available toolbar-width checks are accepted. Automated result stays 12/13; generation-phase rotation and non-triggered overflow are explicit coverage limits.",
+    "noExactTestedBinaryHashClaimed": true
+  },
+  "finalSourceBuild": {
+    "operation": "build-for-testing",
+    "status": "succeeded",
+    "log": "/tmp/html-duo-final-clean-build-20261007.log",
+    "logSHA256": "63c8b4fe4d78fca81f93dff17e3430932686bddff86ffc9022f36362026fac16",
+    "verifiedLogMarker": "** TEST BUILD SUCCEEDED **",
+    "sourceScope": "Root final trace-free source built and installed; product and installed entrypoint plus separately linked Debug Swift code image match.",
+    "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+    "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+    "verifiedBinaryFiles": [
+      {
+        "relativePath": "HTMLMarkdownPreviewer",
+        "productSHA256": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+        "installedSHA256": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+        "match": true
+      },
+      {
+        "relativePath": "HTMLMarkdownPreviewer.debug.dylib",
+        "productSHA256": "347d4933fa9ef784d1a3ed64ca021f87bfbd35acb2b632f59523bce9086feaa4",
+        "installedSHA256": "347d4933fa9ef784d1a3ed64ca021f87bfbd35acb2b632f59523bce9086feaa4",
+        "match": true
+      }
+    ],
+    "verifiedBinaryFilesAtUTC": "2026-10-07T06:20:16.961690+00:00",
+    "installedAppPath": "/Users/user/Library/Developer/CoreSimulator/Devices/F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7/data/Containers/Bundle/Application/7C874B54-AB67-4DE0-90BF-558EF737545B/HTMLMarkdownPreviewer.app",
+    "sourceAuditManifest": "docs/updates/assets/2026-10-07-iphone-duo/duo-source-audit.json",
+    "exactAppBinarySHA256": null,
+    "scopeLimit": "Two executable/code-image fingerprints for the final installed Debug app. This is not an entire .app directory checksum and is not assigned retroactively to older automated runs/screenshots."
+  },
+  "simulatorLifecycleEndState": {
+    "verifiedAtJST": "2026-10-07T15:23:09.904886+09:00",
+    "source": "duo-lifecycle.json; root actual simctl shutdown and inventory",
+    "existingSimulatorCount": 7,
+    "allExistingSimulatorsState": "Shutdown",
+    "duoState": "Shutdown",
+    "devicesCreatedByTask": 0,
+    "devicesClonedByTask": 0,
+    "devicesDeletedByTask": 0,
+    "devicesErasedByTask": 0,
+    "defaultDeveloperDir": "/Applications/Xcode.app/Contents/Developer"
+  },
+  "currentVerificationSession": {
+    "status": "completed_with_documented_coverage_limits",
+    "desktopState": "unlocked",
+    "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+    "owner": "root",
+    "notes": "Native UI validation finished. Root shut down the reused Duo and verified all seven existing simulators Shutdown at 15:23:09 JST. Automated rotation geometry remains unresolved with equivalent native interaction verified.",
+    "temporaryEvidenceNotes": "/tmp/html-duo-unlocked-evidence-notes-20261007.json",
+    "mainDocumentationUpdateDeferred": false,
+    "deviceState": "Shutdown",
+    "pendingFinalSourceRebuild": false
+  },
+  "finalSourceBuildHistory": [
+    {
+      "operation": "build-for-testing",
+      "status": "succeeded",
+      "log": "/tmp/html-duo-27-final-build-for-testing-20261007.log",
+      "logSHA256": "e3acf33767ff332027aa2fb66e0f2a594d5fdb3a37000c454de1b50ede099c6c",
+      "verifiedLogMarker": "** TEST BUILD SUCCEEDED **",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "sourceChangesSinceThirdRun": "Root removed the unsuccessful intermediate-orientation test-driver workaround; product source had no further changes. Diagnostics remain.",
+      "sourceChangeEvidence": "root report after final build completion",
+      "exactAppBinarySHA256": null,
+      "scopeLimit": "Compilation and test-bundle preparation only. No fourth UI test run or pending manual acceptance is implied; all three historical runs and latest test statuses are unchanged."
+    },
+    {
+      "operation": "build-for-testing",
+      "status": "succeeded",
+      "log": "/tmp/html-duo-27-final-focus-build-20261007.log",
+      "logSHA256": "e4c47beb2f7db82a70d86307667c87da322adeb686695fb4d8f25aa240c993d8",
+      "verifiedLogMarker": "** TEST BUILD SUCCEEDED **",
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "sourceScope": "Root unified final focus bridge with temporary keyboard observer removed and final Smoke returned-library-top helper; no product source edits by manifest writer.",
+      "exactAppBinarySHA256": null,
+      "scopeLimit": "Build/test-target compilation passed and the named final Smoke passed; other manual acceptance remains pending."
+    }
+  ],
+  "hostEnvironmentEvents": [
+    {
+      "event": "DeviceHub_host_toolbar_layout_stall_or_crash",
+      "mitigation": "Normal host quit/reopen and maximizing host window",
+      "source": "root actual native QA report",
+      "classification": "host_environment",
+      "iOSAppCrashClaimed": false,
+      "scope": "Native DeviceHub rotation now produces landscape; unresolved XCTest geometry is tracked separately."
+    }
+  ],
+  "finalSourceAudit": {
+    "manifest": "docs/updates/assets/2026-10-07-iphone-duo/duo-source-audit.json",
+    "taskSourceFiles": 23,
+    "protectedBaselineFiles": 161,
+    "protectedByteIdenticalFiles": 161,
+    "missingProtectedFiles": 0,
+    "verificationTimeUTC": "2026-10-07T06:20:16.961690+00:00"
+  },
+  "toolbarOverflowCoverage": {
+    "status": "tested_available_layouts_not_triggered",
+    "readerPlacements": [
+      "left",
+      "right"
+    ],
+    "nativeDividerBehavior": "Attempting to shrink the reader width snapped the system divider to 1/2.",
+    "allFourNativeActionsReachable": true,
+    "systemOverflowTriggered": false,
+    "readingToolsCommandMenuVerified": true,
+    "scopeLimit": "No unsupported smaller system width or system overflow popup is claimed. No pending label implying the available narrow layout was untested."
+  },
+  "simulatorLifecycleHistory": [
+    {
+      "verifiedAtUTC": "2026-10-07T04:46:29Z",
+      "verifiedAtJST": "2026-10-07T13:46:29+09:00",
+      "source": "Root actual inventory recheck",
+      "existingSimulatorCount": 7,
+      "allExistingSimulatorsState": "Shutdown",
+      "duoState": "Shutdown",
+      "devicesCreatedByTask": 0,
+      "devicesClonedByTask": 0,
+      "devicesDeletedByTask": 0,
+      "logStreamProcess": {
+        "pid": 95065,
+        "state": "ended_after_device_shutdown",
+        "source": "root report"
+      },
+      "scope": "Historical 13:46:29 JST inventory before the resumed unlocked Duo session; not current lifecycle completion."
+    }
+  ]
+}

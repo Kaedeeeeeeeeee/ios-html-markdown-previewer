@@ -1,0 +1,25 @@
+{
+  "sourceKeys": [
+    "01-html-report",
+    "04-markdown-preview",
+    "03-json-preview",
+    "06-yaml-preview",
+    "02-batch-import",
+    "05-library"
+  ],
+  "outputSuffixes": [
+    "01-html-report",
+    "02-markdown-preview",
+    "03-json-preview",
+    "04-yaml-preview",
+    "05-batch-import",
+    "06-library"
+  ],
+  "locales": [
+    "en-US",
+    "zh-Hans",
+    "ja",
+    "zh-Hant"
+  ],
+  "deviceConfig": "devices.json"
+}

@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-10-07T15:23:09.904886+09:00",
+  "devices": [
+    {
+      "udid": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "name": "iPhone 18 Pro",
+      "state": "Shutdown"
+    },
+    {
+      "udid": "ED576109-EEC6-4F86-A927-635B96DDF97E",
+      "name": "FocusDensya UX Comparison",
+      "state": "Shutdown"
+    },
+    {
+      "udid": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+      "name": "HTML Previewer 1.6 Geometry iOS18.5",
+      "state": "Shutdown"
+    },
+    {
+      "udid": "33A52CD6-A4B9-495C-8E07-2B140C8E8353",
+      "name": "Passnote AP Small Audit 20260827",
+      "state": "Shutdown"
+    },
+    {
+      "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "name": "Passnote ASO iPad Pro 12.9",
+      "state": "Shutdown"
+    },
+    {
+      "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2",
+      "name": "HTML Previewer Release iPhone iOS26.5",
+      "state": "Shutdown"
+    },
+    {
+      "udid": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "name": "iPhone Duo",
+      "state": "Shutdown"
+    }
+  ],
+  "created": [],
+  "deleted": [],
+  "erased": [],
+  "rootShutdown": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+  "defaultDeveloperDir": "/Applications/Xcode.app/Contents/Developer"
+}

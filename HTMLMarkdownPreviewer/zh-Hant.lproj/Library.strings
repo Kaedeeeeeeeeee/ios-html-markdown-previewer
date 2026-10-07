@@ -25,3 +25,6 @@
 "library.duplicate.update" = "更新已有檔案";
 "library.duplicate.keepBoth" = "保留兩份";
 "library.duplicate.hint" = "更新會替換已儲存的內容，並保留顯示名稱、置頂狀態和預覽模式。內容改變時，閱讀位置會重設。";
+
+"library.selectFile" = "選擇檔案";
+"library.selectFileDescription" = "從資料庫中選擇檔案，或開啟新檔案開始閱讀。";

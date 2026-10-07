@@ -32,6 +32,13 @@ final class ZIPNavigationUITests: XCTestCase {
         XCTAssertTrue(app.buttons["package-page-appendix/notes.md"].exists)
         capture("Package page picker with titles paths and current page", app: app)
         let search = app.searchFields.firstMatch
+        if !search.exists {
+            // iOS 27.1 can initially present searchable as a toolbar button.
+            let searchButton = app.buttons.matching(NSPredicate(format: "label == %@", "Search")).firstMatch
+            XCTAssertTrue(wait { searchButton.exists && searchButton.isHittable },
+                          "The page picker must expose a tappable Search button when its field is collapsed")
+            searchButton.tap()
+        }
         XCTAssertTrue(search.waitForExistence(timeout: 5))
         search.tap()
         search.typeText("details")
@@ -67,7 +74,7 @@ final class ZIPNavigationUITests: XCTestCase {
         appendixLink.tap()
         waitForPage("appendix/notes.md", app: app)
 
-        app.navigationBars.buttons["HTML Previewer"].tap()
+        navigateHome(app)
         app.terminate()
         app.launchArguments = arguments
         app.launch()
@@ -85,6 +92,19 @@ final class ZIPNavigationUITests: XCTestCase {
         waitForPage("index.html", app: app)
         app.buttons["package-back-button"].tap()
         waitForPage("appendix/notes.md", app: app)
+    }
+
+    private func navigateHome(_ app: XCUIApplication) {
+        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
+        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
+            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        )).firstMatch
+        XCTAssertTrue(wait {
+            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
+        }, "The document must expose a native library back button")
+        (systemBack.exists && systemBack.isHittable ? systemBack : legacyBack).tap()
+        XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 5),
+                      "Back must return to the document library")
     }
 
     private func waitForPage(_ path: String, app: XCUIApplication) {

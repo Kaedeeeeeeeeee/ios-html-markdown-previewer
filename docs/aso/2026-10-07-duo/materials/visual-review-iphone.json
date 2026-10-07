@@ -1,0 +1,266 @@
+{
+  "status": "PASS",
+  "scope": "iphone24 final images and four localized contact sheets. Complete72 local validation and integration are recorded separately; no remote acceptance or archive equivalence is asserted.",
+  "reviewedAtUTC": "2026-10-07T08:32:14.073455+00:00",
+  "images": [
+    {
+      "path": "screenshots/en-US/iphone-01-html-report.png",
+      "sourceSHA256": "ec2baa3564dbcd303b88b2cb46924f53a89d6b952b35a257402987cb2b3c23e8",
+      "finalSHA256": "e32ebd9c5fca78cc41640b9a5dcd0f98449a2ef44e6e4eed121011e1258ec7c3",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/iphone-02-markdown-preview.png",
+      "sourceSHA256": "f26a5dcc988fff56473d66dec01f51338478350a7c9be7ec5ffdedcd7b6c210d",
+      "finalSHA256": "87c8e7b4e79848f28c977981ad942822b2097d69cd7845fca09b6cc778286839",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/iphone-03-json-preview.png",
+      "sourceSHA256": "66584afa2738f15e7d5b1c6e4907e9baceba7f0856f77c9c6f0dbdb1d56ca5e4",
+      "finalSHA256": "0345ff3414c51731b230188b60fadc5e270f7e003e327cdc86710fc635ef8375",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/iphone-04-yaml-preview.png",
+      "sourceSHA256": "030e0389d90c26ac1949ab9e013e286869162d430ee130c8a05d18cbe210c4e2",
+      "finalSHA256": "771ee12a22222a3e781ce53848d9e8a36cb8cc8799efcbe53bbdc5f34e166df3",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/iphone-05-batch-import.png",
+      "sourceSHA256": "736cbeb0880699c8540c29265611f9161fc4d564d4952fbe449096fae8931db6",
+      "finalSHA256": "eb0224aa50b1579d6d9cbb929949179c4b67d38abe29a96e5d4658606ba8b22d",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/iphone-06-library.png",
+      "sourceSHA256": "4cb4589bb4770b9931e332d3f7246b3397a9116c8c5d54ef0894bef3b4616e84",
+      "finalSHA256": "97f629c4642041dae15abd5549f35669f34c5ba5d75584b70982dabc13eba389",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-01-html-report.png",
+      "sourceSHA256": "197d7810652ec35ca40ebe45a8e91344ca86ac54653340688ac601f3af92883c",
+      "finalSHA256": "c44cb93522b5f74681681954061a4cf6e1ea5cd5722fd69336628e51c7a78952",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-02-markdown-preview.png",
+      "sourceSHA256": "0b9d7b37eca5ae379502f884b9278304cf06a652857d870170797ec524f22afc",
+      "finalSHA256": "e1af80ab87249f0cc5404a3b3b2ee8b5018d98dc93a0e138b5f0efba2c2aac62",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-03-json-preview.png",
+      "sourceSHA256": "a49182b340c2f20787e09e8e92967af1b03f40e4b52ab3925aecd16143ad005e",
+      "finalSHA256": "e0a9e1fe39f7a4ddb2fd4cf4413a0d7a53753d2948ae3ea670a78902e1d029af",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-04-yaml-preview.png",
+      "sourceSHA256": "122ae7a5c56a508ea0066992bcf32bfd458c6686d26ff54a792d08c0d995a7df",
+      "finalSHA256": "f46abca3512d5d7caa9cc381765cf5ac1866584bc36fdd110f3229e46508b025",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-05-batch-import.png",
+      "sourceSHA256": "dcc2a5988fb0fdaa12d12a355dd913cda7ac2dfb12882c41ed6e50f21cda4618",
+      "finalSHA256": "2044f64a53a8da309f23a9e34ad2b46414a58e51ff83bfb2a7ca90a4e1f4a8a5",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-06-library.png",
+      "sourceSHA256": "e777e820516bedb4e8cb58ba7db0d1e2b5923c5034978c0878d74b82f90a168b",
+      "finalSHA256": "dea599b30a59cfeb168479093ef71108099a882614af3b126845f664ab339a66",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/iphone-01-html-report.png",
+      "sourceSHA256": "420d4039436240ca96d5f537d6c0095e044c26fe107997adae0258cbaa961b91",
+      "finalSHA256": "0b875ba46aa8742172db9c9828135fea87a322641663bd091786bcf4e67ba398",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/iphone-02-markdown-preview.png",
+      "sourceSHA256": "1dd797dadc47d478d4705f5fe843b40563d1fb71408a40d7593e91569056b36a",
+      "finalSHA256": "c1da2cef5a767b49d1fe088b9a64e01d6e7a0550085a7d93da371f288497a26f",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/iphone-03-json-preview.png",
+      "sourceSHA256": "5b935cf106c9df5ef3e65e84b98940f3055caf5bf50052005048e6360ab6a87f",
+      "finalSHA256": "4433c1484b135016fae592fbd743eefb970a9e124e7f80993db54e607321446b",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/iphone-04-yaml-preview.png",
+      "sourceSHA256": "07cac94a0c2fef7438833d34314aec346614b7aa5f9234b61377ec13d2fc9405",
+      "finalSHA256": "9e2fb980a3592ba747afc4f7cf9710bfc341b25a4cc9cdc23cbdbac1dfae1dcb",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/iphone-05-batch-import.png",
+      "sourceSHA256": "da6c0c64ed7f7d2fdd4ed19929e1bbbb1e1994b472cd0b49824991d82aa82b35",
+      "finalSHA256": "3e809eb8da3271af3924c06d30161ab19f50c0321adb881f3234ee45b16d5686",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/iphone-06-library.png",
+      "sourceSHA256": "fa8ba812265f4c89fb2b9439bbf228b7dd99f03a5e9ca27dbbd051a464fd264f",
+      "finalSHA256": "081493f0e990c6f26578cbd6b3f682dab9337659b9ae94d321a830de1beda20e",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-01-html-report.png",
+      "sourceSHA256": "cf44f8a25ca47eb34770ccdfa92d88e478d8fadbd16f52dba99e7c183dd3a419",
+      "finalSHA256": "0953e46201a897ed4146bf900bd20e7571edbc1a16a25855fde7a1c3c1602535",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-02-markdown-preview.png",
+      "sourceSHA256": "73db91169ed28ec6dda780591e2c5a7d36f87d61e9f656f84cc3c444149e52b7",
+      "finalSHA256": "3629d3ad76f739fbd2ad8db2a318dbbd2c288049241ed5a969a807bb0e66ad11",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-03-json-preview.png",
+      "sourceSHA256": "47a696daff40d8776097471ea8c1957fb9f0eacdf92394882406a2b75d3310c5",
+      "finalSHA256": "f03df1645c22ac5dd77b4fa002cd49d1fdf3e1497a251f54e3c1e239c56d7c5c",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-04-yaml-preview.png",
+      "sourceSHA256": "4904a648118cd18975385ec5e5e0dbff649f42c1b73a2df61090ef605d67d6a7",
+      "finalSHA256": "d92efc069d13adf511d93ad557d89562c9bbfb6dc6f6f878cdc0a3b0f8256fd0",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-05-batch-import.png",
+      "sourceSHA256": "920ed8ddb6dc430dd44783deb9a0831ddc35a83443af7d4dc4665d790a91542e",
+      "finalSHA256": "947303b9fee1dd5c5e72e4dbf34ed601a5d65cec309c45cf34cc61664e256c68",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-06-library.png",
+      "sourceSHA256": "07f93d41df7d805b0c6e61031147a1d1a433ad4dedb333d7a90786159a15d541",
+      "finalSHA256": "cb672783a517fbf81961557debd1825321eba912b237635b605f00902fe7cfd3",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    }
+  ],
+  "contactSheets": [
+    {
+      "path": "previews/en-US-iphone.png",
+      "sha256": "1965b3a2ca9d802f81aa2a922960db449a4390c9f7682dd05e749102328fa054",
+      "pixels": [
+        2270,
+        902
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "previews/zh-Hans-iphone.png",
+      "sha256": "0dc6b07458b6231a78fd5523c8606fc13859ad5636d62945e5d2a3690a58a7f4",
+      "pixels": [
+        2270,
+        902
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "previews/ja-iphone.png",
+      "sha256": "07b6b97a614a4274a5fc7fdc6df5f9b1ab3409893a82d7dbe03e09b29db0d56f",
+      "pixels": [
+        2270,
+        902
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "previews/zh-Hant-iphone.png",
+      "sha256": "80e2f10d4911fb4485c3b7710ba7e2af14d5d3743c0eeae6508ae1141174d05e",
+      "pixels": [
+        2270,
+        902
+      ],
+      "status": "PASS"
+    }
+  ],
+  "captureBinaryGroups": [
+    {
+      "executables": {
+        "HTMLMarkdownPreviewer": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+        "HTMLMarkdownPreviewer.debug.dylib": "f209cfa36ecc6dffe536bdcb6fd5b3f832a73540b34f1417f9ed759f731309dd"
+      },
+      "sources": [
+        "sources/en-US/iphone-01-html-report.png",
+        "sources/en-US/iphone-04-markdown-preview.png",
+        "sources/en-US/iphone-03-json-preview.png",
+        "sources/en-US/iphone-06-yaml-preview.png",
+        "sources/en-US/iphone-02-batch-import.png",
+        "sources/en-US/iphone-05-library.png",
+        "sources/zh-Hans/iphone-01-html-report.png",
+        "sources/zh-Hans/iphone-04-markdown-preview.png",
+        "sources/zh-Hans/iphone-03-json-preview.png",
+        "sources/zh-Hans/iphone-06-yaml-preview.png",
+        "sources/zh-Hans/iphone-02-batch-import.png",
+        "sources/zh-Hans/iphone-05-library.png",
+        "sources/ja/iphone-01-html-report.png",
+        "sources/ja/iphone-04-markdown-preview.png",
+        "sources/ja/iphone-03-json-preview.png",
+        "sources/ja/iphone-06-yaml-preview.png",
+        "sources/ja/iphone-02-batch-import.png",
+        "sources/ja/iphone-05-library.png",
+        "sources/zh-Hant/iphone-01-html-report.png",
+        "sources/zh-Hant/iphone-04-markdown-preview.png",
+        "sources/zh-Hant/iphone-03-json-preview.png",
+        "sources/zh-Hant/iphone-06-yaml-preview.png",
+        "sources/zh-Hant/iphone-02-batch-import.png",
+        "sources/zh-Hant/iphone-05-library.png"
+      ],
+      "sourceCount": 24
+    }
+  ],
+  "binaryScope": "Actual Debug1.8(13) captures after the separately reported viewportDimensions resize-race fix. Exact installed hashes remain per capture; neither final Release-binary identity nor archive equivalence is claimed.",
+  "independentReview": {
+    "source": "Release-owner live visual inspection of all four final ordinary iPhone contact sheets",
+    "languages": [
+      "en-US",
+      "zh-Hans",
+      "ja",
+      "zh-Hant"
+    ],
+    "result": "PASS",
+    "checks": [
+      "Actual HTML, Markdown, JSON, YAML, import-result and library scenes",
+      "Four localized marketing headlines",
+      "Imported4/skipped0/failed0 results",
+      "No loading state, clipping or occlusion"
+    ],
+    "scope": "Independent review report recorded against these exact image hashes; not a remote upload or archive claim."
+  }
+}

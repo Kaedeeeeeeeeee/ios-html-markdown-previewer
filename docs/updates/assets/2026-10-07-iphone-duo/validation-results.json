@@ -1,0 +1,517 @@
+{
+  "date": "2026-10-07",
+  "scope": "Latest result per targeted test across the recorded runs; this is not a single full test-suite execution.",
+  "toolchain": "Xcode 27.0 (27A266a), iOS 27.0 SDK, deployment target iOS 17.0",
+  "appVersion": "1.7 (12)",
+  "duoValidation": {
+    "manifest": "duo-validation-results.json",
+    "status": "native_acceptance_complete_with_automation_geometry_limit",
+    "blockingReason": null,
+    "latestDuoTests": {
+      "total": 13,
+      "passed": 12,
+      "failed": 1
+    },
+    "scope": "Separate actual-Duo manifest preserves six completed runs and root-verified native scenes. Latest per-test aggregate is 12 passed / 1 failed, not a single full-suite run. Equivalent native rotation, both system Split View placements, focus and share migration passed; exact generation/loading rotation and untriggered overflow remain documented coverage limits. Final build passed and all seven existing simulators are Shutdown. Earlier records in this file remain unchanged."
+  },
+  "latestPassedCounts": {
+    "unit": 43,
+    "UI": 10
+  },
+  "latestNonPassing": [],
+  "runs": [
+    {
+      "id": "test_sim_2026-10-06T17-00-19-409Z_pid26205_f2263996.xcresult",
+      "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-00-19-409Z_pid26205_f2263996.xcresult",
+      "result": "Failed",
+      "finishTime": 1791306293.841,
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "devices": [
+        {
+          "architecture": "arm64",
+          "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+          "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+          "modelName": "iPhone 16",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        }
+      ]
+    },
+    {
+      "id": "test_sim_2026-10-06T17-14-19-590Z_pid37438_7903fae8.xcresult",
+      "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-14-19-590Z_pid37438_7903fae8.xcresult",
+      "result": "Passed",
+      "finishTime": 1791306919.022,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "devices": [
+        {
+          "architecture": "arm64",
+          "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+          "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+          "modelName": "iPhone 16",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        }
+      ]
+    },
+    {
+      "id": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "result": "Failed",
+      "finishTime": 1791307277.971,
+      "passed": 45,
+      "failed": 3,
+      "skipped": 0,
+      "devices": [
+        {
+          "architecture": "arm64",
+          "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+          "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+          "modelName": "iPhone 16",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        }
+      ]
+    },
+    {
+      "id": "test_sim_2026-10-06T17-22-20-173Z_pid26205_14fcd655.xcresult",
+      "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-22-20-173Z_pid26205_14fcd655.xcresult",
+      "result": "Failed",
+      "finishTime": 1791307423.376,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "devices": [
+        {
+          "architecture": "arm64",
+          "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+          "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+          "modelName": "iPhone 16",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        }
+      ]
+    },
+    {
+      "id": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "xcresult": "/tmp/html-reader-late-resize-final-regression-20261007.xcresult",
+      "result": "Passed",
+      "finishTime": 1791307912.41,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "devices": [
+        {
+          "architecture": "arm64",
+          "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+          "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+          "modelName": "iPhone 16",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        }
+      ]
+    },
+    {
+      "id": "test_sim_2026-10-06T17-33-56-742Z_pid26205_097f5864.xcresult",
+      "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-33-56-742Z_pid26205_097f5864.xcresult",
+      "result": "Passed",
+      "finishTime": 1791308109.936,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "devices": [
+        {
+          "architecture": "arm64",
+          "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+          "deviceName": "Passnote ASO iPad Pro 12.9",
+          "modelName": "iPad Pro (12.9-inch) (6th generation)",
+          "osBuildNumber": "22F77",
+          "osVersion": "18.5",
+          "platform": "iOS Simulator"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "test": "BatchImportUITests/testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "JSONPreviewUITests/testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-00-19-409Z_pid26205_f2263996.xcresult",
+      "finishTime": 1791306293.841
+    },
+    {
+      "test": "ReadingLibraryUITests/testIPadWideLibrarySelectionAndReaderSearchSurviveRotation()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-33-56-742Z_pid26205_097f5864.xcresult",
+      "finishTime": 1791308109.936
+    },
+    {
+      "test": "ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-00-19-409Z_pid26205_f2263996.xcresult",
+      "finishTime": 1791306293.841
+    },
+    {
+      "test": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "SmokeUITests/testBuiltInSamplesAndSettingsSmoke()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-14-19-590Z_pid37438_7903fae8.xcresult",
+      "finishTime": 1791306919.022
+    },
+    {
+      "test": "SmokeUITests/testPreviewShareSheetShowsVisibleOptions()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-00-19-409Z_pid26205_f2263996.xcresult",
+      "finishTime": 1791306293.841
+    },
+    {
+      "test": "YAMLPreviewUITests/testStructureSourceSearchMultipleDocumentsAndReopen()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ZIPNavigationUITests/testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch()",
+      "target": "UI",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "HTMLAppearanceTests/testOpticalZoomRestoresVisualReadingPositionOnReopen()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testOpticalZoomSurvivesHeightOnlyViewportChanges()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testOpticalZoomUsesNaturalFitForDocumentsWithoutViewport()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testReaderZoomDoesNotWeakenStrictContentSecurityPolicy()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testReadingStylePreservesAuthorCascadeAndConstructedStyleSheets()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testSafePreviewInstallsReadingStyleWithoutEnablingDocumentScripts()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testSavedZoomLoadsWithTheSameTextBaselineAndResetRestoresFreshSize()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLAppearanceTests/testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testAnotherLocalPageDoesNotOverwriteTheEntryPagePosition()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testDocumentJavaScriptPreservesPromisesArgumentsErrorsAndIsolatedWorld()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testLatestSearchWinsAndClearingSearchRemovesResults()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testMarkdownAtomicSearchUsesSourceOnceAndIgnoresReaderControls()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testMarkdownSearchSpansInlineFormulaBoundariesWithoutInventingWhitespace()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testMarkdownStructuralPositionSurvivesTypographyReflowAndRelaunch()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testNestedVerticalAndHorizontalScrollingRevealsMatchAndRestoresPosition()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testPDFExportTemporarilySuspendsActiveSearchHighlightsAndRestoresThem()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testRestoresScrollPositionAndUpdatesItAfterScrollAndOutlineNavigation()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testSafePreviewSearchAndOutlineDoNotEnablePageScriptsOrExternalResources()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testVisibleLineBreaksFormSearchBoundariesWithoutChangingTextNodes()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "HTMLReadingTests/testVisibleSelectedSearchResultRemainsVisibleAfterViewportShrinks()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "html-reader-late-resize-final-regression-20261007.xcresult",
+      "finishTime": 1791307912.41
+    },
+    {
+      "test": "MarkdownReadingTests/testNativeMarkdownPreservesBlockFractionAcrossViewportReflow()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testNativeVisibleSelectedMatchSurvivesShorterAndNarrowerViewport()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-22-20-173Z_pid26205_14fcd655.xcresult",
+      "finishTime": 1791307423.376
+    },
+    {
+      "test": "MarkdownReadingTests/testRepeatedHeadingsHaveDistinctDestinationsIncludingNestedHeadings()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testSearchCoversQuotedTextNestedListsTablesAndCodeInReadingOrder()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testSearchIsLiteralNonOverlappingAndIgnoresEmptyQueries()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testStoredAnchorRoundTripsWithinBlockPositionAndRejectsForeignAnchors()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testTextKitLocatesHorizontalCodeHitAndAlignedTableCell()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testTextKitLocatesTwoMatchesFarApartWithinOneLongParagraph()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testTextKitUsesUnicodeRangesAndReflowsCJKAtTheActualColumnWidth()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "MarkdownReadingTests/testUnicodeAndDiacriticMatchesReturnRangesInOriginalText()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testDisabledTestsAndMissingVersionNeverRequest()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testEngagementPersistsButLaunchAloneDoesNotCreateRequest()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testFiveReadingsMustAlsoSpanThreeDates()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testForegroundClockPausesAndRepeatedActiveSignalsDoNotRestartIt()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testLocalDatesRespectTimeZoneAcrossMidnight()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testNewVersionRequiresAdditionalEngagementAndFullCooldown()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testOnlyCurrentOpportunityCanBeConsumedAndSameVersionNeverRepeats()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testSameDocumentCountsOncePerLocalDate()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testShortReadingsSamplesAndInvalidDurationsDoNotCount()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    },
+    {
+      "test": "ReviewPromptTests/testThreeDatesAreInsufficientBeforeFifthReading()",
+      "target": "unit",
+      "result": "Passed",
+      "run": "test_sim_2026-10-06T17-16-22-601Z_pid26205_36a8fc53.xcresult",
+      "finishTime": 1791307277.971
+    }
+  ]
+}

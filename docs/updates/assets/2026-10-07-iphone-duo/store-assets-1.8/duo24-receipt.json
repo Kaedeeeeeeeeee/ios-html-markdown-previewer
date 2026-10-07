@@ -1,0 +1,3341 @@
+{
+  "appId": "6785794966",
+  "versionString": "1.8",
+  "versionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+  "approvedPlanSha256": "2f99c2f037e58f8be4853a43765af3d3878615538317bbb6693d2c2d1f50e9f6",
+  "completed": true,
+  "uploads": [
+    {
+      "imageId": "2b400019-4770-8396-8001-aa91a763ed99",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/en-US/duo-01-html-report.png",
+        "fileName": "duo-01-html-report.png",
+        "fileSize": 2665826,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "ec8ef6760ab94c4ada8e834d224660a363f0c7c6eab4d80cbf2c5e3a47763b84"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "24a0e3c50bf5924530eaa5f4f4ce59944cc856d23f5531e1a2180952b1748909",
+        "sourcePixelsSha256": "ec2422ba488b974c1590b41cbb33d12ccb70fd6d78a26d4532e17af153ad13a6",
+        "deliveredPixelsSha256": "ec2422ba488b974c1590b41cbb33d12ccb70fd6d78a26d4532e17af153ad13a6",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      },
+      "resumeReadyMismatchObservations": []
+    },
+    {
+      "imageId": "52000019-4770-8396-8018-9e5beff253f6",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/en-US/duo-02-markdown-preview.png",
+        "fileName": "duo-02-markdown-preview.png",
+        "fileSize": 1380325,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "c7b16ee67ee5838b2fc6e04c0da29e85370d966afb189a229c2d23eb3aad9b68"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "589b36a68d19a3e5ae74466cfa5f7227e854660fb092fb4ce1cf313af49f6fe7",
+        "sourcePixelsSha256": "036bea5b2233ed7b2a254ad93f11becb34a28326bb451ee758c3710c71c573db",
+        "deliveredPixelsSha256": "036bea5b2233ed7b2a254ad93f11becb34a28326bb451ee758c3710c71c573db",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      },
+      "resumeReadyMismatchObservations": []
+    },
+    {
+      "imageId": "2f400019-4770-8396-8024-7287cb59cd68",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/en-US/duo-03-json-preview.png",
+        "fileName": "duo-03-json-preview.png",
+        "fileSize": 2156470,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "07ff2c8f1f7411e4077c7b00373d21f58ff30a93ebcb7bc7d848c224a14f03b3"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "b078dcf6722459bb5d6454937c7f0cb85cbd18bda4d287ace2ab082c7a093b1d",
+        "sourcePixelsSha256": "f87737e6e3c25c3fc714b38b0f2ddf8ece387bf3597b7c243b411ff75406e64a",
+        "deliveredPixelsSha256": "f87737e6e3c25c3fc714b38b0f2ddf8ece387bf3597b7c243b411ff75406e64a",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      },
+      "resumeReadyMismatchObservations": []
+    },
+    {
+      "imageId": "73400019-4770-8396-8026-993dd121c747",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/en-US/duo-04-yaml-preview.png",
+        "fileName": "duo-04-yaml-preview.png",
+        "fileSize": 1338974,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "3af974f71a12b95364b2e5e2d2f5dd0fdb6aeba66ca726590400fc8199a9b2ef"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "eab6401f23f87a7f99b4e6917b3b363ea59036433cda8cf3aca1dc9df0c5780f",
+        "sourcePixelsSha256": "558b7df01589f3de07aec632c6f3591b4494eb66067501df9249819a2e826105",
+        "deliveredPixelsSha256": "558b7df01589f3de07aec632c6f3591b4494eb66067501df9249819a2e826105",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      },
+      "resumeReadyMismatchObservations": []
+    },
+    {
+      "imageId": "cec00019-4770-8396-8031-72dbf37b5921",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/en-US/duo-05-batch-import.png",
+        "fileName": "duo-05-batch-import.png",
+        "fileSize": 1277825,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "ec2e4c91e593df5e1a9809672fd7c559aa7fa644a75e1816c0154237d8ec2c62"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "1cdca748f322b5ff05122a711ed540028a040a250805b39df1b9127621372503",
+        "sourcePixelsSha256": "a31b850f19951a862bc904ad9c419c12431444857c78aee891f6e384ee6084a0",
+        "deliveredPixelsSha256": "a31b850f19951a862bc904ad9c419c12431444857c78aee891f6e384ee6084a0",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "05400019-4770-8396-803e-df2f686c5135",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/en-US/duo-06-library.png",
+        "fileName": "duo-06-library.png",
+        "fileSize": 2859033,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "5192779c9b6f31bb82fae0c454570ab6c8b5049c179c92b5afabd94720d89b7a"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "a28630d17831e25b689ba6cce7747fa2aab8f5dcf203e989ebed66ba23fdff93",
+        "sourcePixelsSha256": "e5046acf712adb0d45579bdc049afd39e57c5591511d028e43d1760e5bfba689",
+        "deliveredPixelsSha256": "e5046acf712adb0d45579bdc049afd39e57c5591511d028e43d1760e5bfba689",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hans/duo-01-html-report.png",
+        "fileName": "duo-01-html-report.png",
+        "fileSize": 2635591,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "bf24dc711604b468bef6b6546a06d6e1f96921660ac7861490cc23ebf0576813"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "readyMismatchObservations": [
+        {
+          "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+          "state": "COMPLETE",
+          "specId": null,
+          "width": null,
+          "height": null,
+          "fileSize": 2635591
+        },
+        {
+          "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+          "state": "COMPLETE",
+          "specId": null,
+          "width": null,
+          "height": null,
+          "fileSize": 2635591
+        }
+      ],
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "6ca833fc3fddd0aab9b1642a5a6e5a9f2e76e7cb7b77a90e1f13e89c7dd0f53a",
+        "sourcePixelsSha256": "a80d64a91a5b1637660e3a4d2596c9eb9a2cf840ca9cabd7ff4fde9746a7dd82",
+        "deliveredPixelsSha256": "a80d64a91a5b1637660e3a4d2596c9eb9a2cf840ca9cabd7ff4fde9746a7dd82",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "77400019-4770-8396-8006-6718509ee819",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hans/duo-02-markdown-preview.png",
+        "fileName": "duo-02-markdown-preview.png",
+        "fileSize": 1385566,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "451183e63a6933aeb3d7e6d21c74d5e4802700cec580e7f5de238041e87d9801"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "readyMismatchObservations": [
+        {
+          "imageId": "77400019-4770-8396-8006-6718509ee819",
+          "state": "COMPLETE",
+          "specId": null,
+          "width": null,
+          "height": null,
+          "fileSize": 1385566
+        }
+      ],
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "36768d3a06dfb19ffc6cfc5fc810b9a807c307470882f001295174a865ba1f1d",
+        "sourcePixelsSha256": "2bf9cc66e491fd7a0d5b0b67e28188150498f73bfccb17ac3b62c62b1fbf230c",
+        "deliveredPixelsSha256": "2bf9cc66e491fd7a0d5b0b67e28188150498f73bfccb17ac3b62c62b1fbf230c",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "6cc00019-4770-8396-8027-0418cf86d931",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hans/duo-03-json-preview.png",
+        "fileName": "duo-03-json-preview.png",
+        "fileSize": 2159382,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "7a558939731db42b8427bda2286383207ee97c5fb75adda69579412a276e83a2"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "5bf19e558eeb525803e570acacd740aa1591f1a2862984723e93edd805893efc",
+        "sourcePixelsSha256": "28e80210bebd743a154baff1ea5a2addcb7359a91084af263478e97c417019b1",
+        "deliveredPixelsSha256": "28e80210bebd743a154baff1ea5a2addcb7359a91084af263478e97c417019b1",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "98c00019-4770-8396-8008-8047e5cf2275",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hans/duo-04-yaml-preview.png",
+        "fileName": "duo-04-yaml-preview.png",
+        "fileSize": 1326580,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "9dcbb027c6ce4f2dc3b3421ec4d633601d234821d3c4912f7709a818f737ea75"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "401528ecd4cebc68eadee649b0e6a909eb7c4c13b59df38e4a2420a84ebf20d4",
+        "sourcePixelsSha256": "2ff361fc5e4afb66ff6f9e3025825c6aba37ccbecaf127738510a909f067985a",
+        "deliveredPixelsSha256": "2ff361fc5e4afb66ff6f9e3025825c6aba37ccbecaf127738510a909f067985a",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "d4000019-4770-8396-8009-09aaddec8b0c",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hans/duo-05-batch-import.png",
+        "fileName": "duo-05-batch-import.png",
+        "fileSize": 1276187,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "1e66957d4fcce10b0b01e0f483e8a589623cd8f325a44707607f2b3bdafcea50"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "readyMismatchObservations": [
+        {
+          "imageId": "d4000019-4770-8396-8009-09aaddec8b0c",
+          "state": "COMPLETE",
+          "specId": null,
+          "width": null,
+          "height": null,
+          "fileSize": 1276187
+        }
+      ],
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "fd476975e03b67b47985d05c5c7cf63f981d677966c3f3f719d3b4baffb16640",
+        "sourcePixelsSha256": "c16985c04b9a8ebcf3f442bdee7160e6a378583533c6e0f51e4294b4331a1727",
+        "deliveredPixelsSha256": "c16985c04b9a8ebcf3f442bdee7160e6a378583533c6e0f51e4294b4331a1727",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "19400019-4770-8396-8029-a310122aec3a",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hans/duo-06-library.png",
+        "fileName": "duo-06-library.png",
+        "fileSize": 2812017,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "0be14c662100d22b935069ca4d498d3970bb794e3f596634fb55602f7b60d670"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "236c00b2c97d15663539416549323794dd83d5f9f98ba608d62c2ed2304d290f",
+        "sourcePixelsSha256": "6bc531906d5b7e1b57b6a743d454c4cebfef87660dc1353781490cbfb76c914d",
+        "deliveredPixelsSha256": "6bc531906d5b7e1b57b6a743d454c4cebfef87660dc1353781490cbfb76c914d",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "25000019-4770-8396-8030-7a83af326e70",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/ja/duo-01-html-report.png",
+        "fileName": "duo-01-html-report.png",
+        "fileSize": 2671230,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "61070168cbd1d16767b0bf11d0ff1764ecda4b02038fc026878916822eebdd29"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "bcf117140d4f0e8c495fb0e3fb318084b8f4a8ab28328b9b3160fdb11eb1d138",
+        "sourcePixelsSha256": "95e66488a3b27b74361958183b9c9859104acf9cf6a6e3a4e75c68170fa646bc",
+        "deliveredPixelsSha256": "95e66488a3b27b74361958183b9c9859104acf9cf6a6e3a4e75c68170fa646bc",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "ae000019-4770-8396-8023-478e3b97331a",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/ja/duo-02-markdown-preview.png",
+        "fileName": "duo-02-markdown-preview.png",
+        "fileSize": 1367090,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "ef1f71a67fe09b07874c8327f27c4bf46c2e4c9f6a488b17ca760cbc3ed118be"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "f2b8acbd9b99c088cd6acee33f6547ee27221d1e95e78d7087ea461c42b8b720",
+        "sourcePixelsSha256": "1016d472f83e9e74cf07c497cc1516b865dd5f3a89072e72c62a91efa883e745",
+        "deliveredPixelsSha256": "1016d472f83e9e74cf07c497cc1516b865dd5f3a89072e72c62a91efa883e745",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "7d000019-4770-8396-8002-6d9a5215eec7",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/ja/duo-03-json-preview.png",
+        "fileName": "duo-03-json-preview.png",
+        "fileSize": 2169715,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "3f19cb4618bc530ca6cb88c0c17b3b6359c260ac30667fe251512bf566ddd00c"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "readyMismatchObservations": [
+        {
+          "imageId": "7d000019-4770-8396-8002-6d9a5215eec7",
+          "state": "COMPLETE",
+          "specId": null,
+          "width": null,
+          "height": null,
+          "fileSize": 2169715
+        }
+      ],
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "5d32c8893bcac075acabd108c56779acca25efcf4ae4e188dda46eac26e797ef",
+        "sourcePixelsSha256": "16cf2b108e4619608165f128aa04755b344eb0743b8d3a94b13bad8408a00e75",
+        "deliveredPixelsSha256": "16cf2b108e4619608165f128aa04755b344eb0743b8d3a94b13bad8408a00e75",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "c2800019-4770-8396-802a-248cc92c96f2",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/ja/duo-04-yaml-preview.png",
+        "fileName": "duo-04-yaml-preview.png",
+        "fileSize": 1337941,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "521a6e60cc5802b999afd05c99f18a1d291d5e64cc36b7c042c3a93eea555617"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "28e70fad9e4d6b90c54517579738e08f4ac60cdc52ad864bb34623feb7fcd0ce",
+        "sourcePixelsSha256": "9ad4b514a104a78eccda6faac70ea2085ae7c3d7699a22ff94acc05d4f74fbd7",
+        "deliveredPixelsSha256": "9ad4b514a104a78eccda6faac70ea2085ae7c3d7699a22ff94acc05d4f74fbd7",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "e9000019-4770-8396-801d-07f55d900f73",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/ja/duo-05-batch-import.png",
+        "fileName": "duo-05-batch-import.png",
+        "fileSize": 1298616,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "e12ccfa46ba09ec5593ae182032a7c94ada145ac34ff3ddf144aaabccb9da29d"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "3005fb780c275da2276ae942030fc0c5f50741c7794938cc6d5bd931996eb876",
+        "sourcePixelsSha256": "3779ac03bb3cea61744a7265225d071dfd76d8546d7f2719574692dee1990a3b",
+        "deliveredPixelsSha256": "3779ac03bb3cea61744a7265225d071dfd76d8546d7f2719574692dee1990a3b",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "fcc00019-4770-8396-8027-f749948e4727",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/ja/duo-06-library.png",
+        "fileName": "duo-06-library.png",
+        "fileSize": 2871084,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "0485f4d40d4a04c432857b86d2be1f79a0e5bf526a1eaafe8e08f182c168da43"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "4fd58d7fc2433eb690527152180ca3f7d6cefa0137ec57bc9512ebbd81518641",
+        "sourcePixelsSha256": "24c0e487197651b334ab1daa566c1c0530aef80863dd9e2d9a399dc1de08681f",
+        "deliveredPixelsSha256": "24c0e487197651b334ab1daa566c1c0530aef80863dd9e2d9a399dc1de08681f",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "58c00019-4770-8396-8000-09b2f942c5ee",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hant/duo-01-html-report.png",
+        "fileName": "duo-01-html-report.png",
+        "fileSize": 2646761,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "98c6c62eb8b607895b61399c8bec10419191fc1f56959adfd652f53202051e03"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "cd35e73260a1c727732f4f1636954a281a1fb9675c8e7dd3132ba8c5322f938c",
+        "sourcePixelsSha256": "6d66f48a8572da3ca99df6bab3871f095b2c829ea5eb6172c1c25b4b6f27aab8",
+        "deliveredPixelsSha256": "6d66f48a8572da3ca99df6bab3871f095b2c829ea5eb6172c1c25b4b6f27aab8",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "d4800019-4770-8396-8031-f7b5cac50d5a",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hant/duo-02-markdown-preview.png",
+        "fileName": "duo-02-markdown-preview.png",
+        "fileSize": 1399391,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "a6d1363ecac926ad41f4056bb37bde2d888b39b60dac36535ed995ae8104c4aa"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "fb645a45afafbf4eacbea28166a4ee2b8158ae068daec68fb632465d728b3acf",
+        "sourcePixelsSha256": "18f45eb8a6c459f97bde56043cc2a27428ea42905b6e96b4c1a672ec9d900262",
+        "deliveredPixelsSha256": "18f45eb8a6c459f97bde56043cc2a27428ea42905b6e96b4c1a672ec9d900262",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "87800019-4770-8396-8024-210b2424c8d3",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hant/duo-03-json-preview.png",
+        "fileName": "duo-03-json-preview.png",
+        "fileSize": 2162088,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "1a6e4d573d5c44396920d316c2877017876aa4d76b396300178d760566ab7e79"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "readyMismatchObservations": [
+        {
+          "imageId": "87800019-4770-8396-8024-210b2424c8d3",
+          "state": "COMPLETE",
+          "specId": null,
+          "width": null,
+          "height": null,
+          "fileSize": 2162088
+        }
+      ],
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "00e2c5b844e0f60641be29939557953c916ffeea6697709285e34945cfa244f8",
+        "sourcePixelsSha256": "22c8b78d676694095b0a2cea86eadde3064bb7e110e1556c12d4b6804a933dfe",
+        "deliveredPixelsSha256": "22c8b78d676694095b0a2cea86eadde3064bb7e110e1556c12d4b6804a933dfe",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    },
+    {
+      "imageId": "43400019-4770-8396-801e-cd0998ddfddc",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hant/duo-04-yaml-preview.png",
+        "fileName": "duo-04-yaml-preview.png",
+        "fileSize": 1329909,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "3b200955606f3f4fdd6d1f34001f2d623683dacfe468a201cb99585fb14223d7"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "6ae6c7a7280536304d34eb13184f88af8efd1e975ff137fab7e9358ae1c6d466",
+        "sourcePixelsSha256": "70d00e2ffe9cb31c673e569fce0063366ec2245b3ca2e8606d0dcfd5c24692c5",
+        "deliveredPixelsSha256": "70d00e2ffe9cb31c673e569fce0063366ec2245b3ca2e8606d0dcfd5c24692c5",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "a7000019-4770-8396-8013-06a7fa704a72",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hant/duo-05-batch-import.png",
+        "fileName": "duo-05-batch-import.png",
+        "fileSize": 1281767,
+        "width": 1398,
+        "height": 2034,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "b2c17ddcc5aa86eee3fcd0a46763ea65ce76a6f1d2b23f8eef5e3206663877b2"
+      },
+      "allowedSpecIds": [
+        "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "205e7ab6-a23a-4ee2-b327-0a99ec2a2520",
+      "delivery": {
+        "deliveredBytesSha256": "04612d101cd712d57191629b85098fefacf101aef52de3bd4103d520fdcce251",
+        "sourcePixelsSha256": "9fa3327ad57218c25da0f5c762fa9e787805d68ba0f41e4980eac862064c0858",
+        "deliveredPixelsSha256": "9fa3327ad57218c25da0f5c762fa9e787805d68ba0f41e4980eac862064c0858",
+        "pixelExact": true,
+        "dimensions": [
+          1398,
+          2034
+        ]
+      }
+    },
+    {
+      "imageId": "5ac00019-4770-8396-801c-d5dc8039f4d7",
+      "source": {
+        "path": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials/screenshots/zh-Hant/duo-06-library.png",
+        "fileName": "duo-06-library.png",
+        "fileSize": 2835970,
+        "width": 2853,
+        "height": 2007,
+        "mimeType": "image/png",
+        "hasAlpha": false,
+        "sha256": "28c21a2340bd1993b858d9f3a8b854d742f5aeb47583ce044d05fee8c7506768"
+      },
+      "allowedSpecIds": [
+        "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+      ],
+      "stage": "validated",
+      "state": "PREPARE_FOR_SUBMISSION",
+      "specId": "b83915b8-5b87-4e63-bba5-ab3a0c439862",
+      "delivery": {
+        "deliveredBytesSha256": "791df5915b7711214dcb3e60d140994c151180fd327a4e15edfdad06f294afb1",
+        "sourcePixelsSha256": "e81e1d33a0d18e1d8d890dfd622ecad95b36c8e5709cd502bd196478940ef85f",
+        "deliveredPixelsSha256": "e81e1d33a0d18e1d8d890dfd622ecad95b36c8e5709cd502bd196478940ef85f",
+        "pixelExact": true,
+        "dimensions": [
+          2853,
+          2007
+        ]
+      }
+    }
+  ],
+  "operations": [
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-01-html-report.png",
+              "fileSize": 2665826,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-ec8ef6760ab94c4a"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "ec8ef6760ab94c4ada8e834d224660a363f0c7c6eab4d80cbf2c5e3a47763b84"
+      },
+      "status": "completed",
+      "resultId": "2b400019-4770-8396-8001-aa91a763ed99"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/2b400019-4770-8396-8001-aa91a763ed99",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "2b400019-4770-8396-8001-aa91a763ed99",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "2b400019-4770-8396-8001-aa91a763ed99"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-02-markdown-preview.png",
+              "fileSize": 1380325,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-c7b16ee67ee5838b"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "c7b16ee67ee5838b2fc6e04c0da29e85370d966afb189a229c2d23eb3aad9b68"
+      },
+      "status": "completed",
+      "resultId": "52000019-4770-8396-8018-9e5beff253f6"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/52000019-4770-8396-8018-9e5beff253f6",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "52000019-4770-8396-8018-9e5beff253f6",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "52000019-4770-8396-8018-9e5beff253f6"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-03-json-preview.png",
+              "fileSize": 2156470,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-07ff2c8f1f7411e4"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "07ff2c8f1f7411e4077c7b00373d21f58ff30a93ebcb7bc7d848c224a14f03b3"
+      },
+      "status": "completed",
+      "resultId": "2f400019-4770-8396-8024-7287cb59cd68"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/2f400019-4770-8396-8024-7287cb59cd68",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "2f400019-4770-8396-8024-7287cb59cd68",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "2f400019-4770-8396-8024-7287cb59cd68"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-04-yaml-preview.png",
+              "fileSize": 1338974,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-3af974f71a12b953"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "3af974f71a12b95364b2e5e2d2f5dd0fdb6aeba66ca726590400fc8199a9b2ef"
+      },
+      "status": "completed",
+      "resultId": "73400019-4770-8396-8026-993dd121c747"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/73400019-4770-8396-8026-993dd121c747",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "73400019-4770-8396-8026-993dd121c747",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "73400019-4770-8396-8026-993dd121c747"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-05-batch-import.png",
+              "fileSize": 1277825,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-ec2e4c91e593df5e"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "ec2e4c91e593df5e1a9809672fd7c559aa7fa644a75e1816c0154237d8ec2c62"
+      },
+      "status": "completed",
+      "resultId": "cec00019-4770-8396-8031-72dbf37b5921"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/cec00019-4770-8396-8031-72dbf37b5921",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "cec00019-4770-8396-8031-72dbf37b5921",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "cec00019-4770-8396-8031-72dbf37b5921"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-06-library.png",
+              "fileSize": 2859033,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-5192779c9b6f31bb"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "5192779c9b6f31bb82fae0c454570ab6c8b5049c179c92b5afabd94720d89b7a"
+      },
+      "status": "completed",
+      "resultId": "05400019-4770-8396-803e-df2f686c5135"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/05400019-4770-8396-803e-df2f686c5135",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "05400019-4770-8396-803e-df2f686c5135",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "05400019-4770-8396-803e-df2f686c5135"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-01-html-report.png",
+              "fileSize": 2635591,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-bf24dc711604b468"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "bf24dc711604b468bef6b6546a06d6e1f96921660ac7861490cc23ebf0576813"
+      },
+      "status": "completed",
+      "resultId": "e6400019-4770-8396-8039-23bdaaffea0a"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/e6400019-4770-8396-8039-23bdaaffea0a",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "e6400019-4770-8396-8039-23bdaaffea0a",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "e6400019-4770-8396-8039-23bdaaffea0a"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-02-markdown-preview.png",
+              "fileSize": 1385566,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-451183e63a6933ae"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "451183e63a6933aeb3d7e6d21c74d5e4802700cec580e7f5de238041e87d9801"
+      },
+      "status": "completed",
+      "resultId": "77400019-4770-8396-8006-6718509ee819"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/77400019-4770-8396-8006-6718509ee819",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "77400019-4770-8396-8006-6718509ee819",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "77400019-4770-8396-8006-6718509ee819"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-03-json-preview.png",
+              "fileSize": 2159382,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-7a558939731db42b"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "7a558939731db42b8427bda2286383207ee97c5fb75adda69579412a276e83a2"
+      },
+      "status": "completed",
+      "resultId": "6cc00019-4770-8396-8027-0418cf86d931"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/6cc00019-4770-8396-8027-0418cf86d931",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "6cc00019-4770-8396-8027-0418cf86d931",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "6cc00019-4770-8396-8027-0418cf86d931"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-04-yaml-preview.png",
+              "fileSize": 1326580,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-9dcbb027c6ce4f2d"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "9dcbb027c6ce4f2dc3b3421ec4d633601d234821d3c4912f7709a818f737ea75"
+      },
+      "status": "completed",
+      "resultId": "98c00019-4770-8396-8008-8047e5cf2275"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/98c00019-4770-8396-8008-8047e5cf2275",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "98c00019-4770-8396-8008-8047e5cf2275",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "98c00019-4770-8396-8008-8047e5cf2275"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-05-batch-import.png",
+              "fileSize": 1276187,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-1e66957d4fcce10b"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "1e66957d4fcce10b0b01e0f483e8a589623cd8f325a44707607f2b3bdafcea50"
+      },
+      "status": "completed",
+      "resultId": "d4000019-4770-8396-8009-09aaddec8b0c"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/d4000019-4770-8396-8009-09aaddec8b0c",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "d4000019-4770-8396-8009-09aaddec8b0c",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "d4000019-4770-8396-8009-09aaddec8b0c"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-06-library.png",
+              "fileSize": 2812017,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-0be14c662100d22b"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "0be14c662100d22b935069ca4d498d3970bb794e3f596634fb55602f7b60d670"
+      },
+      "status": "completed",
+      "resultId": "19400019-4770-8396-8029-a310122aec3a"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/19400019-4770-8396-8029-a310122aec3a",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "19400019-4770-8396-8029-a310122aec3a",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "19400019-4770-8396-8029-a310122aec3a"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-01-html-report.png",
+              "fileSize": 2671230,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-61070168cbd1d167"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "61070168cbd1d16767b0bf11d0ff1764ecda4b02038fc026878916822eebdd29"
+      },
+      "status": "completed",
+      "resultId": "25000019-4770-8396-8030-7a83af326e70"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/25000019-4770-8396-8030-7a83af326e70",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "25000019-4770-8396-8030-7a83af326e70",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "25000019-4770-8396-8030-7a83af326e70"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-02-markdown-preview.png",
+              "fileSize": 1367090,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-ef1f71a67fe09b07"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "ef1f71a67fe09b07874c8327f27c4bf46c2e4c9f6a488b17ca760cbc3ed118be"
+      },
+      "status": "completed",
+      "resultId": "ae000019-4770-8396-8023-478e3b97331a"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/ae000019-4770-8396-8023-478e3b97331a",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "ae000019-4770-8396-8023-478e3b97331a",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "ae000019-4770-8396-8023-478e3b97331a"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-03-json-preview.png",
+              "fileSize": 2169715,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-3f19cb4618bc530c"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "3f19cb4618bc530ca6cb88c0c17b3b6359c260ac30667fe251512bf566ddd00c"
+      },
+      "status": "completed",
+      "resultId": "7d000019-4770-8396-8002-6d9a5215eec7"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/7d000019-4770-8396-8002-6d9a5215eec7",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "7d000019-4770-8396-8002-6d9a5215eec7",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "7d000019-4770-8396-8002-6d9a5215eec7"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-04-yaml-preview.png",
+              "fileSize": 1337941,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-521a6e60cc5802b9"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "521a6e60cc5802b999afd05c99f18a1d291d5e64cc36b7c042c3a93eea555617"
+      },
+      "status": "completed",
+      "resultId": "c2800019-4770-8396-802a-248cc92c96f2"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/c2800019-4770-8396-802a-248cc92c96f2",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "c2800019-4770-8396-802a-248cc92c96f2",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "c2800019-4770-8396-802a-248cc92c96f2"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-05-batch-import.png",
+              "fileSize": 1298616,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-e12ccfa46ba09ec5"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "e12ccfa46ba09ec5593ae182032a7c94ada145ac34ff3ddf144aaabccb9da29d"
+      },
+      "status": "completed",
+      "resultId": "e9000019-4770-8396-801d-07f55d900f73"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/e9000019-4770-8396-801d-07f55d900f73",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "e9000019-4770-8396-801d-07f55d900f73",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "e9000019-4770-8396-801d-07f55d900f73"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-06-library.png",
+              "fileSize": 2871084,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-0485f4d40d4a04c4"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "0485f4d40d4a04c432857b86d2be1f79a0e5bf526a1eaafe8e08f182c168da43"
+      },
+      "status": "completed",
+      "resultId": "fcc00019-4770-8396-8027-f749948e4727"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/fcc00019-4770-8396-8027-f749948e4727",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "fcc00019-4770-8396-8027-f749948e4727",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "fcc00019-4770-8396-8027-f749948e4727"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-01-html-report.png",
+              "fileSize": 2646761,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-98c6c62eb8b60789"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "98c6c62eb8b607895b61399c8bec10419191fc1f56959adfd652f53202051e03"
+      },
+      "status": "completed",
+      "resultId": "58c00019-4770-8396-8000-09b2f942c5ee"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/58c00019-4770-8396-8000-09b2f942c5ee",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "58c00019-4770-8396-8000-09b2f942c5ee",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "58c00019-4770-8396-8000-09b2f942c5ee"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-02-markdown-preview.png",
+              "fileSize": 1399391,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-a6d1363ecac926ad"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "a6d1363ecac926ad41f4056bb37bde2d888b39b60dac36535ed995ae8104c4aa"
+      },
+      "status": "completed",
+      "resultId": "d4800019-4770-8396-8031-f7b5cac50d5a"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/d4800019-4770-8396-8031-f7b5cac50d5a",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "d4800019-4770-8396-8031-f7b5cac50d5a",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "d4800019-4770-8396-8031-f7b5cac50d5a"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-03-json-preview.png",
+              "fileSize": 2162088,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-1a6e4d573d5c4439"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "1a6e4d573d5c44396920d316c2877017876aa4d76b396300178d760566ab7e79"
+      },
+      "status": "completed",
+      "resultId": "87800019-4770-8396-8024-210b2424c8d3"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/87800019-4770-8396-8024-210b2424c8d3",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "87800019-4770-8396-8024-210b2424c8d3",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "87800019-4770-8396-8024-210b2424c8d3"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-04-yaml-preview.png",
+              "fileSize": 1329909,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-3b200955606f3f4f"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "3b200955606f3f4fdd6d1f34001f2d623683dacfe468a201cb99585fb14223d7"
+      },
+      "status": "completed",
+      "resultId": "43400019-4770-8396-801e-cd0998ddfddc"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/43400019-4770-8396-801e-cd0998ddfddc",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "43400019-4770-8396-801e-cd0998ddfddc",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "43400019-4770-8396-801e-cd0998ddfddc"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-05-batch-import.png",
+              "fileSize": 1281767,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-b2c17ddcc5aa86ee"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "b2c17ddcc5aa86eee3fcd0a46763ea65ce76a6f1d2b23f8eef5e3206663877b2"
+      },
+      "status": "completed",
+      "resultId": "a7000019-4770-8396-8013-06a7fa704a72"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/a7000019-4770-8396-8013-06a7fa704a72",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "a7000019-4770-8396-8013-06a7fa704a72",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "a7000019-4770-8396-8013-06a7fa704a72"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryImages",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "attributes": {
+              "fileName": "duo-06-library.png",
+              "fileSize": 2835970,
+              "category": "APP_SCREENSHOTS_AND_PREVIEWS",
+              "referenceName": "release-1.8-28c21a2340bd1993"
+            },
+            "relationships": {
+              "assetLibrary": {
+                "data": {
+                  "type": "appAssetLibraries",
+                  "id": "6785794966"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "sourceSha256": "28c21a2340bd1993b858d9f3a8b854d742f5aeb47583ce044d05fee8c7506768"
+      },
+      "status": "completed",
+      "resultId": "5ac00019-4770-8396-801c-d5dc8039f4d7"
+    },
+    {
+      "action": {
+        "method": "PATCH",
+        "path": "/v1/appAssetLibraryImages/5ac00019-4770-8396-801c-d5dc8039f4d7",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryImages",
+            "id": "5ac00019-4770-8396-801c-d5dc8039f4d7",
+            "attributes": {
+              "uploaded": true
+            }
+          }
+        }
+      },
+      "context": {},
+      "status": "completed",
+      "resultId": "5ac00019-4770-8396-801c-d5dc8039f4d7"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "2b400019-4770-8396-8001-aa91a763ed99"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "b0400019-4770-8396-8f15-39da985e3fa9"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "52000019-4770-8396-8018-9e5beff253f6"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "db400019-4770-8396-8f10-314032b741e4"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "2f400019-4770-8396-8024-7287cb59cd68"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "3e800019-4770-8396-8f06-a2a0980e4eb7"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "73400019-4770-8396-8026-993dd121c747"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "c8400019-4770-8396-8f0d-bf57c891ad89"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "cec00019-4770-8396-8031-72dbf37b5921"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "5e400019-4770-8396-8f23-7f1b03872437"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "05400019-4770-8396-803e-df2f686c5135"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "4d800019-4770-8396-8f25-1a8d3125a7f4"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacementOrderingRequests",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacementOrderingRequests",
+            "attributes": {
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "32ba90ce-6549-4d13-9fa8-4ee7d0e8a575"
+                }
+              },
+              "orderedPlacements": {
+                "data": [
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "b0400019-4770-8396-8f15-39da985e3fa9"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "db400019-4770-8396-8f10-314032b741e4"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "3e800019-4770-8396-8f06-a2a0980e4eb7"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "c8400019-4770-8396-8f0d-bf57c891ad89"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "5e400019-4770-8396-8f23-7f1b03872437"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "4d800019-4770-8396-8f25-1a8d3125a7f4"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "en-US",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "1f5b1f2f-9353-4c79-8ce8-e77ccfdf13db"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "e6400019-4770-8396-8039-23bdaaffea0a"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "51800019-4770-8396-8f29-20be3efe90d3"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "77400019-4770-8396-8006-6718509ee819"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "d1400019-4770-8396-8f25-81a10da5abdb"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "6cc00019-4770-8396-8027-0418cf86d931"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "bcc00019-4770-8396-8f33-4884851253f9"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "98c00019-4770-8396-8008-8047e5cf2275"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "63800019-4770-8396-8f28-876a03b6fc49"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "d4000019-4770-8396-8009-09aaddec8b0c"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "2f000019-4770-8396-8f02-e043462f3f46"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "19400019-4770-8396-8029-a310122aec3a"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "ebc00019-4770-8396-8f35-99c0a3785710"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacementOrderingRequests",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacementOrderingRequests",
+            "attributes": {
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "f391ea48-9893-4b70-b8ec-5be2f8be1551"
+                }
+              },
+              "orderedPlacements": {
+                "data": [
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "51800019-4770-8396-8f29-20be3efe90d3"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "d1400019-4770-8396-8f25-81a10da5abdb"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "bcc00019-4770-8396-8f33-4884851253f9"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "63800019-4770-8396-8f28-876a03b6fc49"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "2f000019-4770-8396-8f02-e043462f3f46"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "ebc00019-4770-8396-8f35-99c0a3785710"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hans",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "efcc0b09-5824-47e8-8e58-29e8e22eb399"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "25000019-4770-8396-8030-7a83af326e70"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "88000019-4770-8396-8f2b-86b391b83dbc"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "ae000019-4770-8396-8023-478e3b97331a"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "29400019-4770-8396-8f07-2ede3afd6c3c"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "7d000019-4770-8396-8002-6d9a5215eec7"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "6ec00019-4770-8396-8f03-938fb00fbb33"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "c2800019-4770-8396-802a-248cc92c96f2"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "8e000019-4770-8396-8f1a-53288695f9c9"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "e9000019-4770-8396-801d-07f55d900f73"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "51400019-4770-8396-8f1c-2382f036faaf"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "fcc00019-4770-8396-8027-f749948e4727"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "bfc00019-4770-8396-8f30-8a9caaaa84c6"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacementOrderingRequests",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacementOrderingRequests",
+            "attributes": {
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "ee8f8227-e6bb-4e7f-8750-e854fa0de821"
+                }
+              },
+              "orderedPlacements": {
+                "data": [
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "88000019-4770-8396-8f2b-86b391b83dbc"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "29400019-4770-8396-8f07-2ede3afd6c3c"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "6ec00019-4770-8396-8f03-938fb00fbb33"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "8e000019-4770-8396-8f1a-53288695f9c9"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "51400019-4770-8396-8f1c-2382f036faaf"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "bfc00019-4770-8396-8f30-8a9caaaa84c6"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "ja",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "b469f418-c391-4c75-bcff-f0a562eb2277"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "58c00019-4770-8396-8000-09b2f942c5ee"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "80400019-4770-8396-8f2b-55bfddf093a3"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "d4800019-4770-8396-8031-f7b5cac50d5a"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "02800019-4770-8396-8f11-6f18e3599eba"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "87800019-4770-8396-8024-210b2424c8d3"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "3b000019-4770-8396-8f05-73d2b1b3504d"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "43400019-4770-8396-801e-cd0998ddfddc"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "a5000019-4770-8396-8f38-9adb6694cd55"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "a7000019-4770-8396-8013-06a7fa704a72"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "ea000019-4770-8396-8f1f-c04701d23697"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacements",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacements",
+            "attributes": {
+              "placementType": "APP_SCREENSHOT",
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "image": {
+                "data": {
+                  "type": "appAssetLibraryImages",
+                  "id": "5ac00019-4770-8396-801c-d5dc8039f4d7"
+                }
+              },
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "ef400019-4770-8396-8f22-3612cccd8ca7"
+    },
+    {
+      "action": {
+        "method": "POST",
+        "path": "/v1/appAssetLibraryPlacementOrderingRequests",
+        "body": {
+          "data": {
+            "type": "appAssetLibraryPlacementOrderingRequests",
+            "attributes": {
+              "placementGroup": "IPHONE_DUO_PROFILE"
+            },
+            "relationships": {
+              "appStoreVersionLocalization": {
+                "data": {
+                  "type": "appStoreVersionLocalizations",
+                  "id": "278a22d3-1551-451c-8031-8d2ef325fdd4"
+                }
+              },
+              "orderedPlacements": {
+                "data": [
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "80400019-4770-8396-8f2b-55bfddf093a3"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "02800019-4770-8396-8f11-6f18e3599eba"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "3b000019-4770-8396-8f05-73d2b1b3504d"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "a5000019-4770-8396-8f38-9adb6694cd55"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "ea000019-4770-8396-8f1f-c04701d23697"
+                  },
+                  {
+                    "type": "appAssetLibraryPlacements",
+                    "id": "ef400019-4770-8396-8f22-3612cccd8ca7"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "locale": "zh-Hant",
+        "placementGroup": "IPHONE_DUO_PROFILE"
+      },
+      "status": "completed",
+      "resultId": "d27b3143-45b3-425e-b822-f0369a8d459a"
+    }
+  ],
+  "groups": [
+    {
+      "locale": "en-US",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "orderedPlacementIds": [
+        "b0400019-4770-8396-8f15-39da985e3fa9",
+        "db400019-4770-8396-8f10-314032b741e4",
+        "3e800019-4770-8396-8f06-a2a0980e4eb7",
+        "c8400019-4770-8396-8f0d-bf57c891ad89",
+        "5e400019-4770-8396-8f23-7f1b03872437",
+        "4d800019-4770-8396-8f25-1a8d3125a7f4"
+      ],
+      "images": [
+        {
+          "placementId": "b0400019-4770-8396-8f15-39da985e3fa9",
+          "imageId": "2b400019-4770-8396-8001-aa91a763ed99",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "db400019-4770-8396-8f10-314032b741e4",
+          "imageId": "52000019-4770-8396-8018-9e5beff253f6",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "3e800019-4770-8396-8f06-a2a0980e4eb7",
+          "imageId": "2f400019-4770-8396-8024-7287cb59cd68",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "c8400019-4770-8396-8f0d-bf57c891ad89",
+          "imageId": "73400019-4770-8396-8026-993dd121c747",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "5e400019-4770-8396-8f23-7f1b03872437",
+          "imageId": "cec00019-4770-8396-8031-72dbf37b5921",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "4d800019-4770-8396-8f25-1a8d3125a7f4",
+          "imageId": "05400019-4770-8396-803e-df2f686c5135",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "orderedPlacementIds": [
+        "51800019-4770-8396-8f29-20be3efe90d3",
+        "d1400019-4770-8396-8f25-81a10da5abdb",
+        "bcc00019-4770-8396-8f33-4884851253f9",
+        "63800019-4770-8396-8f28-876a03b6fc49",
+        "2f000019-4770-8396-8f02-e043462f3f46",
+        "ebc00019-4770-8396-8f35-99c0a3785710"
+      ],
+      "images": [
+        {
+          "placementId": "51800019-4770-8396-8f29-20be3efe90d3",
+          "imageId": "e6400019-4770-8396-8039-23bdaaffea0a",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "d1400019-4770-8396-8f25-81a10da5abdb",
+          "imageId": "77400019-4770-8396-8006-6718509ee819",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "bcc00019-4770-8396-8f33-4884851253f9",
+          "imageId": "6cc00019-4770-8396-8027-0418cf86d931",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "63800019-4770-8396-8f28-876a03b6fc49",
+          "imageId": "98c00019-4770-8396-8008-8047e5cf2275",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "2f000019-4770-8396-8f02-e043462f3f46",
+          "imageId": "d4000019-4770-8396-8009-09aaddec8b0c",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "ebc00019-4770-8396-8f35-99c0a3785710",
+          "imageId": "19400019-4770-8396-8029-a310122aec3a",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ja",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "orderedPlacementIds": [
+        "88000019-4770-8396-8f2b-86b391b83dbc",
+        "29400019-4770-8396-8f07-2ede3afd6c3c",
+        "6ec00019-4770-8396-8f03-938fb00fbb33",
+        "8e000019-4770-8396-8f1a-53288695f9c9",
+        "51400019-4770-8396-8f1c-2382f036faaf",
+        "bfc00019-4770-8396-8f30-8a9caaaa84c6"
+      ],
+      "images": [
+        {
+          "placementId": "88000019-4770-8396-8f2b-86b391b83dbc",
+          "imageId": "25000019-4770-8396-8030-7a83af326e70",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "29400019-4770-8396-8f07-2ede3afd6c3c",
+          "imageId": "ae000019-4770-8396-8023-478e3b97331a",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "6ec00019-4770-8396-8f03-938fb00fbb33",
+          "imageId": "7d000019-4770-8396-8002-6d9a5215eec7",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "8e000019-4770-8396-8f1a-53288695f9c9",
+          "imageId": "c2800019-4770-8396-802a-248cc92c96f2",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "51400019-4770-8396-8f1c-2382f036faaf",
+          "imageId": "e9000019-4770-8396-801d-07f55d900f73",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "bfc00019-4770-8396-8f30-8a9caaaa84c6",
+          "imageId": "fcc00019-4770-8396-8027-f749948e4727",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "zh-Hant",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "orderedPlacementIds": [
+        "80400019-4770-8396-8f2b-55bfddf093a3",
+        "02800019-4770-8396-8f11-6f18e3599eba",
+        "3b000019-4770-8396-8f05-73d2b1b3504d",
+        "a5000019-4770-8396-8f38-9adb6694cd55",
+        "ea000019-4770-8396-8f1f-c04701d23697",
+        "ef400019-4770-8396-8f22-3612cccd8ca7"
+      ],
+      "images": [
+        {
+          "placementId": "80400019-4770-8396-8f2b-55bfddf093a3",
+          "imageId": "58c00019-4770-8396-8000-09b2f942c5ee",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "02800019-4770-8396-8f11-6f18e3599eba",
+          "imageId": "d4800019-4770-8396-8031-f7b5cac50d5a",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "3b000019-4770-8396-8f05-73d2b1b3504d",
+          "imageId": "87800019-4770-8396-8024-210b2424c8d3",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        },
+        {
+          "placementId": "a5000019-4770-8396-8f38-9adb6694cd55",
+          "imageId": "43400019-4770-8396-801e-cd0998ddfddc",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "ea000019-4770-8396-8f1f-c04701d23697",
+          "imageId": "a7000019-4770-8396-8013-06a7fa704a72",
+          "allowedSpecIds": [
+            "205e7ab6-a23a-4ee2-b327-0a99ec2a2520"
+          ],
+          "dimensions": [
+            1398,
+            2034
+          ]
+        },
+        {
+          "placementId": "ef400019-4770-8396-8f22-3612cccd8ca7",
+          "imageId": "5ac00019-4770-8396-801c-d5dc8039f4d7",
+          "allowedSpecIds": [
+            "b83915b8-5b87-4e63-bba5-ab3a0c439862"
+          ],
+          "dimensions": [
+            2853,
+            2007
+          ]
+        }
+      ]
+    }
+  ],
+  "expectedGroups": [
+    [
+      "en-US",
+      "IPHONE_DUO_PROFILE"
+    ],
+    [
+      "zh-Hans",
+      "IPHONE_DUO_PROFILE"
+    ],
+    [
+      "ja",
+      "IPHONE_DUO_PROFILE"
+    ],
+    [
+      "zh-Hant",
+      "IPHONE_DUO_PROFILE"
+    ]
+  ],
+  "resumeHistory": [
+    {
+      "approvedReceiptSha256": "6cc1cf98e73c5a37f31e5c4f9d2f413a67e162602ea5a8a5032275cfcfaca0c0",
+      "reusedImageIds": [
+        "2b400019-4770-8396-8001-aa91a763ed99",
+        "52000019-4770-8396-8018-9e5beff253f6",
+        "2f400019-4770-8396-8024-7287cb59cd68",
+        "73400019-4770-8396-8026-993dd121c747"
+      ]
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "errors": [],
+    "capturedAt": "2026-10-07T08:41:05.919181+00:00"
+  }
+}

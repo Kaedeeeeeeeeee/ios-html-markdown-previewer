@@ -1,0 +1,285 @@
+{
+  "status": "PASS",
+  "scope": "duo24 final images and four localized contact sheets. Complete72 local validation and integration are recorded separately; no remote acceptance or archive equivalence is asserted.",
+  "reviewedAtUTC": "2026-10-07T08:03:31.872150+00:00",
+  "images": [
+    {
+      "path": "screenshots/en-US/duo-01-html-report.png",
+      "sourceSHA256": "9048d0c9d5b1f5a98109adf02fb1a34d1eaa8e062d03c6a9ea9b2f2ec3c4b165",
+      "finalSHA256": "ec8ef6760ab94c4ada8e834d224660a363f0c7c6eab4d80cbf2c5e3a47763b84",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/duo-02-markdown-preview.png",
+      "sourceSHA256": "2d08c23378f49f678a9a91d003a43bac325e86b2c4311be345e2a612b4e41f7f",
+      "finalSHA256": "c7b16ee67ee5838b2fc6e04c0da29e85370d966afb189a229c2d23eb3aad9b68",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/duo-03-json-preview.png",
+      "sourceSHA256": "83cef90509c0a4353bace0ffc3525b8b5d7b5b335c01a03f483cde2b94c4ffc4",
+      "finalSHA256": "07ff2c8f1f7411e4077c7b00373d21f58ff30a93ebcb7bc7d848c224a14f03b3",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/duo-04-yaml-preview.png",
+      "sourceSHA256": "df3909ab5dd50ad96fcb165f236617793932ddab3499d29656c9e9aca03a2996",
+      "finalSHA256": "3af974f71a12b95364b2e5e2d2f5dd0fdb6aeba66ca726590400fc8199a9b2ef",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/duo-05-batch-import.png",
+      "sourceSHA256": "eefc084a1e812c345b6094dd348dbf965c46ce7f06804ee12493dbfeabc8f713",
+      "finalSHA256": "ec2e4c91e593df5e1a9809672fd7c559aa7fa644a75e1816c0154237d8ec2c62",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/en-US/duo-06-library.png",
+      "sourceSHA256": "87640a09626ccce5b5cc209d5edbe3bc79089467ee3240fdb9f2ab36be5823df",
+      "finalSHA256": "5192779c9b6f31bb82fae0c454570ab6c8b5049c179c92b5afabd94720d89b7a",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-01-html-report.png",
+      "sourceSHA256": "ccd620d29eea173ba6f31b8b225b5c9d233dd5a945c00bb1cf33d7666f85ad1c",
+      "finalSHA256": "bf24dc711604b468bef6b6546a06d6e1f96921660ac7861490cc23ebf0576813",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-02-markdown-preview.png",
+      "sourceSHA256": "4e35c9bd938fc142b19aa1e988c3f0340b0f460bd9786218fd37d48e53031f26",
+      "finalSHA256": "451183e63a6933aeb3d7e6d21c74d5e4802700cec580e7f5de238041e87d9801",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-03-json-preview.png",
+      "sourceSHA256": "0fce2530c104224c80c873fb5dbdfc2c94bc9fe8eb5efe7401ea43a454d9b473",
+      "finalSHA256": "7a558939731db42b8427bda2286383207ee97c5fb75adda69579412a276e83a2",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-04-yaml-preview.png",
+      "sourceSHA256": "eb6d8585f23eba387e886714971c171d69c9a9ac46d42426c064c1aca1ef824a",
+      "finalSHA256": "9dcbb027c6ce4f2dc3b3421ec4d633601d234821d3c4912f7709a818f737ea75",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-05-batch-import.png",
+      "sourceSHA256": "13285b4e9585b4a4351a348373666a598cf890538b8958bb53fc3831c9a178d0",
+      "finalSHA256": "1e66957d4fcce10b0b01e0f483e8a589623cd8f325a44707607f2b3bdafcea50",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-06-library.png",
+      "sourceSHA256": "3518a2b87a10c8dbaa97e2d23eb4e67cbbdf6b6952aa92429a3c85e179ac1ddf",
+      "finalSHA256": "0be14c662100d22b935069ca4d498d3970bb794e3f596634fb55602f7b60d670",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/duo-01-html-report.png",
+      "sourceSHA256": "4c1af5e367e7eb5a7224f496a02ddf2880be64afd6804d5d15edd974fb620a55",
+      "finalSHA256": "61070168cbd1d16767b0bf11d0ff1764ecda4b02038fc026878916822eebdd29",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/duo-02-markdown-preview.png",
+      "sourceSHA256": "189315c0a741207ad647d1b33e41433ee1fa168fbedabfbdee5654a5c3bb812a",
+      "finalSHA256": "ef1f71a67fe09b07874c8327f27c4bf46c2e4c9f6a488b17ca760cbc3ed118be",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/duo-03-json-preview.png",
+      "sourceSHA256": "3fa7151d9084642da1dad8b900bed17f907769589a4775b173551d15908b50ca",
+      "finalSHA256": "3f19cb4618bc530ca6cb88c0c17b3b6359c260ac30667fe251512bf566ddd00c",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/duo-04-yaml-preview.png",
+      "sourceSHA256": "962e83a87f916297474b5496dcc2f013e925256addab6175c08e0c49bb864bf0",
+      "finalSHA256": "521a6e60cc5802b999afd05c99f18a1d291d5e64cc36b7c042c3a93eea555617",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/duo-05-batch-import.png",
+      "sourceSHA256": "641723c1b86f56fe7398d7daeb83b69845b0e92abc04a802be856d6e00c11b96",
+      "finalSHA256": "e12ccfa46ba09ec5593ae182032a7c94ada145ac34ff3ddf144aaabccb9da29d",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/ja/duo-06-library.png",
+      "sourceSHA256": "8c88d5a9c9f333bbc1887abf705e826ca5ab4ce4441abb2a76c1f4642fc4629c",
+      "finalSHA256": "0485f4d40d4a04c432857b86d2be1f79a0e5bf526a1eaafe8e08f182c168da43",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-01-html-report.png",
+      "sourceSHA256": "8f09f6e327e551032d937720d50210c3f88b74f4b6b3c96506625115499337e8",
+      "finalSHA256": "98c6c62eb8b607895b61399c8bec10419191fc1f56959adfd652f53202051e03",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-02-markdown-preview.png",
+      "sourceSHA256": "4de01013206e1f2e2455f228df7359dd5cc7568bf087486a7355b6ae18db17fb",
+      "finalSHA256": "a6d1363ecac926ad41f4056bb37bde2d888b39b60dac36535ed995ae8104c4aa",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-03-json-preview.png",
+      "sourceSHA256": "0862b1e303bb8d0445af6d8b120cd3c1143d94fb765e9f6793e9dc6731c16a9b",
+      "finalSHA256": "1a6e4d573d5c44396920d316c2877017876aa4d76b396300178d760566ab7e79",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-04-yaml-preview.png",
+      "sourceSHA256": "49423a8243d2957a71995302b9d2acd8d7dba4426bae5882b8a48961ce062d79",
+      "finalSHA256": "3b200955606f3f4fdd6d1f34001f2d623683dacfe468a201cb99585fb14223d7",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-05-batch-import.png",
+      "sourceSHA256": "d64572914cc2616a99713ad69bc785f687456e6f3396ed05f21b9a70779903c4",
+      "finalSHA256": "b2c17ddcc5aa86eee3fcd0a46763ea65ce76a6f1d2b23f8eef5e3206663877b2",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-06-library.png",
+      "sourceSHA256": "c1b0340bfd31ee2b37722d9935748fe8babfcfd1d4a6c35e4eb70dfe8c338e28",
+      "finalSHA256": "28c21a2340bd1993b858d9f3a8b854d742f5aeb47583ce044d05fee8c7506768",
+      "status": "PASS",
+      "reviewMethod": "Final per-language contact sheet visual inspection"
+    }
+  ],
+  "captureBinaryGroups": [
+    {
+      "executables": {
+        "HTMLMarkdownPreviewer": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+        "HTMLMarkdownPreviewer.debug.dylib": "6a7db91a1a1e9dd1436bb475ef1b75a62697fa0452655472dde2a4bc7a060c5a"
+      },
+      "sourceCount": 16,
+      "sources": [
+        "sources/en-US/duo-01-html-report.png",
+        "sources/en-US/duo-04-markdown-preview.png",
+        "sources/en-US/duo-03-json-preview.png",
+        "sources/en-US/duo-06-yaml-preview.png",
+        "sources/zh-Hans/duo-01-html-report.png",
+        "sources/zh-Hans/duo-04-markdown-preview.png",
+        "sources/zh-Hans/duo-03-json-preview.png",
+        "sources/zh-Hans/duo-06-yaml-preview.png",
+        "sources/ja/duo-01-html-report.png",
+        "sources/ja/duo-04-markdown-preview.png",
+        "sources/ja/duo-03-json-preview.png",
+        "sources/ja/duo-06-yaml-preview.png",
+        "sources/zh-Hant/duo-01-html-report.png",
+        "sources/zh-Hant/duo-04-markdown-preview.png",
+        "sources/zh-Hant/duo-03-json-preview.png",
+        "sources/zh-Hant/duo-06-yaml-preview.png"
+      ]
+    },
+    {
+      "executables": {
+        "HTMLMarkdownPreviewer": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+        "HTMLMarkdownPreviewer.debug.dylib": "f64ab4d187210ab0a0470115c0beab40a1b92331189862dd0054e25b10d721dd"
+      },
+      "sourceCount": 8,
+      "sources": [
+        "sources/en-US/duo-02-batch-import.png",
+        "sources/en-US/duo-05-library.png",
+        "sources/zh-Hans/duo-02-batch-import.png",
+        "sources/zh-Hans/duo-05-library.png",
+        "sources/ja/duo-02-batch-import.png",
+        "sources/ja/duo-05-library.png",
+        "sources/zh-Hant/duo-02-batch-import.png",
+        "sources/zh-Hant/duo-05-library.png"
+      ]
+    }
+  ],
+  "binaryScope": "Two actual captured Debug 1.8(13) code images: 16 captures from the first build and 8 from a later build with a DEBUG-only library capture hook. Per-image installed executable/debug dylib hashes are retained. A subsequent HTML viewport-dimension resize-race fix was made after these captures; initial rendering was reported unchanged. These reviewed screenshot sources are not claimed to use the final product binary or a Release archive.",
+  "independentReview": {
+    "source": "Release-owner live visual inspection of all four final Duo contact sheets",
+    "languages": [
+      "en-US",
+      "zh-Hans",
+      "ja",
+      "zh-Hant"
+    ],
+    "result": "PASS",
+    "checks": [
+      "Library and report shown side by side",
+      "Import Complete shows actual results",
+      "All six scenes preserve the complete native aspect ratio",
+      "Localized marketing titles are not clipped"
+    ],
+    "scope": "Recorded independent review report; screenshots and actual source/binary identities remain attached per image."
+  },
+  "postCaptureSourceChanges": [
+    {
+      "file": "HTMLMarkdownPreviewer/Web/HTMLReadingController.swift",
+      "area": "viewportDimensions",
+      "change": "Use scrollingRoot.clientWidth/clientHeight to identify viewport reflow earlier; fixes a resize anchor race.",
+      "evidenceSource": "Release-owner implementation and focused regression report",
+      "focusedRegressionTestsPassed": 3,
+      "renderingScope": "Resize-only later fix; initial rendering reported unchanged. Existing captured UI remains visually reviewed, without final-binary equivalence."
+    }
+  ],
+  "contactSheets": [
+    {
+      "path": "previews/en-US-duo.png",
+      "sha256": "099f60da14e4c1e4a80aac5ae25cc8727d6bacade5be4891aa75f3b45ccc5118",
+      "pixels": [
+        6422,
+        902
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "previews/zh-Hans-duo.png",
+      "sha256": "384b0faf607b9351cd1d23a72826d810bc92fc9827b18bf76161285ded6db40f",
+      "pixels": [
+        6422,
+        902
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "previews/ja-duo.png",
+      "sha256": "51b235a3b4b6c21e6205a2b726b024d8d631dc1a841d8c1148765423aebf7a66",
+      "pixels": [
+        6422,
+        902
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "previews/zh-Hant-duo.png",
+      "sha256": "b2a937d3b443e830001f465dfd766897fb74a013dd5a760a0e9cb55f37b86733",
+      "pixels": [
+        6422,
+        902
+      ],
+      "status": "PASS"
+    }
+  ]
+}

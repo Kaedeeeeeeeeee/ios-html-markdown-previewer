@@ -9,6 +9,7 @@ import pathlib
 import plistlib
 import re
 import struct
+import subprocess
 import sys
 import zipfile
 
@@ -116,28 +117,31 @@ for path in [
 ]:
     require_file(path)
 
-require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*12\b", "project.yml build number is 12")
-require_text("project.yml", r"MARKETING_VERSION:\s*1\.7\b", "project.yml marketing version is 1.7")
+require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*13\b", "project.yml build number is 13")
+require_text("project.yml", r"MARKETING_VERSION:\s*1\.8\b", "project.yml marketing version is 1.8")
+require_text(".github/workflows/ios-ci.yml", r"bash scripts/select-release-toolchain\.sh --github-env", "iOS CI requires the release toolchain")
+require_text(".github/workflows/app-store-upload.yml", r"bash scripts/select-release-toolchain\.sh --github-env", "App Store archive requires the release toolchain")
+require_file("scripts/select-release-toolchain.sh")
 require_text("project.yml", r"deploymentTarget:\s*\n\s+iOS:\s*\"17\.0\"", "project.yml minimum iOS is 17.0")
 require_text("project.yml", r"PRODUCT_BUNDLE_IDENTIFIER:\s*com\.kaede\.htmlmarkdownpreviewer", "project.yml bundle identifier is correct")
 require_text("project.yml", r"ASSETCATALOG_COMPILER_APPICON_NAME:\s*AppIcon", "project.yml configures AppIcon")
 require_text("project.yml", r"ZIPFoundation:[\s\S]*from:\s*0\.9\.20", "ZIPFoundation dependency version is declared")
 require_text("project.yml", r"SwiftMarkdown:[\s\S]*from:\s*0\.8\.0", "Swift Markdown dependency version is declared")
-require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"12"', "App Store upload workflow targets build 12")
-require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_VERSION_STRING:\s*"1\.7"', "App Store upload workflow targets version 1.7")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"13"', "App Store upload workflow targets build 13")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_VERSION_STRING:\s*"1\.8"', "App Store upload workflow targets version 1.8")
 require_text(".github/workflows/app-store-upload.yml", r"APP_STORE_CONNECT_RELEASE_TYPE:\s*AFTER_APPROVAL", "App Store workflow requests automatic release after approval")
 require_text(".github/scripts/submit-app-store-review.rb", r"configure_and_verify_release_type", "App Store submission verifies automatic release configuration")
-require_text(".github/workflows/app-store-upload.yml", r"Sync localized metadata and screenshots", "App Store upload workflow syncs localized store assets")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY:\s*"true"', "App Store upload workflow verifies modern store assets read-only")
 require_text(".github/workflows/app-store-upload.yml", r"submit_for_review:", "App Store upload workflow keeps review submission explicit")
-require_text(".github/workflows/app-store-upload.yml", r"clean_screenshot_duplicates:", "App Store upload workflow cleans duplicate screenshots explicitly")
-require_text("fastlane/Fastfile", r"overwrite_screenshots:\s*true", "Fastlane replaces stale App Store screenshots")
-require_text("fastlane/Fastfile", r"skip_app_version_update:\s*false", "Fastlane creates or updates the App Store version")
+require_text(".github/workflows/app-store-upload.yml", r"verify_store_assets:", "App Store upload workflow requires explicit modern asset verification")
+require_text("fastlane/Fastfile", r"lane :verify_store_assets", "Fastlane exposes read-only modern store asset verification")
+require_file("scripts/asset-library/upload_assets.py")
 require_text(".github/scripts/submit-app-store-review.rb", r'/v1/apps/#\{APP_ID\}/appStoreVersions', "App Store verification resolves versions through the app relationship")
 require_text(".github/scripts/submit-app-store-review.rb", r"verify_expected_screenshot_inventory!", "App Store verification requires exact screenshot inventory before submission")
-require_text(".github/scripts/submit-app-store-review.rb", r'request\(:delete, "/v1/appScreenshots/', "App Store cleanup deletes duplicate screenshot resources")
+require_text(".github/scripts/submit-app-store-review.rb", r"Legacy screenshot cleanup is disabled", "Submission cannot delete legacy screenshot resources")
 
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.7;", "generated Xcode project marketing version is 1.7")
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 12;", "generated Xcode project build number is 12")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.8;", "generated Xcode project marketing version is 1.8")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 13;", "generated Xcode project build number is 13")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"PRODUCT_BUNDLE_IDENTIFIER = com\.kaede\.htmlmarkdownpreviewer;", "generated Xcode project bundle identifier is correct")
 
 print("\n== Info.plist ==")
@@ -256,50 +260,14 @@ if xcstrings_path.is_file():
 
 print("\n== Visual Assets ==")
 require_png_dimensions("HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1024x1024@1x.png", 1024, 1024)
-copy_path = require_file("docs/app-store-screenshots/copy.json")
 require_file("scripts/generate-app-store-screenshots.swift")
-for name in ["iphone-01-html-report", "iphone-02-batch-import", "iphone-03-json-preview", "iphone-04-markdown-preview", "iphone-05-library", "iphone-06-yaml-preview"]:
-    require_png_dimensions(f"docs/app-store-screenshots/{name}.png", 1320, 2868)
-for name in ["ipad-01-html-report", "ipad-02-batch-import", "ipad-03-json-preview", "ipad-04-markdown-preview", "ipad-05-library", "ipad-06-yaml-preview"]:
-    require_png_dimensions(f"docs/app-store-screenshots/{name}.png", 2064, 2752)
-for locale in ["en-US", "zh-Hans", "ja"]:
-    for name in ["iphone-01-html-report", "iphone-02-batch-import", "iphone-03-json-preview", "iphone-04-markdown-preview", "iphone-05-library", "iphone-06-yaml-preview"]:
-        require_png_dimensions(f"docs/app-store-screenshots/{locale}/{name}.png", 1320, 2868)
-    for name in ["ipad-01-html-report", "ipad-02-batch-import", "ipad-03-json-preview", "ipad-04-markdown-preview", "ipad-05-library", "ipad-06-yaml-preview"]:
-        require_png_dimensions(f"docs/app-store-screenshots/{locale}/{name}.png", 2064, 2752)
-
-if copy_path.is_file():
-    try:
-        screenshot_copy = json.loads(copy_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
-        fail(f"screenshot copy is not valid JSON: {error}")
+integrated_gate = require_file("scripts/audit-integrated-release-materials.py")
+if integrated_gate.is_file():
+    outcome = subprocess.run([sys.executable, str(integrated_gate)], cwd=root, text=True, capture_output=True)
+    if outcome.returncode:
+        fail("Current four-locale 72-image integrated materials gate failed: " + outcome.stdout.strip() + outcome.stderr.strip())
     else:
-        required_copy_locales = {"en-US", "zh-Hans", "ja"}
-        required_copy_keys = {
-            "01-html-report",
-            "02-batch-import",
-            "03-json-preview",
-            "04-markdown-preview",
-            "05-library",
-            "06-yaml-preview",
-        }
-        copy_errors = []
-        if set(screenshot_copy) != required_copy_locales:
-            copy_errors.append(f"unexpected locales: {sorted(screenshot_copy)}")
-        for locale in sorted(required_copy_locales & set(screenshot_copy)):
-            entries = screenshot_copy[locale].get("screenshots", {})
-            if set(entries) != required_copy_keys:
-                copy_errors.append(f"unexpected keys for {locale}: {sorted(entries)}")
-                continue
-            for key, value in entries.items():
-                for field in ("eyebrow", "title", "subtitle"):
-                    if not str(value.get(field, "")).strip():
-                        copy_errors.append(f"empty {locale}/{key}/{field}")
-        if copy_errors:
-            for error in copy_errors:
-                fail(error)
-        else:
-            ok("App Store screenshot copy covers en-US, zh-Hans, and ja")
+        ok("Current four-locale 72-image screenshot and metadata identities match the verified packet")
 
 metadata_limits = {
     "name.txt": 30,
@@ -310,7 +278,7 @@ metadata_limits = {
     "release_notes.txt": 4000,
 }
 metadata_errors = []
-for locale in ["en-US", "zh-Hans", "ja"]:
+for locale in ["en-US", "zh-Hans", "ja", "zh-Hant"]:
     for filename in [*metadata_limits, "support_url.txt", "privacy_url.txt"]:
         path = require_file(f"fastlane/metadata/{locale}/{filename}")
         if not path.is_file():
@@ -423,11 +391,15 @@ for path in list((root / "HTMLMarkdownPreviewer").rglob("*")) + [root / "project
             source_text += path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             pass
-for pattern in ["StoreKit", "SKPayment", "InAppPurchase", "AdMob", "FirebaseAnalytics", "Sign in with Apple", "ASAuthorization"]:
+forbidden_patterns = ["SKPayment", "InAppPurchase", "Product.products", ".purchase(", "Transaction.",
+                      "AppStore.sync", "SubscriptionStoreView", "AdMob", "FirebaseAnalytics",
+                      "Sign in with Apple", "ASAuthorization"]
+# StoreKit is used only for the system rating request; paid-download restrictions still exclude purchases.
+for pattern in forbidden_patterns:
     if pattern in source_text:
         fail(f"release build should not contain {pattern} references")
-if not any(pattern in source_text for pattern in ["StoreKit", "SKPayment", "InAppPurchase", "AdMob", "FirebaseAnalytics", "Sign in with Apple", "ASAuthorization"]):
-    ok("no StoreKit, account, analytics, or ad SDK references found")
+if not any(pattern in source_text for pattern in forbidden_patterns):
+    ok("no in-app purchase, account, analytics, or ad SDK references found")
 
 if failures:
     print(f"\nPortable release materials audit failed with {len(failures)} issue(s).", file=sys.stderr)

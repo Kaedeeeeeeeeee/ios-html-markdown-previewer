@@ -1,0 +1,207 @@
+--- a/.github/workflows/app-store-upload.yml
++++ b/.github/workflows/app-store-upload.yml
+@@ -175,12 +175,12 @@
+           set -euo pipefail
+           SCREENSHOT_STAGING="$RUNNER_TEMP/AppStoreScreenshots"
+           mkdir -p "$SCREENSHOT_STAGING"
+-          for locale in en-US zh-Hans ja; do
++          for locale in en-US zh-Hans ja zh-Hant; do
+             cp -R "docs/app-store-screenshots/$locale" "$SCREENSHOT_STAGING/$locale"
+           done
+           screenshot_count="$(find "$SCREENSHOT_STAGING" -type f -name '*.png' | wc -l | tr -d ' ')"
+-          if [[ "$screenshot_count" != "36" ]]; then
+-            echo "Expected 36 localized App Store screenshots, found $screenshot_count." >&2
++          if [[ "$screenshot_count" != "48" ]]; then
++            echo "Expected 48 localized App Store screenshots, found $screenshot_count." >&2
+             exit 1
+           fi
+           echo "FASTLANE_SCREENSHOTS_PATH=$SCREENSHOT_STAGING" >> "$GITHUB_ENV"
+--- a/.github/scripts/submit-app-store-review.rb
++++ b/.github/scripts/submit-app-store-review.rb
+@@ -24,22 +24,22 @@
+ EXPECTED_SCREENSHOTS = {
+   "APP_IPHONE_67" => %w[
+     iphone-01-html-report.png
+-    iphone-02-batch-import.png
++    iphone-02-markdown-preview.png
+     iphone-03-json-preview.png
+-    iphone-04-markdown-preview.png
+-    iphone-05-library.png
+-    iphone-06-yaml-preview.png
++    iphone-04-yaml-preview.png
++    iphone-05-batch-import.png
++    iphone-06-library.png
+   ],
+   "APP_IPAD_PRO_3GEN_129" => %w[
+     ipad-01-html-report.png
+-    ipad-02-batch-import.png
++    ipad-02-markdown-preview.png
+     ipad-03-json-preview.png
+-    ipad-04-markdown-preview.png
+-    ipad-05-library.png
+-    ipad-06-yaml-preview.png
++    ipad-04-yaml-preview.png
++    ipad-05-batch-import.png
++    ipad-06-library.png
+   ]
+ }.freeze
+-EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja].freeze
++EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja zh-Hant].freeze
+ DEFAULT_WHATS_NEW = ENV.fetch(
+   "APP_STORE_CONNECT_WHATS_NEW",
+   "Adds richer built-in HTML and ZIP samples with refreshed App Store visuals."
+--- a/scripts/portable-release-materials-audit.sh
++++ b/scripts/portable-release-materials-audit.sh
+@@ -258,14 +258,14 @@
+ require_png_dimensions("HTMLMarkdownPreviewer/Assets.xcassets/AppIcon.appiconset/AppIcon-1024x1024@1x.png", 1024, 1024)
+ copy_path = require_file("docs/app-store-screenshots/copy.json")
+ require_file("scripts/generate-app-store-screenshots.swift")
+-for name in ["iphone-01-html-report", "iphone-02-batch-import", "iphone-03-json-preview", "iphone-04-markdown-preview", "iphone-05-library", "iphone-06-yaml-preview"]:
++for name in ["iphone-01-html-report", "iphone-05-batch-import", "iphone-03-json-preview", "iphone-02-markdown-preview", "iphone-06-library", "iphone-04-yaml-preview"]:
+     require_png_dimensions(f"docs/app-store-screenshots/{name}.png", 1320, 2868)
+-for name in ["ipad-01-html-report", "ipad-02-batch-import", "ipad-03-json-preview", "ipad-04-markdown-preview", "ipad-05-library", "ipad-06-yaml-preview"]:
++for name in ["ipad-01-html-report", "ipad-05-batch-import", "ipad-03-json-preview", "ipad-02-markdown-preview", "ipad-06-library", "ipad-04-yaml-preview"]:
+     require_png_dimensions(f"docs/app-store-screenshots/{name}.png", 2064, 2752)
+-for locale in ["en-US", "zh-Hans", "ja"]:
+-    for name in ["iphone-01-html-report", "iphone-02-batch-import", "iphone-03-json-preview", "iphone-04-markdown-preview", "iphone-05-library", "iphone-06-yaml-preview"]:
++for locale in ["en-US", "zh-Hans", "ja", "zh-Hant"]:
++    for name in ["iphone-01-html-report", "iphone-05-batch-import", "iphone-03-json-preview", "iphone-02-markdown-preview", "iphone-06-library", "iphone-04-yaml-preview"]:
+         require_png_dimensions(f"docs/app-store-screenshots/{locale}/{name}.png", 1320, 2868)
+-    for name in ["ipad-01-html-report", "ipad-02-batch-import", "ipad-03-json-preview", "ipad-04-markdown-preview", "ipad-05-library", "ipad-06-yaml-preview"]:
++    for name in ["ipad-01-html-report", "ipad-05-batch-import", "ipad-03-json-preview", "ipad-02-markdown-preview", "ipad-06-library", "ipad-04-yaml-preview"]:
+         require_png_dimensions(f"docs/app-store-screenshots/{locale}/{name}.png", 2064, 2752)
+ 
+ if copy_path.is_file():
+@@ -274,7 +274,7 @@
+     except (OSError, json.JSONDecodeError) as error:
+         fail(f"screenshot copy is not valid JSON: {error}")
+     else:
+-        required_copy_locales = {"en-US", "zh-Hans", "ja"}
++        required_copy_locales = {"en-US", "zh-Hans", "ja", "zh-Hant"}
+         required_copy_keys = {
+             "01-html-report",
+             "02-batch-import",
+@@ -299,7 +299,7 @@
+             for error in copy_errors:
+                 fail(error)
+         else:
+-            ok("App Store screenshot copy covers en-US, zh-Hans, and ja")
++            ok("App Store screenshot copy covers en-US, zh-Hans, ja, and zh-Hant")
+ 
+ metadata_limits = {
+     "name.txt": 30,
+@@ -310,7 +310,7 @@
+     "release_notes.txt": 4000,
+ }
+ metadata_errors = []
+-for locale in ["en-US", "zh-Hans", "ja"]:
++for locale in ["en-US", "zh-Hans", "ja", "zh-Hant"]:
+     for filename in [*metadata_limits, "support_url.txt", "privacy_url.txt"]:
+         path = require_file(f"fastlane/metadata/{locale}/{filename}")
+         if not path.is_file():
+--- a/scripts/release-audit.sh
++++ b/scripts/release-audit.sh
+@@ -617,39 +617,39 @@
+ require_file "scripts/generate-app-store-screenshots.swift"
+ for name in \
+   iphone-01-html-report \
+-  iphone-02-batch-import \
++  iphone-05-batch-import \
+   iphone-03-json-preview \
+-  iphone-04-markdown-preview \
+-  iphone-05-library \
+-  iphone-06-yaml-preview; do
++  iphone-02-markdown-preview \
++  iphone-06-library \
++  iphone-04-yaml-preview; do
+   check_png_dimensions "docs/app-store-screenshots/$name.png" 1320 2868
+ done
+ for name in \
+   ipad-01-html-report \
+-  ipad-02-batch-import \
++  ipad-05-batch-import \
+   ipad-03-json-preview \
+-  ipad-04-markdown-preview \
+-  ipad-05-library \
+-  ipad-06-yaml-preview; do
++  ipad-02-markdown-preview \
++  ipad-06-library \
++  ipad-04-yaml-preview; do
+   check_png_dimensions "docs/app-store-screenshots/$name.png" 2064 2752
+ done
+-for locale in en-US zh-Hans ja; do
++for locale in en-US zh-Hans ja zh-Hant; do
+   for name in \
+     iphone-01-html-report \
+-    iphone-02-batch-import \
++    iphone-05-batch-import \
+     iphone-03-json-preview \
+-    iphone-04-markdown-preview \
+-    iphone-05-library \
+-  iphone-06-yaml-preview; do
++    iphone-02-markdown-preview \
++    iphone-06-library \
++  iphone-04-yaml-preview; do
+     check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 1320 2868
+   done
+   for name in \
+     ipad-01-html-report \
+-    ipad-02-batch-import \
++    ipad-05-batch-import \
+     ipad-03-json-preview \
+-    ipad-04-markdown-preview \
+-    ipad-05-library \
+-  ipad-06-yaml-preview; do
++    ipad-02-markdown-preview \
++    ipad-06-library \
++  ipad-04-yaml-preview; do
+     check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 2064 2752
+   done
+ done
+@@ -660,7 +660,7 @@
+ with open(sys.argv[1], "r", encoding="utf-8") as handle:
+     copy = json.load(handle)
+ 
+-required_locales = {"en-US", "zh-Hans", "ja"}
++required_locales = {"en-US", "zh-Hans", "ja", "zh-Hant"}
+ required_screenshots = {
+     "01-html-report",
+     "02-batch-import",
+@@ -682,12 +682,12 @@
+                 raise SystemExit(f"empty {locale}/{key}/{field}")
+ PY
+ then
+-  ok "App Store screenshot copy covers en-US, zh-Hans, and ja"
++  ok "App Store screenshot copy covers en-US, zh-Hans, ja, and zh-Hant"
+ else
+   fail "App Store screenshot copy is incomplete or invalid"
+ fi
+ 
+-for locale in en-US zh-Hans ja; do
++for locale in en-US zh-Hans ja zh-Hant; do
+   for field in name subtitle promotional_text description keywords release_notes support_url privacy_url; do
+     require_file "fastlane/metadata/$locale/$field.txt"
+   done
+@@ -705,7 +705,7 @@
+     "keywords.txt": 100,
+     "release_notes.txt": 4000,
+ }
+-for locale in ("en-US", "zh-Hans", "ja"):
++for locale in ("en-US", "zh-Hans", "ja", "zh-Hant"):
+     for filename, limit in limits.items():
+         value = (root / locale / filename).read_text(encoding="utf-8").strip()
+         if not value:
+--- a/scripts/capture-release-screenshots.sh
++++ b/scripts/capture-release-screenshots.sh
+@@ -7,9 +7,9 @@
+ OUT_DIR="${OUT_DIR:-$ROOT_DIR/docs/app-store-screenshots}"
+ SOURCE_OUT_DIR="${SOURCE_OUT_DIR:-$ROOT_DIR/DerivedData/AppStoreScreenshotSources}"
+ PREVIEW_OUT_DIR="${PREVIEW_OUT_DIR:-$ROOT_DIR/DerivedData/AppStoreScreenshotPreviews}"
+-CAPTURE_LOCALES="${CAPTURE_LOCALES:-en-US zh-Hans ja}"
++CAPTURE_LOCALES="${CAPTURE_LOCALES:-en-US zh-Hans ja zh-Hant}"
+ CAPTURE_FAMILIES="${CAPTURE_FAMILIES:-iphone ipad}"
+-SCREENSHOT_ORDER="${SCREENSHOT_ORDER:-}"
++SCREENSHOT_ORDER="${SCREENSHOT_ORDER:-01-html-report,04-markdown-preview,03-json-preview,06-yaml-preview,02-batch-import,05-library}"
+ COPY_FILE="${COPY_FILE:-$ROOT_DIR/docs/app-store-screenshots/copy.json}"
+ BUNDLE_ID="com.kaede.htmlmarkdownpreviewer"
+ SCHEME="HTMLMarkdownPreviewer"

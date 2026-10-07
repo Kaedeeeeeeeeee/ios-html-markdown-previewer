@@ -25,3 +25,6 @@
 "library.duplicate.update" = "既存のファイルを更新";
 "library.duplicate.keepBoth" = "両方を保存";
 "library.duplicate.hint" = "更新すると内容が置き換わり、表示名・ピン留め・プレビューモードは引き継がれます。内容が変わる場合、読書位置はリセットされます。";
+
+"library.selectFile" = "ファイルを選択";
+"library.selectFileDescription" = "ライブラリからファイルを選ぶか、新しいファイルを開いて読み始めてください。";

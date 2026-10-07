@@ -66,7 +66,7 @@ final class ReadingAndPasteUITests: XCTestCase {
 
         // Round-trip the actual copy through the app's public system PasteButton;
         // this verifies its native bridge without a test-only clipboard reader.
-        app.navigationBars.buttons["HTML Previewer"].tap()
+        navigateHome(app)
         app.buttons["paste-preview-button"].tap()
         XCTAssertTrue(eventuallyEnabled(app.buttons["paste-system-button"]))
         tapSystemPaste(app)
@@ -100,7 +100,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         let finalText = app.staticTexts["This final enhanced reading position stays after reopening."]
         XCTAssertTrue(eventuallyHittable(finalText))
         screenshot("Enhanced Markdown outline jumps to final section", app: app)
-        app.navigationBars.buttons["HTML Previewer"].tap()
+        navigateHome(app)
         app.terminate()
         app.launchArguments = arguments
         app.launch()
@@ -112,7 +112,37 @@ final class ReadingAndPasteUITests: XCTestCase {
     }
 
     func testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch() {
+        let previousOrientation = XCUIDevice.shared.orientation
         let app = launchFresh()
+        defer {
+            if #available(iOS 27.1, *) {
+                XCUIDevice.shared.orientation = previousOrientation.isValidInterfaceOrientation ? previousOrientation : .portrait
+            }
+        }
+        if #available(iOS 27.1, *) {
+            // Duo can restore its pose orientation during launch. Set landscape
+            // afterward so scrolling the modal exercises the short viewport.
+            XCUIDevice.shared.orientation = .landscapeRight
+            var lastWindowFrame: CGRect?
+            var stableSince: TimeInterval?
+            let settled = wait {
+                let frame = app.windows.firstMatch.frame
+                guard !frame.isEmpty, frame.width > frame.height else {
+                    lastWindowFrame = nil
+                    stableSince = nil
+                    return false
+                }
+                let now = ProcessInfo.processInfo.systemUptime
+                if lastWindowFrame != frame {
+                    lastWindowFrame = frame
+                    stableSince = now
+                    return false
+                }
+                return stableSince.map { now - $0 >= 1 } ?? false
+            }
+            if !settled { attachOrientationGeometry(requested: .landscapeRight, app: app) }
+            XCTAssertTrue(settled, "The landscape window must settle before exercising modal scrolling and reading controls")
+        }
         let name = "週末の読書ノート—跨语言阅读记录—A longer document title for a quieter Saturday"
         let sections = (1...8).map { index in
             "## Chapter \(index)\n\n" + String(repeating: "A quieter Saturday leaves room for reading. ", count: 10)
@@ -127,20 +157,25 @@ final class ReadingAndPasteUITests: XCTestCase {
 
         let actionIDs = ["reading-tools-menu", "preview-mode-menu", "share-file-button", "file-details-button"]
         let actions = actionIDs.map { app.buttons[$0] }
-        for action in actions {
-            XCTAssertTrue(eventuallyHittable(action), "Missing accessible bottom action: \(action.identifier)")
-            XCTAssertGreaterThan(action.frame.minY, app.frame.height * 0.6)
-            XCTAssertGreaterThan(action.frame.minY, title.frame.maxY)
+        if #available(iOS 27.1, *) {
+            assertSystemPreviewActions(actionIDs, app: app)
+            screenshot("Long multilingual title with system reading toolbar", app: app)
+        } else {
+            for action in actions {
+                XCTAssertTrue(eventuallyHittable(action), "Missing accessible bottom action: \(action.identifier)")
+                XCTAssertGreaterThan(action.frame.minY, app.frame.height * 0.6)
+                XCTAssertGreaterThan(action.frame.minY, title.frame.maxY)
+            }
+            let rowY = actions[0].frame.midY
+            for action in actions.dropFirst() {
+                XCTAssertLessThan(abs(action.frame.midY - rowY), 24, "The four actions should share one row")
+            }
+            XCTAssertGreaterThan(actions[3].frame.maxX, app.frame.maxX - app.frame.width * 0.2)
+            for (left, right) in zip(actions, actions.dropFirst()) {
+                XCTAssertLessThanOrEqual(left.frame.maxX, right.frame.minX + 1, "Bottom actions must not overlap")
+            }
+            screenshot("Long multilingual title with four bottom-right actions", app: app)
         }
-        let rowY = actions[0].frame.midY
-        for action in actions.dropFirst() {
-            XCTAssertLessThan(abs(action.frame.midY - rowY), 24, "The four actions should share one row")
-        }
-        XCTAssertGreaterThan(actions[3].frame.maxX, app.frame.maxX - app.frame.width * 0.2)
-        for (left, right) in zip(actions, actions.dropFirst()) {
-            XCTAssertLessThanOrEqual(left.frame.maxX, right.frame.minX + 1, "Bottom actions must not overlap")
-        }
-        screenshot("Long multilingual title with four bottom-right actions", app: app)
 
         let fullFilename = app.descendants(matching: .any).matching(
             NSPredicate(format: "label == %@", "Name: \(name).md")
@@ -148,6 +183,9 @@ final class ReadingAndPasteUITests: XCTestCase {
         title.tap()
         XCTAssertTrue(fullFilename.waitForExistence(timeout: 5))
         app.buttons["document-details-done-button"].tap()
+        if #available(iOS 27.1, *) {
+            revealSystemPreviewAction("file-details-button", actionIDs: actionIDs, app: app)
+        }
         XCTAssertTrue(eventuallyHittable(app.buttons["file-details-button"]))
         app.buttons["file-details-button"].tap()
         XCTAssertTrue(fullFilename.waitForExistence(timeout: 5))
@@ -173,21 +211,73 @@ final class ReadingAndPasteUITests: XCTestCase {
         closeSearch(app)
         XCTAssertTrue(wait { !app.keyboards.firstMatch.exists })
         XCTAssertFalse(app.textFields["reading-search-field"].exists)
-        for action in actions {
-            XCTAssertTrue(eventuallyHittable(action))
+        if #available(iOS 27.1, *) {
+            assertSystemPreviewActions(actionIDs, app: app)
+        } else {
+            for action in actions {
+                XCTAssertTrue(eventuallyHittable(action))
+            }
         }
-        let contentScrollView = app.scrollViews.firstMatch
+        let systemToolbar: XCUIElement?
+        if #available(iOS 27.1, *) {
+            let toolbar = app.toolbars.containing(.button, identifier: "reading-tools-menu").firstMatch
+            XCTAssertTrue(toolbar.waitForExistence(timeout: 5), "The system reading toolbar must return after closing search")
+            systemToolbar = toolbar
+        } else {
+            systemToolbar = nil
+        }
+        let contentScrollView: XCUIElement
+        if #available(iOS 27.1, *) {
+            // A Duo sidebar can have a separate scroll view. Select the reader
+            // in the document title's column, preferring its outer viewport.
+            let readerScrollViews = app.scrollViews.allElementsBoundByIndex.filter {
+                $0.frame.minX <= title.frame.midX && $0.frame.maxX >= title.frame.midX
+            }
+            guard let reader = readerScrollViews.max(by: { $0.frame.height < $1.frame.height }) else {
+                XCTFail("The selected document must have a scrollable reader viewport")
+                return
+            }
+            contentScrollView = reader
+        } else {
+            contentScrollView = app.scrollViews.firstMatch
+        }
         XCTAssertTrue(contentScrollView.exists)
         let finalNote = app.staticTexts["The final reading note."]
-        for _ in 0..<20 {
-            if finalNote.exists && finalNote.isHittable && finalNote.frame.maxY < actions[0].frame.minY {
-                break
+        let finalNoteIsClear = {
+            guard finalNote.exists && finalNote.isHittable else { return false }
+            if let toolbar = systemToolbar {
+                let buttons = toolbar.buttons.allElementsBoundByIndex.filter {
+                    $0.isHittable && !$0.frame.isEmpty
+                }
+                guard !buttons.isEmpty else { return false }
+                // The AX container can span the reader on Duo. Check the
+                // visible bar's full background band, including its gaps.
+                let toolbarBackground = buttons.reduce(CGRect.null) { $0.union($1.frame) }
+                    .insetBy(dx: -8, dy: -8)
+                // Scrolling can minimize the native navigation title. Only
+                // inspect its frame while it remains visible in the AX tree.
+                let titleOverlapsNote = title.exists && title.isHittable
+                    && title.frame.intersects(finalNote.frame)
+                return contentScrollView.frame.contains(finalNote.frame) && app.frame.contains(finalNote.frame)
+                    && !toolbarBackground.intersects(finalNote.frame) && !titleOverlapsNote
             }
+            return finalNote.frame.maxY < actions[0].frame.minY
+        }
+        for _ in 0..<20 {
+            if finalNoteIsClear() { break }
             contentScrollView.swipeUp()
         }
         XCTAssertTrue(finalNote.exists && finalNote.isHittable)
-        XCTAssertLessThan(finalNote.frame.maxY, actions[0].frame.minY, "The final text should scroll fully above the floating actions")
-        screenshot("Final reading note clears the bottom action dock", app: app)
+        if systemToolbar != nil {
+            XCTAssertTrue(finalNoteIsClear(), "The final text must fit in the reader viewport without toolbar or title overlap")
+            let details = app.buttons["file-details-button"]
+            XCTAssertTrue(eventuallyHittable(details), "File details must remain accessible when scrolling minimizes the document title")
+            XCTAssertTrue(details.isEnabled)
+            XCTAssertTrue(app.frame.contains(details.frame), "The file details entry must remain within the window")
+        } else {
+            XCTAssertLessThan(finalNote.frame.maxY, actions[0].frame.minY, "The final text should scroll fully above the floating actions")
+        }
+        screenshot("Final reading note clears the reading controls", app: app)
     }
 
     func testMarkdownSearchRevealsLongParagraphAndOffscreenTableColumn() {
@@ -243,7 +333,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         finalHeading.tap()
         XCTAssertTrue(eventuallyHittable(app.staticTexts["Final decision"]))
         screenshot("Markdown directory jump", app: app)
-        app.navigationBars.buttons["HTML Previewer"].tap()
+        navigateHome(app)
         app.terminate()
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -285,7 +375,7 @@ final class ReadingAndPasteUITests: XCTestCase {
         scrollTo(finalHeading, app: app)
         finalHeading.tap()
         XCTAssertTrue(eventuallyHittable(app.staticTexts["Final destination"]))
-        app.navigationBars.buttons["HTML Previewer"].tap()
+        navigateHome(app)
         app.terminate()
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -368,6 +458,67 @@ final class ReadingAndPasteUITests: XCTestCase {
         }
     }
 
+    // The system may move lower-priority controls into its own overflow menu.
+    // Require every original action to be reachable, and inspect the rendered
+    // toolbar rather than assuming a fixed order or a floating dock location.
+    @available(iOS 27.1, *)
+    private func assertSystemPreviewActions(_ actionIDs: [String], app: XCUIApplication) {
+        let toolbar = app.toolbars.containing(.button, identifier: "reading-tools-menu").firstMatch
+        XCTAssertTrue(toolbar.waitForExistence(timeout: 5), "The system reading toolbar should exist")
+        let title = app.buttons["document-title-button"]
+        for identifier in ["reading-tools-menu", "share-file-button"] {
+            let control = app.buttons[identifier]
+            XCTAssertTrue(eventuallyHittable(control), "The primary action should remain directly accessible: \(identifier)")
+            XCTAssertTrue(app.frame.contains(control.frame), "Toolbar controls must fit within the window")
+            XCTAssertFalse(control.frame.intersects(title.frame), "Toolbar controls must not cover the document title")
+        }
+        let visibleControls = toolbar.buttons.allElementsBoundByIndex.filter { $0.isHittable && !$0.frame.isEmpty }
+        XCTAssertGreaterThanOrEqual(visibleControls.count, 2)
+        for (index, first) in visibleControls.enumerated() {
+            XCTAssertTrue(app.frame.contains(first.frame), "Visible system toolbar controls must fit within the window")
+            for second in visibleControls.dropFirst(index + 1) {
+                let overlap = first.frame.intersection(second.frame)
+                XCTAssertTrue(overlap.isNull || overlap.width <= 1 || overlap.height <= 1,
+                              "Visible toolbar controls must not overlap: \(first.identifier), \(second.identifier)")
+            }
+        }
+        for identifier in actionIDs {
+            let openedOverflow = revealSystemPreviewAction(identifier, actionIDs: actionIDs, app: app)
+            let control = app.buttons[identifier]
+            XCTAssertTrue(eventuallyHittable(control), "Every reading action must be reachable: \(identifier)")
+            XCTAssertTrue(control.isEnabled, "Every reading action must be enabled")
+            XCTAssertTrue(app.frame.contains(control.frame), "Actions exposed by overflow must fit within the window")
+            if openedOverflow {
+                screenshot("System overflow exposes \(identifier)", app: app)
+                app.typeKey("\u{1b}", modifierFlags: [])
+                XCTAssertTrue(wait { !control.exists || !control.isHittable }, "Escape should close the system overflow menu")
+                XCTAssertTrue(eventuallyHittable(app.buttons["reading-tools-menu"]), "Closing overflow should restore direct toolbar access")
+            }
+        }
+    }
+
+    @available(iOS 27.1, *)
+    @discardableResult
+    private func revealSystemPreviewAction(_ identifier: String, actionIDs: [String], app: XCUIApplication) -> Bool {
+        let action = app.buttons[identifier]
+        if action.exists && action.isHittable { return false }
+        let toolbar = app.toolbars.containing(.button, identifier: "reading-tools-menu").firstMatch
+        // The toolbar contains the app's known actions plus one system overflow
+        // control. Discover that extra button from the current AX hierarchy so
+        // this test does not depend on a localized system label.
+        let candidates = toolbar.buttons.allElementsBoundByIndex.filter {
+            $0.isHittable && !actionIDs.contains($0.identifier) && !$0.frame.isEmpty
+        }
+        guard candidates.count == 1, let overflow = candidates.first else {
+            attachInterfaceSnapshot("Missing system overflow for \(identifier)", app: app)
+            XCTFail("A hidden reading action must have one accessible system overflow entry")
+            return false
+        }
+        overflow.tap()
+        XCTAssertTrue(eventuallyHittable(action), "System overflow must expose the original action identifier: \(identifier)")
+        return true
+    }
+
     private func launchFresh(sample: String? = nil, language: String = "en", locale: String = "en_US") -> XCUIApplication {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -376,6 +527,19 @@ final class ReadingAndPasteUITests: XCTestCase {
         if let sample { app.launchArguments.append("--screenshot-sample=\(sample)") }
         app.launch()
         return app
+    }
+
+    private func navigateHome(_ app: XCUIApplication) {
+        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
+        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
+            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        )).firstMatch
+        XCTAssertTrue(wait {
+            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
+        }, "The document must expose a native library back button")
+        (systemBack.exists && systemBack.isHittable ? systemBack : legacyBack).tap()
+        XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 5),
+                      "Back must return to the document library")
     }
 
     private func paste(_ text: String, name: String, app: XCUIApplication) {

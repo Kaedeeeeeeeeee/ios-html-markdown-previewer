@@ -5,6 +5,20 @@ struct YAMLPreviewView: View {
     let fileURL: URL
     let reading: DocumentReadingState
     var format: StructuredDocumentFormat = .yaml
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
+    private var usesCompactControls: Bool {
+        if #available(iOS 27.1, *) { return verticalSizeClass == .compact }
+        return false
+    }
+
+    private var controlsLayout: AnyLayout {
+        usesCompactControls ? AnyLayout(HStackLayout(spacing: 10)) : AnyLayout(VStackLayout(spacing: 10))
+    }
+
+    private var searchLayout: AnyLayout {
+        usesCompactControls ? AnyLayout(HStackLayout(spacing: 8)) : AnyLayout(VStackLayout(spacing: 8))
+    }
 
     private var optionsTitle: String { format == .json ? JSONStrings.options : YAMLStrings.options }
     private var syntaxErrorTitle: String { format == .json ? JSONStrings.syntaxError : YAMLStrings.syntaxError }
@@ -26,6 +40,12 @@ struct YAMLPreviewView: View {
     private struct ScrollRequest: Equatable {
         let id = UUID()
         let target: String
+        var anchor: UnitPoint = .topLeading
+    }
+
+    private var searchScrollAnchor: UnitPoint {
+        if #available(iOS 27.1, *) { return UnitPoint(x: 0, y: 0.5) }
+        return .topLeading
     }
 
     private var sheet: YAMLSheet? {
@@ -132,7 +152,7 @@ struct YAMLPreviewView: View {
     }
 
     private func controls(_ document: YAMLDocument) -> some View {
-        VStack(spacing: 10) {
+        controlsLayout {
             HStack {
                 if document.sheets.count > 1 {
                     Menu {
@@ -152,13 +172,15 @@ struct YAMLPreviewView: View {
                         }
                     }
                     .accessibilityIdentifier("\(format.rawValue)-document-menu")
-                } else {
+                } else if !usesCompactControls {
                     Text(format.title).fontWeight(.semibold)
                 }
-                Spacer()
-                if let root = sheet?.rows.first {
-                    Text(YAMLStrings.kind(root.kind, count: root.count))
-                        .foregroundStyle(.secondary)
+                if !usesCompactControls {
+                    Spacer()
+                    if let root = sheet?.rows.first {
+                        Text(YAMLStrings.kind(root.kind, count: root.count))
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 Menu {
                     Button(YAMLStrings.expandAll, systemImage: "arrow.down.right.and.arrow.up.left") { collapsed.removeAll() }
@@ -181,6 +203,7 @@ struct YAMLPreviewView: View {
                 .accessibilityIdentifier("\(format.rawValue)-options-menu")
             }
             .font(.subheadline)
+            .fixedSize(horizontal: usesCompactControls, vertical: false)
 
             Picker(format.title, selection: Binding(get: { mode }, set: { candidate in
                 if candidate != .structure || issue == nil { selectMode(candidate) }
@@ -190,8 +213,9 @@ struct YAMLPreviewView: View {
             }
             .pickerStyle(.segmented)
             .accessibilityIdentifier("\(format.rawValue)-view-picker")
+            .layoutPriority(1)
         }
-        .padding(.horizontal, 16).padding(.bottom, 12)
+        .padding(.horizontal, 16).padding(.bottom, usesCompactControls ? 4 : 12)
         .background(Color(.secondarySystemGroupedBackground))
     }
 
@@ -220,7 +244,8 @@ struct YAMLPreviewView: View {
     }
 
     private var searchBar: some View {
-        VStack(spacing: 8) {
+        // AnyLayout moves the same field subtree instead of replacing its first responder.
+        searchLayout {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
                 TextField(mode == .source ? YAMLStrings.searchSource : YAMLStrings.search, text: $query)
@@ -239,23 +264,32 @@ struct YAMLPreviewView: View {
                     .accessibilityIdentifier("\(format.rawValue)-search-clear")
                 }
             }
-            .padding(.horizontal, 10).frame(minHeight: 40)
+            .padding(.horizontal, 10)
+            .frame(minWidth: usesCompactControls ? 120 : nil, maxWidth: .infinity,
+                   minHeight: usesCompactControls ? 44 : 40)
             .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
             if !trimmedQuery.isEmpty {
                 HStack {
                     Text(YAMLStrings.results(resultIndex, count: resultIDs.count))
                         .font(.caption).foregroundStyle(.secondary)
                         .accessibilityIdentifier("\(format.rawValue)-match-count")
-                    Spacer()
-                    Button { moveResult(forward: false) } label: { Image(systemName: "chevron.up").frame(width: 40, height: 32) }
+                    if !usesCompactControls { Spacer() }
+                    Button { moveResult(forward: false) } label: {
+                        Image(systemName: "chevron.up")
+                            .frame(width: usesCompactControls ? 44 : 40, height: usesCompactControls ? 44 : 32)
+                    }
                         .accessibilityLabel(YAMLStrings.previous).accessibilityIdentifier("\(format.rawValue)-previous-result")
-                    Button { moveResult(forward: true) } label: { Image(systemName: "chevron.down").frame(width: 40, height: 32) }
+                    Button { moveResult(forward: true) } label: {
+                        Image(systemName: "chevron.down")
+                            .frame(width: usesCompactControls ? 44 : 40, height: usesCompactControls ? 44 : 32)
+                    }
                         .accessibilityLabel(YAMLStrings.next).accessibilityIdentifier("\(format.rawValue)-next-result")
                 }
                 .disabled(resultIDs.isEmpty)
+                .fixedSize(horizontal: usesCompactControls, vertical: false)
             }
         }
-        .padding(.horizontal, 16).padding(.vertical, 10)
+        .padding(.horizontal, 16).padding(.vertical, usesCompactControls ? 4 : 10)
     }
 
     private func content(_ document: YAMLDocument) -> some View {
@@ -274,13 +308,21 @@ struct YAMLPreviewView: View {
                 .scrollDismissesKeyboard(.interactively)
                 .id(mode) // Source and tree use different row heights and scroll geometry.
                 .accessibilityIdentifier(mode == .source ? "\(format.rawValue)-source-content" : "\(format.rawValue)-structure-content")
+                .onChange(of: viewport.size) {
+                    if #available(iOS 27.1, *), isSearchFocused, let selectedResult {
+                        // Folding and software-keyboard changes can retain a
+                        // visible ancestor while pushing its selected value out
+                        // of the reduced viewport. Remeasure the active result.
+                        requestScroll(selectedResult, anchor: searchScrollAnchor)
+                    }
+                }
                 .onChange(of: scrollRequest, initial: true) {
                     let request = scrollRequest
                     Task { @MainActor in
                         // Let a source/structure switch and search expansion settle.
                         try? await Task.sleep(for: .milliseconds(100))
                         guard request == scrollRequest else { return }
-                        withAnimation(.easeInOut(duration: 0.2)) { proxy.scrollTo(request.target, anchor: .topLeading) }
+                        withAnimation(.easeInOut(duration: 0.2)) { proxy.scrollTo(request.target, anchor: request.anchor) }
                     }
                 }
             }
@@ -472,16 +514,16 @@ struct YAMLPreviewView: View {
     }
     private func resetSearch() {
         resultIndex = 0
-        if let selectedResult { requestScroll(selectedResult) }
+        if let selectedResult { requestScroll(selectedResult, anchor: searchScrollAnchor) }
     }
     private func moveResult(forward: Bool) {
         guard !resultIDs.isEmpty else { return }
         resultIndex = (resultIndex + (forward ? 1 : resultIDs.count - 1)) % resultIDs.count
-        if let selectedResult { requestScroll(selectedResult) }
+        if let selectedResult { requestScroll(selectedResult, anchor: searchScrollAnchor) }
     }
-    private func requestScroll(_ target: String) {
+    private func requestScroll(_ target: String, anchor: UnitPoint = .topLeading) {
         guard !target.isEmpty else { return }
-        scrollRequest = ScrollRequest(target: target)
+        scrollRequest = ScrollRequest(target: target, anchor: anchor)
     }
     private func showSource(line: Int) {
         query = ""

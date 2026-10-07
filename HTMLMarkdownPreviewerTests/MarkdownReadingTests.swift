@@ -1,5 +1,6 @@
 import XCTest
 import UIKit
+import SwiftUI
 @testable import HTMLMarkdownPreviewer
 
 final class MarkdownReadingTests: XCTestCase {
@@ -85,6 +86,147 @@ final class MarkdownReadingTests: XCTestCase {
         XCTAssertNil(MarkdownReadingIndex.StoredAnchor("html-section-2"))
         XCTAssertNil(MarkdownReadingIndex.StoredAnchor("markdown-block-title"))
         XCTAssertNil(MarkdownReadingIndex.StoredAnchor(nil))
+    }
+
+    @MainActor
+    func testNativeMarkdownPreservesBlockFractionAcrossViewportReflow() async throws {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive })
+        let previousKeyWindow = scene.windows.first { $0.isKeyWindow }
+        let window = UIWindow(windowScene: scene)
+        let container = UIViewController()
+        let state = DocumentReadingState(position: ReadingPosition(anchorID: "markdown-block-8@0.35", progress: 0.5))
+        let text = AttributedString(String(repeating: "A long native Markdown paragraph wraps at the current reading width. ", count: 30))
+        let document = MarkdownDocument(blocks: (0..<16).map { _ in .paragraph(text) })
+        let host = UIHostingController(rootView: MarkdownPreviewView(document: document, readingState: state))
+        container.addChild(host)
+        container.view.addSubview(host.view)
+        host.didMove(toParent: container)
+        host.view.frame = CGRect(x: 0, y: 0, width: 390, height: 600)
+        window.rootViewController = container
+        window.makeKeyAndVisible()
+        defer {
+            window.isHidden = true
+            previousKeyWindow?.makeKey()
+        }
+        container.view.layoutIfNeeded()
+        host.view.layoutIfNeeded()
+        try await waitForNativeAnchor(state, blockID: "markdown-block-8", fraction: 0.35)
+        var descendants = [host.view!]
+        var resolvedScroll: UIScrollView?
+        while !descendants.isEmpty {
+            let view = descendants.removeFirst()
+            if let scroll = view as? UIScrollView { resolvedScroll = scroll; break }
+            descendants.append(contentsOf: view.subviews)
+        }
+        let scroll = try XCTUnwrap(resolvedScroll)
+        let originalOffset = scroll.contentOffset.y
+        XCTAssertGreaterThan(originalOffset, 1_000, "The initial lazy block anchor must actually scroll into view.")
+        host.view.frame.size.width = 280
+        host.view.setNeedsLayout()
+        host.view.layoutIfNeeded()
+        try await waitForNativeAnchor(state, blockID: "markdown-block-8", fraction: 0.35)
+        let narrowOffset = scroll.contentOffset.y
+        XCTAssertGreaterThan(narrowOffset, originalOffset * 1.15, "Narrow reflow must restore the block at its new offset.")
+        host.view.frame.size.width = 540
+        host.view.setNeedsLayout()
+        host.view.layoutIfNeeded()
+        try await waitForNativeAnchor(state, blockID: "markdown-block-8", fraction: 0.35)
+        XCTAssertLessThan(scroll.contentOffset.y, narrowOffset * 0.8, "Wide reflow must restore the block at its new offset.")
+    }
+
+    @MainActor
+    func testNativeVisibleSelectedMatchSurvivesShorterAndNarrowerViewport() async throws {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive })
+        let previousKeyWindow = scene.windows.first { $0.isKeyWindow }
+        let window = UIWindow(windowScene: scene)
+        let container = UIViewController()
+        let state = DocumentReadingState()
+        let finalParagraph = String(repeating: "A paragraph stays readable as its reading column changes. ", count: 8) + "needle"
+        let document = MarkdownDocument(blocks: [.paragraph(AttributedString("First needle")),
+                                                .paragraph(AttributedString(finalParagraph))])
+        let host = UIHostingController(rootView: MarkdownPreviewView(document: document, readingState: state)
+            .environment(\.dynamicTypeSize, .large))
+        container.addChild(host)
+        container.view.addSubview(host.view)
+        host.didMove(toParent: container)
+        host.view.frame = CGRect(x: 0, y: 0, width: 390, height: 900)
+        window.rootViewController = container
+        window.makeKeyAndVisible()
+        defer {
+            window.isHidden = true
+            previousKeyWindow?.makeKey()
+        }
+        container.view.layoutIfNeeded()
+        host.view.layoutIfNeeded()
+        try await waitForNativeCondition { state.isReady }
+        state.query = "needle"
+        try await waitForNativeCondition { state.matchCount == 2 }
+        state.navigate(to: .match(1))
+        try await waitForNativeCondition { state.selectedMatch == 1 }
+        var descendants = [host.view!]
+        var resolvedScroll: UIScrollView?
+        while !descendants.isEmpty {
+            let view = descendants.removeFirst()
+            if let scroll = view as? UIScrollView { resolvedScroll = scroll; break }
+            descendants.append(contentsOf: view.subviews)
+        }
+        let scroll = try XCTUnwrap(resolvedScroll)
+        XCTAssertLessThan(scroll.contentSize.height, scroll.bounds.height,
+                          "Both matches must initially fit in the tall viewport.")
+        XCTAssertEqual(scroll.contentOffset.y + scroll.adjustedContentInset.top, 0, accuracy: 1)
+        // Height-only collapse must preserve visible search focus as well as a
+        // subsequent narrowing that wraps the final match onto a later line.
+        for size in [CGSize(width: 390, height: 240), CGSize(width: 280, height: 180)] {
+            host.view.frame.size = size
+            host.view.setNeedsLayout()
+            host.view.layoutIfNeeded()
+            try await waitForNativeCondition {
+                let maximum = scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom
+                return maximum > 100 && abs(scroll.contentOffset.y - maximum) <= 1
+            }
+            XCTAssertEqual(state.query, "needle")
+            XCTAssertEqual(state.matchCount, 2)
+            XCTAssertEqual(state.selectedMatch, 1)
+        }
+    }
+
+    @MainActor
+    private func waitForNativeCondition(_ condition: @MainActor () -> Bool) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        while true {
+            if condition() {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(300) { return }
+            } else { stableSince = nil }
+            guard ContinuousClock.now < deadline else {
+                XCTFail("Native reading interaction did not settle")
+                throw NSError(domain: "MarkdownReadingTests", code: 2)
+            }
+            try await Task.sleep(for: .milliseconds(30))
+        }
+    }
+
+    @MainActor
+    private func waitForNativeAnchor(_ state: DocumentReadingState, blockID: String, fraction: Double) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        while true {
+            let anchor = MarkdownReadingIndex.StoredAnchor(state.position?.anchorID)
+            if state.isReady, anchor?.blockID == blockID, abs((anchor?.fraction ?? -1) - fraction) < 0.025 {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(350) { return }
+            } else { stableSince = nil }
+            guard ContinuousClock.now < deadline else {
+                XCTFail("Native viewport reflow lost \(blockID)@\(fraction): \(String(describing: state.position))")
+                throw NSError(domain: "MarkdownReadingTests", code: 1)
+            }
+            try await Task.sleep(for: .milliseconds(30))
+        }
     }
 
     @MainActor

@@ -1,0 +1,27 @@
+{
+  "capturedAtUTC": "2026-10-07T08:37:30.713005+00:00",
+  "path": "sources/ja/ipad-06-yaml-preview.png",
+  "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+  "family": "ipad",
+  "sourceKey": "06-yaml-preview",
+  "locale": "ja",
+  "displayId": null,
+  "pixels": [
+    2048,
+    2732
+  ],
+  "mode": "RGBA",
+  "sha256": "f277598c9903f3f0b0613f8468b21f4fd6a9aa71dde4a2c1689129ed71a66e66",
+  "appVersion": "1.8",
+  "buildNumber": "13",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+    "HTMLMarkdownPreviewer.debug.dylib": "f209cfa36ecc6dffe536bdcb6fd5b3f832a73540b34f1417f9ed759f731309dd"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "contact_sheet_review_passed",
+  "sourcePixelsEdited": false,
+  "visualReviewScope": "Four-language final iPad contact sheets visually inspected: localized UI/headings, rendered HTML/code/formula/diagram/JSON/YAML, imported4/skipped0/failed0 result, actual library+report split, readable marketing titles and proportional source. English native library/Markdown/import sources also individually inspected. Structural geometry/opacity/identity checked separately."
+}

@@ -3,6 +3,14 @@ import WebKit
 
 struct DocumentPreviewView: View {
     let store: DocumentLibraryStore
+    private let inputDocument: PreviewDocument
+    private let isReadingObscured: Bool
+    private let isReadingSelected: (() -> Bool)?
+    private let onReadingFinished: (TimeInterval) -> Void
+
+    @State private var reviewReading = ReviewReadingSession()
+    @State private var isReaderVisible = false
+    @State private var sharePresentation = SharePresentationContext()
 
     @State private var document: PreviewDocument
     @State private var state: PreviewContentState = .loading
@@ -11,11 +19,14 @@ struct DocumentPreviewView: View {
     @State private var isDetailsPresented = false
     @State private var loadedWebView: WKWebView?
     @State private var isExporting = false
+    @State private var isSharing = false
     @State private var exportError: String?
     @State private var reading: DocumentReadingState
     @State private var isSearchPresented = false
+    @State private var searchEditingSession = DocumentSearchEditingSession()
     @State private var readingSheet: ReadingSheet?
     @State private var readingSaveTask: Task<Void, Never>?
+    @State private var previewLoadTask: Task<Void, Never>?
     @State private var isFullScreen = false
     @State private var isAppearancePresented = false
     @State private var packageNavigation: PackageNavigationState?
@@ -29,9 +40,17 @@ struct DocumentPreviewView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-    init(document: PreviewDocument, store: DocumentLibraryStore) {
+    init(document: PreviewDocument, store: DocumentLibraryStore,
+         isReadingObscured: Bool = false,
+         isReadingSelected: (() -> Bool)? = nil,
+         onReadingFinished: @escaping (TimeInterval) -> Void = { _ in }) {
         self.store = store
+        self.inputDocument = document
+        self.isReadingObscured = isReadingObscured
+        self.isReadingSelected = isReadingSelected
+        self.onReadingFinished = onReadingFinished
         self._document = State(initialValue: document)
         self._previewMode = State(initialValue: document.preferredPreviewMode)
         self._reading = State(initialValue: DocumentReadingState(position: store.readingPosition(for: document)))
@@ -94,12 +113,15 @@ struct DocumentPreviewView: View {
 
     var body: some View {
         previewContent
+        .modifier(SharePresentationModifier(presentation: sharePresentation))
         .navigationTitle(document.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .top, spacing: 0) {
             if !isFullScreen {
                 VStack(spacing: 0) {
-                    if let status = previewStatus { PreviewStatusBar(status: status) }
+                    if let status = previewStatus {
+                        PreviewStatusBar(status: status, showsDescription: !usesCompactSearchLayout)
+                    }
                     if let packageNavigation {
                         PackageNavigationBar(navigation: packageNavigation, onBack: goBackInPackage) {
                             isPackagePagesPresented = true
@@ -110,15 +132,17 @@ struct DocumentPreviewView: View {
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if !isFullScreen, isSearchPresented, supportsReadingTools {
-                DocumentSearchBar(reading: reading) {
+                DocumentSearchBar(reading: reading, editingSession: searchEditingSession,
+                                  usesCompactLayout: usesCompactSearchLayout) {
                     reading.query = ""
                     isSearchPresented = false
                 }
-            } else if !isFullScreen {
+            } else if !isFullScreen, !usesSystemPreviewToolbar {
                 previewActions
             }
         }
         .toolbar(isFullScreen ? .hidden : .visible, for: .navigationBar)
+        .toolbar(isFullScreen || isSearchPresented ? .hidden : .automatic, for: .bottomBar)
         .statusBarHidden(isFullScreen)
         .overlay(alignment: .bottomTrailing) {
             if isFullScreen {
@@ -141,6 +165,9 @@ struct DocumentPreviewView: View {
             if isFullScreen { isFullScreen = false } else { dismiss() }
         }
         .toolbar {
+            if #available(iOS 27.1, *), !isFullScreen, !isSearchPresented {
+                systemPreviewToolbar
+            }
             ToolbarItem(placement: .principal) {
                 Button {
                     isDetailsPresented = true
@@ -174,15 +201,17 @@ struct DocumentPreviewView: View {
         } message: {
             Text(exportError ?? "")
         }
-        .task {
-            if case .loading = state {
-                await preparePackage()
-                guard !Task.isCancelled else { return }
-                loadPreview()
-            }
-        }
         .onChange(of: previewMode) {
             loadPreview()
+        }
+        .onChange(of: isSearchPresented) {
+            if isSearchPresented { searchEditingSession.beginEditing() }
+            else { searchEditingSession.endEditing() }
+        }
+        .onChange(of: inputDocument.displayName) {
+            // Renaming in the library must not recreate the reader or reset its position.
+            guard inputDocument.id == document.id else { return }
+            document.displayName = inputDocument.displayName
         }
         .onChange(of: reading.position) {
             readingSaveTask?.cancel()
@@ -192,10 +221,28 @@ struct DocumentPreviewView: View {
             }
         }
         .onChange(of: reading.isReady) { applyPackageMarkdownAnchor() }
+        .onAppear {
+            isReaderVisible = true
+            startPreviewLoadingIfNeeded()
+            reviewReading.setActive(canAccumulateReviewReadingTime)
+        }
+        .onChange(of: canAccumulateReviewReadingTime) {
+            reviewReading.setActive(canAccumulateReviewReadingTime)
+        }
         .onChange(of: scenePhase) {
             if scenePhase != .active { saveReadingPosition() }
         }
         .onDisappear {
+            // A split column can report disappearance while its document is
+            // still selected and on screen. The selection owns this session.
+            guard isReadingSelected?() != true else { return }
+            searchEditingSession.endEditing()
+            sharePresentation.cancelExport()
+            previewLoadTask?.cancel()
+            previewLoadTask = nil
+            isReaderVisible = false
+            reviewReading.setActive(false)
+            if isReviewContentReady { onReadingFinished(reviewReading.activeSeconds) }
             readingSaveTask?.cancel()
             saveReadingPosition()
         }
@@ -226,62 +273,141 @@ struct DocumentPreviewView: View {
         }
     }
 
+    private var isReviewContentReady: Bool {
+        switch state {
+        case .rawText: true
+        case .markdown, .html, .yaml, .json: reading.isReady
+        case .loading, .unsupported, .failed: false
+        }
+    }
+
+    private var canAccumulateReviewReadingTime: Bool {
+        isReaderVisible && scenePhase == .active && isReviewContentReady && !isReadingObscured
+            && !isInteractiveConfirmationPresented && !isDetailsPresented && !isExporting && !isSharing && exportError == nil
+            && readingSheet == nil && !isAppearancePresented && !isPackagePagesPresented
+    }
+
+    private var usesSystemPreviewToolbar: Bool {
+        if #available(iOS 27.1, *) { true } else { false }
+    }
+
+    private var usesCompactSearchLayout: Bool {
+        usesSystemPreviewToolbar && isSearchPresented && verticalSizeClass == .compact
+    }
+
+    @available(iOS 27.1, *)
+    @ToolbarContentBuilder
+    private var systemPreviewToolbar: some ToolbarContent {
+        if supportsReadingTools {
+            ToolbarItem(placement: .bottomBar) {
+                readingToolsMenu(usesSystemLabel: true)
+            }
+            .previewActionPriority(isPrimary: true)
+        }
+        if supportsPreviewModeMenu {
+            ToolbarItem(placement: .bottomBar) {
+                previewModeMenu(usesSystemLabel: true)
+            }
+            .previewActionPriority(isPrimary: false)
+        }
+        ToolbarItem(placement: .bottomBar) {
+            SystemShareSheetButton(
+                presentation: sharePresentation,
+                fileURL: store.originalFileURL(for: document),
+                accessibilityLabel: AppStrings.Accessibility.shareFile,
+                accessibilityIdentifier: "share-file-button",
+                shareTitle: document.type == .zipPackage
+                    ? AppStrings.Actions.shareZIPPackage : AppStrings.Actions.shareOriginalFile,
+                exportPDF: canExportPDF ? exportPDF : nil,
+                onExporting: { isExporting = $0 },
+                onExportError: { exportError = $0.localizedDescription },
+                onSharing: { isSharing = $0 }
+            )
+        }
+        .previewActionPriority(isPrimary: true)
+        ToolbarItem(placement: .bottomBar) {
+            Button {
+                isDetailsPresented = true
+            } label: {
+                Label(AppStrings.Accessibility.fileDetails, systemImage: "info.circle")
+            }
+            .accessibilityIdentifier("file-details-button")
+        }
+        .previewActionPriority(isPrimary: false)
+    }
+
+    private func readingToolsMenu(usesSystemLabel: Bool) -> some View {
+        Menu {
+            Button {
+                isSearchPresented = true
+            } label: {
+                Label(ReadingStrings.find, systemImage: "magnifyingglass")
+            }
+            .accessibilityIdentifier("reading-find-button")
+            Button {
+                readingSheet = .contents
+            } label: {
+                Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
+            }
+            .accessibilityIdentifier("reading-contents-button")
+            Divider()
+            Button {
+                isAppearancePresented = true
+            } label: {
+                Label(AppearanceStrings.appearance, systemImage: "textformat.size")
+            }
+            .accessibilityIdentifier("reading-appearance-button")
+            Button {
+                isSearchPresented = false
+                isFullScreen = true
+            } label: {
+                Label(AppearanceStrings.fullScreen, systemImage: "arrow.up.left.and.arrow.down.right")
+            }
+            .accessibilityIdentifier("reading-fullscreen-button")
+            Divider()
+            Button {
+                reading.navigate(to: .beginning)
+            } label: {
+                Label(ReadingStrings.beginning, systemImage: "arrow.up.to.line")
+            }
+        } label: {
+            if usesSystemLabel {
+                Label(ReadingStrings.tools, systemImage: "doc.text.magnifyingglass")
+            } else {
+                Image(systemName: "doc.text.magnifyingglass")
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+        }
+        .disabled(!reading.isReady)
+        .accessibilityLabel(ReadingStrings.tools)
+        .accessibilityIdentifier("reading-tools-menu")
+    }
+
+    private func previewModeMenu(usesSystemLabel: Bool) -> some View {
+        Menu {
+            previewModeButtons
+        } label: {
+            if usesSystemLabel {
+                Label(AppStrings.Accessibility.previewMode, systemImage: previewModeIcon)
+            } else {
+                Image(systemName: previewModeIcon)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+        }
+        .accessibilityLabel(AppStrings.Accessibility.previewMode)
+        .accessibilityHint(AppStrings.Accessibility.previewModeHint)
+        .accessibilityIdentifier("preview-mode-menu")
+    }
+
     private var previewActions: some View {
         HStack(spacing: 4) {
             if supportsReadingTools {
-                Menu {
-                    Button {
-                        isSearchPresented = true
-                    } label: {
-                        Label(ReadingStrings.find, systemImage: "magnifyingglass")
-                    }
-                    .accessibilityIdentifier("reading-find-button")
-                    Button {
-                        readingSheet = .contents
-                    } label: {
-                        Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
-                    }
-                    .accessibilityIdentifier("reading-contents-button")
-                    Divider()
-                    Button {
-                        isAppearancePresented = true
-                    } label: {
-                        Label(AppearanceStrings.appearance, systemImage: "textformat.size")
-                    }
-                    .accessibilityIdentifier("reading-appearance-button")
-                    Button {
-                        isSearchPresented = false
-                        isFullScreen = true
-                    } label: {
-                        Label(AppearanceStrings.fullScreen, systemImage: "arrow.up.left.and.arrow.down.right")
-                    }
-                    .accessibilityIdentifier("reading-fullscreen-button")
-                    Divider()
-                    Button {
-                        reading.navigate(to: .beginning)
-                    } label: {
-                        Label(ReadingStrings.beginning, systemImage: "arrow.up.to.line")
-                    }
-                } label: {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .disabled(!reading.isReady)
-                .accessibilityLabel(ReadingStrings.tools)
-                .accessibilityIdentifier("reading-tools-menu")
+                readingToolsMenu(usesSystemLabel: false)
             }
             if supportsPreviewModeMenu {
-                Menu {
-                    previewModeButtons
-                } label: {
-                    Image(systemName: previewModeIcon)
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .accessibilityLabel(AppStrings.Accessibility.previewMode)
-                .accessibilityHint(AppStrings.Accessibility.previewModeHint)
-                .accessibilityIdentifier("preview-mode-menu")
+                previewModeMenu(usesSystemLabel: false)
             }
 
             ShareSheetButton(
@@ -292,7 +418,8 @@ struct DocumentPreviewView: View {
                     ? AppStrings.Actions.shareZIPPackage : AppStrings.Actions.shareOriginalFile,
                 exportPDF: canExportPDF ? exportPDF : nil,
                 onExporting: { isExporting = $0 },
-                onExportError: { exportError = $0.localizedDescription }
+                onExportError: { exportError = $0.localizedDescription },
+                onSharing: { isSharing = $0 }
             )
             .frame(width: 44, height: 44)
 
@@ -316,6 +443,18 @@ struct DocumentPreviewView: View {
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+    }
+
+    private func startPreviewLoadingIfNeeded() {
+        guard case .loading = state, previewLoadTask == nil else { return }
+        // This task belongs to the document/payload identity, not SwiftUI's
+        // transient column presentation. A real selection change cancels it.
+        previewLoadTask = Task { @MainActor in
+            defer { previewLoadTask = nil }
+            await preparePackage()
+            guard !Task.isCancelled, isReadingSelected?() != false else { return }
+            loadPreview()
+        }
     }
 
     private func loadPreview() {
@@ -517,7 +656,7 @@ struct DocumentPreviewView: View {
         let pages = try? await withTaskCancellationHandler {
             try await task.value
         } onCancel: { task.cancel() }
-        guard !Task.isCancelled, let pages, !pages.isEmpty else { return }
+        guard !Task.isCancelled, isReadingSelected?() != false, let pages, !pages.isEmpty else { return }
         packageCatalog = catalog
         let saved = store.savedPackagePageRelativePath(for: document)
         let selected = pages.first(where: { $0.relativePath == saved }) ?? pages.first(where: \.isEntry) ?? pages[0]
@@ -575,6 +714,20 @@ struct DocumentPreviewView: View {
         else if let id = PackageMarkdownAnchor.headingID(for: fragment, headings: reading.headings) {
             reading.navigate(to: .heading(id))
         }
+    }
+}
+
+private extension ToolbarContent {
+    @MainActor
+    @available(iOS 27.1, *)
+    func previewActionPriority(isPrimary: Bool) -> some ToolbarContent {
+        // Priority is optional so older CI toolchains can compile the native toolbar.
+        // Full iPhone Duo release support still requires the iOS 27.1 SDK.
+        #if compiler(>=6.4)
+        self.visibilityPriority(isPrimary ? .high : .low)
+        #else
+        self
+        #endif
     }
 }
 
@@ -643,6 +796,7 @@ private struct PreviewStatus: Equatable {
 
 private struct PreviewStatusBar: View {
     let status: PreviewStatus
+    var showsDescription = true
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -652,10 +806,12 @@ private struct PreviewStatusBar: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(status.title)
                     .font(.footnote.weight(.semibold))
-                Text(status.message)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                if showsDescription {
+                    Text(status.message)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             Spacer(minLength: 0)
         }

@@ -1,0 +1,989 @@
+{
+  "schemaVersion": 1,
+  "documentPurpose": "Independent local Debug release QA snapshot for 1.8(13); does not replace older Duo QA or certify archive, CI, upload, submission, or public release.",
+  "createdAtUTC": "2026-10-07T08:35:44.829020+00:00",
+  "updatePolicy": "Keep this snapshot and prior QA files unchanged. Record later frozen-commit CI/archive/remote release outcomes in a separate release receipt.",
+  "projectPath": "/Volumes/DevSSD/Projects/html_preview",
+  "version": "1.8",
+  "build": "13",
+  "toolchain": {
+    "developerDir": "/Applications/Xcode-27.1.app/Contents/Developer",
+    "reportedVersion": "Xcode 27.1\nBuild version 27A9275",
+    "configuration": "Debug",
+    "sdk": "27.1"
+  },
+  "sourceSnapshot": {
+    "capturedAtUTC": "2026-10-07T08:35:44.829020+00:00",
+    "gitHEAD": "3f3cf0ebb2b2e1e1b618e4e68412eb74f25e7a5e",
+    "branch": "codex/iphone-duo-release-1.8",
+    "dirty": true,
+    "scope": "Current Swift sources in app/unit/UI test directories plus project.yml and generated project.pbxproj. Content snapshot after the test runs; not a claim of a frozen source commit at test time.",
+    "combinedSHA256": "9db97e885fdf4ef0eb10ca44fd5cf0a83f65cb0d8adf66daa972fff8f3cd7ff5",
+    "filesSHA256": {
+      "HTMLMarkdownPreviewer/AppView.swift": "c0afcb3847aa4def3fa95f50600c253a3334c5bac1a5ba9c5f96d050918e2656",
+      "HTMLMarkdownPreviewer/HTMLMarkdownPreviewerApp.swift": "3a07e876630ba50fc3a579e1da28dc16328409fc0a575552167f66f162b3fd12",
+      "HTMLMarkdownPreviewer/Models/BatchImportSession.swift": "7ca29d58d41db17e0f2083de44f87fd5d320bc3d921db4fa4aac63eccc579c62",
+      "HTMLMarkdownPreviewer/Models/BuiltInSample.swift": "148c51499870ad0c917960457a503ec8afdcbe5a6413fb812801def72ef42ad7",
+      "HTMLMarkdownPreviewer/Models/DocumentLibraryFilter.swift": "39480f5cd4d89b4d6c00586296601406f3ddce490177ca54b6fac104deacea5d",
+      "HTMLMarkdownPreviewer/Models/DocumentReadingState.swift": "748da17b23cb3632d4148e6239fbfaf4a2e8faeb8049fea594343df42e9370ba",
+      "HTMLMarkdownPreviewer/Models/ImportSource.swift": "9db1883efa4e2d26ba683a317cbc7fccf395c9233ad56b03f5b1e05d30aaaa6b",
+      "HTMLMarkdownPreviewer/Models/MarkdownDocument.swift": "883c46a6c3529472814d04e7defb0fadee2a281895d41542c681aeb8e1b48fca",
+      "HTMLMarkdownPreviewer/Models/PackageNavigationState.swift": "e6ac6bed0900c42a0bcb7429390250a312d976142daaa519e3abbb4770738e18",
+      "HTMLMarkdownPreviewer/Models/PackagePage.swift": "04218a942704cb81c9503202446a1acb634b7f24f78b94a4335c975207ff731e",
+      "HTMLMarkdownPreviewer/Models/PreparedDocumentImport.swift": "c02bf359bf2ca1f868228ded62aa53f62a6c13ef2b07354176d71bda5a17c182",
+      "HTMLMarkdownPreviewer/Models/PreviewDocument.swift": "a5bef01f105935304158eb56d174faa27260676c4ff47a1847098305ca57f935",
+      "HTMLMarkdownPreviewer/Models/PreviewDocumentType.swift": "a65ac3245d9f9505d6b7b13912b9335c0521164dbffeef8bc0422b23addfa336",
+      "HTMLMarkdownPreviewer/Models/PreviewMode.swift": "464495b0c69995bb3cbefba16c8a808aaa44bb32a9f92f35ce9aabe1cf0c96da",
+      "HTMLMarkdownPreviewer/Models/ReadingAppearance.swift": "315df4f3633d43d9a4ff201b2b9a7b8cf7126b48922b235a2a02c2166597d417",
+      "HTMLMarkdownPreviewer/Models/StructuredDocumentFormat.swift": "41b28d3567213d1c83f42eccc58fad34a1b8704543b07bafa2edf7710d45e698",
+      "HTMLMarkdownPreviewer/Models/YAMLDocument.swift": "7a64d6bee6183ec46e1c80ec5a2bec0f5445fdd32b14c409d45b7aeffe13466d",
+      "HTMLMarkdownPreviewer/Services/BatchImportStager.swift": "9ad778245665f3d2e7c09fc6314e7989b246e14bc5a00d46772c055e8acb0be5",
+      "HTMLMarkdownPreviewer/Services/BatchImportTestFixtures.swift": "60d07d64a9b6712d65a3aada698534131e5bde083c815f32373bccade147edc4",
+      "HTMLMarkdownPreviewer/Services/BuiltInSampleProvider+HTMLMotion.swift": "524c9fc942f2c44e637bf1398bb9a92065420c585ee2aaf55d34b8958962a1e0",
+      "HTMLMarkdownPreviewer/Services/BuiltInSampleProvider+JSON.swift": "aeac6e1e2c1e8db9f62951f73eca1f4919edf7573ee380912d9d7c84b9e490ab",
+      "HTMLMarkdownPreviewer/Services/BuiltInSampleProvider+Markdown.swift": "c5591773529ab9f0b6c3cc2328dafadbcd6d5e011cef3150d550a4a4b8253f24",
+      "HTMLMarkdownPreviewer/Services/BuiltInSampleProvider+YAML.swift": "9d73fd1a99b948be4416f6d47c2814de4122bce5524a5d0bdfb55b1ec3f45585",
+      "HTMLMarkdownPreviewer/Services/BuiltInSampleProvider+ZIPPages.swift": "1fcbfaeecf670fd63ea0a6f9c2aa96cad2beba4a0af71f14af9bde38c646c52e",
+      "HTMLMarkdownPreviewer/Services/BuiltInSampleProvider.swift": "bd4f05dae6e19112d49d5086ac6d1c7132a3a4525926cdad58a1682b63a57cd5",
+      "HTMLMarkdownPreviewer/Services/DocumentImportService.swift": "bacc62f1e264f0aa03b8fe8eee7f38ebc2079b0d9ec1f8b35bcd5963758d593b",
+      "HTMLMarkdownPreviewer/Services/DocumentLibraryStore.swift": "5ab662b3d770ae18bc804aa557d485ce0d241f38b4199c3c316b92f50848b917",
+      "HTMLMarkdownPreviewer/Services/JSONRenderService.swift": "f8a1fd2d26941aa20ba7e43dba40f8e1afb92d1e7feaea76310863eb7b9e421f",
+      "HTMLMarkdownPreviewer/Services/MarkdownEnhancedHTMLRenderer.swift": "07226e9eb99ad43017228816a5f7bb3e71d1e3372f6b8ceda3e03a949e9db413",
+      "HTMLMarkdownPreviewer/Services/MarkdownMathParser.swift": "c32b39414cd198b35a1e541037edd5c39bce85f194ad8eeefb25ffdeba9c763b",
+      "HTMLMarkdownPreviewer/Services/MarkdownPrintHTMLRenderer.swift": "98ba316d79e75f57b585a3c2bd876113bfcd75be2a98817f79c84d75203a7766",
+      "HTMLMarkdownPreviewer/Services/MarkdownReadingIndex.swift": "c3fe95be3cd9581a3115b6c0ad68ba81071ebc473bc4c82e81fd9860e27799ff",
+      "HTMLMarkdownPreviewer/Services/MarkdownRenderService.swift": "b1d557f0a8c840d98984bbece57ae960a79e554235d712a7f18d796de60ef2e9",
+      "HTMLMarkdownPreviewer/Services/MarkdownTextLayout.swift": "c7c0f997cc7acc269032546b8a72baa706e8928caf59dcecebf87b5966e4b1b8",
+      "HTMLMarkdownPreviewer/Services/PDFExportService.swift": "afc69f0009f3e688385af4ece3f00567a897093601ec6f26a55dacba6045360e",
+      "HTMLMarkdownPreviewer/Services/PackageMarkdownAnchor.swift": "5b35fb6d6c26ba24a3f1fd1065dbfcf1c87f6f29833fb81cf84235153fd68862",
+      "HTMLMarkdownPreviewer/Services/PackageNavigationTestFixtures.swift": "aff88148a238c5c5c362aa476e77528083ed9f8565a72551a7aa666d349dcc1f",
+      "HTMLMarkdownPreviewer/Services/PackagePageCatalog.swift": "d63a86f9c49883dba4625400dedbfba5c84694704cf99b4242fca1d958893d06",
+      "HTMLMarkdownPreviewer/Services/PastedDocumentImportService.swift": "4f8b50c4b2fafc7f159a49d1df17a2e06939d1d055a412ca5e226f78f8780f61",
+      "HTMLMarkdownPreviewer/Services/ReadingLibraryTestFixtures.swift": "8ab1e1c1dd670f54e8c96ffc0327313827193d88d8516eda0b6fc34f6b0a6ef7",
+      "HTMLMarkdownPreviewer/Services/ReviewPromptController.swift": "74cc00a6e987f2353718afb6b4cf9980c6a34316919a64126518d16ab78d7c96",
+      "HTMLMarkdownPreviewer/Services/YAMLRenderService.swift": "d78af26f7b9c6ef813a23dc070754a9316a3d976b04644befd2d14ab3317a671",
+      "HTMLMarkdownPreviewer/Services/ZipImportService.swift": "3f6d6a66e65bcdfa0f1631ac2ce01bfaf1a5d81803c08ee4b6d5a8259883300c",
+      "HTMLMarkdownPreviewer/Utilities/AppFormatters.swift": "1c9aab3e2ff421ad3e4e7534e3442a4ef66979ec7c80387b093bffd1e759cb80",
+      "HTMLMarkdownPreviewer/Utilities/AppStrings.swift": "cf7d27b39f5db8a4a130659ceb157d94eda72fe70b5474f0636ade3acb23d878",
+      "HTMLMarkdownPreviewer/Utilities/AppearanceStrings.swift": "8bbee8e923987ba395ed08a4771e990ba98223ebe9ac7e5d35ef63d9e618df47",
+      "HTMLMarkdownPreviewer/Utilities/BatchImportStrings.swift": "165288554eb4756e096ed704049b11f7e301553db077de6ff4ac33648ba92a40",
+      "HTMLMarkdownPreviewer/Utilities/FileTypeDetector.swift": "c36e5446b343230fe352e8d5e7bf30345a92ac71ff2f858a3c3e500510850a81",
+      "HTMLMarkdownPreviewer/Utilities/JSONStrings.swift": "86465394ff50b759f9b08a4ce71ff1accd30429ccce290e022e12dcd827513ad",
+      "HTMLMarkdownPreviewer/Utilities/LibraryStrings.swift": "d79cfb703a79b61e8f45f6f21e3fe9ad826eff30040bd4d89435c7de88d93607",
+      "HTMLMarkdownPreviewer/Utilities/MarkdownEnhancementStrings.swift": "5cc3f34c9baa80d8ea70edd8a60df3d1d88308ecdd35d3b22df40a691408ab3f",
+      "HTMLMarkdownPreviewer/Utilities/PackageNavigationStrings.swift": "4da2d28a2fa0f55be0e093a3c92e1bf1aa7258cb3ea82e002bca4f0c24ff1c01",
+      "HTMLMarkdownPreviewer/Utilities/PackageSampleStrings.swift": "93a42dfce716e4b0c2f184cc04364cb39e35a3ba611693977d6ebdc2574ebf4f",
+      "HTMLMarkdownPreviewer/Utilities/PasteStrings.swift": "72eb3d27676c6aa1f26c73b4f832be099e94ff16298340051dc45f2594b621ac",
+      "HTMLMarkdownPreviewer/Utilities/ReadingStrings.swift": "1f7c019228b6a3aae4ef139dae0b4db3fcc47109b8f7ed4fb268b6aa66620708",
+      "HTMLMarkdownPreviewer/Utilities/SupportedDocumentTypes.swift": "b78aa32667569c709a0163a765c9416bff9ec29f821135feae2417a241546369",
+      "HTMLMarkdownPreviewer/Utilities/YAMLStrings.swift": "10c90b09c03f4745cb933c8df83fb58e53fd72c15e1f2a2e98808d3df4cfcf13",
+      "HTMLMarkdownPreviewer/Views/BatchImportSummaryView.swift": "1013b8ef605bc99ada29609a4ef32984df4591583ea0955f5b992e16716f2916",
+      "HTMLMarkdownPreviewer/Views/DocumentDetailsView.swift": "2ae1d0d670edb1a46a33c9e3ca910ef919884dfb51d2b1f2422f26972515e4df",
+      "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift": "adf48f59f4278cfe6d0f3c68a48c14dc43bc11c1c0b8745016b22d8c14b32df2",
+      "HTMLMarkdownPreviewer/Views/DuplicateImportView.swift": "852cb22abf24190f96039830e595c130c1c24f432c1022578c137e1556bbcae5",
+      "HTMLMarkdownPreviewer/Views/HTMLPreviewView.swift": "8714fc989f080a21456f8975bc0fad7138513c5660d29d51f49909151a14b364",
+      "HTMLMarkdownPreviewer/Views/MarkdownImageViewer.swift": "f6a696392c62937ad610fd38106137d11e2c2914e1b86fe23da99d085d92b3cf",
+      "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift": "cc13e61c55bdbdbd01cb625330f77f4fd2d691bbb004fc609cbcef8b589ab77b",
+      "HTMLMarkdownPreviewer/Views/MarkdownRichPreviewView.swift": "1af2bb7e51ded87b19b993285f307a5b855e67d8f8cd105e8f1c3f612351e352",
+      "HTMLMarkdownPreviewer/Views/PackagePagesView.swift": "2b36e6600442f639b862fec869681f88d4e82db4739bf9d7eca442ab5966110b",
+      "HTMLMarkdownPreviewer/Views/PastePreviewView.swift": "6197ea887a38d0e0508c80fa445c53b1d13da2d159a56598c815dccd4b338dd8",
+      "HTMLMarkdownPreviewer/Views/ReadingAppearanceView.swift": "8ddf082af055d45b78d66838ee455126cbc32cbbe87daf1e2a6c8d5174a5a7e3",
+      "HTMLMarkdownPreviewer/Views/ReadingToolsView.swift": "b999030643ef1b5820b8a7010027e7843c01b28870604c4f8407437743107b6f",
+      "HTMLMarkdownPreviewer/Views/RenameDocumentView.swift": "41417b4a24b8a75134cd5b689aab04cc18a62d14dc801b02398246779c4a02fb",
+      "HTMLMarkdownPreviewer/Views/ReviewPromptRequestView.swift": "bf24340bf106edc8683ab0b2f7ea6dfca7d7b17d9697d579b4446c0864ae788e",
+      "HTMLMarkdownPreviewer/Views/SettingsView.swift": "a185dc144fea97609139989791868922e44195793cde6b2272f276a533ce36dc",
+      "HTMLMarkdownPreviewer/Views/ShareSheetButton.swift": "c74f9fec284978b6150be57ad4a61a7924938571cdc09d1e3ed2627dd13b6305",
+      "HTMLMarkdownPreviewer/Views/YAMLPreviewView.swift": "8f35d2814e405e809fd9a51eeb17a327ec5b0e3d7043e84da50fc9ea81f5a51a",
+      "HTMLMarkdownPreviewer/Web/ContentBlockerRules.swift": "8f47a9210ddfc13e86ea090cb6c200a337f1398c94f7ad892e3a5acfb3072a29",
+      "HTMLMarkdownPreviewer/Web/HTMLPreviewConfiguration.swift": "62f13eb198403df744d6f3b67e034e1b478eea88a794eb946eb7b3dda423cddd",
+      "HTMLMarkdownPreviewer/Web/HTMLReadingController.swift": "7107a7515ab941492d3c70be662b5a7d2baa701d5c3b3d2c6c097809c522586b",
+      "HTMLMarkdownPreviewer/Web/MarkdownEnhancementScript.swift": "d38daef28d67e172ed0f2be8f4dc5d19854c869813e0b2c885b5c606ef530608",
+      "HTMLMarkdownPreviewer/Web/MarkdownWebResources.swift": "8e49ab77d8c22e73c1b8d886bc6fb4438507fc6fcd30bc2bb8f3f6a398bcc3d4",
+      "HTMLMarkdownPreviewer/Web/WKWebView+DocumentJavaScript.swift": "24aead438de3aa43d88d1351f4a2c37e92334a6cfe0deaca115f5aca529869d3",
+      "HTMLMarkdownPreviewer/Web/WebNavigationPolicy.swift": "81a134c6b2033584772e83811f713beeeba77c3e48932afac95073657d593a94",
+      "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj": "620a76f9e861d590fcb750fa0f0e15c94f035be5127e0b61f976642c56a7e2c7",
+      "HTMLMarkdownPreviewerTests/BatchImportSessionTests.swift": "ab754c18bcf2ac4b7244e791b057d32748d2906df96d6233af3ed918a9c9d1be",
+      "HTMLMarkdownPreviewerTests/BuiltInSampleProviderTests.swift": "37b2111c4894be632b064dd07e620a21fabcc0459838ce34eab2f4a63fee8481",
+      "HTMLMarkdownPreviewerTests/DocumentImportServiceTests.swift": "e244e546b9cb66d0cce425cd5d4582a3b5e499f62ee6de78f4af588ffe56dd47",
+      "HTMLMarkdownPreviewerTests/DocumentLibraryManagementTests.swift": "94a2cba9226c64f5e3f8393e33cad45798dc9f276d4112600197b5ae186c7816",
+      "HTMLMarkdownPreviewerTests/FileTypeDetectorTests.swift": "1b7561706f58a8b9a7366b6f1ef91992a7a6e8c888615da86af79eac0226f500",
+      "HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift": "b9279f8bb8eaefc14f5d665e92c0f0b83e203e015888567e9c3d48f033e93df1",
+      "HTMLMarkdownPreviewerTests/HTMLReadingTests.swift": "5cb59b15ac443386305a698e85d6398a42eedbae0bf56c2222fece3ce2950d10",
+      "HTMLMarkdownPreviewerTests/HTMLSecurityTests.swift": "f475c63a4936e873567bf5c581ed5d8dbf958df8ae7f43550959f083394210f1",
+      "HTMLMarkdownPreviewerTests/JSONImportIntegrationTests.swift": "354091e883a8a1b567b18a6e0052cf4ab05a5bac907404ce39317b2712660c94",
+      "HTMLMarkdownPreviewerTests/JSONRenderServiceTests.swift": "26a58d5f36f31c2c12eec429b2464673cfba46fcba9d25f4ece4d26942f112af",
+      "HTMLMarkdownPreviewerTests/MarkdownEnhancementTests.swift": "27a9579536cc90d1d1a2b50cda4156d6e2e720f62d8132f59ae0bc63f5ac50b3",
+      "HTMLMarkdownPreviewerTests/MarkdownMathParserTests.swift": "1266417f53e82f4165a5ab0f6e30be4c3af13bc7fcb6ff14706b0323be3e403d",
+      "HTMLMarkdownPreviewerTests/MarkdownPrintHTMLRendererTests.swift": "687c8e4c11015b4d3bc618d73978d64b403c4c13f65b54eebf4414b18fcf93ed",
+      "HTMLMarkdownPreviewerTests/MarkdownReadingTests.swift": "13c52f2b3e88f1420b272095e88a2cc7b77b309ff58f79da17412beb3e580197",
+      "HTMLMarkdownPreviewerTests/MarkdownRenderServiceTests.swift": "a0303df3e802788dee16c4d19a19ffaed9324922df622ec36b700de0a1e9bcbd",
+      "HTMLMarkdownPreviewerTests/PDFExportServiceTests.swift": "fa0a24a71dcaf14ed1e1f1324fabdc26caaf725989e231283d14df3122faa773",
+      "HTMLMarkdownPreviewerTests/PackageNavigationTests.swift": "1e895ba949ee7aab288466d42b3ef4424d702b8419092820a8f42d4bbb97b988",
+      "HTMLMarkdownPreviewerTests/PackageWebNavigationTests.swift": "dc65c1182bff3505a5e0d604d4818f12da49b23870276c7e77209382508b0b37",
+      "HTMLMarkdownPreviewerTests/PastedDocumentImportServiceTests.swift": "5c1596979a95b16c8af4589a8d7e45fe4f8c87df4ee7bf40b7a532c926d899d8",
+      "HTMLMarkdownPreviewerTests/PreviewDocumentTests.swift": "a82ed642930f04e949e1e7f94eb412f73a183fda84ccf7250b489c97adac1cb0",
+      "HTMLMarkdownPreviewerTests/ReadingAppearanceTests.swift": "93c92044323f64b009bc61b89a3596e8cfe0a5eb16508753fd1673988f02fb1d",
+      "HTMLMarkdownPreviewerTests/ReadingPersistenceTests.swift": "c0eec8247820898d67401ae59862cbb4228f6dfc978b5075894c36f53d4927fd",
+      "HTMLMarkdownPreviewerTests/ReviewPromptTests.swift": "f95d57da5184d720a1f2e1596e012a09e8b49f1e734aca81db25e06f39114cf3",
+      "HTMLMarkdownPreviewerTests/YAMLRenderServiceTests.swift": "cc71ce04607bbd72ab23d2c06dcc47582204baf4611b271748ae1d00d039d3e0",
+      "HTMLMarkdownPreviewerTests/ZipImportServiceTests.swift": "d82bcff8c40937c35ebf2542d4ff956ef6c9ab850a763041ba979d476a9a9b8f",
+      "HTMLMarkdownPreviewerUITests/BatchImportUITests.swift": "813442d52d405c3c6b7de80d1fe5d0c30994eb02b4fda250676d3f401c3ed70b",
+      "HTMLMarkdownPreviewerUITests/JSONPreviewUITests.swift": "bd6d20f9ac692e0c5fc47180e1d9c8c615702666cba547863895a93091d60998",
+      "HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift": "010d0b6b21f4db5db7637289b22514fab5fab6bd293cee60b325035da2853f6d",
+      "HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift": "c3b851983952533765846257921bc8f2a7ad6b71f3512d363db3c16938c49fae",
+      "HTMLMarkdownPreviewerUITests/SmokeUITests.swift": "9a8d0f7217758444aadb5a3e259374fe2eaf4c9c97a8405c8dd7ca4f1e8573d2",
+      "HTMLMarkdownPreviewerUITests/YAMLPreviewUITests.swift": "bd714182462b1f668e3f29c56cad27e63510268625f1981487ce89dd82973b55",
+      "HTMLMarkdownPreviewerUITests/ZIPNavigationUITests.swift": "b619d585d56b22001f8e62d2d6d297ffefaeca900eff4d87168854afa7f9bd51",
+      "project.yml": "b1b08c45be3b39f21db82551a803aee275ce6f99091bb6c1921abf22c22ab49b"
+    }
+  },
+  "runs": [
+    {
+      "id": "original_combined",
+      "xcresultPath": "/tmp/html-release-1.8-final-tests-20261007.xcresult",
+      "logPath": "/tmp/html-release-1.8-final-tests-20261007.log",
+      "logSHA256": "83e63f0034fbfccb84db96adb712dbea1240fc4bd9ca6b0d3dfad37cf4f2b943",
+      "summarySHA256": "da23a4e015dde02fdfeb2759fe52b3f614665abb7018cdc1ea4ee4187bbe9aaa",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 3,
+            "passedTests": 214,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 3,
+        "finishTime": 1791360963.347,
+        "passedTests": 214,
+        "result": "Failed",
+        "runtimeWarnings": [
+          {
+            "issueType": "Runtime Warning",
+            "message": "Thread running at User-interactive quality-of-service class waiting on a lower QoS thread running at Default quality-of-service class. Investigate ways to avoid priority inversions",
+            "sourceURL": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerTests/HTMLReadingTests.swift"
+          }
+        ],
+        "skippedTests": 0,
+        "startTime": 1791360116.082,
+        "statistics": [],
+        "testFailures": [
+          {
+            "failureText": "failed - Block paragraph-8 did not retain fraction 0.35; observed Optional(0.4325337331334333)",
+            "targetName": "HTMLMarkdownPreviewerTests",
+            "testIdentifier": 55,
+            "testIdentifierString": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+            "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges",
+            "testName": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()"
+          },
+          {
+            "failureText": "failed - Block block-8 did not retain fraction 0.35; observed Optional(0.433841218925421)",
+            "targetName": "HTMLMarkdownPreviewerTests",
+            "testIdentifier": 58,
+            "testIdentifierString": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+            "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins",
+            "testName": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()"
+          },
+          {
+            "failureText": "failed - Block paragraph-8 did not retain fraction 0.35; observed Optional(0.2283996994740796)",
+            "targetName": "HTMLMarkdownPreviewerTests",
+            "testIdentifier": 63,
+            "testIdentifierString": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+            "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult",
+            "testName": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()"
+          }
+        ],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [
+          {
+            "category": "Common Failures",
+            "impact": "100% of failures",
+            "text": "3 runs of 3 tests failed with failed: caught error: \"InvalidTransition { "
+          },
+          {
+            "category": "Longest Test Runs",
+            "impact": "25% of duration",
+            "text": "5 longest test runs with outlier durations exceeding 9.41s (three standard deviations)"
+          }
+        ],
+        "totalTestCount": 217
+      },
+      "testCountsByBundle": {
+        "HTMLMarkdownPreviewerTests": {
+          "Passed": 209,
+          "Failed": 3
+        },
+        "HTMLMarkdownPreviewerUITests": {
+          "Passed": 5
+        }
+      },
+      "extractedRelevantCases": [
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "nodeIdentifier": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "result": "Failed",
+          "durationInSeconds": 14.642930030822754
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "nodeIdentifier": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "result": "Failed",
+          "durationInSeconds": 14.005229949951172
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "nodeIdentifier": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "result": "Failed",
+          "durationInSeconds": 14.39150094985962
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerUITests",
+          "name": "testAllFailedBatchStillPresentsCompleteSummary()",
+          "nodeIdentifier": "BatchImportUITests/testAllFailedBatchStillPresentsCompleteSummary()",
+          "result": "Passed",
+          "durationInSeconds": 33.67919194698334
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerUITests",
+          "name": "testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary()",
+          "nodeIdentifier": "BatchImportUITests/testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary()",
+          "result": "Passed",
+          "durationInSeconds": 74.83118093013763
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerUITests",
+          "name": "testSingleSelectionOpensDocumentWithoutBatchSummary()",
+          "nodeIdentifier": "BatchImportUITests/testSingleSelectionOpensDocumentWithoutBatchSummary()",
+          "result": "Passed",
+          "durationInSeconds": 26.983027935028076
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerUITests",
+          "name": "testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "nodeIdentifier": "ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch()",
+          "result": "Passed",
+          "durationInSeconds": 67.26428008079529
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerUITests",
+          "name": "testLibraryPinRenameSearchAndTypeFilterPersist()",
+          "nodeIdentifier": "ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist()",
+          "result": "Passed",
+          "durationInSeconds": 127.84737706184387
+        }
+      ],
+      "command": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Debug -destination \"platform=iOS Simulator,id=F56A2968-F35C-4455-8A34-43DCC6CDC319\" -derivedDataPath /Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -testLanguage en -testRegion US \"-only-testing:HTMLMarkdownPreviewerTests\" \"-only-testing:HTMLMarkdownPreviewerUITests/BatchImportUITests\" \"-only-testing:HTMLMarkdownPreviewerUITests/ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist\" \"-only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testLongTitleAndBottomActionsStayAccessibleDuringReadingAndSearch\" -resultBundlePath /tmp/html-release-1.8-final-tests-20261007.xcresult CODE_SIGNING_ALLOWED=NO"
+    },
+    {
+      "id": "resize_diagnostic",
+      "xcresultPath": "/tmp/html-release-1.8-resize-diagnostic-20261007.xcresult",
+      "logPath": "/tmp/html-release-1.8-resize-diagnostic-20261007.log",
+      "logSHA256": "a3cc4fa4a71d50c88bd6fbd4a1729a177a34ec6cc48cb3aa15d98dcd64826513",
+      "summarySHA256": "f41f69a4c2862596df7dc552a0f0d1156ce7400fc247ea33e140c3b790053ec6",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 3,
+            "passedTests": 0,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 3,
+        "finishTime": 1791361069.329,
+        "passedTests": 0,
+        "result": "Failed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1791360989.524,
+        "statistics": [],
+        "testFailures": [
+          {
+            "failureText": "failed - Block paragraph-8 did not retain fraction 0.35 at html burst width 320 then 540; observed Optional(0.2571214392803598)",
+            "targetName": "HTMLMarkdownPreviewerTests",
+            "testIdentifier": 1,
+            "testIdentifierString": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+            "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges",
+            "testName": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()"
+          },
+          {
+            "failureText": "failed - Block block-8 did not retain fraction 0.35 at markdown width 540; observed Optional(0.433841218925421)",
+            "targetName": "HTMLMarkdownPreviewerTests",
+            "testIdentifier": 2,
+            "testIdentifierString": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+            "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins",
+            "testName": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()"
+          },
+          {
+            "failureText": "failed - Block paragraph-8 did not retain fraction 0.35 at scrolled-away markdown width 280 height 220; observed Optional(0.2283996994740796)",
+            "targetName": "HTMLMarkdownPreviewerTests",
+            "testIdentifier": 3,
+            "testIdentifierString": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+            "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult",
+            "testName": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()"
+          }
+        ],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [
+          {
+            "category": "Common Failures",
+            "impact": "100% of failures",
+            "text": "3 runs of 3 tests failed with failed: caught error: \"InvalidTransition { "
+          }
+        ],
+        "totalTestCount": 3
+      },
+      "testCountsByBundle": {
+        "HTMLMarkdownPreviewerTests": {
+          "Failed": 3
+        }
+      },
+      "extractedRelevantCases": [
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "nodeIdentifier": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "result": "Failed",
+          "durationInSeconds": 13.86691403388977
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "nodeIdentifier": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "result": "Failed",
+          "durationInSeconds": 12.361506938934326
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "nodeIdentifier": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "result": "Failed",
+          "durationInSeconds": 14.814563035964966
+        }
+      ],
+      "command": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild test -project HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Debug -destination \"platform=iOS Simulator,id=F56A2968-F35C-4455-8A34-43DCC6CDC319\" -derivedDataPath /Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -collect-test-diagnostics never -testLanguage en -testRegion US \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges\" \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins\" \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult\" -resultBundlePath /tmp/html-release-1.8-resize-diagnostic-20261007.xcresult CODE_SIGNING_ALLOWED=NO"
+    },
+    {
+      "id": "resize_fixed_focused",
+      "xcresultPath": "/tmp/html-release-1.8-resize-fix-20261007.xcresult",
+      "logPath": "/tmp/html-release-1.8-resize-fix-20261007.log",
+      "logSHA256": "533b1f59c705b4a03b28f6e9d9e2c7e24806f61f2dda930af041180580eb975c",
+      "summarySHA256": "fc049c92a9df4c103cd3e5f2f1afd6a442edb529dc8d641f0f10fbc7f103fa9e",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 3,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1791361193.86,
+        "passedTests": 3,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1791361157.953,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [],
+        "totalTestCount": 3
+      },
+      "testCountsByBundle": {
+        "HTMLMarkdownPreviewerTests": {
+          "Passed": 3
+        }
+      },
+      "extractedRelevantCases": [
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "nodeIdentifier": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "result": "Passed",
+          "durationInSeconds": 4.961099028587341
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "nodeIdentifier": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "result": "Passed",
+          "durationInSeconds": 3.445587992668152
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "nodeIdentifier": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "result": "Passed",
+          "durationInSeconds": 5.528778076171875
+        }
+      ],
+      "command": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild test -project HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Debug -destination \"platform=iOS Simulator,id=F56A2968-F35C-4455-8A34-43DCC6CDC319\" -derivedDataPath /Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -collect-test-diagnostics never -testLanguage en -testRegion US \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges\" \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins\" \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult\" -resultBundlePath /tmp/html-release-1.8-resize-fix-20261007.xcresult CODE_SIGNING_ALLOWED=NO"
+    },
+    {
+      "id": "final_full_unit",
+      "xcresultPath": "/tmp/html-release-1.8-unit-final-20261007.xcresult",
+      "logPath": "/tmp/html-release-1.8-unit-final-20261007.log",
+      "logSHA256": "ceebcfe3aad684802d67c7c4fcae384fdc7115f73d90b0b2880653e2ec86d15b",
+      "summarySHA256": "159877d777d4e8b0448fc017c0a6ab4c78e4e58f73c616c4d94b51e10d5cd2e1",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 212,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1791361410.364,
+        "passedTests": 212,
+        "result": "Passed",
+        "runtimeWarnings": [
+          {
+            "issueType": "Runtime Warning",
+            "message": "Thread running at User-interactive quality-of-service class waiting on a lower QoS thread running at Default quality-of-service class. Investigate ways to avoid priority inversions",
+            "sourceURL": "file:///Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerTests/HTMLReadingTests.swift"
+          }
+        ],
+        "skippedTests": 0,
+        "startTime": 1791361316.792,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [
+          {
+            "category": "Longest Test Runs",
+            "impact": "37% of duration",
+            "text": "7 longest test runs with outlier durations exceeding 3.16s (three standard deviations)"
+          }
+        ],
+        "totalTestCount": 212
+      },
+      "testCountsByBundle": {
+        "HTMLMarkdownPreviewerTests": {
+          "Passed": 212
+        }
+      },
+      "extractedRelevantCases": [
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "nodeIdentifier": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+          "result": "Passed",
+          "durationInSeconds": 1.7017860412597656
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "nodeIdentifier": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+          "result": "Passed",
+          "durationInSeconds": 1.9285540580749512
+        },
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "nodeIdentifier": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+          "result": "Passed",
+          "durationInSeconds": 4.02287495136261
+        }
+      ],
+      "command": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Debug -destination \"platform=iOS Simulator,id=F56A2968-F35C-4455-8A34-43DCC6CDC319\" -derivedDataPath /Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -collect-test-diagnostics never -testLanguage en -testRegion US \"-only-testing:HTMLMarkdownPreviewerTests\" -resultBundlePath /tmp/html-release-1.8-unit-final-20261007.xcresult CODE_SIGNING_ALLOWED=NO"
+    },
+    {
+      "id": "new_navigation_focused",
+      "xcresultPath": "/tmp/html-release-1.8-nav-regression-20261007.xcresult",
+      "logPath": "/tmp/html-release-1.8-nav-regression-20261007.log",
+      "logSHA256": "ac010937f9bd590f17cee8bd22d0f59e97f768052294915b1b249bb277a1940c",
+      "summarySHA256": "4ac5ff777d8fabba23629f7914e2db4df1ca9951af3408a447afb5e774b7650b",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+              "deviceName": "iPhone 18 Pro",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 1,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1791361831.341,
+        "passedTests": 1,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1791361807.124,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - HTMLMarkdownPreviewer",
+        "topInsights": [],
+        "totalTestCount": 1
+      },
+      "testCountsByBundle": {
+        "HTMLMarkdownPreviewerTests": {
+          "Passed": 1
+        }
+      },
+      "extractedRelevantCases": [
+        {
+          "bundle": "HTMLMarkdownPreviewerTests",
+          "name": "testHeadingNavigationDuringWidthReflowSettlesAtVisibleTarget()",
+          "nodeIdentifier": "HTMLReadingTests/testHeadingNavigationDuringWidthReflowSettlesAtVisibleTarget()",
+          "result": "Passed",
+          "durationInSeconds": 6.193699955940247
+        }
+      ],
+      "command": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Debug -destination \"platform=iOS Simulator,id=F56A2968-F35C-4455-8A34-43DCC6CDC319\" -derivedDataPath /Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -collect-test-diagnostics never -testLanguage en -testRegion US \"-only-testing:HTMLMarkdownPreviewerTests/HTMLReadingTests/testHeadingNavigationDuringWidthReflowSettlesAtVisibleTarget\" -resultBundlePath /tmp/html-release-1.8-nav-regression-20261007.xcresult"
+    }
+  ],
+  "latestOrdinaryPhoneEvidence": {
+    "fullUnit": {
+      "runId": "final_full_unit",
+      "passed": 212,
+      "failed": 0
+    },
+    "additionalNavigation": {
+      "runId": "new_navigation_focused",
+      "passed": 1,
+      "failed": 0,
+      "renderers": [
+        "HTML",
+        "rich Markdown"
+      ],
+      "boundary": "One XCTest covers both renderers; final-layout heading navigation crosses paragraph reflow and must remain completely visible with scroll stability."
+    },
+    "targetedUI": {
+      "runId": "original_combined",
+      "passed": 5,
+      "failed": 0,
+      "boundary": "UI cases passed within an overall failed combined run; they were not rerun in the later unit-only suite. Later production change was limited to viewport dimension detection."
+    },
+    "notOneSuite": "212 full-unit passes plus one separately added focused pass. Do not present as one 213-test full run or a full UI suite."
+  },
+  "viewportReflowResolution": {
+    "originalRunId": "original_combined",
+    "diagnosticRunId": "resize_diagnostic",
+    "focusedFixedRunId": "resize_fixed_focused",
+    "finalFullRunId": "final_full_unit",
+    "originalFailuresRetained": [
+      {
+        "failureText": "failed - Block paragraph-8 did not retain fraction 0.35; observed Optional(0.4325337331334333)",
+        "targetName": "HTMLMarkdownPreviewerTests",
+        "testIdentifier": 55,
+        "testIdentifierString": "HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()",
+        "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges",
+        "testName": "testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges()"
+      },
+      {
+        "failureText": "failed - Block block-8 did not retain fraction 0.35; observed Optional(0.433841218925421)",
+        "targetName": "HTMLMarkdownPreviewerTests",
+        "testIdentifier": 58,
+        "testIdentifierString": "HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()",
+        "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins",
+        "testName": "testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins()"
+      },
+      {
+        "failureText": "failed - Block paragraph-8 did not retain fraction 0.35; observed Optional(0.2283996994740796)",
+        "targetName": "HTMLMarkdownPreviewerTests",
+        "testIdentifier": 63,
+        "testIdentifierString": "HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()",
+        "testIdentifierURL": "test://com.apple.xcode/HTMLMarkdownPreviewer/HTMLMarkdownPreviewerTests/HTMLReadingTests/testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult",
+        "testName": "testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult()"
+      }
+    ],
+    "cause": "WebKit updates/reflows the DOM scrolling root before innerWidth and visualViewport receive the new native view size. Dimension tracking based on lagging innerWidth lets a post-reflow scroll sample overwrite the pre-reflow cached paragraph fraction.",
+    "decisiveObservation": "Markdown initial top=-541 height=1547 fraction=.349709. After widening, DOM paragraph width=508 and root.clientWidth=540 while innerWidth/visualViewport.width=390; top remains -541 with height=1247, fraction=.433841. This is anchor-cache timing, not a changed visual viewport top.",
+    "fix": "viewportDimensions uses scrollingRoot.clientWidth/clientHeight first, with innerWidth/innerHeight fallback, so resize handling preserves the pre-reflow anchor before rememberViewport can overwrite it.",
+    "fixSource": "HTMLMarkdownPreviewer/Web/HTMLReadingController.swift",
+    "fixSourceSHA256": "7107a7515ab941492d3c70be662b5a7d2baa701d5c3b3d2c6c097809c522586b",
+    "geometrySamples": [
+      {
+        "logPath": "/tmp/html-release-1.8-resize-diagnostic-20261007.log",
+        "line": 240,
+        "stage": "html burst width 320 then 540 first sample",
+        "DOM": {
+          "block": {
+            "bottom": 1667,
+            "effectiveViewportFraction": 0.2571301247771836,
+            "fraction": 0.2571301247771836,
+            "height": 2244,
+            "id": "paragraph-8",
+            "top": -577,
+            "width": 288
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 390,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 540,
+            "scrollHeight": 21711,
+            "scrollLeft": 0,
+            "scrollTop": 11472,
+            "scrollWidth": 540
+          },
+          "scrollX": 0,
+          "scrollY": 11472,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 11472,
+            "scale": 1,
+            "width": 390
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 540.0, 600.0) bounds=(0.0, 0.0, 540.0, 600.0) contentOffset=(0.0, 13937.0) contentSize=(390.0, 26766.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5247677152132543)"
+      },
+      {
+        "logPath": "/tmp/html-release-1.8-resize-diagnostic-20261007.log",
+        "line": 241,
+        "stage": "html burst width 320 then 540 timeout",
+        "DOM": {
+          "block": {
+            "bottom": 991,
+            "effectiveViewportFraction": 0.2571214392803598,
+            "fraction": 0.2571214392803598,
+            "height": 1334,
+            "id": "paragraph-8",
+            "top": -343,
+            "width": 508
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 540,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 540,
+            "scrollHeight": 21711,
+            "scrollLeft": 0,
+            "scrollTop": 11238,
+            "scrollWidth": 540
+          },
+          "scrollX": 0,
+          "scrollY": 11238,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 11238,
+            "scale": 1,
+            "width": 540
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 540.0, 600.0) bounds=(0.0, 0.0, 540.0, 600.0) contentOffset=(0.0, 11176.0) contentSize=(540.0, 21711.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5307703206914467)"
+      },
+      {
+        "logPath": "/tmp/html-release-1.8-resize-diagnostic-20261007.log",
+        "line": 271,
+        "stage": "markdown initial width 390 first sample",
+        "DOM": {
+          "block": {
+            "bottom": 1006,
+            "effectiveViewportFraction": 0.34970911441499675,
+            "fraction": 0.34970911441499675,
+            "height": 1547,
+            "id": "block-8",
+            "top": -541,
+            "width": 358
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 390,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 390,
+            "scrollHeight": 25056,
+            "scrollLeft": 0,
+            "scrollTop": 13077,
+            "scrollWidth": 390
+          },
+          "scrollX": 0,
+          "scrollY": 13077,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 13077,
+            "scale": 1,
+            "width": 390
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 390.0, 600.0) bounds=(0.0, 0.0, 390.0, 600.0) contentOffset=(0.0, 13015.0) contentSize=(390.0, 25056.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5333632433314299)"
+      },
+      {
+        "logPath": "/tmp/html-release-1.8-resize-diagnostic-20261007.log",
+        "line": 273,
+        "stage": "markdown width 540 first sample",
+        "DOM": {
+          "block": {
+            "bottom": 706,
+            "effectiveViewportFraction": 0.433841218925421,
+            "fraction": 0.433841218925421,
+            "height": 1247,
+            "id": "block-8",
+            "top": -541,
+            "width": 508
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 390,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 540,
+            "scrollHeight": 20256,
+            "scrollLeft": 0,
+            "scrollTop": 10677,
+            "scrollWidth": 540
+          },
+          "scrollX": 0,
+          "scrollY": 10677,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 10677,
+            "scale": 1,
+            "width": 390
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 540.0, 600.0) bounds=(0.0, 0.0, 540.0, 600.0) contentOffset=(0.0, 13015.0) contentSize=(390.0, 25056.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5414849376204484)"
+      },
+      {
+        "logPath": "/tmp/html-release-1.8-resize-fix-20261007.log",
+        "line": 211,
+        "stage": "html burst width 320 then 540 settled",
+        "DOM": {
+          "block": {
+            "bottom": 868,
+            "effectiveViewportFraction": 0.3493253373313343,
+            "fraction": 0.3493253373313343,
+            "height": 1334,
+            "id": "paragraph-8",
+            "top": -466,
+            "width": 508
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 540,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 540,
+            "scrollHeight": 21711,
+            "scrollLeft": 0,
+            "scrollTop": 11361,
+            "scrollWidth": 540
+          },
+          "scrollX": 0,
+          "scrollY": 11361,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 11361,
+            "scale": 1,
+            "width": 540
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 540.0, 600.0) bounds=(0.0, 0.0, 540.0, 600.0) contentOffset=(0.0, 11299.0) contentSize=(540.0, 21711.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5365796061021112)"
+      },
+      {
+        "logPath": "/tmp/html-release-1.8-resize-fix-20261007.log",
+        "line": 241,
+        "stage": "markdown width 540 first sample",
+        "DOM": {
+          "block": {
+            "bottom": 706,
+            "effectiveViewportFraction": 0.433841218925421,
+            "fraction": 0.433841218925421,
+            "height": 1247,
+            "id": "block-8",
+            "top": -541,
+            "width": 508
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 390,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 540,
+            "scrollHeight": 20256,
+            "scrollLeft": 0,
+            "scrollTop": 10677,
+            "scrollWidth": 540
+          },
+          "scrollX": 0,
+          "scrollY": 10677,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 10677,
+            "scale": 1,
+            "width": 390
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 540.0, 600.0) bounds=(0.0, 0.0, 540.0, 600.0) contentOffset=(0.0, 13015.0) contentSize=(390.0, 25056.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5333632433314299)"
+      },
+      {
+        "logPath": "/tmp/html-release-1.8-resize-fix-20261007.log",
+        "line": 242,
+        "stage": "markdown width 540 settled",
+        "DOM": {
+          "block": {
+            "bottom": 811,
+            "effectiveViewportFraction": 0.3496391339214114,
+            "fraction": 0.3496391339214114,
+            "height": 1247,
+            "id": "block-8",
+            "top": -436,
+            "width": 508
+          },
+          "effectiveViewportTop": 0,
+          "innerHeight": 538,
+          "innerWidth": 540,
+          "root": {
+            "clientHeight": 538,
+            "clientWidth": 540,
+            "scrollHeight": 20256,
+            "scrollLeft": 0,
+            "scrollTop": 10572,
+            "scrollWidth": 540
+          },
+          "scrollX": 0,
+          "scrollY": 10572,
+          "visualViewport": {
+            "height": 538,
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "pageLeft": 0,
+            "pageTop": 10572,
+            "scale": 1,
+            "width": 540
+          }
+        },
+        "nativeGeometry": "(0.0, 0.0, 540.0, 600.0) bounds=(0.0, 0.0, 540.0, 600.0) contentOffset=(0.0, 10510.0) contentSize=(540.0, 20256.0) contentInset=UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0) adjustedContentInset=UIEdgeInsets(top: 62.0, left: 0.0, bottom: 0.0, right: 0.0) zoomScale=1.0 pageZoom=1.0 storedProgress=Optional(0.5361598539405619)"
+      }
+    ],
+    "toleranceChanges": false,
+    "safeAreaBoundary": "The decisive samples have effectiveViewportTop=0 and visualViewport.offsetTop=0. Native adjusted top inset=62 explains native versus DOM offsets; it does not explain the observed fraction corruption.",
+    "postFixEvidence": "Focused 3/3 PASS, latest full unit 212/212 PASS, and later new nonzero heading-target navigation case 1/1 PASS."
+  },
+  "newTestCompilation": {
+    "testSource": "HTMLMarkdownPreviewerTests/HTMLReadingTests.swift",
+    "testSourceSHA256": "5cb59b15ac443386305a698e85d6398a42eedbae0bf56c2222fece3ce2950d10",
+    "priorIssue": "Operator reported a Swift throwing && expression in new test geometry checks. It was fixed by separately unwrapping width and paragraphWidth into local values without changing assertions.",
+    "priorIssueEvidence": "Operator report; the same build log path now contains the successful rebuilt result, so no retained original failing compile log is claimed.",
+    "successfulBuildLogPath": "/tmp/html-release-1.8-nav-regression-build-20261007.log",
+    "successfulBuildLogSHA256": "f60c170dd9b098460a0d0cd9f8a1b9806721e01ac8b8959fd8cc9ad3c9da7317",
+    "successfulBuildMarkerLines": [
+      136
+    ],
+    "actualRunId": "new_navigation_focused"
+  },
+  "preservedDuoBoundary": {
+    "recordPath": "docs/updates/assets/2026-10-07-iphone-duo/duo-validation-results.json",
+    "recordSHA256AtSnapshot": "e1e736e99a2ad96034407fbb510d6b40e91c870ae9588a59096e3874ddc06af8",
+    "latestAutomatedSummary": {
+      "targetTests": 13,
+      "passedTests": 12,
+      "failedTests": 1,
+      "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "toolchainId": "xcode-27.1-27A9275-iphonesimulator27.1",
+      "calculation": "Latest completed result per test/device/toolchain/OS across six immutable runs: 12 passed / 1 failed. Final Smoke passed; the only remaining failed targeted test is HTML search rotation geometry. This aggregate is not one full-suite passing run."
+    },
+    "boundary": "The older Duo 12/13 aggregate remains unchanged. Ordinary iPhone passes do not resolve Duo XCTest rotation geometry; native manual evidence supplements that failure separately."
+  },
+  "notClaimed": [
+    "Release simulator smoke",
+    "physical-device or TestFlight smoke of final archive",
+    "Distribution-signed archive/export",
+    "final-source commit or hosted CI pass",
+    "72-image remote gate pass",
+    "App Store upload/build processing/review submission/public release"
+  ]
+}

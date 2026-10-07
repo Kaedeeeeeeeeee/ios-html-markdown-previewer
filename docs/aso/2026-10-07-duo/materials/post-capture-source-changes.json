@@ -1,0 +1,26 @@
+{
+  "recordedAtUTC": "2026-10-07T08:23:41.776908+00:00",
+  "scope": "Capture-to-later-source differences reported during preparation. No retroactive binary identity, build success, or archive equivalence is inferred.",
+  "entries": [
+    {
+      "families": [
+        "duo"
+      ],
+      "sourceCount": 24,
+      "version": "1.8",
+      "build": "13",
+      "captureRecords": "capture-records/<locale>/duo-<sourceKey>.json",
+      "laterSourceChanges": [
+        {
+          "file": "HTMLMarkdownPreviewer/Web/HTMLReadingController.swift",
+          "area": "viewportDimensions",
+          "change": "Use scrollingRoot.clientWidth/clientHeight to identify viewport reflow earlier; fixes a resize anchor race.",
+          "evidenceSource": "Release-owner implementation and focused regression report",
+          "focusedRegressionTestsPassed": 3,
+          "renderingScope": "Resize-only later fix; initial rendering reported unchanged. Existing captured UI remains visually reviewed, without final-binary equivalence."
+        }
+      ],
+      "recaptureDecision": "Retain actual source identities and existing visual review; the later resize change does not alter the pictured initial rendering."
+    }
+  ]
+}

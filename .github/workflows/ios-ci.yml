@@ -16,6 +16,7 @@ jobs:
 
       - name: Validate shell scripts
         run: |
+          bash -n scripts/select-release-toolchain.sh
           bash -n scripts/capture-release-screenshots.sh
           bash -n scripts/archive-preflight.sh
           bash -n scripts/check-github-actions-execution.sh
@@ -41,6 +42,9 @@ jobs:
       - name: Verify bundled YAML assets and localizations
         run: python3 scripts/audit-yaml-assets.py
 
+      - name: Verify integrated next-release store materials
+        run: python3 scripts/audit-integrated-release-materials.py
+
       - name: Verify public privacy and support pages
         run: scripts/verify-public-pages.sh
 
@@ -53,6 +57,7 @@ jobs:
 
       - name: Validate shell scripts
         run: |
+          bash -n scripts/select-release-toolchain.sh
           bash -n scripts/capture-release-screenshots.sh
           bash -n scripts/archive-preflight.sh
           bash -n scripts/check-github-actions-execution.sh
@@ -75,6 +80,12 @@ jobs:
       - name: Run release audit
         run: scripts/release-audit.sh
 
+      - name: Verify previous-version approval gate
+        run: ruby .github/scripts/test-release-gate.rb
+
+      - name: Verify modern App Store asset gate offline
+        run: ruby .github/scripts/test-store-assets-gate.rb
+
   public-pages:
     name: Public App Store Pages
     runs-on: macos-15
@@ -87,41 +98,14 @@ jobs:
 
   release-device-build:
     name: Release Device Build And Archive
-    runs-on: macos-26
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Select Xcode 26.6
-        run: |
-          set -euo pipefail
-          selected_developer_dir=""
-          for developer_dir in \
-            /Applications/Xcode_26.6_Release_Candidate_2.app/Contents/Developer \
-            /Applications/Xcode_26.6.app/Contents/Developer \
-            /Applications/Xcode.app/Contents/Developer; do
-            if [[ -d "$developer_dir" ]]; then
-              sudo xcode-select -s "$developer_dir"
-              selected_developer_dir="$developer_dir"
-              break
-            fi
-          done
-          if [[ -z "$selected_developer_dir" ]]; then
-            echo "No supported Xcode installation found." >&2
-            exit 1
-          fi
-          sw_vers
-          xcode-select -p
-          xcodebuild -version
-          xcodebuild -showsdks | grep -E 'iphoneos|iphonesimulator'
-          for sdk in iphoneos iphonesimulator; do
-            sdk_version="$(xcrun --sdk "$sdk" --show-sdk-version)"
-            sdk_major="${sdk_version%%.*}"
-            if [[ ! "$sdk_major" =~ ^[0-9]+$ ]] || (( sdk_major < 26 )); then
-              echo "$sdk SDK $sdk_version is too old; the app requires SDK 26 or newer for Liquid Glass." >&2
-              exit 1
-            fi
-          done
+      - name: Require Xcode and iOS SDK 27.1
+        # Auto-discover installations rather than inherit the image's default Xcode.
+        run: env -u DEVELOPER_DIR bash scripts/select-release-toolchain.sh --github-env
 
       - name: Build generic iOS Release app
         run: scripts/release-device-build.sh
@@ -131,41 +115,14 @@ jobs:
 
   test:
     name: Automated Tests
-    runs-on: macos-26
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Select Xcode 26.6
-        run: |
-          set -euo pipefail
-          selected_developer_dir=""
-          for developer_dir in \
-            /Applications/Xcode_26.6_Release_Candidate_2.app/Contents/Developer \
-            /Applications/Xcode_26.6.app/Contents/Developer \
-            /Applications/Xcode.app/Contents/Developer; do
-            if [[ -d "$developer_dir" ]]; then
-              sudo xcode-select -s "$developer_dir"
-              selected_developer_dir="$developer_dir"
-              break
-            fi
-          done
-          if [[ -z "$selected_developer_dir" ]]; then
-            echo "No supported Xcode installation found." >&2
-            exit 1
-          fi
-          sw_vers
-          xcode-select -p
-          xcodebuild -version
-          xcodebuild -showsdks | grep -E 'iphoneos|iphonesimulator'
-          for sdk in iphoneos iphonesimulator; do
-            sdk_version="$(xcrun --sdk "$sdk" --show-sdk-version)"
-            sdk_major="${sdk_version%%.*}"
-            if [[ ! "$sdk_major" =~ ^[0-9]+$ ]] || (( sdk_major < 26 )); then
-              echo "$sdk SDK $sdk_version is too old; the app requires SDK 26 or newer for Liquid Glass." >&2
-              exit 1
-            fi
-          done
+      - name: Require Xcode and iOS SDK 27.1
+        # Auto-discover installations rather than inherit the image's default Xcode.
+        run: env -u DEVELOPER_DIR bash scripts/select-release-toolchain.sh --github-env
 
       - name: Resolve packages
         run: |
@@ -193,7 +150,9 @@ jobs:
               version = tuple(int(part) for part in runtime.rsplit("iOS-", 1)[1].split("-"))
               for device in devices:
                   name = device.get("name", "")
-                  if device.get("isAvailable", False) and name.startswith("iPhone"):
+                  # Ordinary smoke tests use a regular existing iPhone. Duo
+                  # native fold/rotation QA is separate from XCTest geometry.
+                  if device.get("isAvailable", False) and name.startswith("iPhone") and "Duo" not in name:
                       parts = name.split()
                       model = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0
                       if name.startswith("iPhone SE"):
@@ -209,7 +168,7 @@ jobs:
                       candidates.append((version, model, variant, name, device["udid"]))
 
           if not candidates:
-              raise SystemExit("No available iPhone simulator found")
+              raise SystemExit("No available regular iPhone simulator found; Duo is reserved for separate native QA")
 
           candidates.sort(reverse=True)
           version, _, _, name, udid = candidates[0]

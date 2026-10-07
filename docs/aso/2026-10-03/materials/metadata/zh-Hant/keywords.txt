@@ -1,0 +1,1 @@
+YAML,MD,檔案,開啟,檢視器,離線,原始碼,程式碼,PDF,匯出,數學公式,流程圖,Mermaid,LaTeX,設定,README,本機
