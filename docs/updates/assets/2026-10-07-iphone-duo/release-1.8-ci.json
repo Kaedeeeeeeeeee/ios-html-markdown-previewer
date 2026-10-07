@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "repository": "Kaedeeeeeeeeee/ios-html-markdown-previewer",
+  "pullRequest": 24,
+  "headSha": "06590c532b2139a16678caf879df71ce748cb31b",
+  "run": {
+    "id": 37601595038,
+    "name": "iOS CI",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-07T09:34:56Z",
+    "updated_at": "2026-10-07T09:59:46Z",
+    "html_url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038"
+  },
+  "jobs": [
+    {
+      "id": 112727029528,
+      "name": "Automated Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-07T09:35:03Z",
+      "completed_at": "2026-10-07T09:59:46Z",
+      "html_url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038/job/112727029528"
+    },
+    {
+      "id": 112727029643,
+      "name": "Release Device Build And Archive",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-07T09:35:03Z",
+      "completed_at": "2026-10-07T09:37:26Z",
+      "html_url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038/job/112727029643"
+    },
+    {
+      "id": 112727029712,
+      "name": "Public App Store Pages",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-07T09:35:05Z",
+      "completed_at": "2026-10-07T09:35:23Z",
+      "html_url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038/job/112727029712"
+    },
+    {
+      "id": 112727029719,
+      "name": "Release Audit",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-07T09:35:05Z",
+      "completed_at": "2026-10-07T09:36:58Z",
+      "html_url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038/job/112727029719"
+    },
+    {
+      "id": 112727029734,
+      "name": "Portable Release Materials",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-07T09:35:00Z",
+      "completed_at": "2026-10-07T09:35:33Z",
+      "html_url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038/job/112727029734"
+    }
+  ],
+  "toolchain": {
+    "xcodeVersion": "27.1",
+    "xcodeBuild": "27A9269",
+    "developerDirectory": "/Applications/Xcode_27.1_beta.app/Contents/Developer",
+    "iPhoneOSSDK": "27.1",
+    "iPhoneSimulatorSDK": "27.1",
+    "boundary": "Hosted CI beta 27A9269; local Distribution archive uses RC 27A9275."
+  },
+  "simulator": {
+    "device": "iPhone 18 Pro Max",
+    "runtime": "iOS 27.0",
+    "udid": "7029ABAA-CE9D-444E-A154-C3A055EA60D2"
+  },
+  "tests": {
+    "unit": {
+      "executed": 213,
+      "failures": 0,
+      "unexpectedFailures": 0,
+      "durationSeconds": 136.45,
+      "wallSeconds": 141.372,
+      "result": "TEST SUCCEEDED",
+      "passedCaseCount": 213
+    },
+    "ui": {
+      "executed": 13,
+      "failures": 0,
+      "unexpectedFailures": 0,
+      "durationSeconds": 983.94,
+      "wallSeconds": 984.14,
+      "result": "TEST SUCCEEDED",
+      "passedCaseCount": 13,
+      "cases": [
+        {
+          "name": "BatchImportUITests testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary",
+          "durationSeconds": 146.94
+        },
+        {
+          "name": "JSONPreviewUITests testSampleSearchFindsCollapsedFieldsAndSourceModeSurvivesRelaunch",
+          "durationSeconds": 38.65
+        },
+        {
+          "name": "JSONPreviewUITests testSystemPasteDetectsJSONAndCopiesExactNumberAndCollection",
+          "durationSeconds": 93.192
+        },
+        {
+          "name": "ReadingAndPasteUITests testEnhancedMarkdownCopiesExactCodeAndKeepsMathDiagramSearchAndPosition",
+          "durationSeconds": 103.478
+        },
+        {
+          "name": "ReadingAndPasteUITests testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch",
+          "durationSeconds": 70.347
+        },
+        {
+          "name": "ReadingAndPasteUITests testPastedMarkdownSearchOutlineAndResumeAfterRelaunch",
+          "durationSeconds": 59.281
+        },
+        {
+          "name": "ReadingLibraryUITests testLibraryPinRenameSearchAndTypeFilterPersist",
+          "durationSeconds": 133.798
+        },
+        {
+          "name": "SmokeUITests testBuiltInSamplesAndSettingsSmoke",
+          "durationSeconds": 63.085
+        },
+        {
+          "name": "SmokeUITests testChineseMarkdownRetainsEqualLengthHeadings",
+          "durationSeconds": 14.044
+        },
+        {
+          "name": "YAMLPreviewUITests testInvalidYAMLPointsToErrorKeepsSourceAndAllowsOriginalSharing",
+          "durationSeconds": 46.783
+        },
+        {
+          "name": "YAMLPreviewUITests testStructureSourceSearchMultipleDocumentsAndReopen",
+          "durationSeconds": 44.663
+        },
+        {
+          "name": "YAMLPreviewUITests testSystemPasteAutoDetectsYAMLFenceAndCopiesValuePathAndSource",
+          "durationSeconds": 82.809
+        },
+        {
+          "name": "ZIPNavigationUITests testPackagePagesSearchLinksBackAndLastPageSurviveRelaunch",
+          "durationSeconds": 86.869
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "id": 11473708929,
+      "name": "ios-test-results-37601595038-1",
+      "sizeBytes": 16125554,
+      "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038/artifacts/11473708929",
+      "expired": false
+    }
+  ],
+  "evidence": [
+    {
+      "file": "/tmp/html-ci-37601595038-automated-tests-20261007.log",
+      "sha256": "ae3478e6c50956d971c2ba4dc09efb702c413e8a0bf1e7d91e8ad90a6032c867"
+    },
+    {
+      "file": "/tmp/html-ci-37601595038-release-build-20261007.log",
+      "sha256": "f8c012a766ede80779c38738236cb5b613ab3be0954bc9cad953dcb4a4503592"
+    }
+  ],
+  "privacyAudit": {
+    "containsCredentials": false,
+    "containsSignedUrls": false,
+    "containsRawApiSnapshot": false
+  },
+  "scope": "Read-only GitHub CI verification; no dispatch, rerun, cancellation, repository write, simulator operation, merge, or submission."
+}

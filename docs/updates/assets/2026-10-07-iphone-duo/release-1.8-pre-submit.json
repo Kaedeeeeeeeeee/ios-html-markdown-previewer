@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "observedAtUTC": "2026-10-07T10:02:03.146926+00:00",
+  "ciRun": 37601595038,
+  "ciHead": "06590c532b2139a16678caf879df71ce748cb31b",
+  "ciAllFiveJobsPassed": true,
+  "versionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+  "versionState": "PREPARE_FOR_SUBMISSION",
+  "releaseType": "AFTER_APPROVAL",
+  "buildSelectionRoute": "filtered builds fallback, same as submission script",
+  "selectedBuildId": "775d76dc-bbc4-4dd4-a972-d24f17f32718",
+  "buildNumber": "13",
+  "buildProcessingState": "VALID",
+  "preReleaseVersion": "1.8",
+  "usesNonExemptEncryption": false,
+  "previousVersionState": "READY_FOR_SALE",
+  "onlyOpenSubmission": {
+    "id": "084c680e-e6d1-4ba9-852c-69b1165fc55f",
+    "state": "READY_FOR_REVIEW",
+    "items": []
+  }
+}

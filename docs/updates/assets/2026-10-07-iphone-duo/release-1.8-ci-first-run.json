@@ -1,0 +1,314 @@
+{
+  "status": "FIRST_CI_RUN_FAILED_RECORDED",
+  "recordedAtUTC": "2026-10-07T09:33:09.177958+00:00",
+  "scope": "Immutable first-run evidence from downloaded job log and read-only GitHub run/jobs metadata, plus a separately reproduced unmodified-binary measurement boundary. Arithmetic interpretation is analysis. No production fix, corrected-CI pass, upload, review, or release success is asserted.",
+  "run": {
+    "id": 37598377482,
+    "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37598377482",
+    "status": "completed",
+    "conclusion": "failure",
+    "headSha": "27fe3fc9429b15073b72cca4f13322f51c793bed",
+    "jobs": [
+      {
+        "id": 112716424052,
+        "name": "Automated Tests",
+        "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37598377482/job/112716424052",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-07T09:07:10Z",
+        "completedAt": "2026-10-07T09:23:22Z"
+      },
+      {
+        "id": 112716424053,
+        "name": "Release Device Build And Archive",
+        "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37598377482/job/112716424053",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-07T09:07:12Z",
+        "completedAt": "2026-10-07T09:11:23Z"
+      },
+      {
+        "id": 112716424072,
+        "name": "Portable Release Materials",
+        "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37598377482/job/112716424072",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-07T09:07:07Z",
+        "completedAt": "2026-10-07T09:07:39Z"
+      },
+      {
+        "id": 112716424088,
+        "name": "Public App Store Pages",
+        "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37598377482/job/112716424088",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-07T09:07:09Z",
+        "completedAt": "2026-10-07T09:07:29Z"
+      },
+      {
+        "id": 112716424125,
+        "name": "Release Audit",
+        "url": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37598377482/job/112716424125",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-07T09:07:12Z",
+        "completedAt": "2026-10-07T09:08:54Z"
+      }
+    ]
+  },
+  "environment": {
+    "developerDirectory": "/Applications/Xcode_27.1_beta.app/Contents/Developer",
+    "xcodeVersion": "27.1",
+    "xcodeBuild": "27A9269",
+    "iphoneosSDK": "27.1",
+    "iphonesimulatorSDK": "27.1",
+    "runtime": "iOS 27.0",
+    "deviceName": "iPhone 18 Pro Max",
+    "udid": "7029ABAA-CE9D-444E-A154-C3A055EA60D2",
+    "runnerImage": "xcode-27-arm64",
+    "macOSVersion": "27.0"
+  },
+  "unitTests": {
+    "executedTestsReported": 213,
+    "failedCaseCountObserved": 1,
+    "failedCase": "-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles]",
+    "failedCaseSeconds": 13.995,
+    "failureRecordsReported": 2,
+    "unexpectedFailureRecordsReported": 1,
+    "failureRecords": [
+      "Timeout in the optical-zoom measurement predicate",
+      "Subsequent caught InvalidTransition { phase: idle; targetPhase: failed(deinit) }"
+    ],
+    "totalCaseResultsScope": "The final XCTest summary is authoritative for executed count; individual result lines are not promoted to a reconstructed complete per-case pass inventory.",
+    "xctestSummaryTimeUTC": "2026-10-07T09:15:21.6844460Z",
+    "step": {
+      "completedAt": "2026-10-07T09:22:57Z",
+      "conclusion": "failure",
+      "name": "Run unit tests",
+      "number": 6,
+      "startedAt": "2026-10-07T09:07:44Z",
+      "status": "completed"
+    }
+  },
+  "uiSmoke": {
+    "conclusion": "skipped",
+    "step": {
+      "completedAt": "2026-10-07T09:22:57Z",
+      "conclusion": "skipped",
+      "name": "Run UI smoke test",
+      "number": 8,
+      "startedAt": "2026-10-07T09:22:57Z",
+      "status": "completed"
+    },
+    "reason": "The earlier unit-test step failed/timed out; no UI smoke pass or product UI failure inferred."
+  },
+  "firstRunDiagnosticDelay": {
+    "observedStepTimeoutMinutes": 15,
+    "timeoutTimeUTC": "2026-10-07T09:22:57.2861100Z",
+    "secondsFromUnitSummaryToTimeout": 455.601664,
+    "analysis": "The log shows completed XCTest reporting followed by a long unfinished xcodebuild step. The release owner identified test diagnostic collection as the tail delay; the downloaded log alone does not establish the exact stalled child process. Follow-up CI arguments disable automatic collection instead of hiding the test assertion."
+  },
+  "originalLogEvidence": {
+    "path": "/tmp/html-ci-37598377482-automated-tests-20261007.log",
+    "sha256": "aabe785cfdc192d7c6c9defb6013c61f4971617023ef688117f9e04dec026b13",
+    "bytes": 1486536,
+    "excerpts": [
+      {
+        "startLine": 157,
+        "endLine": 161,
+        "text": "2026-10-07T09:07:28.0622040Z Release toolchain: /Applications/Xcode_27.1_beta.app/Contents/Developer\n2026-10-07T09:07:28.0723530Z Xcode 27.1\n2026-10-07T09:07:28.0823900Z Build version 27A9269\n2026-10-07T09:07:28.0824210Z iphoneos SDK 27.1\n2026-10-07T09:07:28.0824450Z iphonesimulator SDK 27.1"
+      },
+      {
+        "startLine": 240,
+        "endLine": 240,
+        "text": "2026-10-07T09:07:42.2513640Z \u001b[36;1mprint(f\"Selected simulator candidate: {name} iOS {'.'.join(map(str, version))}\", file=sys.stderr)\u001b[0m"
+      },
+      {
+        "startLine": 3864,
+        "endLine": 3864,
+        "text": "2026-10-07T09:11:30.9130500Z HTML viewport before-reader-zoom: native: 1.0, bounds: (0.0, 0.0, 440.0, 860.0), DOM: Optional({\"scale\":1,\"width\":440,\"height\":860,\"innerWidth\":440,\"innerHeight\":860,\"scrollY\":0})"
+      },
+      {
+        "startLine": 3866,
+        "endLine": 3866,
+        "text": "2026-10-07T09:11:41.2391200Z Native zoom timeout diagnostic: Optional({\"visualScale\":3,\"width\":147,\"height\":287,\"innerWidth\":147,\"innerHeight\":287,\"print\":false,\"scrollY\":1200,\"top\":1200})"
+      },
+      {
+        "startLine": 3867,
+        "endLine": 3867,
+        "text": "2026-10-07T09:11:41.2758970Z HTML viewport zoom-timeout-3.0: native: 3.0, bounds: (0.0, 0.0, 440.0, 860.0), DOM: Optional({\"scale\":3,\"width\":147,\"height\":287,\"innerWidth\":147,\"innerHeight\":287,\"scrollY\":1200})"
+      },
+      {
+        "startLine": 3868,
+        "endLine": 3868,
+        "text": "2026-10-07T09:11:41.7535640Z /Users/runner/work/ios-html-markdown-previewer/ios-html-markdown-previewer/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift:536: error: -[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles] : failed - Timed out waiting for optical zoom 3.0; native 3.0, DOM width scale 2.993197278911565, reported scalar Optional(3.0)"
+      },
+      {
+        "startLine": 3869,
+        "endLine": 3872,
+        "text": "2026-10-07T09:11:41.9082580Z /Users/runner/work/ios-html-markdown-previewer/ios-html-markdown-previewer/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift:31: error: -[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles] : failed: caught error: \"InvalidTransition { \n2026-10-07T09:11:41.9995250Z   phase: idle\n2026-10-07T09:11:42.0135580Z   targetPhase: failed(deinit)\n2026-10-07T09:11:42.0317170Z }\""
+      },
+      {
+        "startLine": 3873,
+        "endLine": 3873,
+        "text": "2026-10-07T09:11:42.0527910Z Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles]' failed (13.995 seconds)."
+      },
+      {
+        "startLine": 5172,
+        "endLine": 5172,
+        "text": "2026-10-07T09:15:21.6844460Z \t Executed 213 tests, with 2 failures (1 unexpected) in 218.122 (268.392) seconds"
+      },
+      {
+        "startLine": 5184,
+        "endLine": 5184,
+        "text": "2026-10-07T09:22:57.2861100Z ##[error]The action 'Run unit tests' has timed out after 15 minutes."
+      }
+    ]
+  },
+  "readOnlyRunMetadataEvidence": {
+    "path": "/tmp/html-ci-37598377482-run-jobs-20261007.json",
+    "sha256": "f117aaa1819701146a90962a1eba6e252c3252f877da8bee40a6e10603d50055",
+    "command": "gh run view 37598377482 --json jobs,status,conclusion,headSha"
+  },
+  "analysis": {
+    "classification": "Reproduced viewport measurement quantization boundary",
+    "measurements": [
+      {
+        "environment": "CI",
+        "observedNativeScale": 3.0,
+        "observedVisualViewportScalar": 3.0,
+        "observedWKBoundsWidth": 440.0,
+        "observedDOMViewportWidth": 147.0,
+        "analysis": {
+          "expectedCSSWidth": 146.66666666666666,
+          "observedMinusExpectedCSSWidth": 0.3333333333333428,
+          "reverseDerivedScale": 2.993197278911565,
+          "absoluteReverseDerivedScaleError": 0.00680272108843516,
+          "oldFixedScaleTolerance": 0.005,
+          "failsOldScaleRatioComparison": true,
+          "withinHalfCSSPixelOfExpectedWidth": true,
+          "observedNearestIntegerToExpectedWidth": true
+        }
+      },
+      {
+        "environment": "Local Duo baseline",
+        "observedNativeScale": 3.0,
+        "observedVisualViewportScalar": 3.0,
+        "observedWKBoundsWidth": 382.0,
+        "observedDOMViewportWidth": 127.0,
+        "analysis": {
+          "expectedCSSWidth": 127.33333333333333,
+          "observedMinusExpectedCSSWidth": -0.3333333333333286,
+          "reverseDerivedScale": 3.0078740157480315,
+          "absoluteReverseDerivedScaleError": 0.007874015748031482,
+          "oldFixedScaleTolerance": 0.005,
+          "failsOldScaleRatioComparison": true,
+          "withinHalfCSSPixelOfExpectedWidth": true,
+          "observedNearestIntegerToExpectedWidth": true
+        }
+      }
+    ],
+    "interpretation": "Both observed DOM widths are nearest whole CSS pixels to boundsWidth / 3, while native scale and visualViewport scalar report exactly 3. Dividing bounds width by the rounded CSS width amplifies the subpixel difference and exceeds a fixed 0.005 scale tolerance, in opposite directions for CI and Duo. These observations support correcting the test measurement predicate rather than changing production optical zoom. They do not independently certify all product behavior.",
+    "testPredicateChange": "Compare viewport width to boundsWidth / targetScale in CSS-pixel coordinates, allowing the half-pixel measurement boundary plus floating-point ULP allowance; retain finite/positive checks, native scale tolerance, settled samples and existing no-reload/source-style assertions."
+  },
+  "reproducedMeasurementBoundary": {
+    "status": "BASELINE_TEST_FAILED",
+    "test": "testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles",
+    "log": "/tmp/html-release-1.8-zoom-rounding-baseline-20261007.log",
+    "logSHA256": "48fb0f0a4edf7bde12537725777c7fbad65c75976aff54f27cb588fac75cf5f3",
+    "xcresult": "/tmp/html-release-1.8-zoom-rounding-baseline-20261007.xcresult",
+    "exitCodeReportedByReleaseOwner": 65,
+    "deviceName": "iPhone Duo",
+    "udid": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+    "runtime": "iOS 27.1",
+    "xcodeBuild": "27A9275",
+    "binaryScope": "Release-owner report: existing unchanged app/test binary executed via test-without-building; no production change to reproduce this boundary.",
+    "collectTestDiagnostics": "never",
+    "testFrameworkElapsedSecondsObserved": 80.669,
+    "excerpts": [
+      {
+        "startLine": 2,
+        "endLine": 2,
+        "text": "    /Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Debug -destination \"platform=iOS Simulator,id=F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7\" -derivedDataPath /Users/user/Library/Developer/Xcode/DerivedData/HTMLPreviewerDuo27QA -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -collect-test-diagnostics never -testLanguage en -testRegion US \"-only-testing:HTMLMarkdownPreviewerTests/HTMLAppearanceTests/testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles\" -resultBundlePath /tmp/html-release-1.8-zoom-rounding-baseline-20261007.xcresult"
+      },
+      {
+        "startLine": 41,
+        "endLine": 41,
+        "text": "HTML viewport before-reader-zoom: native: 1.0, bounds: (0.0, 0.0, 382.0, 644.0), DOM: Optional({\"scale\":1,\"width\":382,\"height\":644,\"innerWidth\":382,\"innerHeight\":644,\"scrollY\":0})"
+      },
+      {
+        "startLine": 45,
+        "endLine": 45,
+        "text": "Native zoom timeout diagnostic: Optional({\"visualScale\":3,\"width\":127,\"height\":215,\"innerWidth\":127,\"innerHeight\":215,\"print\":false,\"scrollY\":1344,\"top\":1344})"
+      },
+      {
+        "startLine": 46,
+        "endLine": 46,
+        "text": "HTML viewport zoom-timeout-3.0: native: 3.0, bounds: (0.0, 0.0, 382.0, 644.0), DOM: Optional({\"scale\":3,\"width\":127,\"height\":215,\"innerWidth\":127,\"innerHeight\":215,\"scrollY\":1344})"
+      },
+      {
+        "startLine": 47,
+        "endLine": 47,
+        "text": "/Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift:536: error: -[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles] : failed - Timed out waiting for optical zoom 3.0; native 3.0, DOM width scale 3.0078740157480315, reported scalar Optional(3.0)"
+      },
+      {
+        "startLine": 54,
+        "endLine": 54,
+        "text": "\t Executed 1 test, with 2 failures (1 unexpected) in 20.359 (20.363) seconds"
+      },
+      {
+        "startLine": 67,
+        "endLine": 67,
+        "text": "2026-10-07 18:26:55.406 xcodebuild[59593:5297188] [MT] IDETestOperationsObserverDebug: 80.669 elapsed -- Testing started completed."
+      },
+      {
+        "startLine": 78,
+        "endLine": 78,
+        "text": "** TEST EXECUTE FAILED **"
+      }
+    ]
+  },
+  "followUpChangesObserved": {
+    "comparison": {
+      "method": "git diff --no-ext-diff <base>..<head> -- <paths>",
+      "baseCommit": "27fe3fc9429b15073b72cca4f13322f51c793bed",
+      "headCommit": "06590c532b2139a16678caf879df71ce748cb31b",
+      "usesWorkingTreeDiff": false
+    },
+    "paths": [
+      ".github/workflows/ios-ci.yml",
+      "HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift"
+    ],
+    "diffSHA256": "8bc800ce9a69e381ec33e41232aa800ff1691d93fe814eda940ae3e225445b87",
+    "diff": "diff --git a/.github/workflows/ios-ci.yml b/.github/workflows/ios-ci.yml\nindex 2b2e9f6..7939716 100644\n--- a/.github/workflows/ios-ci.yml\n+++ b/.github/workflows/ios-ci.yml\n@@ -190,6 +190,7 @@ jobs:\n             -derivedDataPath DerivedData \\\n             -parallel-testing-enabled NO \\\n             -maximum-concurrent-test-simulator-destinations 1 \\\n+            -collect-test-diagnostics never \\\n             -testLanguage en -testRegion US \\\n             -only-testing:HTMLMarkdownPreviewerTests\n \n@@ -209,6 +210,7 @@ jobs:\n             -derivedDataPath DerivedData \\\n             -parallel-testing-enabled NO \\\n             -maximum-concurrent-test-simulator-destinations 1 \\\n+            -collect-test-diagnostics never \\\n             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke \\\n             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \\\n             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \\\ndiff --git a/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift b/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift\nindex 5e34348..d729380 100644\n--- a/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift\n+++ b/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift\n@@ -519,11 +519,20 @@ final class HTMLAppearanceTests: XCTestCase {\n             // Check the DOM's actual visible width as well as UIKit's scale.\n             let visibleWidth = viewport?.last ?? 0\n             let effectiveScale = visibleWidth > 0 ? webView.bounds.width / visibleWidth : 0\n+            // WebKit can round this measurement to an integer CSS pixel:\n+            // 440 / 3 becomes 147, while 382 / 3 becomes 127. Compare in\n+            // the measured coordinate space rather than amplifying that\n+            // half-pixel quantization by converting it back to a scale.\n+            let expectedWidth = Double(webView.bounds.width) / scale\n+            let widthTolerance = 0.5 + max(visibleWidth.ulp, expectedWidth.ulp)\n+            let viewportAgrees = visibleWidth.isFinite && visibleWidth > 0\n+                && expectedWidth.isFinite && expectedWidth > 0\n+                && abs(visibleWidth - expectedWidth) <= widthTolerance\n             let animating: Bool\n             if #available(iOS 17.4, *) { animating = webView.scrollView.isZoomAnimating }\n             else { animating = webView.scrollView.isZooming }\n             if !animating, abs(webView.scrollView.zoomScale - scale) < 0.005,\n-               abs(effectiveScale - scale) < 0.005 {\n+               viewportAgrees {\n                 stableSamples += 1\n                 if stableSamples >= 2 { return }\n             } else {\n@@ -533,7 +542,7 @@ final class HTMLAppearanceTests: XCTestCase {\n                 let diagnostic = try await webView.evaluateJavaScript(\"JSON.stringify({visualScale:visualViewport.scale,width:visualViewport.width,height:visualViewport.height,innerWidth,innerHeight,print:matchMedia('print').matches,scrollY,top:visualViewport.pageTop})\")\n                 print(\"Native zoom timeout diagnostic: \\(String(describing: diagnostic))\")\n                 try await recordViewport(in: webView, stage: \"zoom-timeout-\\(scale)\")\n-                XCTFail(\"Timed out waiting for optical zoom \\(scale); native \\(webView.scrollView.zoomScale), DOM width scale \\(effectiveScale), reported scalar \\(String(describing: viewport?.first))\")\n+                XCTFail(\"Timed out waiting for optical zoom \\(scale); native \\(webView.scrollView.zoomScale), DOM width \\(visibleWidth), expected width \\(expectedWidth), DOM width scale \\(effectiveScale), reported scalar \\(String(describing: viewport?.first))\")\n                 throw HTMLAppearanceTestError.timedOut\n             }\n             try await Task.sleep(for: .milliseconds(40))\n",
+    "perFileDiffSHA256": {
+      ".github/workflows/ios-ci.yml": "6315dbd6e6b416a683dc374727313e2d46e07a8d319c94561f4a85f6012b3bbb",
+      "HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift": "090be2e64437c2fe9217273d7a9975590fa4c18bee5a29324b27e4f0fc2438f1"
+    },
+    "allCommitRangePaths": [
+      ".github/workflows/ios-ci.yml",
+      "HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift",
+      "docs/release-checklist-1.8.md",
+      "docs/updates/assets/2026-10-07-iphone-duo/release-1.8-asc-ready.json",
+      "docs/updates/assets/2026-10-07-iphone-duo/release-1.8-browser-checks.json",
+      "docs/updates/assets/2026-10-07-iphone-duo/release-1.8-distribution.json",
+      "docs/updates/assets/2026-10-07-iphone-duo/release-1.8-zoom-quantization.json"
+    ],
+    "productionSourcePathsChanged": [],
+    "productionAppTree": {
+      "base": "570bdfb2d79899f20671bb45c24f0f5f19f741b8",
+      "head": "570bdfb2d79899f20671bb45c24f0f5f19f741b8",
+      "identical": true
+    },
+    "scope": "This committed-range evidence contains the two test/CI changes; additional release documentation in the range is listed separately. No production App source or project configuration changed. Corrected-test validation and the later CI result are recorded separately and are not claimed by this first-run receipt."
+  },
+  "notAssessed": [
+    "Corrected CI run success",
+    "Final complete per-case pass inventory",
+    "Production source change",
+    "Distribution upload/VALID state",
+    "Review submission/approval",
+    "Physical-device acceptance",
+    "Public release"
+  ]
+}

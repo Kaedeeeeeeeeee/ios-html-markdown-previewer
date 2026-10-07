@@ -1,6 +1,15 @@
 # iPhone Duo adaptation — 2026-10-07
 
-## Status
+## Release handoff
+
+Version 1.8 (13) was submitted on 2026-10-07 and independently verified as
+**WAITING_FOR_REVIEW**, with **AFTER_APPROVAL** release configured. CI passed
+213 unit and 13 ordinary-iPhone UI tests. See the
+[current release checklist](../release-checklist-1.8.md) for source, Distribution,
+72-image store inventory, and submission evidence. The native-QA record below
+retains its original scope and the separate 12/13 Duo automation result.
+
+## Native-QA checkpoint
 
 The adaptation is implemented locally and builds with the iOS 27.1 SDK.
 Native Duo validation and simulator lifecycle restoration are complete within
@@ -31,7 +40,9 @@ has not been established; no general SDK defect is claimed.
 
 Xcode 27.1 RC and its system components are installed alongside the existing
 Xcode. The system-default toolchain remains Xcode 27.0.
-Changes remain local. No commit, push, App Store upload, or release was performed.
+At this earlier native-QA checkpoint, changes were local and no commit, push,
+App Store upload, or release had been performed. The subsequent release handoff
+is recorded above.
 
 ## Implementation
 

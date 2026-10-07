@@ -1,0 +1,30 @@
+{
+  "status": "RESTORED",
+  "observedAtUTC": "2026-10-07T09:51:34.091166+00:00",
+  "purpose": "Reuse existing devices for screenshots, local regression tests and optimized Release simulator smoke.",
+  "reusedDevices": [
+    {
+      "udid": "F56A2968-F35C-4455-8A34-43DCC6CDC319",
+      "name": "iPhone 18 Pro",
+      "state": "Shutdown",
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-27-0"
+    },
+    {
+      "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+      "name": "Passnote ASO iPad Pro 12.9",
+      "state": "Shutdown",
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-5"
+    },
+    {
+      "udid": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "name": "iPhone Duo",
+      "state": "Shutdown",
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-27-1"
+    }
+  ],
+  "createdDevices": [],
+  "deletedDevices": [],
+  "allSevenExistingDevicesShutdown": true,
+  "globalDeveloperDirectory": "/Applications/Xcode.app/Contents/Developer",
+  "physicalDeviceUsed": false
+}

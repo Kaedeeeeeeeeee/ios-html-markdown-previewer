@@ -1,0 +1,47 @@
+{
+  "status": "VERIFIED_IN_APPLE_REVIEW_QUEUE",
+  "observedAtUTC": "2026-10-07T10:04:23.717205+00:00",
+  "appId": "6785794966",
+  "appMembershipVerified": true,
+  "version": {
+    "id": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+    "versionString": "1.8",
+    "platform": "IOS",
+    "appStoreState": "WAITING_FOR_REVIEW",
+    "appVersionState": "WAITING_FOR_REVIEW",
+    "releaseType": "AFTER_APPROVAL"
+  },
+  "build": {
+    "id": "775d76dc-bbc4-4dd4-a972-d24f17f32718",
+    "attachedToVersion": true,
+    "version": "13",
+    "processingState": "VALID",
+    "expired": false,
+    "usesNonExemptEncryption": false,
+    "buildAudienceType": "APP_STORE_ELIGIBLE",
+    "uploadedDate": "2026-10-07T02:08:25-07:00",
+    "preReleaseVersion": {
+      "id": "66bd970b-bd4f-41e6-ba7e-84ec104c4458",
+      "version": "1.8",
+      "platform": "IOS"
+    }
+  },
+  "reviewSubmission": {
+    "id": "084c680e-e6d1-4ba9-852c-69b1165fc55f",
+    "platform": "IOS",
+    "submittedDate": "2026-10-07T10:02:48.601Z",
+    "state": "WAITING_FOR_REVIEW",
+    "items": [
+      {
+        "id": "MDg0YzY4MGUtZTZkMS00YmE5LTg1MmMtNjliMTE2NWZjNTVmfDZ8ODkyNjgwNzUw",
+        "state": "READY_FOR_REVIEW",
+        "appStoreVersionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5"
+      }
+    ]
+  },
+  "publicRelease": {
+    "claimed": false,
+    "note": "Approval and public availability are separate from review submission."
+  },
+  "verification": "Independent GET-only readback after submission; all exact identity, state, build, encryption and automatic-release assertions passed."
+}

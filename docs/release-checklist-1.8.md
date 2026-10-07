@@ -1,9 +1,11 @@
-# HTML Previewer 1.8 (13) — release preparation
+# HTML Previewer 1.8 (13) — submitted for review
 
-Prepared on 2026-10-07. This update includes the current Duo/reader changes,
-the pending local review-request implementation, and ASO preparation. Version
-1.7 is already released according to the release operator's live ASC check.
-This checklist does not change historical 1.7 evidence or first-release issues.
+Submitted on 2026-10-07 at 19:02:48 JST (10:02:48 UTC). App Store version 1.8,
+using VALID build 13, is **WAITING_FOR_REVIEW**, with automatic release
+**AFTER_APPROVAL**. Independent API readback and the App Store Connect page
+confirmed the state. This update includes Duo/reader changes, native review
+requests, and four-language store materials. Public availability of 1.8 is not
+yet claimed; historical 1.7 evidence remains unchanged.
 
 ## Prepared locally
 
@@ -37,7 +39,8 @@ The [official image list](https://github.com/actions/runner-images/blob/main/ima
 checked on 2026-10-07 (image `20260928.0222.1`), lists macOS 27 and Xcode 27.1
 build `27A9269` with both SDKs 27.1. This image is a public preview. Run `37598377482` actually used Xcode 27.1
 build `27A9269` and both SDKs 27.1; its Release build/archive job passed.
-Final automated-test status is tracked below. `macos-27` is not a documented label. The existing `macos-26` image only lists Xcode 26.x.
+The corrected run `37601595038` passed all five jobs, including 213 unit and
+13 ordinary-iPhone UI tests. Final evidence is tracked below. `macos-27` is not a documented label. The existing `macos-26` image only lists Xcode 26.x.
 [GitHub's runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 lists `xcode-27` as a standard runner, free for this public repository; no larger
 runner or new self-hosted registration is used.
@@ -60,7 +63,7 @@ bash scripts/select-release-toolchain.sh
 The installed toolchain is Xcode 27.1 RC (27A9275). Its new Distribution archive
 was accepted and processed as VALID build 1.8 (13); see the evidence below.
 
-## Verified local build and repository route
+## Earlier local build and repository checkpoints
 
 - Read-only repository audit: `Kaedeeeeeeeeee/ios-html-markdown-previewer` is
   public, remote/local `main` both at `3f3cf0e` at the audit time. The branch API
@@ -69,7 +72,7 @@ was accepted and processed as VALID build 1.8 (13); see the evidence below.
   `ubuntu-zhang` runner, so it cannot provide the Xcode build route.
 - The new workflows retain PR #23's integrated-materials audit and previous-
   version release gate. Their script content and the new screenshot inventory
-  must be integrated before final CI; changing the runner does not bypass them.
+  were integrated before final CI; changing the runner did not bypass them.
 - Generic iOS **unsigned** Release build passed locally on 2026-10-07, using
   Xcode 27.1 RC and `CODE_SIGNING_ALLOWED=NO` in
   `DerivedData/Release1.8/CIEquivalent`. Bundle metadata is 1.8 (13),
@@ -77,9 +80,8 @@ was accepted and processed as VALID build 1.8 (13); see the evidence below.
   device families `[1, 2]`. Binary, `Assets.car`, and privacy manifest are present.
   Log: `/tmp/html-release-1.8-generic27.1-build-20261007.log` (exit 0).
 - This build is not a signed archive, simulator test result, final-commit CI,
-  hosted-runner execution result, or upload. The executable next route is local
-  RC validation/signing/archive/upload plus the existing standard hosted
-  `xcode-27` CI jobs after the release operator integrates and pushes the source.
+  hosted-runner execution result, or upload. The subsequent local RC signed
+  archive/upload and hosted `xcode-27` CI results are recorded below.
 
 ## Required before submission
 
@@ -107,14 +109,19 @@ was accepted and processed as VALID build 1.8 (13); see the evidence below.
   also passed.
 - [x] Freeze the source at `fb8e0ccfb1ca89d3f795f44ff94befbce67c15fa` and push
   `codex/iphone-duo-release-1.8`. PR #23 history and all verified 1.8 code are retained.
-- [ ] Verify CI on that commit with recorded Xcode/SDK versions; preserve the
-  known automated rotation-geometry limitation and its native QA evidence.
+- [x] Verify CI on the final code/test/workflow commit `06590c532b2139a16678caf879df71ce748cb31b`.
+  [Run 37601595038](https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37601595038)
+  passed all five jobs: **213/213 unit tests and 13/13 ordinary-iPhone UI tests**,
+  using Xcode 27.1 build 27A9269, SDKs 27.1, and iPhone 18 Pro Max / iOS 27.0.
+  See the [CI receipt](updates/assets/2026-10-07-iphone-duo/release-1.8-ci.json).
+  This does not overwrite the separate historical Duo rotation-geometry result.
   First CI run `37598377482` passed four jobs; a single optical-zoom test failed
   because 440pt / 3 rounds to a 147 CSS-pixel viewport. The same measurement
   defect reproduced on Duo (382pt / 3 rounds to 127). The test now compares CSS
   width within half a CSS pixel and retains native scale precision, animation
   completion, and two stable samples. All eight local appearance tests passed.
-  See [before/after evidence](updates/assets/2026-10-07-iphone-duo/release-1.8-zoom-quantization.json).
+  See [before/after evidence](updates/assets/2026-10-07-iphone-duo/release-1.8-zoom-quantization.json)
+  and the [preserved first CI failure](updates/assets/2026-10-07-iphone-duo/release-1.8-ci-first-run.json).
   CI now omits verbose sysdiagnose collection after failure, preserving tests,
   xcresult and screenshots while avoiding the observed post-suite timeout.
 - [x] Finish the four-locale, three-family screenshot inventory: six images per
@@ -153,13 +160,33 @@ was accepted and processed as VALID build 1.8 (13); see the evidence below.
   physical-device/TestFlight installation of the Distribution archive; that
   evidence is not claimed for 1.8. Review prompt logic remains covered by unit
   tests and the unchanged feature code from the earlier candidate validation.
-- [ ] Verify ASC 1.8 metadata, screenshot identities/order/delivery, privacy/export
+- [x] Verify ASC 1.8 metadata, screenshot identities/order/delivery, privacy/export
   fields, build processing/attachment, and actual `AFTER_APPROVAL` configuration.
-- [ ] Record review submission and later public release separately.
+  The final [pre-submit checks](updates/assets/2026-10-07-iphone-duo/release-1.8-pre-submit.json)
+  confirmed the exact build and one empty draft review submission before writing.
+- [x] Submit and independently verify the exact submission → item → version →
+  build chain. Submission `084c680e-e6d1-4ba9-852c-69b1165fc55f` and version 1.8
+  entered **WAITING_FOR_REVIEW** at `2026-10-07T10:02:48.601Z`. Its only item
+  links version `e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5`, which links VALID build
+  `775d76dc-bbc4-4dd4-a972-d24f17f32718` (13). The item itself still reports
+  `READY_FOR_REVIEW`; the submission/version queue states are recorded separately.
+  See [independent API receipt](updates/assets/2026-10-07-iphone-duo/release-1.8-review-submitted.json),
+  [visible browser status](updates/assets/2026-10-07-iphone-duo/release-1.8-browser-submitted.json),
+  and [submission log](updates/assets/2026-10-07-iphone-duo/release-1.8-submit.log).
+- [ ] Record Apple approval and actual public availability when they occur.
 
-Signed archive, export, upload, VALID processing, build attachment, metadata and
-all 72 screenshot placements are complete. The first CI run passed four jobs but
-one optical-zoom test rejected WebKit's integer CSS-width rounding; the test
-measurement is corrected and all eight local appearance tests passed. Full CI
-must pass before review submission.
-Submission and public release remain separate.
+Signed archive, export, upload, VALID processing, build attachment, metadata,
+all 72 screenshot placements, full CI, and review submission are complete.
+
+Distribution was built from `27fe3fc`; CI tested `06590c5`. Their production
+App tree is identical (`570bdfb2d79899f20671bb45c24f0f5f19f741b8`), and project
+settings/build inputs are unchanged. The subsequent final receipt commit changes
+only documentation and reuses this CI result; it does not claim a new CI run or
+new binary. PR #24 preserves PR #23 history.
+
+The existing iPhone 18 Pro, Passnote ASO iPad Pro 12.9, and iPhone Duo were reused
+and restored to Shutdown. No device was created or deleted, and no physical
+device was operated. All seven local devices remain Shutdown; the global Xcode
+selection remains unchanged. See the [lifecycle receipt](updates/assets/2026-10-07-iphone-duo/release-1.8-simulator-lifecycle.json).
+
+Apple approval and public release remain pending.
