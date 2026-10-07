@@ -79,8 +79,9 @@ References:
   ended; the app was relaunched without QA environment variables. Temporary
   seeding and diagnostics are absent from the shipping source.
 
-Evidence is in `DerivedData/ReviewPromptDeviceQA/`, especially
-`system-review-prompt.png`, `device-console.log`, the preference snapshots,
-and `status.json`. This validates development-device presentation; Apple
+The screenshots and structured result are preserved in
+[`assets/2026-10-03-review-prompts/`](assets/2026-10-03-review-prompts/).
+The complete console and preference snapshots remain in
+`/Users/user/html_preview/DerivedData/ReviewPromptDeviceQA/`. This validates development-device presentation; Apple
 still controls whether production requests show a dialog. These local
 changes have not been uploaded, submitted, or released to the App Store.

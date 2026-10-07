@@ -1,0 +1,510 @@
+{
+  "status": "PASS",
+  "version": "1.7.1",
+  "build": "13",
+  "scope": "Local upload-path identity, metadata limits, release-note identity, PNG inventory, encoding and backend order. No upload, Apple acceptance, review or release is verified.",
+  "locales": [
+    "en-US",
+    "zh-Hans",
+    "ja",
+    "zh-Hant"
+  ],
+  "screenshotCount": 48,
+  "metadata": {
+    "en-US": {
+      "name": {
+        "characters": 14,
+        "limit": 30,
+        "sha256": "7cc03e78f16533770a3bda8acbcf29e576cc2a282497cb2f29767eef3c51b86c"
+      },
+      "subtitle": {
+        "characters": 27,
+        "limit": 30,
+        "sha256": "73f0e778fa3a6c622ffd09556e8b06f5554488e57b7a2b9bd4a6aae8cbb5a2fb"
+      },
+      "keywords": {
+        "characters": 93,
+        "limit": 100,
+        "sha256": "e94a9554560d80e36285b0db4d88a0de06f48af1271c8220c14a403616aa1818"
+      },
+      "promotional_text": {
+        "characters": 147,
+        "limit": 170,
+        "sha256": "435b511b1224d54cb73691fb24eedcff2c65f1c08e72d01c924a9595b57a9760"
+      },
+      "description": {
+        "characters": 2339,
+        "limit": 4000,
+        "sha256": "c624d5aa70a7afb0b6b1f48af86a548bea1ae8c678cd276f8be3def95f841beb"
+      }
+    },
+    "zh-Hans": {
+      "name": {
+        "characters": 8,
+        "limit": 30,
+        "sha256": "0982c100f9baa6a30e445a1ecea29bdb5ce472e5ec79a0b2273d1ea31a1697ed"
+      },
+      "subtitle": {
+        "characters": 27,
+        "limit": 30,
+        "sha256": "80983a8117afba3c524b86f10f560d17351ba3250d53944848de2af84390d508"
+      },
+      "keywords": {
+        "characters": 67,
+        "limit": 100,
+        "sha256": "639cda7bff3a3f732101cbdb353893f1e9721df390c01a97404787961f3667f5"
+      },
+      "promotional_text": {
+        "characters": 79,
+        "limit": 170,
+        "sha256": "01daa87f238c74fc1ad744178c53a298ce91b6eaaf1b3b940465f5824fa9d8bb"
+      },
+      "description": {
+        "characters": 1002,
+        "limit": 4000,
+        "sha256": "0d7eae3fc69c24fed12b562da074e47f5fe3dfd9451423b98a33579ccff8370f"
+      }
+    },
+    "ja": {
+      "name": {
+        "characters": 9,
+        "limit": 30,
+        "sha256": "215e2b0933c46c08359e1fb19a9a057f4634ac9d335b25f4323a15b58273fd92"
+      },
+      "subtitle": {
+        "characters": 21,
+        "limit": 30,
+        "sha256": "775b76068dc6058a173dd442552c6f34f6a308fe4089e40242d1e349076f3e21"
+      },
+      "keywords": {
+        "characters": 80,
+        "limit": 100,
+        "sha256": "9c1af0ae273d305824325384929747af3eabb36f76a702fc60e21a748ad244c9"
+      },
+      "promotional_text": {
+        "characters": 93,
+        "limit": 170,
+        "sha256": "f79928f581c47f0c1d7efb4bfeac946a9e298774a1dd69a74340ecd7f30bae9c"
+      },
+      "description": {
+        "characters": 1256,
+        "limit": 4000,
+        "sha256": "c9bec43f9c7a80c656c0c321485449075857c4cea89e76064a866d6256157fdf"
+      }
+    },
+    "zh-Hant": {
+      "name": {
+        "characters": 8,
+        "limit": 30,
+        "sha256": "eca76381f2fdd9e6a8889b316a00ceb26a3b4c15124ccd1eccb94ae6ed14a9ba"
+      },
+      "subtitle": {
+        "characters": 27,
+        "limit": 30,
+        "sha256": "3e5f495751c598d2cf39d10afce7c03817d2077e1cc045857b3512d750bffa8a"
+      },
+      "keywords": {
+        "characters": 71,
+        "limit": 100,
+        "sha256": "d4d1a49e415a259a23a50843c7100ade47fe344c3cb6dd51fb3c6919a1676c98"
+      },
+      "promotional_text": {
+        "characters": 80,
+        "limit": 170,
+        "sha256": "603dd7685409dc8b50142a799bcd29610b89a842f1ba584f23b8b6616dd7e2f6"
+      },
+      "description": {
+        "characters": 1023,
+        "limit": 4000,
+        "sha256": "d5e4260483483c5508f1c3f733593168e8c92038bd6e214ec7e078c5c30f7064"
+      }
+    }
+  },
+  "screenshots": [
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-01-html-report.png",
+      "sha256": "65a2e7494f9aed1eff9a23dbe9a76d3781acc8271be5033b899e29b85862373d",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-02-markdown-preview.png",
+      "sha256": "a2fb16446c30f57ac3616ee26bb78ecdb7fe63db4c765699eb782d3ecb2b9f87",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-03-json-preview.png",
+      "sha256": "ebdd80933db958a01ddd90e76935c8c913f99fd88e9b363d879ada0f71b12a0f",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-04-yaml-preview.png",
+      "sha256": "c88430c248a198398ddfab947cd2e775557ffa9f15c46821197e1126fd46be61",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-05-batch-import.png",
+      "sha256": "9f762fc8121553b66714407b6af8ec94eb18a08f79acda81be430fdeec69ced8",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-06-library.png",
+      "sha256": "31b64e0b9f0842ed2d428e1256bca33561185dc50ca26d73a20d77503c4c9214",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-01-html-report.png",
+      "sha256": "c55553ffd94903b1ea39e3623f0eb88918d7957f63f06c7b7cb447fa33af1a46",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-02-markdown-preview.png",
+      "sha256": "1e8e11b7a695e3a43a7549bf7423f10949b59bfc7950fb01af5d3423ebe5db43",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-03-json-preview.png",
+      "sha256": "cbf69abd15c755d4b792fe19cb510bf6a634be4c5152cfa6249c5b9529295e24",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-04-yaml-preview.png",
+      "sha256": "76d808112ca2c2bc8010359c32397c25ed2c8955afc13007e13ea02443266a09",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-05-batch-import.png",
+      "sha256": "a6afa689fb62230cdc5ba6d1b0407472126c4365841481b254f558f1d0d6a2dc",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-06-library.png",
+      "sha256": "f0ac157da1ac06b347405416d3f82d22a8455006dd8f351ebc7d8638c5179bba",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-01-html-report.png",
+      "sha256": "a9953ccaa7306930f2239d641dfcb76480a0e2cd7016036813a5527a84721977",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-02-markdown-preview.png",
+      "sha256": "78144756386b0a67807d241ed25a6c42b4386d96820a7fe611d1afc1e4d50d3f",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-03-json-preview.png",
+      "sha256": "36f50b2e04c18e5bd97956796f029d30e3629cc3a0112222248efcd266dad723",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-04-yaml-preview.png",
+      "sha256": "5ced47d09f561eb01293d524e34dc7e4b682ca1438b192660e6e0413ecf0f62e",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-05-batch-import.png",
+      "sha256": "4b7dacbf1f0fadc60bb642e848d4348bccef66122406e3751b1b67a988ab9cf0",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-06-library.png",
+      "sha256": "9f8f9ef4513791d914acece60eee587d3f74109273092294a70f90752d5d44ea",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-01-html-report.png",
+      "sha256": "2d76e56033dae9e5351e57a453a0a30b90323519eae546825428be0ffd2e9737",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-02-markdown-preview.png",
+      "sha256": "4350b4e8e1b3efd227f9a36a37c4e716489643c06055e35928767a4c48718146",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-03-json-preview.png",
+      "sha256": "d051ae0718b36620254962e350bb604df1fbb062e5ccaef94cd5e55118ce5029",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-04-yaml-preview.png",
+      "sha256": "3a876a6bf8e412ba645d53869ca14b09fb8b1a265f92e538dba75ca29aaba440",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-05-batch-import.png",
+      "sha256": "f469595f3f0ce294f32a717b6e289d78d5f0c06c2216e631290a104344134c70",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-06-library.png",
+      "sha256": "289e69a2abaf787b2c6cee1f2bf86935bc57f3be92ae8dfe4d5e88f2514b02c5",
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-01-html-report.png",
+      "sha256": "1c823d605250b526200f09b2cdb64b0cefeca6ac3459f7640134c59159e23634",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-02-markdown-preview.png",
+      "sha256": "33b1af0be3f0bfc38a71b0aa60771d191a5f0440f21a83590754af36b730d4e3",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-03-json-preview.png",
+      "sha256": "0c04742b7a187e4ca5f5b234981d1a2fd0083431e8078df238852f444dade09f",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-04-yaml-preview.png",
+      "sha256": "b568656b81a870baf33d4b25e449ae55a289b4e6d013ec3afd1ddc89498fecb2",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-05-batch-import.png",
+      "sha256": "1260cc462a3f2de695df3f250e1f8f72c86ed8c45a518d04203c11cfcd92d1bb",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-06-library.png",
+      "sha256": "5725c84ffeddd09c48dc36662e41fd92dba898fe5a6283255765e7c9f832112b",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-01-html-report.png",
+      "sha256": "9d6492e90de0852e3598a9061264ad57ebdc15170f858697acad3dfb8da2adb1",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-02-markdown-preview.png",
+      "sha256": "3cbba4243e57430921c9d69be30d96abfd5efac813a12c06a51fd87d8409cfb5",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-03-json-preview.png",
+      "sha256": "a54ad9b7b9f83b6a3bae0ff54b4198c8ceab2f50594cc68c0ea6136ea09da166",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-04-yaml-preview.png",
+      "sha256": "50532948a000ddebbdd31b39576bb442a6bfb4328b07b435009753bfa8b9c286",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-05-batch-import.png",
+      "sha256": "1d2d8f0f6f5a130f35106ab237db5c62702965fd443f999718f6521a59158f41",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-06-library.png",
+      "sha256": "e1787683bd554e8d1c025807d7cc9b06f8a13a0bdc529506bb18b851929f597c",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-01-html-report.png",
+      "sha256": "061eccab89b8036f1ad26d0198c96c7f4db52c2c7623b6b0e7e5895a193057fa",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-02-markdown-preview.png",
+      "sha256": "493c5065ff4f3b9654b677d876c0f005674bf13428a75bdc8c615b72bd0d1479",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-03-json-preview.png",
+      "sha256": "940e8711f14ccb2ae7fb99d95a3fad7cc1c0f5b627d734ec7646e846ba1f7aae",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-04-yaml-preview.png",
+      "sha256": "5a28ad5ea8fdb980cdf0e724806d87ec6f3dba577041749a5821f6b66777cf5b",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-05-batch-import.png",
+      "sha256": "f6e2b4ff7307fa6257c4518100f9d112739eab0275f8d5b5922701e746894f0f",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-06-library.png",
+      "sha256": "1a770f65455e7165b7c3198043f198ec298ed11086897b0154d3cc6103321062",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-01-html-report.png",
+      "sha256": "1c56bda391af2177f9c5ec4585b39d8e6cfc2604a97416892e24e5a10c556303",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-02-markdown-preview.png",
+      "sha256": "5f7992b985ad7166d1fe8c310f974eb5d9c6ecc1eb829713afb0f8381869f0b1",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-03-json-preview.png",
+      "sha256": "feea8b3e7545da3f7c4e9f177e4c0eb500622e1cbd3b1755d63af4d7c9e48a10",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-04-yaml-preview.png",
+      "sha256": "ef8aaedbacb673406ae6fc4c446c5eabf74ad673fa80de8a7a256bb520495116",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-05-batch-import.png",
+      "sha256": "657b03bd3215a4c7f7b23243c3645b830e9e264e8235fc8a2535535c438e02ee",
+      "pixels": [
+        2064,
+        2752
+      ]
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-06-library.png",
+      "sha256": "f0f7af9a0945854961174449da80f9513047cfeee5c1bcbe9da22dda646ed195",
+      "pixels": [
+        2064,
+        2752
+      ]
+    }
+  ],
+  "errors": []
+}

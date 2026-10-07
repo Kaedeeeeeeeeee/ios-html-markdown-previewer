@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "appSourceEquivalentToCommit": "e3910abfbe2548475f5fdacd40e69569fc98cd16",
+  "device": {
+    "name": "HTML Previewer Release iPhone iOS26.5",
+    "model": "iPhone 17",
+    "os": "26.5",
+    "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2",
+    "created": false,
+    "erased": false
+  },
+  "initialCIRun": "https://github.com/Kaedeeeeeeeeee/ios-html-markdown-previewer/actions/runs/37107371827",
+  "initialUIResult": {
+    "passed": 11,
+    "failed": 2,
+    "failures": [
+      "BatchImportUITests/testBatchContinuesThroughFailureAndDuplicateChoicesThenReturnsToLibrary",
+      "ReadingLibraryUITests/testLibraryPinRenameSearchAndTypeFilterPersist"
+    ]
+  },
+  "analysis": "Original failing flows both passed unchanged on the same iOS 26.5 runtime. CI failure evidence showed search-field disappearance and a row opening after a long press. Test synchronization was strengthened without changing app code.",
+  "testChanges": [
+    "Wait for the cleared query and resolve/refocus the current search field before typing; preserve command-A selection fallback.",
+    "Resolve the document row again after pinning and hold for two seconds to activate its context menu."
+  ],
+  "localResults": {
+    "iOS26FailureReproduction": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2",
+            "deviceName": "HTML Previewer Release iPhone iOS26.5",
+            "modelName": "iPhone 17",
+            "osBuildNumber": "23F77",
+            "osVersion": "26.5",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 2,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1791016251.031,
+      "passedTests": 2,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1791016057.453,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - HTMLMarkdownPreviewer",
+      "topInsights": [],
+      "totalTestCount": 2
+    },
+    "iOS26StabilizedTests": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2",
+            "deviceName": "HTML Previewer Release iPhone iOS26.5",
+            "modelName": "iPhone 17",
+            "osBuildNumber": "23F77",
+            "osVersion": "26.5",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 2,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "HTMLMarkdownPreviewer · Built with macOS 27.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1791016657.523,
+      "passedTests": 2,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1791016457.393,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - HTMLMarkdownPreviewer",
+      "topInsights": [],
+      "totalTestCount": 2
+    }
+  },
+  "scope": "Two targeted UI flows passed before and after synchronization changes. Final candidate CI must still pass."
+}
