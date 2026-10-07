@@ -103,9 +103,10 @@ archive remains to be established by actual upload/processing validation.
   (6 tests / 68 assertions). Ruby/Fastfile syntax and diff whitespace checks pass.
   `ASC_USE_CLI_TOKEN=true` uses the existing authorized asc keychain profile,
   keeps JWTs in memory, and avoids exporting a private key. Default CI private-
-  key authentication remains unchanged. This does not establish a passing live
-  72-image gate.
-- [ ] Confirm final scope and commit; retain the unrelated existing changes.
+  key authentication remains unchanged. The separate live 72-image gate below
+  also passed.
+- [x] Freeze the source at `fb8e0ccfb1ca89d3f795f44ff94befbce67c15fa` and push
+  `codex/iphone-duo-release-1.8`. PR #23 history and all verified 1.8 code are retained.
 - [ ] Verify CI on that commit with recorded Xcode/SDK versions; preserve the
   known automated rotation-geometry limitation and its native QA evidence.
 - [x] Finish the four-locale, three-family screenshot inventory: six images per
@@ -114,13 +115,14 @@ archive remains to be established by actual upload/processing validation.
   final hashes, dimensions, opaque RGB, six-slot order, and the integrated,
   portable, and macOS release-materials audits passed. See
   [material validation](aso/2026-10-07-duo/materials/integration-validation.json).
-- [ ] Finish all Asset Library placements and the live 72-image gate. The Duo
-  subset is complete: 24 pixel-identical delivered images, four groups of six,
-  exact order, no deletions or duplicate reservations; published 1.7 placements
-  are unchanged. See [Duo upload evidence](updates/assets/2026-10-07-iphone-duo/store-assets-1.8/index.json).
-  Ordinary iPhone/iPad 48-image synchronization is running separately. The uploader
-  now waits within a bounded deadline when Apple reports COMPLETE before spec
-  and dimensions converge; strict scope and approved-receipt resume remain enforced.
+- [x] Finish all Asset Library placements and the independent live 72-image gate.
+  All 72 delivered PNGs are pixel-identical to local files; 12 groups contain six
+  screenshots each in exact order. Remote metadata matches all 32 local fields.
+  Both upload receipts have zero unknown operations. Published 1.7 placements
+  are unchanged; ordinary 48-image synchronization preserves the verified Duo24.
+  See [full 72-image evidence](updates/assets/2026-10-07-iphone-duo/store-assets-1.8/full72-verification.json).
+  The uploader waits within a bounded deadline when Apple reports COMPLETE before
+  spec and dimensions converge; strict scope and reviewed-receipt resume remain enforced.
 - [x] Review the final four-language release notes and store copy; wording and
   actual rendered sample content match the shipped feature scope.
 - [ ] Create a new Distribution-signed 1.8 (13) Release archive using SDK 27.1;
@@ -140,5 +142,5 @@ archive remains to be established by actual upload/processing validation.
 - [ ] Record review submission and later public release separately.
 
 Signed archive/export/upload, final-commit CI, and review submission remain
-pending. Authorized ASC metadata and Duo placements have completed; ordinary
-iPhone/iPad placements are still syncing. Submission and public release are separate.
+pending. Authorized ASC metadata and all 72 screenshot placements are complete
+and independently verified. Submission and public release are separate.

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-07T09:04:43.501104+00:00",
+  "scope": {
+    "appId": "6785794966",
+    "version": "1.8",
+    "versionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+    "locales": [
+      "en-US",
+      "zh-Hans",
+      "ja",
+      "zh-Hant"
+    ],
+    "placementGroups": [
+      "IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE",
+      "IPAD_13_PROFILE",
+      "IPHONE_DUO_PROFILE"
+    ],
+    "screenshotsPerGroup": 6,
+    "orderedGroups": 12,
+    "totalScreenshots": 72,
+    "exactMetadataFields": 32
+  },
+  "status": "all-72-uploaded-delivery-verified-and-live-gate-passed",
+  "checks": {
+    "pngDeliveryPixelExact": 72,
+    "unknownMutations": 0,
+    "independentGetOnlyGate": "passed",
+    "versionBuildUploadAndReviewSubmission": "pending"
+  },
+  "artifacts": [
+    {
+      "file": "duo24-receipt.json",
+      "sha256": "00cdac2106e57442810c16a932d967dffb5c1636ef96a3308e41fb888280c923"
+    },
+    {
+      "file": "duo24-verify.json",
+      "sha256": "b158982b71b8b8ebdc121da6eaa7d0b6883a38b8d491fda7e3d3edeceaa20b06"
+    },
+    {
+      "file": "phone-ipad48-receipt.json",
+      "sha256": "8f948619c0909c2ab44c6ce544c461d5ce3b3e87c86cfd3581b9b442ac8483cf"
+    },
+    {
+      "file": "phone-ipad48-verification.json",
+      "sha256": "fc0772eb61f9a301f2a828a84529745905bee79fe131b9d13fadd85b74bc2332"
+    },
+    {
+      "file": "phone-ipad48-completion.json",
+      "sha256": "d36a1abd6c25ae6c3577efadb769cbf7da4858271362f732e8a30c3c248e9143"
+    },
+    {
+      "file": "full72-live-gate.log",
+      "sha256": "ac0c26c090c7c9b34484284c2c0473fae5b2acb818e39bf73c36ce2f1457047b"
+    }
+  ]
+}
