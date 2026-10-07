@@ -190,6 +190,7 @@ jobs:
             -derivedDataPath DerivedData \
             -parallel-testing-enabled NO \
             -maximum-concurrent-test-simulator-destinations 1 \
+            -collect-test-diagnostics never \
             -testLanguage en -testRegion US \
             -only-testing:HTMLMarkdownPreviewerTests
 
@@ -209,6 +210,7 @@ jobs:
             -derivedDataPath DerivedData \
             -parallel-testing-enabled NO \
             -maximum-concurrent-test-simulator-destinations 1 \
+            -collect-test-diagnostics never \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testBuiltInSamplesAndSettingsSmoke \
             -only-testing:HTMLMarkdownPreviewerUITests/SmokeUITests/testChineseMarkdownRetainsEqualLengthHeadings \
             -only-testing:HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests/testPastedHTMLSafeSearchOutlineAndResumeAfterRelaunch \

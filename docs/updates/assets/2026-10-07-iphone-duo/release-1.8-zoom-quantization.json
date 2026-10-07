@@ -1,0 +1,58 @@
+{
+  "recordedAt": "2026-10-07T09:31:23.573874+00:00",
+  "scope": "Test measurement fix; no production source changes.",
+  "baseline": {
+    "exitCode": 65,
+    "case": "HTMLAppearanceTests.testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles",
+    "nativeZoom": 3,
+    "reportedDOMScale": 3,
+    "nativeWidth": 382,
+    "cssViewportWidth": 127,
+    "incorrectDerivedScale": 3.0078740157480315,
+    "failureRecords": 2,
+    "caseFailures": 1,
+    "evidenceLines": [
+      "HTML viewport zoom-timeout-3.0: native: 3.0, bounds: (0.0, 0.0, 382.0, 644.0), DOM: Optional({\"scale\":3,\"width\":127,\"height\":215,\"innerWidth\":127,\"innerHeight\":215,\"scrollY\":1344})",
+      "/Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewerTests/HTMLAppearanceTests.swift:536: error: -[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles] : failed - Timed out waiting for optical zoom 3.0; native 3.0, DOM width scale 3.0078740157480315, reported scalar Optional(3.0)"
+    ],
+    "logSha256": "48fb0f0a4edf7bde12537725777c7fbad65c75976aff54f27cb588fac75cf5f3"
+  },
+  "correction": {
+    "measurement": "Compare visualViewport.width with WKWebView.bounds.width / requestedScale in CSS pixels.",
+    "cssPixelTolerance": 0.5,
+    "floatingPointAllowance": "One ULP",
+    "nativeScaleTolerance": 0.005,
+    "stableSamples": 2,
+    "timeoutSeconds": 10,
+    "requiresAnimationStopped": true,
+    "requiresFinitePositiveWidths": true,
+    "usesDOMScalarAsAcceptanceCriterion": false
+  },
+  "validation": {
+    "exitCode": 0,
+    "testSuite": "HTMLAppearanceTests",
+    "tests": 8,
+    "failures": 0,
+    "caseResults": [
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testOpticalZoomRestoresVisualReadingPositionOnReopen]' passed (7.390 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testOpticalZoomSurvivesHeightOnlyViewportChanges]' passed (6.260 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testOpticalZoomUsesNaturalFitForDocumentsWithoutViewport]' passed (5.351 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testReaderZoomDoesNotWeakenStrictContentSecurityPolicy]' passed (4.722 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testReadingStylePreservesAuthorCascadeAndConstructedStyleSheets]' passed (4.017 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testSafePreviewInstallsReadingStyleWithoutEnablingDocumentScripts]' passed (3.678 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testSavedZoomLoadsWithTheSameTextBaselineAndResetRestoresFreshSize]' passed (15.254 seconds).",
+      "Test Case '-[HTMLMarkdownPreviewerTests.HTMLAppearanceTests testZoomUpdatesLoadedPageWithoutReloadingOrChangingSourceStyles]' passed (7.338 seconds)."
+    ],
+    "logSha256": "f13fb72f3ccea7f2cd0e9a99a5c7f18e2da5effb9c75778a1a9d086faef02a56",
+    "resultBundle": "/tmp/html-release-1.8-zoom-rounding-fixed-20261007.xcresult",
+    "xcodeBuild": "27A9275",
+    "simulator": {
+      "name": "iPhone Duo",
+      "udid": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+      "runtime": "iOS 27.1",
+      "finalState": "Shutdown",
+      "created": false,
+      "deleted": false
+    }
+  }
+}

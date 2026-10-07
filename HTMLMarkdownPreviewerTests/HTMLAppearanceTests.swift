@@ -519,11 +519,20 @@ final class HTMLAppearanceTests: XCTestCase {
             // Check the DOM's actual visible width as well as UIKit's scale.
             let visibleWidth = viewport?.last ?? 0
             let effectiveScale = visibleWidth > 0 ? webView.bounds.width / visibleWidth : 0
+            // WebKit can round this measurement to an integer CSS pixel:
+            // 440 / 3 becomes 147, while 382 / 3 becomes 127. Compare in
+            // the measured coordinate space rather than amplifying that
+            // half-pixel quantization by converting it back to a scale.
+            let expectedWidth = Double(webView.bounds.width) / scale
+            let widthTolerance = 0.5 + max(visibleWidth.ulp, expectedWidth.ulp)
+            let viewportAgrees = visibleWidth.isFinite && visibleWidth > 0
+                && expectedWidth.isFinite && expectedWidth > 0
+                && abs(visibleWidth - expectedWidth) <= widthTolerance
             let animating: Bool
             if #available(iOS 17.4, *) { animating = webView.scrollView.isZoomAnimating }
             else { animating = webView.scrollView.isZooming }
             if !animating, abs(webView.scrollView.zoomScale - scale) < 0.005,
-               abs(effectiveScale - scale) < 0.005 {
+               viewportAgrees {
                 stableSamples += 1
                 if stableSamples >= 2 { return }
             } else {
@@ -533,7 +542,7 @@ final class HTMLAppearanceTests: XCTestCase {
                 let diagnostic = try await webView.evaluateJavaScript("JSON.stringify({visualScale:visualViewport.scale,width:visualViewport.width,height:visualViewport.height,innerWidth,innerHeight,print:matchMedia('print').matches,scrollY,top:visualViewport.pageTop})")
                 print("Native zoom timeout diagnostic: \(String(describing: diagnostic))")
                 try await recordViewport(in: webView, stage: "zoom-timeout-\(scale)")
-                XCTFail("Timed out waiting for optical zoom \(scale); native \(webView.scrollView.zoomScale), DOM width scale \(effectiveScale), reported scalar \(String(describing: viewport?.first))")
+                XCTFail("Timed out waiting for optical zoom \(scale); native \(webView.scrollView.zoomScale), DOM width \(visibleWidth), expected width \(expectedWidth), DOM width scale \(effectiveScale), reported scalar \(String(describing: viewport?.first))")
                 throw HTMLAppearanceTestError.timedOut
             }
             try await Task.sleep(for: .milliseconds(40))

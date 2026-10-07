@@ -35,9 +35,9 @@ and vertical standard bars. See [Prepare your app for iPhone Duo, 0:30–1:17](h
 The two build/test CI jobs use the official standard `xcode-27` hosted label.
 The [official image list](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md),
 checked on 2026-10-07 (image `20260928.0222.1`), lists macOS 27 and Xcode 27.1
-build `27A9269` with both SDKs 27.1. This image is a public preview; actual job
-availability/results remain unverified until CI runs. `macos-27` is not a
-documented label. The existing `macos-26` image only lists Xcode 26.x.
+build `27A9269` with both SDKs 27.1. This image is a public preview. Run `37598377482` actually used Xcode 27.1
+build `27A9269` and both SDKs 27.1; its Release build/archive job passed.
+Final automated-test status is tracked below. `macos-27` is not a documented label. The existing `macos-26` image only lists Xcode 26.x.
 [GitHub's runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 lists `xcode-27` as a standard runner, free for this public repository; no larger
 runner or new self-hosted registration is used.
@@ -57,8 +57,8 @@ export RELEASE_XCODE_BUILD=27A9275
 bash scripts/select-release-toolchain.sh
 ```
 
-The installed toolchain is Xcode 27.1 RC (27A9275). ASC acceptance of the new
-archive remains to be established by actual upload/processing validation.
+The installed toolchain is Xcode 27.1 RC (27A9275). Its new Distribution archive
+was accepted and processed as VALID build 1.8 (13); see the evidence below.
 
 ## Verified local build and repository route
 
@@ -109,6 +109,14 @@ archive remains to be established by actual upload/processing validation.
   `codex/iphone-duo-release-1.8`. PR #23 history and all verified 1.8 code are retained.
 - [ ] Verify CI on that commit with recorded Xcode/SDK versions; preserve the
   known automated rotation-geometry limitation and its native QA evidence.
+  First CI run `37598377482` passed four jobs; a single optical-zoom test failed
+  because 440pt / 3 rounds to a 147 CSS-pixel viewport. The same measurement
+  defect reproduced on Duo (382pt / 3 rounds to 127). The test now compares CSS
+  width within half a CSS pixel and retains native scale precision, animation
+  completion, and two stable samples. All eight local appearance tests passed.
+  See [before/after evidence](updates/assets/2026-10-07-iphone-duo/release-1.8-zoom-quantization.json).
+  CI now omits verbose sysdiagnose collection after failure, preserving tests,
+  xcresult and screenshots while avoiding the observed post-suite timeout.
 - [x] Finish the four-locale, three-family screenshot inventory: six images per
   family per locale, 72 total, plus 18 byte-identical English compatibility copies.
   All 12 contact sheets passed independent and root visual review. Source and
@@ -125,8 +133,16 @@ archive remains to be established by actual upload/processing validation.
   spec and dimensions converge; strict scope and reviewed-receipt resume remain enforced.
 - [x] Review the final four-language release notes and store copy; wording and
   actual rendered sample content match the shipped feature scope.
-- [ ] Create a new Distribution-signed 1.8 (13) Release archive using SDK 27.1;
-  verify bundle/version/SDK, signing, assets, privacy manifest, and source commit.
+- [x] Create and export a Distribution-signed 1.8 (13) Release archive using
+  local Xcode 27.1 RC (27A9275), SDK 27.1, from clean commit `27fe3fc`.
+  Bundle/version/SDK, signing, assets, privacy manifest, and IPA SHA passed.
+  See [Distribution evidence](updates/assets/2026-10-07-iphone-duo/release-1.8-distribution.json).
+  The first attempt failed because global manual-profile settings reached SwiftPM
+  targets; using the existing App target settings fixed archive creation.
+- [x] Upload and process build `775d76dc-bbc4-4dd4-a972-d24f17f32718` as VALID,
+  independently verify its marketing version 1.8 / build 13 / IOS / encryption
+  flag, and attach it to the exact 1.8 App Store version. Submission validation
+  reports zero blockers. See [ASC readiness](updates/assets/2026-10-07-iphone-duo/release-1.8-asc-ready.json).
 - [x] Record final optimized Release simulator smoke on the reused Duo: native
   sample import, HTML search/selected-match continuity across fold, Markdown
   rendering, JSON expansion/exact value, YAML second-document continuity, and
@@ -141,6 +157,9 @@ archive remains to be established by actual upload/processing validation.
   fields, build processing/attachment, and actual `AFTER_APPROVAL` configuration.
 - [ ] Record review submission and later public release separately.
 
-Signed archive/export/upload, final-commit CI, and review submission remain
-pending. Authorized ASC metadata and all 72 screenshot placements are complete
-and independently verified. Submission and public release are separate.
+Signed archive, export, upload, VALID processing, build attachment, metadata and
+all 72 screenshot placements are complete. The first CI run passed four jobs but
+one optical-zoom test rejected WebKit's integer CSS-width rounding; the test
+measurement is corrected and all eight local appearance tests passed. Full CI
+must pass before review submission.
+Submission and public release remain separate.
