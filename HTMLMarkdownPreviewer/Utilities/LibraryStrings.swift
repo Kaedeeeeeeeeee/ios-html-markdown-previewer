@@ -5,6 +5,8 @@ enum LibraryStrings {
         NSLocalizedString(key, tableName: "Library", bundle: .main, value: fallback, comment: "")
     }
 
+    static let selectFile = text("library.selectFile", "Select a File")
+    static let selectFileDescription = text("library.selectFileDescription", "Choose a file from your library, or open a new file to start reading.")
     static let searchPlaceholder = text("library.search", "Search files")
     static let filter = text("library.filter", "File Type")
     static let allFiles = text("library.all", "All Files")

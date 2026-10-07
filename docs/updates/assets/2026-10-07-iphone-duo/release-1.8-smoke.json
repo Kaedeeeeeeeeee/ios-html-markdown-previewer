@@ -1,0 +1,118 @@
+{
+  "createdAt": "2026-10-07T08:41:35.921674+00:00",
+  "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+  "configuration": "Release",
+  "appVersion": "1.8",
+  "buildNumber": "13",
+  "sourceBinarySHA256": "ab2c1584124aed42b7eb932c1666da0b4f6534b611bc1ad6cab1d93350a9eb33",
+  "libraryRoot": "/Users/user/Library/Developer/CoreSimulator/Devices/F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7/data/Containers/Data/Application/4B60FFC9-D5C1-4107-B1E9-6816D8202FC6/Library/Application Support/com.kaede.htmlmarkdownpreviewer/Imports",
+  "existingDocumentIds": [],
+  "buildLog": "/tmp/html-release-1.8-release-simulator-build-20261007.log",
+  "scope": "Optimized simulator build; not the distribution archive or physical-device/TestFlight validation",
+  "status": "passed_with_documented_scope",
+  "installedBinarySHA256": "ab2c1584124aed42b7eb932c1666da0b4f6534b611bc1ad6cab1d93350a9eb33",
+  "finishedAt": "2026-10-07T08:53:31.866010+00:00",
+  "cases": [
+    {
+      "case": "HTML native sample import and rendering",
+      "result": "PASS"
+    },
+    {
+      "case": "HTML query Saturday and active second result persist Closed/Open/Closed/Open; second orange result fully visible",
+      "result": "PASS"
+    },
+    {
+      "case": "PDF export displays native share sheet, PDF Document 38 KB; dismissed without external share",
+      "result": "PASS"
+    },
+    {
+      "case": "Markdown rich renderer displays heading/list/table with reader controls",
+      "result": "PASS"
+    },
+    {
+      "case": "JSON exact integer in AX and native languages expansion survives Open to Closed",
+      "result": "PASS"
+    },
+    {
+      "case": "YAML second document selection survives Closed to Open; development/tags values and side-by-side library rendered",
+      "result": "PASS"
+    }
+  ],
+  "limitations": [
+    "Optimized Release simulator binary, not the distribution archive or a physical/TestFlight installation.",
+    "Release-specific keyboard typing across fold, real Files-provider batch import, and production review-prompt presentation not repeated; earlier Debug/native and unit evidence remain separate.",
+    "simctl bootstatus reported Data Migration Failed; subsequent installation, launch, rendered UI, native interaction and export succeeded.",
+    "One CUA ScreenCaptureKit error occurred after JSON actions; fresh AX and native simctl screenshot verified actions completed."
+  ],
+  "normalLibraryRestoredEmpty": true,
+  "taskSampleRecovery": [
+    {
+      "id": "12537A20-20CF-4200-A53F-5B66294750C4",
+      "filename": "api-response.json",
+      "backup": "/tmp/html-release-1.8-release-smoke-library-20261007/12537A20-20CF-4200-A53F-5B66294750C4",
+      "hashes": {
+        "metadata.json": "6f7ffb402dc1921b15bd60d8e3185c31f51b4612eb79bc503d807bf3d6b6208a",
+        "original/api-response.json": "049d66959f6527242cd37d341d5cf484fae2273faa35ac4fa9622627d16d0567"
+      }
+    },
+    {
+      "id": "0D2F2B5C-4332-445A-92D6-B1C062F63AD4",
+      "filename": "app-config.yaml",
+      "backup": "/tmp/html-release-1.8-release-smoke-library-20261007/0D2F2B5C-4332-445A-92D6-B1C062F63AD4",
+      "hashes": {
+        "metadata.json": "4558df58cb1b29e6d6d1e93eeaceffc73c9edcc548b8f15c1d682715fa529c4e",
+        "original/app-config.yaml": "74aaf827d59697610461ca45191afd94933bcced7c91c8c8bd0d64b478fa7152"
+      }
+    },
+    {
+      "id": "B2FBC3BB-F6E7-443B-AE8E-94F3E090E184",
+      "filename": "reading-notes.md",
+      "backup": "/tmp/html-release-1.8-release-smoke-library-20261007/B2FBC3BB-F6E7-443B-AE8E-94F3E090E184",
+      "hashes": {
+        "metadata.json": "7024d21bf96b328dd3ef20d66b75eeb34a73bac2d0291f77ac2cb4b8d26fce88",
+        "original/reading-notes.md": "476efdf5e643d156c99062dd58ed762dfdaedc4e8de66e763be4e37d1ef34c39"
+      }
+    },
+    {
+      "id": "1090F017-DF9E-4F12-8924-C253A01C4DD4",
+      "filename": "weekend-plan.html",
+      "backup": "/tmp/html-release-1.8-release-smoke-library-20261007/1090F017-DF9E-4F12-8924-C253A01C4DD4",
+      "hashes": {
+        "metadata.json": "620ee68f3ef34a05b033cd0a16e65da4594e789253aacb7deacf151471afff04",
+        "original/weekend-plan.html": "b46242ecd5ef647b7cd980bbe004067d47789146217d7cc76e0e8e93522d7d32"
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "release-smoke-html-second-result-closed.png",
+      "sha256": "49630be17d7e9f5bc965622934e548d4311a403a28a996a947c5d7efe8021ead",
+      "rootVisualReview": "PASS"
+    },
+    {
+      "path": "release-smoke-html-second-result-open.png",
+      "sha256": "2eb08772e0fab1e7027dab4fae177a1405785c8f69088986a122dcd8c8234501",
+      "rootVisualReview": "PASS"
+    },
+    {
+      "path": "release-smoke-pdf-share.png",
+      "sha256": "09ee629fab77edef93647ddfe5cd682133daa99c9ab9612240834991554bb303",
+      "rootVisualReview": "PASS"
+    },
+    {
+      "path": "release-smoke-markdown-open.png",
+      "sha256": "76263aa5a676fddaf73426ae0c13e742911cbd7c3d73db1a6492cf13ee37331e",
+      "rootVisualReview": "PASS"
+    },
+    {
+      "path": "release-smoke-json-closed.png",
+      "sha256": "02d0445c10930cfaa5ec0397c7b59e038983057e9be65b198e6307169c41ba07",
+      "rootVisualReview": "PASS"
+    },
+    {
+      "path": "release-smoke-yaml-second-open.png",
+      "sha256": "b930e33def5078904917a440c90aec8b2f21135cdf5e66acfcae74af1d7b9fdd",
+      "rootVisualReview": "PASS"
+    }
+  ]
+}

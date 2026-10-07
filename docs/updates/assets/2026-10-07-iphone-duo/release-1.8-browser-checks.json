@@ -1,0 +1,57 @@
+{
+  "gallery": {
+    "version": "1.8",
+    "locale": "en-US",
+    "checkedAt": "2026-10-07T09:08:35.312Z",
+    "observations": {
+      "iphone": [
+        "iphone-01-html-report.png",
+        "iphone-02-markdown-preview.png",
+        "iphone-03-json-preview.png",
+        "iphone-04-yaml-preview.png",
+        "iphone-05-batch-import.png",
+        "iphone-06-library.png"
+      ],
+      "ipad": [
+        "ipad-01-html-report.png",
+        "ipad-02-markdown-preview.png",
+        "ipad-03-json-preview.png",
+        "ipad-04-yaml-preview.png",
+        "ipad-05-batch-import.png",
+        "ipad-06-library.png"
+      ],
+      "duoSnapshot": [
+        "button \"Screenshot duo-01-html-report.png\"",
+        "button \"Screenshot duo-02-markdown-preview.png\"",
+        "button \"Screenshot duo-03-json-preview.png\"",
+        "button \"Screenshot duo-04-yaml-preview.png\"",
+        "button \"Screenshot duo-05-batch-import.png\"",
+        "button \"Screenshot duo-06-library.png\"",
+        "text \"6 of 10 App Screenshots\""
+      ]
+    },
+    "boundary": "Browser semantic gallery verification; independent API gate verifies all four locales and 72 images."
+  },
+  "privacy": {
+    "appId": "6785794966",
+    "checkedAt": "2026-10-07T09:13:18.744Z",
+    "url": "https://appstoreconnect.apple.com/apps/6785794966/distribution/privacy",
+    "snapshot": [
+      "anchor [ref=323, loc=href:/apps/6785794966/distribution/privacy, url=https://appstoreconnect.apple.com/apps/6785794966/distribution/privacy]",
+      "text \"App Privacy\"",
+      "text \"App Privacy\"",
+      "text \"Published 3 months ago by shifeng zhang\"",
+      "text \"Privacy Policy\"",
+      "text \"Privacy Policy URL\"",
+      "text \"User Privacy Choices URL\"",
+      "text \"Data Not Collected\"",
+      "text \"The developer does not collect any data from this app.\"",
+      "text \"Data Types\"",
+      "text \"Data is not collected from this app.\"",
+      "anchor [ref=338, loc=href:https://www.apple.com/legal/privacy, url=https://www.apple.com/legal/privacy]",
+      "text \"Privacy Policy\""
+    ],
+    "verifiedPublished": true,
+    "disclosure": "Data Not Collected"
+  }
+}

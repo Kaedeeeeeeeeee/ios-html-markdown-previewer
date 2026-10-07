@@ -25,3 +25,6 @@
 "library.duplicate.update" = "更新已有文件";
 "library.duplicate.keepBoth" = "保留两份";
 "library.duplicate.hint" = "更新会替换已保存的内容，并保留显示名称、置顶状态和预览模式。内容改变时，阅读位置会重置。";
+
+"library.selectFile" = "选择文件";
+"library.selectFileDescription" = "从资料库中选择文件，或打开新文件开始阅读。";

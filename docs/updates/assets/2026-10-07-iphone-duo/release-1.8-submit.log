@@ -1,0 +1,60 @@
+Previous version 1.7 is READY_FOR_SALE; next-release preparation gate passed.
+Using configured App Store version e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5.
+Store metadata verified: 4 locales, 32 fields exact; draft AppInfo=5671d2ce-b5b9-4011-8752-ea88106cf760.
+Asset Library inventory verified: locale=en-US group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=en-US group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=en-US group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPHONE_DUO_PROFILE count=6.
+Store assets verified: four locales and 72 ordered screenshots; no remote writes.
+Found build 13: id=775d76dc-bbc4-4dd4-a972-d24f17f32718 processingState=VALID
+Warning: could not update build encryption flag: App Store Connect API returned 409: {
+  "errors": [
+    {
+      "id": "09a84778-48b7-4dfd-ae90-00556ea83f77",
+      "status": "409",
+      "code": "ENTITY_ERROR.ATTRIBUTE.INVALID",
+      "title": "The provided entity includes an attribute with an invalid value",
+      "detail": "You cannot update when the value is already set.",
+      "source": {
+        "pointer": "/data/attributes/usesNonExemptEncryption"
+      }
+    }
+  ]
+}
+Attached build 775d76dc-bbc4-4dd4-a972-d24f17f32718 to App Store version e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5.
+Verified App Store version 1.8 releaseType=AFTER_APPROVAL.
+Before submission: App Store version 1.8 app=6785794966 platform=IOS appStoreState=PREPARE_FOR_SUBMISSION build=775d76dc-bbc4-4dd4-a972-d24f17f32718.
+Store metadata verified: 4 locales, 32 fields exact; draft AppInfo=5671d2ce-b5b9-4011-8752-ea88106cf760.
+Asset Library inventory verified: locale=en-US group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=en-US group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=en-US group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPHONE_DUO_PROFILE count=6.
+Store assets verified: four locales and 72 ordered screenshots; no remote writes.
+Readiness: state=PREPARE_FOR_SUBMISSION editable=true.
+Readiness: build linked id=775d76dc-bbc4-4dd4-a972-d24f17f32718 version=13 processingState=VALID expired=false usesNonExemptEncryption=false.
+Readiness: app price schedule exists.
+Readiness: app primaryLocale=en-US.
+Readiness: localization zh-Hant primary=false description=true keywords=true supportUrl=true whatsNew=true screenshotInventory=IPHONE_DUO_PROFILE=6,IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE=6,IPAD_13_PROFILE=6.
+Readiness: localization en-US primary=true description=true keywords=true supportUrl=true whatsNew=true screenshotInventory=IPHONE_DUO_PROFILE=6,IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE=6,IPAD_13_PROFILE=6.
+Readiness: localization ja primary=false description=true keywords=true supportUrl=true whatsNew=true screenshotInventory=IPHONE_DUO_PROFILE=6,IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE=6,IPAD_13_PROFILE=6.
+Readiness: localization zh-Hans primary=false description=true keywords=true supportUrl=true whatsNew=true screenshotInventory=IPHONE_DUO_PROFILE=6,IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE=6,IPAD_13_PROFILE=6.
+Review submission candidate 084c680e-e6d1-4ba9-852c-69b1165fc55f: platform=IOS state=READY_FOR_REVIEW.
+Added App Store version e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5 to review submission 084c680e-e6d1-4ba9-852c-69b1165fc55f.
+Submitted review submission 084c680e-e6d1-4ba9-852c-69b1165fc55f: state=WAITING_FOR_REVIEW submittedDate=2026-10-07T10:02:48.601Z.
+After submission: App Store version 1.8 app=6785794966 platform=IOS appStoreState=WAITING_FOR_REVIEW build=775d76dc-bbc4-4dd4-a972-d24f17f32718.

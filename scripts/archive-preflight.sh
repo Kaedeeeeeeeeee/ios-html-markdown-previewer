@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/select-release-toolchain.sh"
 ARCHIVE_PATH="$ROOT_DIR/DerivedData/ArchivePreflight/HTMLPreviewer.xcarchive"
 APP_PATH="$ARCHIVE_PATH/Products/Applications/HTMLMarkdownPreviewer.app"
 
@@ -20,6 +21,7 @@ xcodebuild -quiet archive \
 python3 - "$ARCHIVE_PATH" "$APP_PATH" <<'PY'
 import os
 import plistlib
+import re
 import sys
 
 archive_path = sys.argv[1]
@@ -48,12 +50,15 @@ if not errors:
     with open(app_info_path, "rb") as handle:
         app_info = plistlib.load(handle)
 
+    if not re.fullmatch(r"iphoneos27\.1(?:\.\d+)?", app_info.get("DTSDKName", "")):
+        errors.append("release archive must use iPhoneOS SDK 27.1")
+
     properties = archive_info.get("ApplicationProperties", {})
     expected_archive = {
         "ApplicationPath": "Applications/HTMLMarkdownPreviewer.app",
         "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
-        "CFBundleShortVersionString": "1.7",
-        "CFBundleVersion": "12",
+        "CFBundleShortVersionString": "1.8",
+        "CFBundleVersion": "13",
     }
     for key, expected in expected_archive.items():
         if properties.get(key) != expected:
@@ -66,8 +71,8 @@ if not errors:
     expected_app = {
         "CFBundleDisplayName": "HTML Previewer",
         "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
-        "CFBundleShortVersionString": "1.7",
-        "CFBundleVersion": "12",
+        "CFBundleShortVersionString": "1.8",
+        "CFBundleVersion": "13",
         "CFBundleSupportedPlatforms": ["iPhoneOS"],
         "MinimumOSVersion": "17.0",
         "ITSAppUsesNonExemptEncryption": False,

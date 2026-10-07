@@ -1,0 +1,62 @@
+[
+  {
+    "configurationName": "Test Scheme Action",
+    "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+    "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+    "exportedFileName": "BE7A39EC-8396-463D-86DB-2BFEAF5393A6.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "Selected document reopened after Back_0_007A7253-C959-48CE-AC55-04A01546DBCE.png",
+    "timestamp": 1791307906.93,
+    "file": "iphone-reopened.png",
+    "test": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+    "xcresult": "/tmp/html-reader-late-resize-final-regression-20261007.xcresult"
+  },
+  {
+    "configurationName": "Test Scheme Action",
+    "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+    "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+    "exportedFileName": "8013F830-EE39-4E78-9FA9-A5209381378E.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "Selected HTML search after portrait rotation_0_AE80B27B-A203-49B5-B777-705054C9492C.png",
+    "timestamp": 1791307895.455,
+    "file": "iphone-search-after-rotation.png",
+    "test": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+    "xcresult": "/tmp/html-reader-late-resize-final-regression-20261007.xcresult"
+  },
+  {
+    "configurationName": "Test Scheme Action",
+    "deviceId": "D17454A3-3351-48DD-A61F-395E5E7EE3FF",
+    "deviceName": "HTML Previewer 1.6 Geometry iOS18.5",
+    "exportedFileName": "96549108-6D9C-4C84-A713-2438785C250F.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "Selected HTML search after landscape rotation_0_627E73EC-6123-4F82-A4BC-6652154A8203.png",
+    "timestamp": 1791307889.628,
+    "file": "iphone-search-landscape.png",
+    "test": "ReadingLibraryUITests/testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument()",
+    "xcresult": "/tmp/html-reader-late-resize-final-regression-20261007.xcresult"
+  },
+  {
+    "configurationName": "Test Scheme Action",
+    "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+    "deviceName": "Passnote ASO iPad Pro 12.9",
+    "exportedFileName": "38D20177-3A14-4CC6-8696-3F4BC69497F6.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "iPad wide Markdown search retained after portrait and landscape rotation_0_9065F815-07EF-4B90-8884-8F1E17B1E8B9.png",
+    "timestamp": 1791308099.975,
+    "file": "ipad-search-after-rotation.png",
+    "test": "ReadingLibraryUITests/testIPadWideLibrarySelectionAndReaderSearchSurviveRotation()",
+    "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-33-56-742Z_pid26205_097f5864.xcresult"
+  },
+  {
+    "configurationName": "Test Scheme Action",
+    "deviceId": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE",
+    "deviceName": "Passnote ASO iPad Pro 12.9",
+    "exportedFileName": "5E3A984B-8B58-4EE8-91B5-5A8058101473.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "iPad wide library and selected HTML reader_0_0177D9F2-63C1-4447-BCF5-66DDFC05DE3E.png",
+    "timestamp": 1791308082.037,
+    "file": "ipad-library-reader.png",
+    "test": "ReadingLibraryUITests/testIPadWideLibrarySelectionAndReaderSearchSurviveRotation()",
+    "xcresult": "/Users/user/Library/Developer/XcodeBuildMCP/workspaces/html_preview-2ffd1e11db01/result-bundles/test_sim_2026-10-06T17-33-56-742Z_pid26205_097f5864.xcresult"
+  }
+]

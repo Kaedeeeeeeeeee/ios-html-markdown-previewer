@@ -5,6 +5,134 @@ import XCTest
 /// Every test owns a UUID-scoped fixture and cleans up only that exact scope.
 @MainActor
 final class ReadingLibraryUITests: XCTestCase {
+    func testSelectedHTMLSearchSurvivesRotationAndBackReopensDocument() throws {
+        let previousOrientation = XCUIDevice.shared.orientation
+        XCUIDevice.shared.orientation = .portrait
+        defer {
+            XCUIDevice.shared.orientation = previousOrientation.isValidInterfaceOrientation ? previousOrientation : .portrait
+        }
+
+        try withFixture { app, fixture in
+            // A Duo launch can restore the interface orientation from its
+            // current pose after XCTest set the device orientation beforehand.
+            XCUIDevice.shared.orientation = .portrait
+            try waitForStableOrientation(.portrait, app: app)
+            try openDocument(fixture.htmlFilename, app: app)
+            let marker = app.staticTexts["HTML layout marker"]
+            try require(marker.waitForExistence(timeout: 30), "The selected HTML document should render")
+            try tap("reading-tools-menu", app: app)
+            try tap("reading-find-button", app: app)
+            let search = app.textFields["reading-search-field"]
+            try require(search.waitForExistence(timeout: 5), "Reader search should open")
+            search.typeText("report\n")
+            let count = app.staticTexts["reading-match-count"]
+            try require(wait { count.label == "1 of 2" }, "Both report matches should be found")
+            try tap("reading-next-match", app: app)
+            try require(wait { count.label == "2 of 2" }, "The second match should be selected")
+            // The fixture's unique fragment link gives the exact second match
+            // its own AX frame, independent of the following paragraph text.
+            let secondMatch = app.webViews.links["report"]
+            let secondMatchIsVisible = {
+                let viewport = app.webViews.firstMatch.frame.intersection(app.frame)
+                return secondMatch.exists && secondMatch.isHittable && viewport.contains(secondMatch.frame)
+                    && !app.buttons["document-title-button"].frame.intersects(secondMatch.frame)
+                    && !search.frame.intersects(secondMatch.frame) && !count.frame.intersects(secondMatch.frame)
+            }
+            try require(wait { secondMatchIsVisible() }, "The current second report match must be fully visible in the reader")
+            try waitForStableOrientation(.portrait, app: app)
+            screenScreenshot("Selected HTML search before rotation")
+
+            for orientation in [UIDeviceOrientation.landscapeLeft, .portrait] {
+                XCUIDevice.shared.orientation = orientation
+                try waitForStableOrientation(orientation, app: app)
+                try require(wait {
+                    search.exists && search.value as? String == "report" && count.label == "2 of 2"
+                }, "Rotation must preserve the selected document, search query and current match")
+                let title = app.buttons["document-title-button"]
+                XCTAssertTrue(title.label.contains(fixture.prefix), "Rotation must retain the selected fixture")
+                try require(wait { secondMatchIsVisible() }, "After rotation the current second report match must remain fully visible in the reader")
+                screenScreenshot("Selected HTML search after \(orientation == .portrait ? "portrait" : "landscape") rotation")
+            }
+
+            try tap("reading-search-close", app: app)
+            try navigateHome(app)
+            try openDocument(fixture.htmlFilename, app: app)
+            try require(marker.waitForExistence(timeout: 30), "Back and reselect should reopen the same document")
+            XCTAssertFalse(search.exists, "A completed visit should start with the normal reading controls")
+            screenshot("Selected document reopened after Back", app: app)
+        }
+    }
+
+    func testIPadWideLibrarySelectionAndReaderSearchSurviveRotation() throws {
+        try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .pad, "This regression requires an iPad with a regular-width landscape window")
+        let previousOrientation = XCUIDevice.shared.orientation
+        XCUIDevice.shared.orientation = .landscapeLeft
+        defer {
+            XCUIDevice.shared.orientation = previousOrientation.isValidInterfaceOrientation ? previousOrientation : .portrait
+        }
+
+        try withFixture { app, fixture in
+            try waitForStableOrientation(.landscapeLeft, app: app)
+            // Keep both fixtures in the persistent sidebar. openDocument filters
+            // to one filename, and navigateHome assumes a compact Back button.
+            try searchLibrary(fixture.token, app: app)
+            let librarySearch = app.searchFields.firstMatch
+            let htmlRow = row(fixture.htmlFilename, app: app)
+            let markdownRow = row(fixture.markdownFilename, app: app)
+            try require(wait { htmlRow.isHittable && markdownRow.isHittable }, "Both fixtures should be selectable in the wide library sidebar")
+            let title = app.buttons["document-title-button"]
+            let htmlTitle = (fixture.htmlFilename as NSString).deletingPathExtension
+            let markdownTitle = (fixture.markdownFilename as NSString).deletingPathExtension
+            let htmlMarker = app.staticTexts["HTML layout marker"]
+
+            htmlRow.tap()
+            try require(wait {
+                title.label == htmlTitle && title.isHittable && htmlMarker.isHittable
+                    && app.buttons["open-file-button"].isHittable && htmlRow.isHittable && markdownRow.isHittable
+            }, "Wide landscape must show the library and selected HTML reader together")
+            XCTAssertLessThanOrEqual(htmlRow.frame.maxX, htmlMarker.frame.minX, "Library and reader must occupy distinct side-by-side columns")
+            XCTAssertEqual(librarySearch.value as? String, fixture.token, "Selecting HTML should preserve the library search")
+            try waitForStableOrientation(.landscapeLeft, app: app)
+            screenScreenshot("iPad wide library and selected HTML reader")
+
+            markdownRow.tap()
+            let markdownMarker = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Markdown layout marker.")).firstMatch
+            try require(wait {
+                title.label == markdownTitle && markdownMarker.isHittable && htmlRow.isHittable && markdownRow.isHittable
+            }, "Selecting Markdown in the persistent sidebar must update the reader and title")
+            XCTAssertFalse(htmlMarker.exists, "The HTML payload must be replaced by the selected Markdown content")
+            XCTAssertEqual(librarySearch.value as? String, fixture.token, "Switching documents should preserve the library search")
+            try tap("reading-tools-menu", app: app)
+            try tap("reading-find-button", app: app)
+            let readerSearch = app.textFields["reading-search-field"]
+            try require(readerSearch.waitForExistence(timeout: 5), "The selected Markdown reader should expose its search")
+            readerSearch.typeText("breathing\n")
+            let count = app.staticTexts["reading-match-count"]
+            try require(wait { count.label == "1 of 1" }, "The selected Markdown fixture should have one breathing match")
+
+            for orientation in [UIDeviceOrientation.portrait, .landscapeLeft] {
+                XCUIDevice.shared.orientation = orientation
+                try waitForStableOrientation(orientation, app: app)
+                try require(wait {
+                    title.label == markdownTitle && readerSearch.isHittable
+                        && readerSearch.value as? String == "breathing" && count.label == "1 of 1"
+                }, "Rotation must preserve the selected Markdown document and its active reader search")
+            }
+            try require(wait {
+                htmlRow.isHittable && markdownRow.isHittable && app.buttons["open-file-button"].isHittable && readerSearch.isHittable
+            }, "Returning to wide landscape must restore the library alongside the existing reader")
+            XCTAssertLessThanOrEqual(markdownRow.frame.maxX, readerSearch.frame.minX, "The persistent library and reader search must occupy separate columns")
+            XCTAssertEqual(librarySearch.value as? String, fixture.token, "Rotation should preserve the library search as well")
+            screenScreenshot("iPad wide Markdown search retained after portrait and landscape rotation")
+
+            htmlRow.tap()
+            try require(wait { title.label == htmlTitle && htmlMarker.isHittable }, "The persistent sidebar must still switch back to HTML after rotation")
+            XCTAssertFalse(readerSearch.exists, "Switching to a different document must replace the outgoing Markdown search session")
+            try waitForStableOrientation(.landscapeLeft, app: app)
+            screenScreenshot("iPad wide library switches back to HTML after rotation")
+        }
+    }
+
     func testHTMLPageZoomPersistsAndFullScreenCanRestore() throws {
         try withFixture { app, fixture in
             try openDocument(fixture.htmlFilename, app: app)
@@ -83,23 +211,96 @@ final class ReadingLibraryUITests: XCTestCase {
 
             let imageButton = app.buttons["markdown-image-open-qa-landscape.png"]
             try scrollTo(imageButton, app: app)
-            // A partially visible image can be hittable while its center sits
-            // under the floating action dock. Move that center into clear content.
-            let navigationBottom = app.navigationBars.firstMatch.frame.maxY
-            let dock = element("preview-actions", app: app)
-            try require(dock.waitForExistence(timeout: 5), "Reading action dock should be visible before opening the image")
-            let clearTop = max(navigationBottom + 24, app.frame.minY + app.frame.height * 0.2)
-            let clearBottom = min(dock.frame.minY - 24, app.frame.minY + app.frame.height * 0.7)
-            for _ in 0..<8 {
-                let centerY = imageButton.frame.midY
-                if imageButton.isHittable && centerY >= clearTop && centerY <= clearBottom { break }
-                let startY: CGFloat = centerY > clearBottom ? 0.65 : 0.4
-                let endY: CGFloat = centerY > clearBottom ? 0.4 : 0.65
-                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: startY))
-                    .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: endY)))
+            // A partially visible image can be hittable while its center is
+            // covered by controls. Require the actual tap point to be clear.
+            if #available(iOS 27.1, *) {
+                let navigation = app.navigationBars.containing(.button, identifier: "document-title-button").firstMatch
+                let toolbar = app.toolbars.containing(.button, identifier: "reading-tools-menu").firstMatch
+                try require(navigation.waitForExistence(timeout: 5), "The selected document should retain its navigation bar")
+                try require(toolbar.waitForExistence(timeout: 5), "The system reading toolbar should be visible before opening the image")
+                try require(app.buttons["reading-tools-menu"].isHittable && app.buttons["share-file-button"].isHittable,
+                            "Reading and sharing must remain directly reachable in the system toolbar")
+                let titleX = app.buttons["document-title-button"].frame.midX
+                let readerCandidates = app.scrollViews.allElementsBoundByIndex.filter {
+                    $0.frame.minX <= titleX && $0.frame.maxX >= titleX
+                }
+                let reader = try XCTUnwrap(readerCandidates.max(by: { $0.frame.height < $1.frame.height }),
+                                          "The selected document should have its own reader viewport")
+                let visibleToolbarButtons = {
+                    toolbar.buttons.allElementsBoundByIndex.filter { $0.isHittable && !$0.frame.isEmpty }
+                }
+                let toolbarButtons = visibleToolbarButtons()
+                try require(toolbarButtons.count >= 2, "The system toolbar must retain visible reading controls")
+                for (index, first) in toolbarButtons.enumerated() {
+                    try require(app.frame.contains(first.frame), "Visible toolbar buttons must fit within the window")
+                    for second in toolbarButtons.dropFirst(index + 1) {
+                        let overlap = first.frame.intersection(second.frame)
+                        try require(overlap.isNull || overlap.width <= 1 || overlap.height <= 1,
+                                    "Visible toolbar buttons must not overlap")
+                    }
+                }
+                let imageCenterIsClear = {
+                    let center = CGPoint(x: imageButton.frame.midX, y: imageButton.frame.midY)
+                    let tapArea = CGRect(x: center.x - 1, y: center.y - 1, width: 2, height: 2)
+                    let buttons = visibleToolbarButtons()
+                    // Duo's Toolbar AX container can span the reader. Its
+                    // visible controls locate the actual bar, including gaps
+                    // and a conservative margin for the glass background.
+                    let toolbarBackground = buttons.reduce(CGRect.null) { $0.union($1.frame) }
+                        .insetBy(dx: -8, dy: -8)
+                    let navigationButtons = navigation.buttons.allElementsBoundByIndex.filter {
+                        $0.isHittable && !$0.frame.isEmpty
+                    }
+                    return imageButton.isHittable
+                        && reader.frame.intersection(app.frame).insetBy(dx: 8, dy: 8).contains(center)
+                        && !buttons.isEmpty && !toolbarBackground.intersects(tapArea)
+                        && navigationButtons.allSatisfy { !$0.frame.intersects(tapArea) }
+                }
+                for _ in 0..<8 {
+                    if imageCenterIsClear() { break }
+                    let shouldMoveUp = imageButton.frame.midY > reader.frame.midY
+                    reader.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: shouldMoveUp ? 0.65 : 0.35))
+                        .press(forDuration: 0.05, thenDragTo: reader.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: shouldMoveUp ? 0.35 : 0.65)))
+                }
+                let centerIsClear = imageCenterIsClear()
+                if !centerIsClear {
+                    let buttons = visibleToolbarButtons()
+                    let toolbarGeometry = buttons.map { "\($0.identifier): \($0.frame)" }
+                    let navigationGeometry = navigation.buttons.allElementsBoundByIndex.map {
+                        "\($0.identifier): \($0.frame)"
+                    }
+                    let geometry = """
+                    Image: \(imageButton.frame)
+                    Reader: \(reader.frame)
+                    App: \(app.frame)
+                    Toolbar container: \(toolbar.frame)
+                    Visible toolbar buttons: \(toolbarGeometry)
+                    Navigation container: \(navigation.frame)
+                    Navigation buttons: \(navigationGeometry)
+                    """
+                    let attachment = XCTAttachment(string: geometry)
+                    attachment.name = "Image tap geometry and visible controls"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+                try require(centerIsClear, "The image center must lie in the reader viewport without visible toolbar or navigation overlap")
+            } else {
+                let navigationBottom = app.navigationBars.firstMatch.frame.maxY
+                let dock = element("preview-actions", app: app)
+                try require(dock.waitForExistence(timeout: 5), "Reading action dock should be visible before opening the image")
+                let clearTop = max(navigationBottom + 24, app.frame.minY + app.frame.height * 0.2)
+                let clearBottom = min(dock.frame.minY - 24, app.frame.minY + app.frame.height * 0.7)
+                for _ in 0..<8 {
+                    let centerY = imageButton.frame.midY
+                    if imageButton.isHittable && centerY >= clearTop && centerY <= clearBottom { break }
+                    let startY: CGFloat = centerY > clearBottom ? 0.65 : 0.4
+                    let endY: CGFloat = centerY > clearBottom ? 0.4 : 0.65
+                    app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: startY))
+                        .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: endY)))
+                }
+                try require(imageButton.isHittable && imageButton.frame.midY >= clearTop && imageButton.frame.midY <= clearBottom,
+                            "The image center should be visible between navigation and the floating action dock")
             }
-            try require(imageButton.isHittable && imageButton.frame.midY >= clearTop && imageButton.frame.midY <= clearBottom,
-                        "The image center should be visible between navigation and the floating action dock")
             imageButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
             try require(element("markdown-image-viewer", app: app).waitForExistence(timeout: 10), "Local image should open in its viewer")
             let originalImageZoom = try displayedValue("markdown-image-zoom-reset", app: app)
@@ -133,7 +334,7 @@ final class ReadingLibraryUITests: XCTestCase {
             try require(wait { htmlRow.exists && markdownRow.exists && htmlRow.frame.minY < markdownRow.frame.minY }, "Pinned document should sort above the unpinned fixture")
             screenshot("Pinned QA report in the filtered document library", app: app)
 
-            try contextAction("library-rename-button", on: htmlRow, app: app)
+            try contextAction("library-rename-button", on: row(fixture.htmlFilename, app: app), app: app)
             let renamedTitle = "QA renamed \(fixture.token)"
             let nameField = app.textFields["library-rename-field"]
             try require(nameField.waitForExistence(timeout: 5), "Rename should present a name field")
@@ -277,9 +478,14 @@ final class ReadingLibraryUITests: XCTestCase {
     }
 
     private func navigateHome(_ app: XCUIApplication) throws {
-        let back = app.navigationBars.buttons["HTML Previewer"]
-        try require(back.waitForExistence(timeout: 5), "Document should have a library back button")
-        back.tap()
+        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
+        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
+            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        )).firstMatch
+        try require(wait {
+            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
+        }, "Document should expose a native library back button")
+        (systemBack.exists && systemBack.isHittable ? systemBack : legacyBack).tap()
         try require(app.buttons["paste-preview-button"].waitForExistence(timeout: 5), "Back should return to the library")
     }
 
@@ -353,7 +559,8 @@ final class ReadingLibraryUITests: XCTestCase {
 
     private func contextAction(_ identifier: String, on documentRow: XCUIElement, app: XCUIApplication) throws {
         try require(documentRow.exists && documentRow.isHittable, "QA row should be available for its context action")
-        documentRow.press(forDuration: 1)
+        // Leave enough hold time for the context recognizer on a busy CI simulator.
+        documentRow.press(forDuration: 2)
         try tap(identifier, app: app)
     }
 
@@ -439,10 +646,81 @@ final class ReadingLibraryUITests: XCTestCase {
         guard condition else { throw TestFailure.requirement(message) }
     }
 
+    private func waitForStableOrientation(_ orientation: UIDeviceOrientation, app: XCUIApplication) throws {
+        var lastAppFrame: CGRect?
+        var lastWindowFrame: CGRect?
+        var lastScreenSize: CGSize?
+        var stableSince: TimeInterval?
+        let isLandscape = orientation.isLandscape
+        let isStable = wait {
+            let appFrame = app.frame
+            let windowFrame = app.windows.firstMatch.frame
+            let screenSize = XCUIScreen.main.screenshot().image.size
+            let hasExpectedAppOrientation = isLandscape ? appFrame.width > appFrame.height : appFrame.height > appFrame.width
+            let hasExpectedWindowOrientation = isLandscape ? windowFrame.width > windowFrame.height : windowFrame.height > windowFrame.width
+            let hasExpectedScreenOrientation = isLandscape ? screenSize.width > screenSize.height : screenSize.height > screenSize.width
+            guard hasExpectedAppOrientation && hasExpectedWindowOrientation && hasExpectedScreenOrientation else {
+                lastAppFrame = nil
+                lastWindowFrame = nil
+                lastScreenSize = nil
+                stableSince = nil
+                return false
+            }
+            let now = ProcessInfo.processInfo.systemUptime
+            if appFrame != lastAppFrame || windowFrame != lastWindowFrame || screenSize != lastScreenSize {
+                lastAppFrame = appFrame
+                lastWindowFrame = windowFrame
+                lastScreenSize = screenSize
+                stableSince = now
+                return false
+            }
+            return stableSince.map { now - $0 >= 1 } ?? false
+        }
+        if !isStable {
+            attachOrientationGeometry(requested: orientation, app: app)
+        }
+        try require(isStable, "Window and screen geometry must match the requested orientation and remain stable before capturing evidence")
+    }
+
+    private func screenScreenshot(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     private func screenshot(_ name: String, app: XCUIApplication) {
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+}
+
+@MainActor
+extension XCTestCase {
+    func attachOrientationGeometry(requested: UIDeviceOrientation, app: XCUIApplication) {
+        var geometry = "Requested orientation: \(requested.rawValue)\nReported device orientation: \(XCUIDevice.shared.orientation.rawValue)\nApp frame: \(app.frame)"
+        for (index, window) in app.windows.allElementsBoundByIndex.enumerated() {
+            geometry += "\nWindow \(index) [\(window.identifier)]: \(window.frame)"
+        }
+        let appImage = app.screenshot()
+        geometry += "\nApp screenshot size: \(appImage.image.size)"
+        let appAttachment = XCTAttachment(screenshot: appImage)
+        appAttachment.name = "App window at orientation geometry failure"
+        appAttachment.lifetime = .keepAlways
+        add(appAttachment)
+        for (index, screen) in XCUIScreen.screens.enumerated() {
+            let capture = screen.screenshot()
+            geometry += "\nActive screen \(index) screenshot size: \(capture.image.size)"
+            let attachment = XCTAttachment(screenshot: capture)
+            attachment.name = "Active screen \(index) at orientation geometry failure"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        let diagnostic = XCTAttachment(string: geometry)
+        diagnostic.name = "Orientation geometry and active screens"
+        diagnostic.lifetime = .keepAlways
+        add(diagnostic)
     }
 }

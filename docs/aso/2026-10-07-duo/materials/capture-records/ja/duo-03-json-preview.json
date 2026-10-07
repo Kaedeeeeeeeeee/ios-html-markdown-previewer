@@ -1,0 +1,27 @@
+{
+  "capturedAtUTC": "2026-10-07T07:51:25.682947+00:00",
+  "path": "sources/ja/duo-03-json-preview.png",
+  "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+  "family": "duo",
+  "sourceKey": "03-json-preview",
+  "locale": "ja",
+  "displayId": 3,
+  "pixels": [
+    2853,
+    2007
+  ],
+  "mode": "RGBA",
+  "sha256": "3fa7151d9084642da1dad8b900bed17f907769589a4775b173551d15908b50ca",
+  "appVersion": "1.8",
+  "buildNumber": "13",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "dbf2541e42e2e1492c9b08bdc25fed473b572a544f3172faddc3990fb3e54dee",
+    "HTMLMarkdownPreviewer.debug.dylib": "6a7db91a1a1e9dd1436bb475ef1b75a62697fa0452655472dde2a4bc7a060c5a"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "contact_sheet_review_passed",
+  "sourcePixelsEdited": false,
+  "visualReviewScope": "Four-language final contact sheets visually inspected: localized UI/headings, rendered content, readable marketing titles, full proportional source, visible library+report and import-result scenes. Structural geometry/opacity/identity checked separately."
+}

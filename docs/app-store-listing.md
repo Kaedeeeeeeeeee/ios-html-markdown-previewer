@@ -1,6 +1,8 @@
-# App Store Listing — Version 1.7
+# App Store Listing — Version 1.8 (13)
 
-Prepared metadata for the 1.7 release. Publication state is recorded separately in the submission results.
+Prepared local metadata for the 1.8 release, mirrored from the active
+`fastlane/metadata/` files below. This document does not establish remote upload,
+Apple acceptance, review submission, or publication; live release records are separate.
 
 ## Commercial Model
 
@@ -15,6 +17,7 @@ Prepared metadata for the 1.7 release. Publication state is recorded separately 
 - `en-US`
 - `zh-Hans`
 - `ja`
+- `zh-Hant`
 
 ## App Information URLs
 
@@ -30,62 +33,55 @@ HTML Previewer
 
 Subtitle:
 
-Reports, Notes & JSON
+Markdown, JSON & ZIP Viewer
 
 Promotional Text:
 
-Read reports, notes, and JSON on iPhone and iPad. Import multiple files, explore JSON structure, and copy large numeric IDs without rounding.
+Read HTML and ZIP reports, Markdown code and math, and JSON/YAML structures. Files are processed on device. Paid download. No ads or subscriptions.
 
 Description:
 
-HTML Previewer helps you read reports, notes, and configuration files on iPhone and iPad. Open HTML, Markdown, YAML, JSON, and ZIP report packages, with files processed on your device.
+Open received HTML and ZIP reports, read Markdown notes, and inspect JSON or YAML on iPhone and iPad. Files are processed on your device.
 
-Open files from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps. Supported extensions include .html, .htm, .md, .markdown, .yaml, .yml, .json, and .zip. Open/share menu availability depends on iOS and the source app.
-
-JSON you can inspect
-- Expand nested objects and arrays, search fields and values, and switch between structure and highlighted source with line numbers.
-- Copy values or field paths, or jump from a field to its source line.
-- View and copy large numeric IDs without rounding their digits.
-- Find syntax errors by line and column while keeping the original file available to share.
-- Preview standard JSON in a read-only view. JSONC comments and trailing commas are not supported.
-
-Import a group of files
-- Select multiple documents or ZIP packages in the file picker.
-- Handle duplicates one at a time: update the existing file, keep both, or skip that file.
-- See imported, skipped, and failed totals, with filenames and reasons for failures. A failed file does not stop the remaining imports.
-
-Read reports and notes
-- View rich HTML layouts, graphics, and animations.
-- Read Markdown tables and code with syntax highlighting and one-tap code copying.
+Read the content, keep the formatting
+- View HTML layouts, graphics, and animations.
+- Read Markdown tables and highlighted code, with one-tap code copying.
 - Display Markdown math equations and Mermaid diagrams offline.
-- Browse and search HTML and Markdown pages inside ZIP reports, with local CSS and image assets.
-- Export HTML and Markdown previews as PDF.
-- Search within HTML and Markdown, browse headings, adjust reading appearance, and reopen at your saved reading position.
-- Explore YAML structure, search fields, check source, and switch between multiple YAML documents.
-- Paste HTML, Markdown, YAML, or JSON text to create a local preview.
-- Find saved files by filename, rename them, and pin frequently used documents.
-- Try the built-in HTML, Markdown, YAML, JSON, and ZIP samples.
+- Browse HTML and Markdown pages inside ZIP reports with local CSS and image assets.
+- Search within HTML and Markdown, navigate headings, adjust reading appearance, and reopen at your saved reading position.
 
-JSON and YAML previews are read-only and share the original file. PDF export is available for HTML and Markdown.
+Inspect JSON and YAML
+- Expand nested objects and arrays, search fields and values, and check highlighted source with line numbers.
+- Copy values or field paths and jump to the corresponding source line.
+- View and copy large JSON numeric IDs without rounding their digits.
+- Locate syntax errors by line and column. YAML also supports multiple documents.
+
+Import, organize, and share
+- Open files from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps. Open/share menu availability depends on iOS and the source app.
+- Select multiple documents or ZIP packages. Update duplicates, keep both copies, or skip individual files, then review import results.
+- Paste HTML, Markdown, JSON, or YAML text to create a local preview.
+- Find saved files by filename, pin frequent documents, and rename display titles.
+- Share original files or complete ZIP packages. Export HTML and Markdown previews as PDF.
+- Try the built-in HTML, Markdown, JSON, YAML, and ZIP samples.
+
+Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
 
 Privacy and purchase
-- Files are processed on device; the app does not upload your files.
-- No account, ads, analytics SDKs, or tracking SDKs.
-- Paid download with no subscription or in-app purchase.
+Files are processed on device; the app does not upload your files. No account or ads. Paid download with no subscription or in-app purchase.
 
 New HTML files, including HTML inside ZIP packages, open in Interactive mode with page JavaScript and external resources enabled. The HTML content can make network requests. Select Safe Preview to block page scripts and external HTTP/HTTPS resources. External navigation and form navigation remain blocked in both modes. Saved preview choices are preserved when reopening files.
 
 Keywords:
 
-markdown,yaml,zip,reader,config,source,code,offline,preview
+yaml,md,reader,offline,pdf,source,code,mermaid,latex,config,file,report,readme,htm,local,math
 
 Release Notes:
 
-- Added read-only JSON previews: expand objects and arrays, search fields, and view highlighted source with line numbers.
-- Copy JSON values and field paths without rounding large numeric IDs, and locate syntax errors by line and column.
-- Import multiple documents or ZIP packages in one selection. Update duplicates, keep both copies, or skip individual files.
-- Review imported, skipped, and failed totals with failure details; one failed file does not stop the batch.
-- Added a JSON sample, JSON library filter, and JSON support in Paste Preview. Files continue to be processed on device.
+- Adapts the library, reader, and native controls to iPhone Duo's inner and outer displays.
+- Keeps reading position when the reader resizes and helps visible search results stay in view. HTML and Markdown search can continue across folding transitions.
+- Makes JSON and YAML search results easier to read with the keyboard open in compact layouts.
+- Improves original-file and PDF sharing through rotation and folding, and keeps Paste Preview and Settings navigation controls available while scrolling.
+- Files continue to be processed and stored locally on your device.
 
 ## zh-Hans
 
@@ -95,62 +91,55 @@ HTML 预览器
 
 Subtitle:
 
-阅读报告、笔记与 JSON 配置
+Markdown 阅读、JSON 查看与 ZIP 报告
 
 Promotional Text:
 
-一次导入多份报告、笔记和配置文件。展开 JSON 结构、搜索字段，复制大整数时保留每一位；重复文件可更新、保留两份或跳过。文件在本地处理。
+收到 HTML 或 ZIP 报告，随手打开；阅读 Markdown 代码与公式，查看 JSON/YAML 结构。文件在设备本地处理，付费下载，无广告、无订阅。
 
 Description:
 
-在 iPhone 和 iPad 上，打开收到的报告、阅读笔记、查看配置。HTML 预览器支持 HTML、Markdown、YAML、JSON 和 ZIP 报告包，文件在设备本地处理。
+在 iPhone 和 iPad 上打开收到的 HTML 与 ZIP 报告、阅读 Markdown 笔记、查看 JSON 和 YAML 配置。文件在设备本地处理。
 
-从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 打开 .html、.htm、.md、.markdown、.yaml、.yml、.json 和 .zip 文件。打开或分享菜单的可用性取决于 iOS 和来源 App。
-
-看清 JSON 结构
-- 展开嵌套对象与数组，搜索字段和值，在结构与带行号的高亮源码之间切换。
-- 复制值或字段路径，也可从字段跳到对应源码行。
-- 显示和复制大整数 ID 时保留原始数字，不进行舍入。
-- 语法错误定位到具体行列，并保留原文件以便分享。
-- 只读预览标准 JSON，不支持 JSONC 注释和尾随逗号。
-
-一次导入多份文件
-- 在系统文件选择器中多选文档或 ZIP 报告包。
-- 逐份处理重复文件：更新已有文件、保留两份，或跳过这一份。
-- 完成后查看导入、跳过、失败数量，以及失败文件和原因。单个文件失败不会阻止其余文件继续导入。
-
-读报告，也读笔记
-- 呈现 HTML 的丰富布局、图形与动画。
-- 阅读 Markdown 表格和代码，支持代码高亮与一键复制。
+读内容，也保留排版
+- 呈现 HTML 布局、图形与动画。
+- 阅读 Markdown 表格与高亮代码，一键复制代码内容。
 - 离线显示 Markdown 数学公式和 Mermaid 流程图。
-- 在 ZIP 报告中搜索、切换 HTML 与 Markdown 页面，并保留本地 CSS 和图片资源。
-- 将 HTML 和 Markdown 预览导出为 PDF。
-- 使用文内搜索、标题目录与阅读外观设置，再次打开接着读。
-- 查看 YAML 结构、搜索字段、核对源码，并切换多个 YAML 文档。
-- 粘贴 HTML、Markdown、YAML 或 JSON 文本，创建本地预览。
-- 按文件名查找已保存资料，支持重命名与置顶。
-- 内置 HTML、Markdown、YAML、JSON 和 ZIP 示例。
+- 在 ZIP 报告中切换 HTML 与 Markdown 页面，保留本地 CSS 和图片资源。
+- 文内搜索、标题目录、阅读外观调整，再次打开接着读。
 
-JSON 与 YAML 为只读预览，可分享原文件；PDF 导出适用于 HTML 和 Markdown。
+看清 JSON 与 YAML 结构
+- 展开嵌套对象和数组，搜索字段和值，核对带行号的高亮源码。
+- 复制值或字段路径，从字段跳到对应源码行。
+- 显示和复制 JSON 大整数 ID 时保留原始数字，不进行舍入。
+- 语法错误定位到具体行列；YAML 支持多个文档切换。
+
+导入、整理与分享
+- 从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 打开文件。打开或分享菜单的可用性取决于 iOS 和来源 App。
+- 一次选择多份文档或 ZIP 报告包。重复文件可更新、保留两份或逐份跳过，完成后查看导入结果。
+- 粘贴 HTML、Markdown、JSON 或 YAML 文本，创建本地预览。
+- 按文件名查找资料，置顶常用文件，修改显示名称。
+- 分享原文件或完整 ZIP 报告包，将 HTML 与 Markdown 预览导出为 PDF。
+- 内置 HTML、Markdown、JSON、YAML 与 ZIP 示例。
+
+支持 .html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSON 与 YAML 为只读预览，可分享原文件；JSON 不支持 JSONC 注释和尾随逗号。PDF 导出适用于 HTML 与 Markdown。
 
 隐私与购买方式
-- 文件在设备本地处理，App 不上传你的文件。
-- 无账号、无广告，不使用分析或跟踪 SDK。
-- 付费下载，无订阅，无 App 内购买。
+文件在设备本地处理，App 不上传你的文件。无账号、无广告。付费下载，无订阅，无 App 内购买。
 
 新导入的 HTML（包括 ZIP 中的 HTML）默认使用交互模式，允许页面 JavaScript 和外部资源，HTML 内容可以发起网络请求。可切换到安全预览，阻止页面脚本和外部 HTTP/HTTPS 资源。两种模式都会继续阻止外部跳转和表单跳转。再次打开文件时，会保留已保存的预览模式。
 
 Keywords:
 
-YAML,Markdown,ZIP,源码,离线
+YAML,MD,文件,打开,查看器,离线,源码,代码,PDF,导出,公式,流程图,Mermaid,LaTeX,配置,README,本地
 
 Release Notes:
 
-- 新增只读 JSON 预览：展开对象与数组、搜索字段，查看带行号的高亮源码。
-- 复制 JSON 值与字段路径，大整数 ID 保留原始数字；语法错误可定位到具体行列。
-- 支持一次多选导入文档或 ZIP 报告包，重复文件可更新、保留两份或逐份跳过。
-- 导入完成后显示成功、跳过、失败数量和失败原因；单个文件失败不会中断整批导入。
-- 新增 JSON 示例、文件库筛选和粘贴预览支持。文件继续在设备本地处理。
+- 文件库、阅读器与系统控件适配 iPhone Duo 的内外屏。
+- 阅读区域尺寸变化时保留阅读位置，并让已显示的搜索结果保持可见；HTML 与 Markdown 搜索可在折叠切换后继续输入。
+- 优化紧凑布局，让打开键盘时的 JSON 与 YAML 搜索结果更易阅读。
+- 改善旋转、折叠过程中的原文件与 PDF 分享，并让粘贴预览和设置的导航控件在滚动时保持可用。
+- 文件继续在设备本地处理与保存。
 
 ## ja
 
@@ -160,68 +149,158 @@ HTMLプレビュー
 
 Subtitle:
 
-レポート・ノート・JSONを読む
+Markdown・JSON・ZIPビューア
 
 Promotional Text:
 
-レポートやノート、設定ファイルをまとめて取り込み。JSONの構造を展開して検索し、大きな整数IDも桁を丸めずにコピーできます。重複ファイルは更新・両方保存・スキップを選択。ファイルは端末内で処理します。
+届いたHTML・ZIPレポートを開く。Markdownのコードや数式を読み、JSON・YAMLの構造を確認。ファイルは端末内で処理します。有料ダウンロード、広告・サブスクリプションなし。
 
 Description:
 
-届いたレポートを開く。ノートを読む。設定を確認する。HTMLプレビューは、iPhoneとiPadでHTML、Markdown、YAML、JSON、ZIPレポートを閲覧できるアプリです。ファイルは端末内で処理します。
+iPhoneとiPadで、届いたHTML・ZIPレポートを開き、Markdownのノートを読み、JSONやYAMLの設定を確認。ファイルは端末内で処理します。
 
-「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリから、.html、.htm、.md、.markdown、.yaml、.yml、.json、.zipファイルを開けます。「開く」や共有メニューの表示は、iOSと送信元アプリによって異なります。
-
-JSONの構造を見やすく
-- 入れ子のオブジェクトや配列を展開し、フィールドと値を検索。構造表示と行番号付きのソース表示を切り替えられます。
-- 値やフィールドのパスをコピーし、該当するソース行へ移動できます。
-- 大きな整数IDも、桁を丸めずに表示・コピーできます。
-- 構文エラーの行と列を確認し、元のファイルを共有できます。
-- 標準JSONを読み取り専用で表示します。JSONCのコメントや末尾のカンマには対応していません。
-
-複数ファイルをまとめて取り込む
-- ファイル選択画面で複数の文書やZIPレポートを選択できます。
-- 重複ファイルは1件ずつ、既存ファイルの更新・両方の保存・スキップを選べます。
-- 完了後に取り込み・スキップ・失敗の件数と、失敗したファイル名や理由を確認できます。1件失敗しても残りの取り込みは続きます。
-
-レポートもノートも読みやすく
-- HTMLの豊かなレイアウト、グラフィック、アニメーションを表示。
-- Markdownの表やコードを閲覧。構文ハイライトとワンタップコピーに対応。
+内容もレイアウトも読みやすく
+- HTMLのレイアウト、グラフィック、アニメーションを表示。
+- Markdownの表と構文ハイライト付きコードを閲覧。コードをワンタップでコピー。
 - Markdownの数式とMermaid図をオフラインで表示。
-- ZIP内のHTML・Markdownページを検索して切り替え。ローカルCSSや画像も利用できます。
-- HTMLとMarkdownのプレビューをPDFとして書き出し。
-- 文書内検索、見出しの目次、文字サイズなどの調整、閲覧位置の保存に対応。
-- YAMLの構造やソースを確認し、フィールド検索や複数ドキュメントの切り替えが可能。
-- HTML、Markdown、YAML、JSONを貼り付けてローカルプレビューを作成。
-- 保存したファイルを名前で検索し、名前の変更や固定が可能。
-- HTML、Markdown、YAML、JSON、ZIPの内蔵サンプル。
+- ZIP内のHTML・Markdownページを切り替え。ローカルCSSや画像も利用できます。
+- 文書内検索、見出しの目次、読みやすさの調整、閲覧位置の保存に対応。
 
-JSONとYAMLは読み取り専用で、元のファイルを共有できます。PDF書き出しはHTMLとMarkdownに対応しています。
+JSON・YAMLの構造を確認
+- 入れ子のオブジェクトと配列を展開し、フィールドと値を検索。行番号付きのソースを確認できます。
+- 値やフィールドのパスをコピーし、該当するソース行へ移動。
+- 大きなJSON整数IDも、桁を丸めずに表示・コピー。
+- 構文エラーの行と列を確認。YAMLは複数ドキュメントの切り替えに対応。
+
+取り込み・整理・共有
+- 「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリからファイルを開けます。「開く」や共有メニューの表示は、iOSと送信元アプリによって異なります。
+- 複数の文書やZIPレポートをまとめて取り込み。重複ファイルは更新・両方保存・スキップを選び、完了後に結果を確認できます。
+- HTML、Markdown、JSON、YAMLのテキストを貼り付けてプレビュー。
+- ファイル名で検索し、よく使う文書を固定。表示名の変更にも対応。
+- 元のファイルやZIPパッケージを共有。HTML・MarkdownのプレビューをPDFに書き出せます。
+- HTML、Markdown、JSON、YAML、ZIPの内蔵サンプルを用意。
+
+対応拡張子：.html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSONとYAMLは読み取り専用で、元のファイルを共有できます。JSONCのコメントや末尾のカンマには対応していません。PDFへの書き出しはHTMLとMarkdownで利用できます。
 
 プライバシーと購入方式
-- ファイルは端末内で処理し、アプリがファイルをアップロードすることはありません。
-- アカウント不要、広告なし。分析・トラッキングSDKは使用しません。
-- 有料ダウンロード。サブスクリプションやApp内課金はありません。
+ファイルは端末内で処理し、アプリがファイルをアップロードすることはありません。アカウント不要、広告なし。有料ダウンロードで、サブスクリプションやApp内課金はありません。
 
-新しく取り込むHTML（ZIP内のHTMLを含む）は、ページのJavaScriptと外部リソースを許可するインタラクティブモードで開きます。HTMLの内容によってはネットワーク通信が発生します。安全プレビューに切り替えると、ページのスクリプトと外部HTTP/HTTPSリソースをブロックできます。どちらのモードでも、外部ページへの移動とフォーム送信による移動はブロックします。再度開くときは、保存済みのプレビューモードを維持します。
+新しく取り込むHTML（ZIP内のHTMLを含む）は、ページのJavaScriptと外部リソースを許可するインタラクティブモードで開きます。HTMLコンテンツはネットワーク通信を行うことがあります。安全プレビューに切り替えると、ページのスクリプトと外部HTTP/HTTPSリソースをブロックします。どちらのモードでも外部ページへの移動とフォーム送信による移動はブロックします。再度開くときは、保存済みのプレビューモードを維持します。
 
 Keywords:
 
-YAML,Markdown,ZIP,設定,ソース,閲覧,オフライン
+YAML,md,ファイル,閲覧,開く,リーダー,オフライン,ソース,コード,PDF,書き出し,数式,図,Mermaid,LaTeX,設定,README,ローカル
 
 Release Notes:
 
-- 読み取り専用のJSONプレビューを追加。オブジェクトや配列の展開、フィールド検索、行番号付きのソース表示に対応しました。
-- JSONの値やフィールドのパスをコピーできます。大きな整数IDも桁を丸めずに扱え、構文エラーの行と列を確認できます。
-- 文書やZIPレポートをまとめて取り込めます。重複ファイルは更新・両方保存・1件ずつスキップを選べます。
-- 完了後に取り込み・スキップ・失敗の件数と失敗理由を表示。1件失敗しても残りの取り込みは続きます。
-- JSONサンプル、ファイル一覧のJSONフィルター、JSONの貼り付けプレビューを追加しました。ファイルは引き続き端末内で処理します。
+- ファイル一覧、リーダー、システムの操作ボタンがiPhone Duoの内側・外側ディスプレイに対応しました。
+- 表示領域のサイズが変わっても読書位置を保持し、表示中の検索結果が見えるように調整します。折りたたみ操作後もHTML・Markdownの検索入力を続けられます。
+- コンパクトな画面でキーボードを表示しているとき、JSON・YAMLの検索結果を読みやすくしました。
+- 回転・折りたたみ時の元ファイルとPDFの共有を改善し、スクロール中も貼り付けプレビューや設定のナビゲーション操作を利用できるようにしました。
+- ファイルは引き続き端末内で処理・保存します。
+
+## zh-Hant
+
+Name:
+
+HTML 預覽器
+
+Subtitle:
+
+Markdown 閱讀、JSON 檢視與 ZIP 報告
+
+Promotional Text:
+
+收到 HTML 或 ZIP 報告，隨手開啟；閱讀 Markdown 程式碼與公式，檢視 JSON/YAML 結構。檔案在裝置本機處理，付費下載，無廣告、無訂閱。
+
+Description:
+
+在 iPhone 和 iPad 上開啟收到的 HTML 與 ZIP 報告、閱讀 Markdown 筆記、檢視 JSON 和 YAML 設定。檔案在裝置本機處理。
+
+閱讀內容，也保留排版
+- 呈現 HTML 版面配置、圖形與動畫。
+- 閱讀 Markdown 表格與醒目提示的程式碼，一鍵複製程式碼內容。
+- 離線顯示 Markdown 數學公式和 Mermaid 流程圖。
+- 在 ZIP 報告中切換 HTML 與 Markdown 頁面，保留本機 CSS 和圖片資源。
+- 文內搜尋、標題目錄與閱讀外觀調整，再次開啟接著讀。
+
+看清 JSON 與 YAML 結構
+- 展開巢狀物件和陣列，搜尋欄位與值，核對附行號的原始碼。
+- 複製值或欄位路徑，從欄位跳到對應原始碼行。
+- 顯示和複製 JSON 大整數 ID 時保留原始數字，不進行四捨五入。
+- 語法錯誤定位到具體行與欄；YAML 支援切換多份文件。
+
+匯入、整理與分享
+- 從「檔案」、郵件、AirDrop、訊息 App、雲端硬碟或其他 App 開啟檔案。開啟或分享選單的可用性取決於 iOS 和來源 App。
+- 一次選擇多份文件或 ZIP 報告包。重複檔案可更新、保留兩份或逐份略過，完成後查看匯入結果。
+- 貼上 HTML、Markdown、JSON 或 YAML 文字，建立本機預覽。
+- 依檔名尋找資料，釘選常用檔案，修改顯示名稱。
+- 分享原始檔案或完整 ZIP 報告包，將 HTML 與 Markdown 預覽匯出為 PDF。
+- 內建 HTML、Markdown、JSON、YAML 與 ZIP 範例。
+
+支援 .html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSON 與 YAML 為唯讀預覽，可分享原始檔案；JSON 不支援 JSONC 註解和結尾逗號。PDF 匯出適用於 HTML 與 Markdown。
+
+隱私與購買方式
+檔案在裝置本機處理，App 不會上傳你的檔案。無帳號、無廣告。付費下載，無訂閱，無 App 內購買。
+
+新匯入的 HTML（包括 ZIP 中的 HTML）預設使用互動模式，允許頁面 JavaScript 和外部資源，HTML 內容可以發出網路請求。可切換至安全預覽，阻擋頁面指令碼和外部 HTTP/HTTPS 資源。兩種模式都會繼續阻擋外部跳轉和表單跳轉。再次開啟檔案時，會保留已儲存的預覽模式。
+
+Keywords:
+
+YAML,MD,檔案,開啟,檢視器,離線,原始碼,程式碼,PDF,匯出,數學公式,流程圖,Mermaid,LaTeX,設定,README,本機
+
+Release Notes:
+
+- 檔案庫、閱讀器與系統控制項適配 iPhone Duo 的內外螢幕。
+- 閱讀區域尺寸改變時保留閱讀位置，並讓已顯示的搜尋結果保持可見；HTML 與 Markdown 搜尋可在摺疊切換後繼續輸入。
+- 優化精簡版面，讓開啟鍵盤時的 JSON 與 YAML 搜尋結果更容易閱讀。
+- 改善旋轉、摺疊過程中的原始檔案與 PDF 分享，並讓貼上預覽和設定的導覽控制項在捲動時保持可用。
+- 檔案繼續在裝置本機處理與儲存。
+
+## Screenshot Inventory
+
+The current local release matrix is four languages × three device groups × six
+scenes: **72 localized images**. Each locale has six ordinary iPhone, six iPad,
+and six Duo images. The additional 18 root-level English files are exact local
+compatibility mirrors, not additional uploads.
+
+The order is HTML report, Markdown/code/math, JSON, YAML, batch import, and library.
+Duo is one six-image group with three actual Open inner-display scenes and three
+Closed outer-display scenes; automatic pose-specific storefront selection is not
+claimed. Ordinary iPhone canvases are 1320 × 2868; iPad canvases are 2064 × 2752.
+The chosen Duo canvases are 2853 × 2007 inner landscape and 1398 × 2034 outer portrait.
+Final upload PNGs are opaque RGB; native source RGBA bytes are retained.
+
+The [source packet and capture provenance](aso/2026-10-07-duo/materials/README.md),
+[formal screenshot inputs](app-store-screenshots/README.md), and
+[local review gallery](aso/2026-10-07-duo/materials/index.html) record preparation.
+Full local validation is required before formal integration; remote modern
+Asset Library processing and fresh four-locale metadata/72-placement read-back
+are separate gates before archive and submission.
+
+The current 72-image local [packet validation](aso/2026-10-07-duo/materials/validation.json)
+and [formal integration validation](aso/2026-10-07-duo/materials/integration-validation.json)
+have passed. [Provenance](aso/2026-10-07-duo/materials/provenance.json) retains the
+actual mixed Debug capture identities and later resize-only source fix; it does
+not claim a single final binary or Release-archive screenshot source.
 
 ## Review Notes
 
 This paid download app has no accounts, ads, subscriptions, in-app purchases, analytics SDKs, or tracking SDKs. Files are processed locally and are not uploaded by the app. No login or external service is required for review.
 
-Version 1.7 adds read-only JSON previews and multiple-file import.
+Version 1.8 adapts the library, reader and system controls to iPhone Duo's inner
+and outer displays, preserves reading/search continuity across size changes,
+improves compact JSON/YAML keyboard layouts, and supports file/PDF share-sheet
+migration during rotation and fold changes. JSON preview and multiple-file
+import remain available.
+
+Duo review:
+1. Open a built-in HTML or Markdown sample, search within the document, and move to a match.
+2. Change the native device pose or orientation; the selected document and query remain. A currently visible match stays visible where the new reader viewport permits it.
+3. While search editing is active, continue entering text after opening or partially folding. The system may hide the software keyboard in some poses; the app does not promise permanent keyboard visibility in every pose.
+4. Share the original document or export HTML/Markdown as PDF. The system share sheet remains presented through supported size changes and can be dismissed. Temporary PDF output is cleaned after completion, cancellation, or leaving the document.
+5. In JSON/YAML, search for a field or switch to source while the keyboard is open. Search results remain scrollable within the available reader area.
+
 
 JSON review:
 1. On the home screen, expand Samples if needed and open API response (JSON).

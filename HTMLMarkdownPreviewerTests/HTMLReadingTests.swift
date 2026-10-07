@@ -498,6 +498,344 @@ final class HTMLReadingTests: XCTestCase {
         try await waitUntil { (restored.state.position?.progress ?? 1) < 0.01 }
     }
 
+    func testHTMLParagraphPositionSurvivesRepeatedViewportWidthChanges() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("html-width-reflow.html")
+        let text = String(repeating: "Reading a long paragraph keeps the same place across column widths. ", count: 45)
+        let floatingHeaders = """
+        <h1 style="position:fixed;top:0;left:16px;font-size:18px;margin:0">Fixed heading</h1>
+        <header style="position:fixed;top:28px;left:16px"><p style="margin:0">Fixed ancestor heading</p></header>
+        <h2 style="position:sticky;top:56px;font-size:18px;margin:0">Sticky heading</h2>
+        <aside style="position:sticky;top:80px"><p style="margin:0">Sticky ancestor heading</p></aside>
+        """
+        try fixture(floatingHeaders + (0..<16).map { "<p id='paragraph-\($0)'>\(text)</p>" }.joined())
+            .write(to: url, atomically: true, encoding: .utf8)
+        let session = try await ReadingTestSession(entryURL: url)
+        defer { session.close() }
+        try await session.load(url)
+        let originalBody = try await session.webView.evaluateJavaScript("document.body.innerHTML") as? String
+        _ = try await session.webView.evaluateJavaScript("""
+        (() => { const rect = document.getElementById('paragraph-8').getBoundingClientRect();
+          window.scrollTo(0, window.scrollY + rect.top + rect.height * .35); })()
+        """)
+        try await waitForBlockFraction(id: "paragraph-8", fraction: 0.35, session: session,
+                                       stage: "html initial width 390")
+        let visibleFloatingHeaders = try await session.webView.evaluateJavaScript("""
+        Array.from(document.querySelectorAll('h1,header,h2,aside')).every(element => {
+          const rect = element.getBoundingClientRect(); return rect.top >= 0 && rect.bottom < 150;
+        })
+        """) as? Bool
+        XCTAssertEqual(visibleFloatingHeaders, true, "The fixed and sticky headings must remain visible above the middle paragraph.")
+        // Exercise two width changes before the debounced restoration fires.
+        // Floating headings must not replace the scrolling paragraph anchor.
+        session.resize(width: 320)
+        session.resize(width: 540)
+        try await waitForBlockFraction(id: "paragraph-8", fraction: 0.35, session: session,
+                                       stage: "html burst width 320 then 540")
+        session.resize(width: 280)
+        try await waitForBlockFraction(id: "paragraph-8", fraction: 0.35, session: session,
+                                       stage: "html final width 280")
+        let unchangedBody = try await session.webView.evaluateJavaScript("document.body.innerHTML") as? String
+        XCTAssertEqual(unchangedBody, originalBody, "Viewport anchoring must preserve the imported HTML body.")
+    }
+
+    func testMarkdownBlockPositionSurvivesWidthChangeAndNewNavigationWins() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("markdown-width-reflow.html")
+        let text = String(repeating: "Markdown paragraphs reflow as the reading column changes. ", count: 45)
+        try fixture((0..<16).map { index in
+            "<section id='block-\(index)' data-markdown-block='markdown-block-\(index)'><h2 data-reading-heading-id='markdown-block-\(index)'>Chapter \(index)</h2><p>\(text)</p></section>"
+        }.joined()).write(to: url, atomically: true, encoding: .utf8)
+        let saved = ReadingPosition(anchorID: "markdown-block-8@0.35", progress: 0.5)
+        let session = try await ReadingTestSession(entryURL: url, position: saved, documentKind: .markdown)
+        defer { session.close() }
+        try await session.load(url)
+        try await waitForBlockFraction(id: "block-8", fraction: 0.35, session: session,
+                                       stage: "markdown initial width 390")
+        session.resize(width: 540)
+        try await waitForBlockFraction(id: "block-8", fraction: 0.35, session: session,
+                                       stage: "markdown width 540")
+        let anchor = try XCTUnwrap(MarkdownReadingIndex.StoredAnchor(session.state.position?.anchorID))
+        XCTAssertEqual(anchor.blockID, "markdown-block-8")
+        XCTAssertEqual(anchor.fraction, 0.35, accuracy: 0.02)
+
+        session.resize(width: 280)
+        // Let WebKit deliver resize, then issue a newer explicit reader action.
+        _ = try await session.webView.callDocumentJavaScript(
+            "await new Promise(resolve => requestAnimationFrame(resolve)); return null;",
+            contentWorld: HTMLReadingController.contentWorld
+        )
+        session.state.navigate(to: .beginning)
+        session.reader.synchronize()
+        try await waitForRestoredProgress(0, session: session)
+        try await Task.sleep(for: .milliseconds(250))
+        try await waitForRestoredProgress(0, session: session)
+    }
+
+    func testHeadingNavigationDuringWidthReflowSettlesAtVisibleTarget() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let text = String(repeating: "Changing the reading column moves later chapters as preceding paragraphs wrap. ", count: 45)
+        for kind in [HTMLReadingController.DocumentKind.html, .markdown] {
+            let url = directory.appendingPathComponent("heading-navigation-reflow-\(kind).html")
+            try fixture((0..<16).map { index in
+                "<section id='block-\(index)' data-markdown-block='markdown-block-\(index)'><h2 id='heading-\(index)' data-reading-heading-id='markdown-block-\(index)'>Chapter \(index)</h2><p>\(text)</p></section>"
+            }.joined()).write(to: url, atomically: true, encoding: .utf8)
+            let session = try await ReadingTestSession(entryURL: url, documentKind: kind)
+            defer { session.close() }
+            try await session.load(url)
+            let target = try XCTUnwrap(session.state.headings.first { $0.title == "Chapter 12" })
+            let initialTargetValue = try await session.webView.evaluateJavaScript(
+                "document.getElementById('heading-12').getBoundingClientRect().top + scrollY"
+            )
+            let initialTargetY = try XCTUnwrap(initialTargetValue as? Double)
+            _ = try await session.webView.evaluateJavaScript("""
+            (() => { const rect = document.getElementById('block-3').getBoundingClientRect();
+              window.scrollTo(0, window.scrollY + rect.top + rect.height * .35); })()
+            """)
+            try await waitForBlockFraction(id: "block-3", fraction: 0.35, session: session,
+                                           stage: "heading navigation \(kind) initial width 390")
+            try await waitForSearchResultVisibility(id: "heading-12", visible: false, session: session)
+
+            session.resize(width: 320)
+            // Start reflow, then request a different heading immediately with the
+            // final width. No settled-layout wait may serialize away this race.
+            _ = try await session.webView.callDocumentJavaScript(
+                "await new Promise(resolve => requestAnimationFrame(resolve)); return null;",
+                contentWorld: HTMLReadingController.contentWorld
+            )
+            session.resize(width: 540)
+            session.state.navigate(to: .heading(target.id))
+            session.reader.synchronize()
+
+            let deadline = ContinuousClock.now + .seconds(10)
+            var stableSince: ContinuousClock.Instant?
+            var settledScrollY: Double?
+            while true {
+                let value = try await session.webView.callDocumentJavaScript("""
+                const root = document.scrollingElement;
+                const rect = document.getElementById('heading-12').getBoundingClientRect();
+                const paragraph = document.querySelector('#block-11 p').getBoundingClientRect();
+                const view = window.visualViewport;
+                const top = view?.offsetTop || 0;
+                return { width: root.clientWidth, paragraphWidth: paragraph.width,
+                         top: rect.top, bottom: rect.bottom, viewportTop: top,
+                         viewportBottom: top + (view?.height || innerHeight),
+                         scrollY, documentY: rect.top + scrollY };
+                """, contentWorld: HTMLReadingController.contentWorld)
+                let geometry = try XCTUnwrap(value as? [String: Double])
+                let scrollY = try XCTUnwrap(geometry["scrollY"])
+                let targetTop = try XCTUnwrap(geometry["top"])
+                let targetBottom = try XCTUnwrap(geometry["bottom"])
+                let viewportTop = try XCTUnwrap(geometry["viewportTop"])
+                let viewportBottom = try XCTUnwrap(geometry["viewportBottom"])
+                let visible = targetTop >= viewportTop && targetBottom <= viewportBottom
+                let width = try XCTUnwrap(geometry["width"])
+                let paragraphWidth = try XCTUnwrap(geometry["paragraphWidth"])
+                let finalLayout = abs(width - 540) < 1 && abs(paragraphWidth - 508) < 1
+                if finalLayout && visible {
+                    if settledScrollY == nil || abs(scrollY - (settledScrollY ?? scrollY)) > 1 {
+                        settledScrollY = scrollY
+                        stableSince = ContinuousClock.now
+                    }
+                    if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(400) {
+                        XCTAssertGreaterThan(abs(try XCTUnwrap(geometry["documentY"]) - initialTargetY), 300,
+                                             "The target must actually move through paragraph reflow, unlike a beginning-at-zero request.")
+                        break
+                    }
+                } else {
+                    stableSince = nil
+                    settledScrollY = nil
+                }
+                guard ContinuousClock.now < deadline else {
+                    await recordViewportGeometry(id: "heading-12", stage: "heading navigation \(kind) timeout",
+                                                 session: session, keepAttachment: true)
+                    XCTFail("New heading navigation did not remain visible and stable in the final layout: \(geometry)")
+                    throw ReadingTestError.timedOut
+                }
+                try await Task.sleep(for: .milliseconds(30))
+            }
+        }
+    }
+
+    func testVisibleSelectedSearchResultRemainsVisibleAfterViewportShrinks() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        for kind in [HTMLReadingController.DocumentKind.html, .markdown] {
+            let url = directory.appendingPathComponent("visible-search-\(kind).html")
+            try fixture("""
+            <p id="first" data-markdown-block="markdown-block-0">needle</p>
+            <p id="selected" data-markdown-block="markdown-block-1" style="margin-top:360px">needle</p>
+            """).write(to: url, atomically: true, encoding: .utf8)
+            let session = try await ReadingTestSession(entryURL: url, documentKind: kind)
+            defer { session.close() }
+            try await session.load(url)
+            try await assertMarkdownSearch("needle", count: 2, session: session)
+            session.state.navigate(to: .match(1))
+            session.reader.synchronize()
+            try await waitUntil { session.state.selectedMatch == 1 }
+            try await waitForSearchResultVisibility(id: "selected", visible: true, session: session)
+            let initialScroll = session.webView.scrollView
+            XCTAssertEqual(initialScroll.contentOffset.y + initialScroll.adjustedContentInset.top, 0, accuracy: 1,
+                           "The entire short page should initially fit without scrolling.")
+            session.resize(width: 390, height: 180)
+            try await waitForSearchResultVisibility(id: "selected", visible: true, session: session)
+            XCTAssertGreaterThan(session.webView.scrollView.contentOffset.y, 100,
+                                 "Shrinking height must actually reveal the previously visible second match.")
+            XCTAssertEqual(session.state.query, "needle")
+            XCTAssertEqual(session.state.matchCount, 2)
+            XCTAssertEqual(session.state.selectedMatch, 1)
+
+            session.resize(width: 320, height: 140)
+            _ = try await session.webView.callDocumentJavaScript(
+                "await new Promise(resolve => requestAnimationFrame(resolve)); return null;",
+                contentWorld: HTMLReadingController.contentWorld
+            )
+            session.state.navigate(to: .beginning)
+            session.reader.synchronize()
+            try await waitForRestoredProgress(0, session: session)
+            try await Task.sleep(for: .milliseconds(200))
+            try await waitForRestoredProgress(0, session: session)
+            XCTAssertEqual(session.state.selectedMatch, 1, "A newer navigation must cancel resize revelation without resetting search selection.")
+        }
+    }
+
+    func testResizePreservesReadingAnchorWhenUserScrolledAwayFromSelectedResult() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let text = String(repeating: "A reader can continue elsewhere while keeping a previous search open. ", count: 45)
+        for kind in [HTMLReadingController.DocumentKind.html, .markdown] {
+            let url = directory.appendingPathComponent("scrolled-search-\(kind).html")
+            let paragraphs = (0..<16).map { index in
+                "<p id='paragraph-\(index)' data-markdown-block='markdown-block-\(index + 1)'>\(text)</p>"
+            }.joined()
+            try fixture("<p data-markdown-block='markdown-block-0'>needle</p>" + paragraphs
+                        + "<p id='selected' data-markdown-block='markdown-block-17'>needle</p>")
+                .write(to: url, atomically: true, encoding: .utf8)
+            let session = try await ReadingTestSession(entryURL: url, documentKind: kind)
+            defer { session.close() }
+            try await session.load(url)
+            try await assertMarkdownSearch("needle", count: 2, session: session)
+            session.state.navigate(to: .match(1))
+            session.reader.synchronize()
+            try await waitUntil { session.state.selectedMatch == 1 }
+            try await waitForSearchResultVisibility(id: "selected", visible: true, session: session)
+            _ = try await session.webView.evaluateJavaScript("""
+            (() => { const rect = document.getElementById('paragraph-8').getBoundingClientRect();
+              window.scrollTo(0, window.scrollY + rect.top + rect.height * .35); })()
+            """)
+            try await waitForBlockFraction(id: "paragraph-8", fraction: 0.35, session: session,
+                                           stage: "scrolled-away \(kind) initial width 390")
+            try await waitForSearchResultVisibility(id: "selected", visible: false, session: session)
+            session.resize(width: 280, height: 220)
+            try await waitForBlockFraction(id: "paragraph-8", fraction: 0.35, session: session,
+                                           stage: "scrolled-away \(kind) width 280 height 220")
+            try await waitForSearchResultVisibility(id: "selected", visible: false, session: session)
+            XCTAssertEqual(session.state.query, "needle")
+            XCTAssertEqual(session.state.matchCount, 2)
+            XCTAssertEqual(session.state.selectedMatch, 1)
+        }
+    }
+
+    private func waitForSearchResultVisibility(id: String, visible: Bool, session: ReadingTestSession) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        while true {
+            let value = try await session.webView.callDocumentJavaScript("""
+            const rect = document.getElementById(id).getBoundingClientRect();
+            const view = window.visualViewport;
+            const top = view?.offsetTop || 0;
+            const bottom = top + (view?.height || innerHeight);
+            return visible ? rect.top >= top && rect.bottom <= bottom : rect.bottom <= top || rect.top >= bottom;
+            """, arguments: ["id": id, "visible": visible], contentWorld: HTMLReadingController.contentWorld)
+            if value as? Bool == true {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(200) { return }
+            } else { stableSince = nil }
+            guard ContinuousClock.now < deadline else {
+                XCTFail("Result \(id) did not settle with visibility \(visible)")
+                throw ReadingTestError.timedOut
+            }
+            try await Task.sleep(for: .milliseconds(30))
+        }
+    }
+
+    private func recordViewportGeometry(id: String, stage: String, session: ReadingTestSession,
+                                        keepAttachment: Bool = false) async {
+        let value = try? await session.webView.callDocumentJavaScript("""
+        const rect = document.getElementById(id).getBoundingClientRect();
+        const view = window.visualViewport;
+        const root = document.scrollingElement;
+        const height = root.clientHeight || innerHeight;
+        const visibleHeight = Math.min(view?.height || height, height);
+        const effectiveTop = Math.min(Math.max(0, view?.offsetTop || 0), height - visibleHeight);
+        return {
+          block: { id, top: rect.top, bottom: rect.bottom, width: rect.width, height: rect.height,
+                   fraction: -rect.top / rect.height,
+                   effectiveViewportFraction: (effectiveTop - rect.top) / rect.height },
+          innerWidth, innerHeight, scrollX, scrollY,
+          root: { scrollTop: root.scrollTop, scrollLeft: root.scrollLeft,
+                  clientWidth: root.clientWidth, clientHeight: root.clientHeight,
+                  scrollWidth: root.scrollWidth, scrollHeight: root.scrollHeight },
+          visualViewport: view ? { offsetTop: view.offsetTop, offsetLeft: view.offsetLeft,
+                                  pageTop: view.pageTop, pageLeft: view.pageLeft,
+                                  width: view.width, height: view.height, scale: view.scale } : null,
+          effectiveViewportTop: effectiveTop
+        };
+        """, arguments: ["id": id], contentWorld: HTMLReadingController.contentWorld)
+        let dom: String
+        if let value, JSONSerialization.isValidJSONObject(value),
+           let data = try? JSONSerialization.data(withJSONObject: value, options: [.sortedKeys]),
+           let text = String(data: data, encoding: .utf8) {
+            dom = text
+        } else {
+            dom = "unavailable"
+        }
+        let scroll = session.webView.scrollView
+        let diagnostic = "Viewport anchor [\(stage)] DOM \(dom) "
+            + "WK frame=\(session.webView.frame) bounds=\(session.webView.bounds) "
+            + "contentOffset=\(scroll.contentOffset) contentSize=\(scroll.contentSize) "
+            + "contentInset=\(scroll.contentInset) adjustedContentInset=\(scroll.adjustedContentInset) "
+            + "zoomScale=\(scroll.zoomScale) pageZoom=\(session.webView.pageZoom) "
+            + "storedProgress=\(String(describing: session.state.position?.progress))"
+        print(diagnostic)
+        if keepAttachment {
+            let attachment = XCTAttachment(string: diagnostic)
+            attachment.name = "Viewport anchor geometry \(stage)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
+    private func waitForBlockFraction(id: String, fraction: Double, session: ReadingTestSession,
+                                      stage: String) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        await recordViewportGeometry(id: id, stage: stage + " first sample", session: session)
+        while true {
+            let value = try await session.webView.callDocumentJavaScript(
+                "const rect = document.getElementById(id).getBoundingClientRect(); return -rect.top / rect.height;",
+                arguments: ["id": id], contentWorld: HTMLReadingController.contentWorld
+            )
+            if let current = value as? Double, abs(current - fraction) < 0.02 {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(200) {
+                    await recordViewportGeometry(id: id, stage: stage + " settled", session: session)
+                    return
+                }
+            } else { stableSince = nil }
+            guard ContinuousClock.now < deadline else {
+                await recordViewportGeometry(id: id, stage: stage + " timeout", session: session,
+                                             keepAttachment: true)
+                XCTFail("Block \(id) did not retain fraction \(fraction) at \(stage); observed \(String(describing: value))")
+                throw ReadingTestError.timedOut
+            }
+            try await Task.sleep(for: .milliseconds(30))
+        }
+    }
+
     private func fixture(_ body: String) -> String {
         """
         <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -620,6 +958,12 @@ private final class ReadingTestSession: NSObject, WKNavigationDelegate {
             guard ContinuousClock.now < deadline else { throw ReadingTestError.timedOut }
             try await Task.sleep(for: .milliseconds(30))
         }
+    }
+
+    func resize(width: CGFloat, height: CGFloat? = nil) {
+        webView.frame.size = CGSize(width: width, height: height ?? webView.bounds.height)
+        webView.setNeedsLayout()
+        webView.layoutIfNeeded()
     }
 
     func close() {

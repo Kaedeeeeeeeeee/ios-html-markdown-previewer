@@ -1,0 +1,14 @@
+This update adds an optional native StoreKit App Store review request. A request
+is attempted only after repeated reading and returning to the document library.
+It does not block app functionality or require a rating. StoreKit controls
+whether the dialog is displayed; it may not appear during review or TestFlight.
+
+Reading counters are stored on device. No account, login, purchase, tracking, or
+analytics service is required. Core document import and preview behavior is
+unchanged. Built-in HTML, Markdown, JSON, YAML and ZIP samples remain available
+from the library for immediate preview. The File Import action accepts user
+documents through the system Files picker.
+
+App Store text and screenshots have been refreshed in English, Simplified
+Chinese, Japanese and Traditional Chinese. Screenshots use synthetic sample
+documents and show the actual app interface.

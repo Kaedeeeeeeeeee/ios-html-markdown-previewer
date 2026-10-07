@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-07T09:30:28.000377+00:00",
+  "appId": "6785794966",
+  "version": {
+    "id": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+    "versionString": "1.8",
+    "platform": "IOS",
+    "state": "PREPARE_FOR_SUBMISSION",
+    "downloadable": true,
+    "buildId": "775d76dc-bbc4-4dd4-a972-d24f17f32718",
+    "buildVersion": "13"
+  },
+  "upload": {
+    "uploadId": "775d76dc-bbc4-4dd4-a972-d24f17f32718",
+    "fileId": "8e4dbb45-e194-4e98-aecb-01807740fb12",
+    "fileName": "HTMLMarkdownPreviewer.ipa",
+    "fileSize": 5428833,
+    "uploaded": true
+  },
+  "build": {
+    "id": "775d76dc-bbc4-4dd4-a972-d24f17f32718",
+    "version": "13",
+    "processingState": "VALID",
+    "usesNonExemptEncryption": false,
+    "expired": false,
+    "preReleaseVersion": "1.8",
+    "platform": "IOS"
+  },
+  "validationSummary": {
+    "errors": 0,
+    "warnings": 4,
+    "infos": 1,
+    "blocking": 0
+  },
+  "nonBlockingFindings": {
+    "fourDuoWarnings": "The legacy CLI size catalog does not recognize APP_IPHONE_DUO. The live modern Asset Library reference catalog, delivered pixels and all 72 ordered placements were independently validated.",
+    "privacyInfo": "The public API cannot verify publication; the authenticated ASC browser shows Published and Data Not Collected."
+  },
+  "reviewSubmission": "not yet submitted; CI retry required"
+}

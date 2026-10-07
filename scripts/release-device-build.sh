@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/select-release-toolchain.sh"
 
 xcodebuild -quiet build \
   -project "$ROOT_DIR/HTMLMarkdownPreviewer.xcodeproj" \

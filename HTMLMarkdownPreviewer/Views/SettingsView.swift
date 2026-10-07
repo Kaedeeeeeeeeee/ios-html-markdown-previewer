@@ -55,6 +55,7 @@ struct SettingsView: View {
                     .accessibilityIdentifier("settings-done-button")
                 }
             }
+            .modifier(PersistentModalNavigationToolbar())
         }
         .confirmationDialog(AppStrings.Settings.clearImportedFilesTitle, isPresented: $isClearConfirmationPresented) {
             Button(AppStrings.Actions.clearImportedFiles, role: .destructive) {
@@ -98,6 +99,24 @@ struct SettingsView: View {
         } catch {
             clearErrorMessage = error.localizedDescription
         }
+    }
+}
+
+/// Keep confirmation and dismissal actions available while a modal form scrolls.
+struct PersistentModalNavigationToolbar: ViewModifier {
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        // Older CI SDKs do not declare this optional iOS 27 toolbar policy.
+        // Complete Duo support still requires the iOS 27.1 SDK.
+        #if compiler(>=6.4)
+        if #available(iOS 27.0, *) {
+            content.toolbarMinimizationBehavior(.never, for: .navigationBar)
+        } else {
+            content
+        }
+        #else
+        content
+        #endif
     }
 }
 

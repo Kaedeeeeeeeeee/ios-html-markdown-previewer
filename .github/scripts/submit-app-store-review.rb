@@ -2,8 +2,10 @@
 # frozen_string_literal: true
 
 require "base64"
+require "digest"
 require "json"
 require "net/http"
+require "open3"
 require "openssl"
 require "time"
 require "uri"
@@ -14,36 +16,28 @@ CONFIGURED_APP_STORE_VERSION_ID = ENV["APP_STORE_CONNECT_VERSION_ID"]
 APP_STORE_VERSION_STRING = ENV.fetch("APP_STORE_CONNECT_VERSION_STRING")
 BUILD_NUMBER = ENV.fetch("APP_STORE_CONNECT_BUILD_NUMBER")
 PLATFORM = ENV.fetch("APP_STORE_CONNECT_PLATFORM", "IOS")
-KEY_ID = ENV.fetch("ASC_API_KEY_ID")
-ISSUER_ID = ENV.fetch("ASC_API_ISSUER_ID")
-KEY_PATH = ENV.fetch("ASC_API_KEY_PATH")
+USE_CLI_TOKEN = ENV["ASC_USE_CLI_TOKEN"] == "true"
+KEY_ID = USE_CLI_TOKEN ? nil : ENV.fetch("ASC_API_KEY_ID")
+ISSUER_ID = USE_CLI_TOKEN ? nil : ENV.fetch("ASC_API_ISSUER_ID")
+KEY_PATH = USE_CLI_TOKEN ? nil : ENV.fetch("ASC_API_KEY_PATH")
 SUBMISSION_READY_RETRY_COUNT = Integer(ENV.fetch("APP_STORE_CONNECT_SUBMIT_RETRIES", "4"))
 CLEAN_SCREENSHOT_DUPLICATES = ENV.fetch("APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES", "false") == "true"
 SUBMIT_FOR_REVIEW = ENV.fetch("APP_STORE_CONNECT_SUBMIT_FOR_REVIEW", "false") == "true"
 RELEASE_TYPE = ENV.fetch("APP_STORE_CONNECT_RELEASE_TYPE", "AFTER_APPROVAL")
-EXPECTED_SCREENSHOTS = {
-  "APP_IPHONE_67" => %w[
-    iphone-01-html-report.png
-    iphone-02-batch-import.png
-    iphone-03-json-preview.png
-    iphone-04-markdown-preview.png
-    iphone-05-library.png
-    iphone-06-yaml-preview.png
-  ],
-  "APP_IPAD_PRO_3GEN_129" => %w[
-    ipad-01-html-report.png
-    ipad-02-batch-import.png
-    ipad-03-json-preview.png
-    ipad-04-markdown-preview.png
-    ipad-05-library.png
-    ipad-06-yaml-preview.png
-  ]
+EXPECTED_SCREENSHOT_GROUPS = {
+  "IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE" => "iphone",
+  "IPAD_13_PROFILE" => "ipad",
+  "IPHONE_DUO_PROFILE" => "duo"
 }.freeze
-EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja].freeze
-DEFAULT_WHATS_NEW = ENV.fetch(
-  "APP_STORE_CONNECT_WHATS_NEW",
-  "Adds richer built-in HTML and ZIP samples with refreshed App Store visuals."
-)
+SCREENSHOT_SUFFIXES = %w[01-html-report 02-markdown-preview 03-json-preview 04-yaml-preview 05-batch-import 06-library].freeze
+EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja zh-Hant].freeze
+REPOSITORY_ROOT = File.expand_path("../..", __dir__)
+STORE_METADATA_ROOT = ENV.fetch("FASTLANE_METADATA_PATH", File.join(REPOSITORY_ROOT, "fastlane/metadata"))
+STORE_SCREENSHOTS_ROOT = ENV.fetch("APP_STORE_CONNECT_SCREENSHOTS_PATH", File.join(REPOSITORY_ROOT, "docs/app-store-screenshots"))
+VERSION_METADATA_FIELDS = { "description" => "description", "keywords" => "keywords", "promotionalText" => "promotional_text", "whatsNew" => "release_notes", "supportUrl" => "support_url" }.freeze
+APP_INFO_METADATA_FIELDS = { "name" => "name", "subtitle" => "subtitle", "privacyPolicyUrl" => "privacy_url" }.freeze
+USABLE_IMAGE_STATES = %w[PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW ACCEPTED APPROVED COMPLETE].freeze
+USABLE_PLACEMENT_STATES = %w[PARENT_PREPARE_FOR_SUBMISSION PARENT_READY_FOR_REVIEW PARENT_WAITING_FOR_REVIEW PARENT_IN_REVIEW PARENT_APPROVED ACTIVE].freeze
 
 class AscError < StandardError
   attr_reader :status, :body
@@ -65,6 +59,8 @@ def raw_ecdsa_signature(der_signature)
 end
 
 def jwt_token
+  return cli_jwt_token if USE_CLI_TOKEN
+
   key = OpenSSL::PKey.read(File.read(KEY_PATH))
   now = Time.now.to_i
   header = { alg: "ES256", kid: KEY_ID, typ: "JWT" }
@@ -74,7 +70,37 @@ def jwt_token
   [signing_input, base64url(signature)].join(".")
 end
 
+def cli_jwt_token
+  now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  return @cli_jwt_token if @cli_jwt_token && now < @cli_jwt_deadline
+
+  # Capture argv directly, without a shell. A live JWT or CLI error output must
+  # never be printed, exported to the environment, or written to a report.
+  stdout, _stderr, status = Open3.capture3("asc", "auth", "token", "--confirm")
+  token = stdout.strip
+  unless status.success? && token.match?(/\A[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\z/)
+    raise "Invalid CLI token"
+  end
+  payload = JSON.parse(Base64.urlsafe_decode64(token.split(".")[1]))
+  expiry = payload.fetch("exp")
+  raise "Invalid CLI token expiration" unless expiry.is_a?(Integer)
+
+  lifetime = [expiry - Time.now.to_i - 30, 9 * 60].min
+  raise "CLI token is already expired" unless lifetime.positive?
+
+  @cli_jwt_token = token
+  @cli_jwt_deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + lifetime
+  token
+rescue StandardError
+  @cli_jwt_token = nil
+  @cli_jwt_deadline = nil
+  raise "ASC CLI token unavailable or invalid; check existing asc authentication.", cause: nil
+end
+
 def request(method, path, query: nil, body: nil)
+  if ENV["APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY"] == "true" && method != :get
+    raise "Store-assets-only mode permits GET requests only."
+  end
   uri = URI("#{API_BASE}#{path}")
   uri.query = URI.encode_www_form(query) if query
 
@@ -291,111 +317,159 @@ def app_store_version_localizations(fields: "locale")
   ).fetch("data", [])
 end
 
-def screenshot_sets(localization_id)
-  request(
-    :get,
-    "/v1/appStoreVersionLocalizations/#{localization_id}/appScreenshotSets",
-    query: {
-      "limit" => "50",
-      "fields[appScreenshotSets]" => "screenshotDisplayType"
-    }
-  ).fetch("data", [])
-end
+# Paginated GET-only collection reader. Never forward a JWT to a links.next host.
+def asc_collection(path, query: nil)
+  data, included, visited = [], {}, []
+  loop do
+    key = [path, query]
+    raise "ASC pagination cycle" if visited.include?(key)
+    visited << key
+    response = request(:get, path, query: query)
+    data.concat(response.fetch("data"))
+    response.fetch("included", []).each { |item| included[[item.fetch("type"), item.fetch("id")]] = item }
+    next_url = response.dig("links", "next")
+    break if next_url.to_s.empty?
 
-def screenshots_in_set(set_id)
-  request(
-    :get,
-    "/v1/appScreenshotSets/#{set_id}/appScreenshots",
-    query: {
-      "limit" => "50",
-      "fields[appScreenshots]" => "fileName,sourceFileChecksum,assetDeliveryState"
-    }
-  ).fetch("data", [])
-end
-
-def screenshot_identity(screenshot)
-  attributes = screenshot.fetch("attributes", {})
-  [attributes["fileName"].to_s, attributes["sourceFileChecksum"].to_s]
-end
-
-def duplicate_screenshots(screenshots)
-  screenshots.group_by { |screenshot| screenshot_identity(screenshot) }
-             .values
-             .flat_map { |matching| matching.drop(1) }
-end
-
-def expected_screenshot_sets
-  localizations = app_store_version_localizations
-  by_locale = localizations.to_h do |localization|
-    [localization.fetch("attributes", {}).fetch("locale"), localization]
+    uri = URI(next_url)
+    unless uri.scheme == "https" && uri.host == "api.appstoreconnect.apple.com" && uri.port == 443
+      raise "Unexpected ASC pagination host"
+    end
+    path = uri.path
+    query = URI.decode_www_form(uri.query.to_s).to_h
   end
+  { "data" => data, "included" => included.values }
+end
 
-  EXPECTED_SCREENSHOT_LOCALES.to_h do |locale|
-    localization = by_locale[locale]
-    raise "Missing App Store version localization #{locale}." unless localization
+def require_editable_store_version!
+  version = fetch_app_store_version
+  attrs = version.fetch("attributes")
+  unless attrs["versionString"] == APP_STORE_VERSION_STRING && attrs["platform"] == PLATFORM &&
+      attrs["appStoreState"] == "PREPARE_FOR_SUBMISSION" &&
+      version.dig("relationships", "app", "data", "id") == APP_ID
+    raise "Store asset gate requires this app's exact editable #{APP_STORE_VERSION_STRING} #{PLATFORM} version."
+  end
+  version
+end
 
-    sets = screenshot_sets(localization.fetch("id"))
-    by_display_type = sets.group_by do |set|
-      set.fetch("attributes", {}).fetch("screenshotDisplayType")
+def verify_metadata_fields!(locale, attributes, fields)
+  fields.each do |field, filename|
+    expected = File.read(File.join(STORE_METADATA_ROOT, locale, "#{filename}.txt")).sub(/[\r\n]+\z/, "")
+    raise "Empty local metadata #{locale}/#{filename}" if expected.empty?
+    unless attributes[field] == expected
+      raise "Store metadata mismatch: #{locale}/#{field}. Synchronize the draft before continuing."
     end
-    selected = EXPECTED_SCREENSHOTS.to_h do |display_type, expected_files|
-      matches = by_display_type.fetch(display_type, [])
-      raise "Expected one #{locale} #{display_type} screenshot set, found #{matches.length}." unless matches.length == 1
-
-      [display_type, { set: matches.first, expected_files: expected_files }]
-    end
-    [locale, selected]
   end
 end
 
-def verify_expected_screenshot_inventory!
-  expected_screenshot_sets.each do |locale, sets|
-    sets.each do |display_type, details|
-      screenshots = screenshots_in_set(details.fetch(:set).fetch("id"))
-      actual_files = screenshots.map { |screenshot| screenshot.fetch("attributes", {})["fileName"].to_s }
-      expected_files = details.fetch(:expected_files)
-      unless actual_files == expected_files
-        raise "Unexpected #{locale} #{display_type} screenshots: expected #{expected_files.inspect}, found #{actual_files.inspect}."
+def verify_store_metadata!
+  localizations = asc_collection("/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations")["data"]
+  actual_locales = localizations.map { |item| item.fetch("attributes").fetch("locale") }
+  unless actual_locales.sort == EXPECTED_SCREENSHOT_LOCALES.sort
+    raise "Expected exactly four version metadata locales, found #{actual_locales.inspect}."
+  end
+  infos = asc_collection("/v1/apps/#{APP_ID}/appInfos")["data"]
+  drafts = infos.select { |info| (info.dig("attributes", "state") || info.dig("attributes", "appStoreState")) == "PREPARE_FOR_SUBMISSION" }
+  raise "Expected one editable AppInfo; published AppInfo must remain untouched." unless drafts.length == 1
+  info_localizations = asc_collection("/v1/appInfos/#{drafts.first.fetch('id')}/appInfoLocalizations")["data"]
+  unless info_localizations.map { |item| item.fetch("attributes").fetch("locale") }.sort == EXPECTED_SCREENSHOT_LOCALES.sort
+    raise "Expected exactly four draft AppInfo locales."
+  end
+  by_locale = info_localizations.to_h { |item| [item.fetch("attributes").fetch("locale"), item] }
+  localizations.each do |item|
+    locale = item.fetch("attributes").fetch("locale")
+    verify_metadata_fields!(locale, item.fetch("attributes"), VERSION_METADATA_FIELDS)
+    verify_metadata_fields!(locale, by_locale.fetch(locale).fetch("attributes"), APP_INFO_METADATA_FIELDS)
+  end
+  puts "Store metadata verified: 4 locales, 32 fields exact; draft AppInfo=#{drafts.first.fetch('id')}."
+  localizations
+end
+
+def screenshot_group_specs(catalog, group)
+  profile = catalog.fetch("placementProfileGroups").find { |item| item["placementProfileGroupId"] == group }
+  raise "Missing live screenshot profile #{group}" unless profile && %w[IPHONE_APP_STORE IPAD_APP_STORE].include?(profile["platform"])
+  screenshot_type = catalog.fetch("placementTypes").find { |item| item["placementTypeId"] == "APP_SCREENSHOT" }
+  mapping = screenshot_type&.fetch("specMappings")&.find { |item| item["placementGroupId"] == group }
+  raise "Missing live APP_SCREENSHOT mapping #{group}" unless mapping
+  feature = catalog.fetch("features").find { |item| item["featureId"] == "APP_STORE_VERSIONS" }
+  limits = feature&.fetch("placementPolicies")&.select { |item| item["placementType"] == "APP_SCREENSHOT" }&.flat_map do |policy|
+    policy.fetch("groupLimits").select { |limit| limit.fetch("groupIds").include?(group) }.map { |limit| limit.fetch("maxCount") }
+  end
+  raise "Live screenshot limit does not allow six #{group} images" if limits.nil? || limits.empty? || limits.min < SCREENSHOT_SUFFIXES.length
+  specs = catalog.fetch("imageSpecs").select { |item| mapping.fetch("specs").include?(item.fetch("specId")) }
+  raise "Missing live image specs #{group}" if specs.empty?
+  specs
+end
+
+def local_screenshot_identity(locale, filename)
+  bytes = File.binread(File.join(STORE_SCREENSHOTS_ROOT, locale, filename))
+  unless bytes.bytesize >= 33 && bytes.start_with?("\x89PNG\r\n\x1a\n".b) && bytes.byteslice(12, 4) == "IHDR"
+    raise "Expected a PNG screenshot: #{locale}/#{filename}"
+  end
+  width, height = bytes.byteslice(16, 8).unpack("NN")
+  color_type = bytes.getbyte(25)
+  raise "Screenshot has an alpha channel: #{locale}/#{filename}" if [4, 6].include?(color_type)
+  { width: width, height: height, size: bytes.bytesize, sha256: Digest::SHA256.hexdigest(bytes) }
+end
+
+def verify_expected_screenshot_inventory!(localizations = nil)
+  localizations ||= app_store_version_localizations
+  catalog_data = request(:get, "/v1/appAssetLibraryRefData").fetch("data")
+  if catalog_data.is_a?(Array)
+    raise "Expected one live asset catalog" unless catalog_data.length == 1
+    catalog_data = catalog_data.first
+  end
+  catalog = catalog_data.fetch("attributes")
+  specs = EXPECTED_SCREENSHOT_GROUPS.to_h { |group, _| [group, screenshot_group_specs(catalog, group)] }
+  by_locale = localizations.to_h { |item| [item.fetch("attributes").fetch("locale"), item] }
+  total = 0
+  EXPECTED_SCREENSHOT_LOCALES.each do |locale|
+    loc = by_locale.fetch(locale) { raise "Missing screenshot locale #{locale}" }
+    response = asc_collection("/v1/appStoreVersionLocalizations/#{loc.fetch('id')}/placements", query: {
+      "limit" => "200", "sort" => "placementGroupPosition", "include" => "image",
+      "fields[appAssetLibraryImages]" => "category,fileName,fileSize,referenceName,specId,state,imageAsset"
+    })
+    screenshots = response.fetch("data").select { |item| item.dig("attributes", "placementType") == "APP_SCREENSHOT" }
+    unless (screenshots.map { |item| item.dig("attributes", "placementGroup") }.uniq - EXPECTED_SCREENSHOT_GROUPS.keys).empty?
+      raise "Unexpected screenshot group in #{locale}; only the approved three profiles are permitted."
+    end
+    images = response.fetch("included").select { |item| item["type"] == "appAssetLibraryImages" }.to_h { |item| [item.fetch("id"), item] }
+    EXPECTED_SCREENSHOT_GROUPS.each do |group, prefix|
+      placements = screenshots.select { |item| item.dig("attributes", "placementGroup") == group }
+      raise "Expected six #{locale}/#{group} screenshots, found #{placements.length}" unless placements.length == SCREENSHOT_SUFFIXES.length
+      # ASC supports sort=placementGroupPosition but does not expose that value
+      # in placement attributes. Verify its returned order by exact image names.
+      placements.zip(SCREENSHOT_SUFFIXES).each do |placement, suffix|
+        filename = "#{prefix}-#{suffix}.png"
+        local = local_screenshot_identity(locale, filename)
+        image = images.fetch(placement.dig("relationships", "image", "data", "id")) { raise "Missing included screenshot image" }
+        attrs = image.fetch("attributes")
+        expected_reference = "release-#{APP_STORE_VERSION_STRING}-#{local.fetch(:sha256)[0, 16]}"
+        unless attrs["fileName"] == filename && attrs["fileSize"] == local.fetch(:size) && attrs["referenceName"] == expected_reference &&
+            USABLE_IMAGE_STATES.include?(attrs["state"]) && USABLE_PLACEMENT_STATES.include?(placement.dig("attributes", "state"))
+          raise "Screenshot identity/state mismatch: #{locale}/#{group}/#{filename}"
+        end
+        spec = specs.fetch(group).find { |item| item["specId"] == attrs["specId"] }
+        dimensions = spec&.fetch("dimensions")
+        pixels = attrs.fetch("imageAsset", {}) || {}
+        unless dimensions && dimensions.values_at("minWidth", "maxWidth") == [local[:width], local[:width]] &&
+            dimensions.values_at("minHeight", "maxHeight") == [local[:height], local[:height]] &&
+            pixels.values_at("width", "height") == [local[:width], local[:height]] &&
+            spec.fetch("mimeTypes").include?("image/png") && spec.fetch("fileExtensions").include?(".png") && local[:size] <= spec.fetch("maxFileSize")
+          raise "Screenshot live specification/dimensions mismatch: #{locale}/#{group}/#{filename}"
+        end
+        total += 1
       end
-
-      puts "Screenshot inventory verified: locale=#{locale} displayType=#{display_type} count=#{actual_files.length} files=#{actual_files.join(",")}."
+      puts "Asset Library inventory verified: locale=#{locale} group=#{group} count=#{placements.length}."
     end
   end
+  raise "Expected 72 approved screenshots, found #{total}" unless total == 72
 end
 
-def clean_duplicate_screenshots!
-  context = app_store_version_context("Before screenshot cleanup")
-  unless context.fetch(:app_store_state) == "PREPARE_FOR_SUBMISSION"
-    raise "Cannot clean screenshots while App Store version state is #{context.fetch(:app_store_state)}."
-  end
-
-  deleted = 0
-  expected_screenshot_sets.each do |locale, sets|
-    sets.each do |display_type, details|
-      set_id = details.fetch(:set).fetch("id")
-      screenshots = screenshots_in_set(set_id)
-      duplicates = duplicate_screenshots(screenshots)
-      duplicates.each do |screenshot|
-        attributes = screenshot.fetch("attributes", {})
-        request(:delete, "/v1/appScreenshots/#{screenshot.fetch("id")}")
-        deleted += 1
-        puts "Deleted duplicate screenshot: locale=#{locale} displayType=#{display_type} file=#{attributes["fileName"]} id=#{screenshot.fetch("id")}."
-      end
-    end
-  end
-
-  10.times do |attempt|
-    begin
-      verify_expected_screenshot_inventory!
-      puts "Screenshot cleanup completed: deleted=#{deleted}."
-      return
-    rescue RuntimeError => e
-      raise if attempt == 9
-
-      puts "Screenshot inventory has not converged yet: #{e.message} Retrying in 3 seconds."
-      sleep(3)
-    end
-  end
+def verify_store_assets!
+  require_editable_store_version!
+  localizations = verify_store_metadata!
+  verify_expected_screenshot_inventory!(localizations)
+  puts "Store assets verified: four locales and 72 ordered screenshots; no remote writes."
 end
 
 def dump_readiness(context)
@@ -437,49 +511,14 @@ def dump_readiness(context)
 
   localizations.each do |localization|
     attrs = localization.fetch("attributes", {})
-    sets = screenshot_sets(localization.fetch("id"))
-    screenshot_inventory = sets.map do |set|
-      display_type = set.fetch("attributes", {})["screenshotDisplayType"]
-      count = screenshots_in_set(set.fetch("id")).length
-      "#{display_type}=#{count}"
-    end
+    placements = asc_collection("/v1/appStoreVersionLocalizations/#{localization.fetch('id')}/placements")["data"]
+    screenshot_inventory = placements.select { |item| item.dig("attributes", "placementType") == "APP_SCREENSHOT" }
+                                     .group_by { |item| item.dig("attributes", "placementGroup") }
+                                     .map { |group, items| "#{group}=#{items.length}" }
     puts "Readiness: localization #{attrs["locale"]} primary=#{attrs["locale"] == primary_locale} description=#{!attrs["description"].to_s.empty?} keywords=#{!attrs["keywords"].to_s.empty?} supportUrl=#{!attrs["supportUrl"].to_s.empty?} whatsNew=#{!attrs["whatsNew"].to_s.empty?} screenshotInventory=#{screenshot_inventory.join(",")}."
   end
 rescue AscError => e
   puts "Readiness: could not complete readiness dump: #{e.message}"
-end
-
-def ensure_whats_new
-  localizations = request(
-    :get,
-    "/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations",
-    query: {
-      "limit" => "50",
-      "fields[appStoreVersionLocalizations]" => "locale,whatsNew"
-    }
-  ).fetch("data", [])
-
-  localizations.each do |localization|
-    attrs = localization.fetch("attributes", {})
-    next unless attrs["whatsNew"].to_s.empty?
-
-    request(
-      :patch,
-      "/v1/appStoreVersionLocalizations/#{localization.fetch("id")}",
-      body: {
-        data: {
-          type: "appStoreVersionLocalizations",
-          id: localization.fetch("id"),
-          attributes: {
-            whatsNew: DEFAULT_WHATS_NEW
-          }
-        }
-      }
-    )
-    puts "Updated missing What's New for #{attrs["locale"]}."
-  end
-rescue AscError => e
-  puts "Warning: could not update missing What's New text: #{e.message}"
 end
 
 def list_review_submissions(app_id, platform, states: OPEN_REVIEW_SUBMISSION_STATES)
@@ -708,19 +747,19 @@ end
 
 def submit_app_store_version
   context = app_store_version_context("Before submission")
-  ensure_whats_new
-  context = app_store_version_context("After metadata normalization")
+  # Re-read both metadata and all modern placements immediately before review.
+  # Gate failures must never enter the review-submission fallback.
+  verify_store_assets!
   dump_readiness(context)
-  verify_expected_screenshot_inventory!
-  state = create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
-  ensure_review_submission_pending!(state)
-  app_store_version_context("After submission")
-rescue AscError => e
-  puts "Fresh review submission path failed; falling back to existing open submissions: #{e.message}"
-  state = nil
-  open_review_submissions(context.fetch(:app_id), context.fetch(:platform)).each do |existing|
-    state = prepare_and_submit_existing_submission(existing.fetch("id"))
-    break if state
+  begin
+    state = create_and_submit_review_submission(context.fetch(:app_id), context.fetch(:platform))
+  rescue AscError => e
+    puts "Fresh review submission path failed; falling back to existing open submissions: #{e.message}"
+    state = nil
+    open_review_submissions(context.fetch(:app_id), context.fetch(:platform)).each do |existing|
+      state = prepare_and_submit_existing_submission(existing.fetch("id"))
+      break if state
+    end
   end
   ensure_review_submission_pending!(state)
   app_store_version_context("After submission")
@@ -751,14 +790,48 @@ def configure_and_verify_release_type
   puts "Verified App Store version #{APP_STORE_VERSION_STRING} releaseType=#{actual}."
 end
 
+def verify_previous_version_approved
+  previous = ENV["APP_STORE_CONNECT_PREVIOUS_VERSION_STRING"]
+  return if previous.to_s.empty?
+
+  versions = request(
+    :get,
+    "/v1/apps/#{APP_ID}/appStoreVersions",
+    query: {
+      "filter[versionString]" => previous,
+      "filter[platform]" => PLATFORM,
+      "fields[appStoreVersions]" => "versionString,platform,appStoreState",
+      "limit" => "200"
+    }
+  ).fetch("data")
+  version = versions.find do |item|
+    attrs = item.fetch("attributes")
+    attrs["versionString"] == previous && attrs["platform"] == PLATFORM
+  end
+  raise "Previous version #{previous} was not found; release gate remains closed." unless version
+
+  state = version.fetch("attributes").fetch("appStoreState")
+  approved_states = %w[READY_FOR_DISTRIBUTION READY_FOR_SALE PENDING_DEVELOPER_RELEASE PENDING_APPLE_RELEASE]
+  unless approved_states.include?(state)
+    raise "Previous version #{previous} is #{state}; wait for approval before uploading or changing store materials."
+  end
+  puts "Previous version #{previous} is #{state}; next-release preparation gate passed."
+end
+
 def run
+  if CLEAN_SCREENSHOT_DUPLICATES
+    raise "Legacy screenshot cleanup is disabled. Use the separately approved Asset Library plan; no screenshot deletion is permitted here."
+  end
+  verify_previous_version_approved
+  return if ENV["APP_STORE_CONNECT_CHECK_RELEASE_GATE_ONLY"] == "true"
+
+  verify_store_assets!
+  return if ENV["APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY"] == "true"
+
   build = wait_for_valid_build
   build_id = build.fetch("id")
   patch_build_encryption(build_id)
   attach_build_to_version(build_id)
-  if CLEAN_SCREENSHOT_DUPLICATES
-    clean_duplicate_screenshots!
-  end
   if SUBMIT_FOR_REVIEW
     configure_and_verify_release_type
     submit_app_store_version

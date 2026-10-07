@@ -1,0 +1,2 @@
+- Added occasional App Store rating requests after repeated reading, shown after returning to the library.
+- Reading, importing, and sharing continue without rating prompts interrupting the workflow.

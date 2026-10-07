@@ -1,0 +1,575 @@
+{
+  "status": "PASS",
+  "packet": "/Volumes/DevSSD/Projects/html_preview/docs/aso/2026-10-07-duo/materials",
+  "target": "/Volumes/DevSSD/Projects/html_preview/docs/app-store-screenshots",
+  "localizedScreenshotCount": 72,
+  "englishCompatibilityCount": 18,
+  "scope": "Local exact-byte screenshot/copy integration only; no metadata mutation, upload, archive equivalence, or publication.",
+  "oldFileCount": 49,
+  "integratedAtUTC": "2026-10-07T08:43:25.152971+00:00",
+  "oldInputsBackup": "/tmp/html-aso-formal-before-integration-xe0s02ts",
+  "previousInputs": [
+    {
+      "path": "iphone-03-json-preview.png",
+      "sha256": "057ea06e4c8cced4be2222b649b7002456385d762371c53658b678ced4bc7044"
+    },
+    {
+      "path": "ipad-05-library.png",
+      "sha256": "23a08f989ae77e66d00273ab32e94e566b23fd35ec65a2a68f40420468b0920f"
+    },
+    {
+      "path": "iphone-02-batch-import.png",
+      "sha256": "f6ecf2b34b09736d1be627139f24dd54445dec597092b8465b9520d031b720c2"
+    },
+    {
+      "path": "ipad-06-yaml-preview.png",
+      "sha256": "557277c4ede1f399d01463877b216db515d4532da9cb548f39b43271d2ef7cee"
+    },
+    {
+      "path": "iphone-04-markdown-preview.png",
+      "sha256": "a1a85f0e3cda2ac7ef139c58c23cbb4f6ca2b68bb16adfd4acdccfa9b287ca78"
+    },
+    {
+      "path": "ipad-01-html-report.png",
+      "sha256": "8d2007aea8dcab2adca776929d09c95d8531907770ebdc2b4b54db6edad70058"
+    },
+    {
+      "path": "iphone-05-library.png",
+      "sha256": "e8ca82319ce53a51582151047a8b1ee0cb133bd0a6c70d40f6c5f366f1100887"
+    },
+    {
+      "path": "iphone-06-yaml-preview.png",
+      "sha256": "0cc5e2cd7a3c232b007b002772dd364f696a65217eb3c596967fc3b1364a2229"
+    },
+    {
+      "path": "iphone-01-html-report.png",
+      "sha256": "3f6e36bc0af3751ceb00b2ce36650220f2974b61cc9b01ec0c1e547e5f781a4c"
+    },
+    {
+      "path": "ipad-02-batch-import.png",
+      "sha256": "e563e24042f93f475f622c4e8d38d2f81040f963d1eaba181770b565a725b869"
+    },
+    {
+      "path": "ipad-04-markdown-preview.png",
+      "sha256": "766f267c5f9a665a79d6eac4fbf83392b30727ed70b3455ba808805522a0f477"
+    },
+    {
+      "path": "ipad-03-json-preview.png",
+      "sha256": "21a55bc750a37ebadf0408e44a536381ef761ca0f354a72bf5590914a9da975f"
+    },
+    {
+      "path": "en-US/iphone-03-json-preview.png",
+      "sha256": "057ea06e4c8cced4be2222b649b7002456385d762371c53658b678ced4bc7044"
+    },
+    {
+      "path": "en-US/ipad-05-library.png",
+      "sha256": "23a08f989ae77e66d00273ab32e94e566b23fd35ec65a2a68f40420468b0920f"
+    },
+    {
+      "path": "en-US/iphone-02-batch-import.png",
+      "sha256": "f6ecf2b34b09736d1be627139f24dd54445dec597092b8465b9520d031b720c2"
+    },
+    {
+      "path": "en-US/ipad-06-yaml-preview.png",
+      "sha256": "557277c4ede1f399d01463877b216db515d4532da9cb548f39b43271d2ef7cee"
+    },
+    {
+      "path": "en-US/iphone-04-markdown-preview.png",
+      "sha256": "a1a85f0e3cda2ac7ef139c58c23cbb4f6ca2b68bb16adfd4acdccfa9b287ca78"
+    },
+    {
+      "path": "en-US/ipad-01-html-report.png",
+      "sha256": "8d2007aea8dcab2adca776929d09c95d8531907770ebdc2b4b54db6edad70058"
+    },
+    {
+      "path": "en-US/iphone-05-library.png",
+      "sha256": "e8ca82319ce53a51582151047a8b1ee0cb133bd0a6c70d40f6c5f366f1100887"
+    },
+    {
+      "path": "en-US/iphone-06-yaml-preview.png",
+      "sha256": "0cc5e2cd7a3c232b007b002772dd364f696a65217eb3c596967fc3b1364a2229"
+    },
+    {
+      "path": "en-US/iphone-01-html-report.png",
+      "sha256": "3f6e36bc0af3751ceb00b2ce36650220f2974b61cc9b01ec0c1e547e5f781a4c"
+    },
+    {
+      "path": "en-US/ipad-02-batch-import.png",
+      "sha256": "e563e24042f93f475f622c4e8d38d2f81040f963d1eaba181770b565a725b869"
+    },
+    {
+      "path": "en-US/ipad-04-markdown-preview.png",
+      "sha256": "766f267c5f9a665a79d6eac4fbf83392b30727ed70b3455ba808805522a0f477"
+    },
+    {
+      "path": "en-US/ipad-03-json-preview.png",
+      "sha256": "21a55bc750a37ebadf0408e44a536381ef761ca0f354a72bf5590914a9da975f"
+    },
+    {
+      "path": "zh-Hans/iphone-03-json-preview.png",
+      "sha256": "6e42f84888dc19b83151996b510b5408447d9fb688f6c8a42a4bc05b6d75275f"
+    },
+    {
+      "path": "zh-Hans/ipad-05-library.png",
+      "sha256": "5e8188dc91a2a521fdcd38bc875a477c402fc0683707fe7de27fabf4d9143a9e"
+    },
+    {
+      "path": "zh-Hans/iphone-02-batch-import.png",
+      "sha256": "841a8c1fe1721d0a41d3f3f661c7c031396f921c0cac510d783ed9a4f4767dd4"
+    },
+    {
+      "path": "zh-Hans/ipad-06-yaml-preview.png",
+      "sha256": "6722d0bef1980e84ba24b6d2d449eea50a891230c1914d896515ba649cc0b8eb"
+    },
+    {
+      "path": "zh-Hans/iphone-04-markdown-preview.png",
+      "sha256": "cabb9926fb493be46e28eeb0377760a274d1812c51441dc3560cf4fafb9ce272"
+    },
+    {
+      "path": "zh-Hans/ipad-01-html-report.png",
+      "sha256": "267d03d7d40d496e904648bcbee6bd86e3ebc1a1b93650ea17f7a8e1d1fb5bdd"
+    },
+    {
+      "path": "zh-Hans/iphone-05-library.png",
+      "sha256": "3208cd7da8603971999ea28c261c7c207088ff079cb2557ba430a6706bc02315"
+    },
+    {
+      "path": "zh-Hans/iphone-06-yaml-preview.png",
+      "sha256": "fcd097dc3192fbbc936225aa6098e1bd6dc4d80a899de2867c81460bc7c44def"
+    },
+    {
+      "path": "zh-Hans/iphone-01-html-report.png",
+      "sha256": "7501ea299556dbccf7b4e91875330e9b64372d6d821867255376d49188a98ac0"
+    },
+    {
+      "path": "zh-Hans/ipad-02-batch-import.png",
+      "sha256": "e312c1caaa1581f421d6a70f2acc3a8e839bb3695dafea45bf6f9d6930361f13"
+    },
+    {
+      "path": "zh-Hans/ipad-04-markdown-preview.png",
+      "sha256": "c9e205f6058d9a7e028a1ef73bfb3366badab3281478d1351030f4c08d6f94f0"
+    },
+    {
+      "path": "zh-Hans/ipad-03-json-preview.png",
+      "sha256": "070308cd78211ac0afb917b960d5df6794e83bbe293d1f2a7d87d0c132f33644"
+    },
+    {
+      "path": "ja/iphone-03-json-preview.png",
+      "sha256": "589f09b2867af6456189aee8ada6d4723053e89ba3cce604476a344f634e0b81"
+    },
+    {
+      "path": "ja/ipad-05-library.png",
+      "sha256": "505ffd156a5956e0fe575a050e19a4f9cb916b4ed5b20128cb4b7218325c4b3f"
+    },
+    {
+      "path": "ja/iphone-02-batch-import.png",
+      "sha256": "3367080bdd0113936809a652e6e23713716e116d5dd2161480fd56d6e4b577ac"
+    },
+    {
+      "path": "ja/ipad-06-yaml-preview.png",
+      "sha256": "26ef46312ef7a5a5582d1bb87bde1ffced007b10956620b6f54558144069b16c"
+    },
+    {
+      "path": "ja/iphone-04-markdown-preview.png",
+      "sha256": "ccaaa0d7b4025f9c3403b5ec53dd2b2b1c61daf46221ca2024d581d16f1f38bc"
+    },
+    {
+      "path": "ja/ipad-01-html-report.png",
+      "sha256": "9d56748c7b772b0287ca42c332e5872ae9fb1f00008e6102aa3ecaba03586ea3"
+    },
+    {
+      "path": "ja/iphone-05-library.png",
+      "sha256": "3784a2bf60d1e31b25b8fd6761d0e1350ff76f0a621440edda06db0ca65c8519"
+    },
+    {
+      "path": "ja/iphone-06-yaml-preview.png",
+      "sha256": "dbb0711124cc572bfeb7d062faa06dbbb070efd6a1e1078736eb5d3fa5886fee"
+    },
+    {
+      "path": "ja/iphone-01-html-report.png",
+      "sha256": "4199a48584d6c5bc5ddf5f5174af79553db40903eaab4a215716a6a38a81b129"
+    },
+    {
+      "path": "ja/ipad-02-batch-import.png",
+      "sha256": "381a6764de6f05fc9d6efbe7260c8523e0e1f7efedee8ead433cc92d202e1d59"
+    },
+    {
+      "path": "ja/ipad-04-markdown-preview.png",
+      "sha256": "bf149ebdabdef6d2339c1332fbf49457a29d3e85cd778e28ac210519d3701650"
+    },
+    {
+      "path": "ja/ipad-03-json-preview.png",
+      "sha256": "adce2fd1f81a90b56083cccf7e6d63ab40f36bc5bb596067c2911a38ba7b1e56"
+    },
+    {
+      "path": "copy.json",
+      "sha256": "353703fab8eb601ebf9ac40186c11fc71e39537aa050a62b84950ed20e8ef260"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-01-html-report.png",
+      "sha256": "e32ebd9c5fca78cc41640b9a5dcd0f98449a2ef44e6e4eed121011e1258ec7c3"
+    },
+    {
+      "path": "docs/app-store-screenshots/iphone-01-html-report.png",
+      "sha256": "e32ebd9c5fca78cc41640b9a5dcd0f98449a2ef44e6e4eed121011e1258ec7c3"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-02-markdown-preview.png",
+      "sha256": "87c8e7b4e79848f28c977981ad942822b2097d69cd7845fca09b6cc778286839"
+    },
+    {
+      "path": "docs/app-store-screenshots/iphone-02-markdown-preview.png",
+      "sha256": "87c8e7b4e79848f28c977981ad942822b2097d69cd7845fca09b6cc778286839"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-03-json-preview.png",
+      "sha256": "0345ff3414c51731b230188b60fadc5e270f7e003e327cdc86710fc635ef8375"
+    },
+    {
+      "path": "docs/app-store-screenshots/iphone-03-json-preview.png",
+      "sha256": "0345ff3414c51731b230188b60fadc5e270f7e003e327cdc86710fc635ef8375"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-04-yaml-preview.png",
+      "sha256": "771ee12a22222a3e781ce53848d9e8a36cb8cc8799efcbe53bbdc5f34e166df3"
+    },
+    {
+      "path": "docs/app-store-screenshots/iphone-04-yaml-preview.png",
+      "sha256": "771ee12a22222a3e781ce53848d9e8a36cb8cc8799efcbe53bbdc5f34e166df3"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-05-batch-import.png",
+      "sha256": "eb0224aa50b1579d6d9cbb929949179c4b67d38abe29a96e5d4658606ba8b22d"
+    },
+    {
+      "path": "docs/app-store-screenshots/iphone-05-batch-import.png",
+      "sha256": "eb0224aa50b1579d6d9cbb929949179c4b67d38abe29a96e5d4658606ba8b22d"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/iphone-06-library.png",
+      "sha256": "97f629c4642041dae15abd5549f35669f34c5ba5d75584b70982dabc13eba389"
+    },
+    {
+      "path": "docs/app-store-screenshots/iphone-06-library.png",
+      "sha256": "97f629c4642041dae15abd5549f35669f34c5ba5d75584b70982dabc13eba389"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-01-html-report.png",
+      "sha256": "fd3dca28588b0d9c1c6e6aa4ce32f7febe5555918318cec87fb053726b38204a"
+    },
+    {
+      "path": "docs/app-store-screenshots/ipad-01-html-report.png",
+      "sha256": "fd3dca28588b0d9c1c6e6aa4ce32f7febe5555918318cec87fb053726b38204a"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-02-markdown-preview.png",
+      "sha256": "fc0aabade22105fc535de1c34c87384f0d42d23caa4e6e960d7b12994d42e9f8"
+    },
+    {
+      "path": "docs/app-store-screenshots/ipad-02-markdown-preview.png",
+      "sha256": "fc0aabade22105fc535de1c34c87384f0d42d23caa4e6e960d7b12994d42e9f8"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-03-json-preview.png",
+      "sha256": "aa64a3017a75dffa44ae8a95fdaf136acc34be9a2b7a2c4f2e5753089d50af47"
+    },
+    {
+      "path": "docs/app-store-screenshots/ipad-03-json-preview.png",
+      "sha256": "aa64a3017a75dffa44ae8a95fdaf136acc34be9a2b7a2c4f2e5753089d50af47"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-04-yaml-preview.png",
+      "sha256": "7606b6f813468d82911a7a35caff6da6e2d4bd807775648b37c0a461e8ffe6f1"
+    },
+    {
+      "path": "docs/app-store-screenshots/ipad-04-yaml-preview.png",
+      "sha256": "7606b6f813468d82911a7a35caff6da6e2d4bd807775648b37c0a461e8ffe6f1"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-05-batch-import.png",
+      "sha256": "81f43f6ab0364e9920682a612dba726e1631ff78fa2bac416e8b247555c960ec"
+    },
+    {
+      "path": "docs/app-store-screenshots/ipad-05-batch-import.png",
+      "sha256": "81f43f6ab0364e9920682a612dba726e1631ff78fa2bac416e8b247555c960ec"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/ipad-06-library.png",
+      "sha256": "4d44cc285c8fc2ac1fc939d6a6641d6bf330db9555b17be93e9f81a8c20e432b"
+    },
+    {
+      "path": "docs/app-store-screenshots/ipad-06-library.png",
+      "sha256": "4d44cc285c8fc2ac1fc939d6a6641d6bf330db9555b17be93e9f81a8c20e432b"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/duo-01-html-report.png",
+      "sha256": "ec8ef6760ab94c4ada8e834d224660a363f0c7c6eab4d80cbf2c5e3a47763b84"
+    },
+    {
+      "path": "docs/app-store-screenshots/duo-01-html-report.png",
+      "sha256": "ec8ef6760ab94c4ada8e834d224660a363f0c7c6eab4d80cbf2c5e3a47763b84"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/duo-02-markdown-preview.png",
+      "sha256": "c7b16ee67ee5838b2fc6e04c0da29e85370d966afb189a229c2d23eb3aad9b68"
+    },
+    {
+      "path": "docs/app-store-screenshots/duo-02-markdown-preview.png",
+      "sha256": "c7b16ee67ee5838b2fc6e04c0da29e85370d966afb189a229c2d23eb3aad9b68"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/duo-03-json-preview.png",
+      "sha256": "07ff2c8f1f7411e4077c7b00373d21f58ff30a93ebcb7bc7d848c224a14f03b3"
+    },
+    {
+      "path": "docs/app-store-screenshots/duo-03-json-preview.png",
+      "sha256": "07ff2c8f1f7411e4077c7b00373d21f58ff30a93ebcb7bc7d848c224a14f03b3"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/duo-04-yaml-preview.png",
+      "sha256": "3af974f71a12b95364b2e5e2d2f5dd0fdb6aeba66ca726590400fc8199a9b2ef"
+    },
+    {
+      "path": "docs/app-store-screenshots/duo-04-yaml-preview.png",
+      "sha256": "3af974f71a12b95364b2e5e2d2f5dd0fdb6aeba66ca726590400fc8199a9b2ef"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/duo-05-batch-import.png",
+      "sha256": "ec2e4c91e593df5e1a9809672fd7c559aa7fa644a75e1816c0154237d8ec2c62"
+    },
+    {
+      "path": "docs/app-store-screenshots/duo-05-batch-import.png",
+      "sha256": "ec2e4c91e593df5e1a9809672fd7c559aa7fa644a75e1816c0154237d8ec2c62"
+    },
+    {
+      "path": "docs/app-store-screenshots/en-US/duo-06-library.png",
+      "sha256": "5192779c9b6f31bb82fae0c454570ab6c8b5049c179c92b5afabd94720d89b7a"
+    },
+    {
+      "path": "docs/app-store-screenshots/duo-06-library.png",
+      "sha256": "5192779c9b6f31bb82fae0c454570ab6c8b5049c179c92b5afabd94720d89b7a"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-01-html-report.png",
+      "sha256": "c44cb93522b5f74681681954061a4cf6e1ea5cd5722fd69336628e51c7a78952"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-02-markdown-preview.png",
+      "sha256": "e1af80ab87249f0cc5404a3b3b2ee8b5018d98dc93a0e138b5f0efba2c2aac62"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-03-json-preview.png",
+      "sha256": "e0a9e1fe39f7a4ddb2fd4cf4413a0d7a53753d2948ae3ea670a78902e1d029af"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-04-yaml-preview.png",
+      "sha256": "f46abca3512d5d7caa9cc381765cf5ac1866584bc36fdd110f3229e46508b025"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-05-batch-import.png",
+      "sha256": "2044f64a53a8da309f23a9e34ad2b46414a58e51ff83bfb2a7ca90a4e1f4a8a5"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/iphone-06-library.png",
+      "sha256": "dea599b30a59cfeb168479093ef71108099a882614af3b126845f664ab339a66"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-01-html-report.png",
+      "sha256": "759c16e239b017bea446046a2ca4c76245f64c8db173f0967ce397f053619bbe"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-02-markdown-preview.png",
+      "sha256": "5383759cb2ab1cd61a263c22d87ede3d9a8cef7259590fa76a44150f0e48a9f6"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-03-json-preview.png",
+      "sha256": "7a294c5aefe8c2b84538db79414530dabbb768588c47cb29f0b3d18c6a8f162c"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-04-yaml-preview.png",
+      "sha256": "cde7b41a036ffce848aedf05af2ff499eb6547ae83b2d459729673908b941089"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-05-batch-import.png",
+      "sha256": "5ccececf7e7747161392b576a71d1be16ba2c927f0fbd463c93914f9edebeb04"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/ipad-06-library.png",
+      "sha256": "cc00aa298955fda105ae91db59580a6e09fecafed2f75953ceb68af6cab9ca6d"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/duo-01-html-report.png",
+      "sha256": "bf24dc711604b468bef6b6546a06d6e1f96921660ac7861490cc23ebf0576813"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/duo-02-markdown-preview.png",
+      "sha256": "451183e63a6933aeb3d7e6d21c74d5e4802700cec580e7f5de238041e87d9801"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/duo-03-json-preview.png",
+      "sha256": "7a558939731db42b8427bda2286383207ee97c5fb75adda69579412a276e83a2"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/duo-04-yaml-preview.png",
+      "sha256": "9dcbb027c6ce4f2dc3b3421ec4d633601d234821d3c4912f7709a818f737ea75"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/duo-05-batch-import.png",
+      "sha256": "1e66957d4fcce10b0b01e0f483e8a589623cd8f325a44707607f2b3bdafcea50"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hans/duo-06-library.png",
+      "sha256": "0be14c662100d22b935069ca4d498d3970bb794e3f596634fb55602f7b60d670"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-01-html-report.png",
+      "sha256": "0b875ba46aa8742172db9c9828135fea87a322641663bd091786bcf4e67ba398"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-02-markdown-preview.png",
+      "sha256": "c1da2cef5a767b49d1fe088b9a64e01d6e7a0550085a7d93da371f288497a26f"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-03-json-preview.png",
+      "sha256": "4433c1484b135016fae592fbd743eefb970a9e124e7f80993db54e607321446b"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-04-yaml-preview.png",
+      "sha256": "9e2fb980a3592ba747afc4f7cf9710bfc341b25a4cc9cdc23cbdbac1dfae1dcb"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-05-batch-import.png",
+      "sha256": "3e809eb8da3271af3924c06d30161ab19f50c0321adb881f3234ee45b16d5686"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/iphone-06-library.png",
+      "sha256": "081493f0e990c6f26578cbd6b3f682dab9337659b9ae94d321a830de1beda20e"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-01-html-report.png",
+      "sha256": "d15f100cc1656667b7c3fbf47abc21f297b00f2e3bbe9b81ae24b7a3ff64e03e"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-02-markdown-preview.png",
+      "sha256": "41f3533dab46bbcbac4a467600df45134964d4a9c684b22631bea4ef64b4685b"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-03-json-preview.png",
+      "sha256": "d5300e31a2cf8e3df855f30348785ff2532412ef12fb15d488dd3d6f339f64b8"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-04-yaml-preview.png",
+      "sha256": "b315476476d8a655571d8f71d2b8f0cffcfce3c1c7b5dd1cb8c4ca49e10abebf"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-05-batch-import.png",
+      "sha256": "f5121e7f65d7b901ca3cd7490cc54396a2a0102bb71e096f75cd635715fba408"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/ipad-06-library.png",
+      "sha256": "2e8cfd3a8741b4248e3e416dfbf4eac3010929db0896245a6b53b27b44f34dc0"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/duo-01-html-report.png",
+      "sha256": "61070168cbd1d16767b0bf11d0ff1764ecda4b02038fc026878916822eebdd29"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/duo-02-markdown-preview.png",
+      "sha256": "ef1f71a67fe09b07874c8327f27c4bf46c2e4c9f6a488b17ca760cbc3ed118be"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/duo-03-json-preview.png",
+      "sha256": "3f19cb4618bc530ca6cb88c0c17b3b6359c260ac30667fe251512bf566ddd00c"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/duo-04-yaml-preview.png",
+      "sha256": "521a6e60cc5802b999afd05c99f18a1d291d5e64cc36b7c042c3a93eea555617"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/duo-05-batch-import.png",
+      "sha256": "e12ccfa46ba09ec5593ae182032a7c94ada145ac34ff3ddf144aaabccb9da29d"
+    },
+    {
+      "path": "docs/app-store-screenshots/ja/duo-06-library.png",
+      "sha256": "0485f4d40d4a04c432857b86d2be1f79a0e5bf526a1eaafe8e08f182c168da43"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-01-html-report.png",
+      "sha256": "0953e46201a897ed4146bf900bd20e7571edbc1a16a25855fde7a1c3c1602535"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-02-markdown-preview.png",
+      "sha256": "3629d3ad76f739fbd2ad8db2a318dbbd2c288049241ed5a969a807bb0e66ad11"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-03-json-preview.png",
+      "sha256": "f03df1645c22ac5dd77b4fa002cd49d1fdf3e1497a251f54e3c1e239c56d7c5c"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-04-yaml-preview.png",
+      "sha256": "d92efc069d13adf511d93ad557d89562c9bbfb6dc6f6f878cdc0a3b0f8256fd0"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-05-batch-import.png",
+      "sha256": "947303b9fee1dd5c5e72e4dbf34ed601a5d65cec309c45cf34cc61664e256c68"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/iphone-06-library.png",
+      "sha256": "cb672783a517fbf81961557debd1825321eba912b237635b605f00902fe7cfd3"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-01-html-report.png",
+      "sha256": "3c27a8842e99e49cc436980461ba8881178fad19b9d47a4215e895224aa02e00"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-02-markdown-preview.png",
+      "sha256": "6d60f76ed5a5843adc492903b01decd85266c3332b899f90dba58ea841242b68"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-03-json-preview.png",
+      "sha256": "6c8f442c93a9c956b133f6cbb227d7f409064638907a2b4d91762f21e88f39fa"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-04-yaml-preview.png",
+      "sha256": "a5b9f06645a6c02c37be210cd64f9aa201926f20d16c11d6b686d7fcf254ba22"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-05-batch-import.png",
+      "sha256": "822398471ab8f971df785509586f567f0229dedecae80f091a910a47f72d5e3b"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/ipad-06-library.png",
+      "sha256": "3375be66ae602434116219f46fd58131c223458fffa7a00b5631ba327434fd80"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/duo-01-html-report.png",
+      "sha256": "98c6c62eb8b607895b61399c8bec10419191fc1f56959adfd652f53202051e03"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/duo-02-markdown-preview.png",
+      "sha256": "a6d1363ecac926ad41f4056bb37bde2d888b39b60dac36535ed995ae8104c4aa"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/duo-03-json-preview.png",
+      "sha256": "1a6e4d573d5c44396920d316c2877017876aa4d76b396300178d760566ab7e79"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/duo-04-yaml-preview.png",
+      "sha256": "3b200955606f3f4fdd6d1f34001f2d623683dacfe468a201cb99585fb14223d7"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/duo-05-batch-import.png",
+      "sha256": "b2c17ddcc5aa86eee3fcd0a46763ea65ce76a6f1d2b23f8eef5e3206663877b2"
+    },
+    {
+      "path": "docs/app-store-screenshots/zh-Hant/duo-06-library.png",
+      "sha256": "28c21a2340bd1993b858d9f3a8b854d742f5aeb47583ce044d05fee8c7506768"
+    },
+    {
+      "path": "docs/app-store-screenshots/copy.json",
+      "sha256": "ddc7d390804cc972b34de51772062146744e8518b9910672b8534481d97d29ab"
+    }
+  ]
+}

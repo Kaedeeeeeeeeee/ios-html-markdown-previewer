@@ -287,7 +287,13 @@ private extension HTMLReadingController {
         let reflowDepth = 0;
         let positionSequence = 0;
         let operationRevision = 0;
+        let activeNavigationRevision = null;
+        let navigationViewportChanged = false;
         const pendingScrolls = new Set();
+        let knownViewport = null;
+        let viewportAnchor = null;
+        let viewportRecovery = null;
+        let resizeTimer = null;
         const style = document.createElement('style');
         style.textContent = `
           ::highlight(${matchStyleName}) { background-color: #ffe083; color: #171717; }
@@ -470,11 +476,67 @@ private extension HTMLReadingController {
                 : headingID;
             return { sessionID: token, sequence: ++positionSequence, anchorID, progress: fraction(y, extent) };
         }
+        // Cache DOM references and geometry in the isolated world only. Original
+        // HTML ids, attributes, content and styles are never changed for anchoring.
+        const reflowBlocks = isMarkdown ? markdownBlocks : Array.from(document.querySelectorAll(
+            'p,h1,h2,h3,h4,h5,h6,pre,li,blockquote,td,th,figure'
+        ));
+        function viewportDimensions() {
+            // WebKit can reflow the DOM and emit scroll before innerWidth/
+            // innerHeight and visualViewport receive the new native view size.
+            // Detect that layout change before a scroll sample can overwrite
+            // the stable paragraph anchor with its post-reflow fraction.
+            return { width: scrollingRoot.clientWidth || innerWidth,
+                height: scrollingRoot.clientHeight || innerHeight };
+        }
+        function viewportChanged() {
+            const size = viewportDimensions();
+            return knownViewport && (Math.abs(size.width - knownViewport.width) > .5 || Math.abs(size.height - knownViewport.height) > .5);
+        }
+        function captureViewportAnchor() {
+            const box = viewportFor(null);
+            const root = rootScrollGeometry();
+            const element = reflowBlocks.find(element => {
+                const rect = element.getBoundingClientRect();
+                if (!(rect.height > 0 && rect.bottom > box.top && rect.top < box.bottom
+                    && rect.right > box.left && rect.left < box.right) || !visible(element)) return false;
+                // Floating reader chrome cannot locate a paragraph in document
+                // flow. Check the candidate itself and every ancestor, including
+                // headings/paragraphs inside fixed or sticky containers.
+                for (let parent = element; parent; parent = parent.parentElement) {
+                    const positioning = getComputedStyle(parent).position;
+                    if (positioning === 'fixed' || positioning === 'sticky') return false;
+                    // Independent vertical panes retain their own native offset.
+                    if (scrollAxes(parent).y) return false;
+                }
+                return true;
+            });
+            const rect = element?.getBoundingClientRect();
+            const focusedRange = ranges[selectedMatch];
+            return {
+                element,
+                // Retain search focus only while it is part of the user's current
+                // viewport. A previous selection may have been scrolled away.
+                focusedRange: focusedRange && clippedRects(focusedRange).length ? focusedRange : null,
+                fraction: rect?.height > 0 ? Math.min(1, Math.max(0, (box.top - rect.top) / rect.height)) : 0,
+                gap: rect ? Math.max(0, rect.top - box.top) : 0,
+                progress: fraction(root.top, root.maxTop),
+                leftFraction: fraction(root.left, root.maxLeft, true)
+            };
+        }
+        function rememberViewport() {
+            if (disposed || viewportRecovery || reflowDepth || isCurrent(activeNavigationRevision) || viewportChanged()) return;
+            knownViewport = viewportDimensions();
+            viewportAnchor = captureViewportAnchor();
+        }
         function snapshot() {
             return { ...position(), matchCount: ranges.length, selectedMatch };
         }
         function notify() {
-            if (!disposed && !highlightSuspensions && !reflowDepth) globalThis.webkit?.messageHandlers[handlerName]?.postMessage(position());
+            if (!disposed && !highlightSuspensions && !reflowDepth && !viewportRecovery) {
+                rememberViewport();
+                globalThis.webkit?.messageHandlers[handlerName]?.postMessage(position());
+            }
         }
         function clearHighlights() {
             if (hasHighlights) {
@@ -543,12 +605,75 @@ private extension HTMLReadingController {
         }
         function onScroll(event) {
             if (disposed || highlightSuspensions) return;
+            if (viewportChanged()) { onResize(); return; }
             registerScroller(event.target);
             // Persist every actual scroll event; the Swift store debounces disk writes.
             // The slower visual fallback can be redrawn on a separate throttle.
             notify();
             if (scrollTimer !== null) return;
             scrollTimer = setTimeout(() => { scrollTimer = null; paintCurrent(); }, 80);
+        }
+        function cancelViewportRecovery() {
+            clearTimeout(resizeTimer);
+            resizeTimer = null;
+            viewportRecovery = null;
+        }
+        function onUserInteraction() {
+            if (!viewportRecovery) return;
+            beginOperation();
+            knownViewport = viewportDimensions();
+            rememberViewport();
+            notify();
+        }
+        function onKeyboardNavigation(event) {
+            if (!event.isTrusted || event.defaultPrevented || !viewportRecovery) return;
+            if (!['PageDown', 'PageUp', 'Home', 'End', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' '].includes(event.key)) return;
+            const target = event.target;
+            if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input,textarea,select'))) return;
+            // Cancel the queued reader scroll; let the browser perform the key's
+            // normal action without preventing or rewriting the keyboard event.
+            onUserInteraction();
+        }
+        function onResize() {
+            if (disposed || !knownViewport) return;
+            if (!viewportChanged()) { paintCurrent(); return; }
+            if (isCurrent(activeNavigationRevision)) {
+                // A delayed resize event must not cancel a newer explicit reader
+                // action or restart its old search/paragraph restoration.
+                knownViewport = viewportDimensions();
+                navigationViewportChanged = true;
+                return;
+            }
+            // Resize is delivered after layout. The last stable scroll sample is
+            // the only reliable source of a pre-reflow paragraph/block anchor.
+            const saved = viewportRecovery?.saved || viewportAnchor;
+            const revision = beginOperation();
+            knownViewport = viewportDimensions();
+            viewportRecovery = { saved, revision };
+            resizeTimer = setTimeout(async () => {
+                resizeTimer = null;
+                if (!isCurrent(revision)) return;
+                const focusedRange = saved?.focusedRange;
+                if (focusedRange && focusedRange === ranges[selectedMatch] && visible(rangeElement(focusedRange))) {
+                    // Reuse nested scroller/occluder handling and the minimum
+                    // movement needed to reveal the same selected result.
+                    await scrollToRange(focusedRange, false, revision);
+                } else {
+                    const root = rootScrollGeometry();
+                    const element = saved?.element;
+                    let top = (saved?.progress || 0) * root.maxTop;
+                    if (element?.isConnected && visible(element)) {
+                        const rect = element.getBoundingClientRect();
+                        top = root.top + rect.top - viewportFor(null).top + rect.height * saved.fraction - saved.gap;
+                    }
+                    await scrollToPosition(null, (saved?.leftFraction || 0) * root.maxLeft, top, revision);
+                }
+                if (!isCurrent(revision)) return;
+                viewportRecovery = null;
+                rememberViewport();
+                paintCurrent();
+                notify();
+            }, 120);
         }
         function targetRect(range) {
             if (range.__markdownAtomic) return range.__markdownAtomic.getBoundingClientRect();
@@ -561,6 +686,7 @@ private extension HTMLReadingController {
         }
         function isCurrent(revision) { return !disposed && revision === operationRevision; }
         function beginOperation() {
+            cancelViewportRecovery();
             operationRevision++;
             for (const cancel of Array.from(pendingScrolls)) cancel();
             return operationRevision;
@@ -775,16 +901,37 @@ private extension HTMLReadingController {
         async function navigate(operation, value, expectedToken) {
             if (disposed || expectedToken !== token) return null;
             const revision = beginOperation();
-            if (operation === 'heading') await revealHeading(value, revision);
-            else if (operation === 'match') await select(value, revision);
-            else if (operation === 'beginning') {
-                await Promise.all(Array.from(scrollContainers.keys()).map(element => scrollToPosition(element, 0, 0, revision)));
-                if (isCurrent(revision)) await scrollToPosition(null, 0, 0, revision);
+            activeNavigationRevision = revision;
+            // The DOM may already have the new size before its resize event is
+            // delivered. Claim that viewport now so the event cannot reuse an
+            // anchor captured before this newer navigation request.
+            knownViewport = viewportDimensions();
+            viewportAnchor = null;
+            try {
+                do {
+                    navigationViewportChanged = false;
+                    if (operation === 'heading') await revealHeading(value, revision);
+                    else if (operation === 'match') await select(value, revision);
+                    else if (operation === 'beginning') {
+                        await Promise.all(Array.from(scrollContainers.keys()).map(element => scrollToPosition(element, 0, 0, revision)));
+                        if (isCurrent(revision)) await scrollToPosition(null, 0, 0, revision);
+                    }
+                    // If size changed during the asynchronous native scroll,
+                    // remeasure the same explicit target in the final layout.
+                } while (isCurrent(revision) && navigationViewportChanged);
+                if (!isCurrent(revision)) return null;
+                paintCurrent();
+                notify();
+                return snapshot();
+            } finally {
+                if (activeNavigationRevision === revision) {
+                    activeNavigationRevision = null;
+                    if (isCurrent(revision)) {
+                        knownViewport = viewportDimensions();
+                        rememberViewport();
+                    }
+                }
             }
-            if (!isCurrent(revision)) return null;
-            paintCurrent();
-            notify();
-            return snapshot();
         }
         function suspendHighlights() {
             if (disposed) return;
@@ -801,10 +948,14 @@ private extension HTMLReadingController {
             disposed = true;
             for (const cancel of Array.from(pendingScrolls)) cancel();
             clearTimeout(scrollTimer);
+            cancelViewportRecovery();
+            document.removeEventListener('touchstart', onUserInteraction, true);
+            document.removeEventListener('wheel', onUserInteraction, true);
+            document.removeEventListener('keydown', onKeyboardNavigation, true);
             document.removeEventListener('scroll', onScroll, true);
-            window.removeEventListener('resize', onScroll);
+            window.removeEventListener('resize', onResize);
             window.visualViewport?.removeEventListener('scroll', onScroll);
-            window.visualViewport?.removeEventListener('resize', onScroll);
+            window.visualViewport?.removeEventListener('resize', onResize);
             clearHighlights();
             style.remove();
         }
@@ -872,15 +1023,19 @@ private extension HTMLReadingController {
                 await revealHeading(anchor, revision);
             }
         }
+        document.addEventListener('touchstart', onUserInteraction, { capture: true, passive: true });
+        document.addEventListener('wheel', onUserInteraction, { capture: true, passive: true });
+        document.addEventListener('keydown', onKeyboardNavigation, { capture: true, passive: true });
         document.addEventListener('scroll', onScroll, { capture: true, passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
+        window.addEventListener('resize', onResize, { passive: true });
         window.visualViewport?.addEventListener('scroll', onScroll, { passive: true });
-        window.visualViewport?.addEventListener('resize', onScroll, { passive: true });
-        return { search, navigate, dispose, snapshot, initialize, reflow, suspendHighlights, resumeHighlights,
+        window.visualViewport?.addEventListener('resize', onResize, { passive: true });
+        return { search, navigate, dispose, snapshot, initialize, reflow, rememberViewport, suspendHighlights, resumeHighlights,
             headings: headings.map(({ id, title, level }) => ({ id, title, level })) };
     })();
     globalThis.__htmlPreviewReading = reader;
     await reader.initialize();
+    reader.rememberViewport();
     if (globalThis.__htmlPreviewReading !== reader) return null;
     return { ...reader.snapshot(), headings: reader.headings };
     """#

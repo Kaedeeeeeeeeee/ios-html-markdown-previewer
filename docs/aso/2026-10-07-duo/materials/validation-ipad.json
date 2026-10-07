@@ -1,0 +1,592 @@
+{
+  "status": "PASS",
+  "scope": "Local metadata, native source aspect/identity, exact PNG canvas, RGB opacity, per-group inventory and hashes. Does not prove visual review, App Store acceptance, upload or release.",
+  "sourcesOnly": false,
+  "locales": [
+    "en-US",
+    "zh-Hans",
+    "ja",
+    "zh-Hant"
+  ],
+  "families": [
+    "ipad"
+  ],
+  "expectedScreenshotCount": 24,
+  "actualScreenshotCount": 24,
+  "actualSourceCount": 24,
+  "metadata": {
+    "en-US": {
+      "name": {
+        "characters": 14,
+        "limit": 30
+      },
+      "subtitle": {
+        "characters": 27,
+        "limit": 30
+      },
+      "keywords": {
+        "characters": 93,
+        "limit": 100
+      },
+      "promotional_text": {
+        "characters": 147,
+        "limit": 170
+      },
+      "description": {
+        "characters": 2339,
+        "limit": 4000
+      }
+    },
+    "zh-Hans": {
+      "name": {
+        "characters": 8,
+        "limit": 30
+      },
+      "subtitle": {
+        "characters": 27,
+        "limit": 30
+      },
+      "keywords": {
+        "characters": 67,
+        "limit": 100
+      },
+      "promotional_text": {
+        "characters": 79,
+        "limit": 170
+      },
+      "description": {
+        "characters": 1002,
+        "limit": 4000
+      }
+    },
+    "ja": {
+      "name": {
+        "characters": 9,
+        "limit": 30
+      },
+      "subtitle": {
+        "characters": 21,
+        "limit": 30
+      },
+      "keywords": {
+        "characters": 80,
+        "limit": 100
+      },
+      "promotional_text": {
+        "characters": 93,
+        "limit": 170
+      },
+      "description": {
+        "characters": 1256,
+        "limit": 4000
+      }
+    },
+    "zh-Hant": {
+      "name": {
+        "characters": 8,
+        "limit": 30
+      },
+      "subtitle": {
+        "characters": 27,
+        "limit": 30
+      },
+      "keywords": {
+        "characters": 71,
+        "limit": 100
+      },
+      "promotional_text": {
+        "characters": 80,
+        "limit": 170
+      },
+      "description": {
+        "characters": 1023,
+        "limit": 4000
+      }
+    }
+  },
+  "sources": [
+    {
+      "path": "sources/en-US/ipad-01-html-report.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "a01a594463aa0cb9f63a3530a6c372a49017709d7400057c061ba53f78a9d495"
+    },
+    {
+      "path": "sources/en-US/ipad-04-markdown-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "8824e87fe9130ddb5e47091bad91ab107f12dee11822e8aaa5c5fac10c33e6a6"
+    },
+    {
+      "path": "sources/en-US/ipad-03-json-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "0215118dd3cf246fcc1492c0406a9b195f48710c4f514a0bb46fb4188f87451e"
+    },
+    {
+      "path": "sources/en-US/ipad-06-yaml-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "2421f00a522c55e40d7e69fff6c51d86ccbb5866cf2749514992439e0e66c406"
+    },
+    {
+      "path": "sources/en-US/ipad-02-batch-import.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "db0e5bb44984243d8197ede45a8b699e10ab72551c1d7e20ef4b64b769d04829"
+    },
+    {
+      "path": "sources/en-US/ipad-05-library.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "f8ea213d11d80f7b47a2d67b1783a7d39c57236db2bef3ff641f92f941769e1c"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-01-html-report.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "490a1f12348372625d9d6999a8bc23fb2ef6431508c174358f0eca6d1536194b"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-04-markdown-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "a8413382d93d7cfbd1d68e0aa2a965b7e42a67525a7d2f046258ab1bb56d2ba6"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-03-json-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "5adec537c961d01c2963d9c14222842f2975573a7d170274098dcbf38f4d7840"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-06-yaml-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "e43e9cad70c036eb60d6c654bfd35777d58d86475c82914bea8104d45f316cab"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-02-batch-import.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "b3f2c73d4eb85d9d129465a16ef2806826dc7fcd75a98cfe5f4d0c5fd992390e"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-05-library.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "d16f60a1bd29b9ecf096573cc2edc955e29f0a46262bbcba7bdfc7ae7c618787"
+    },
+    {
+      "path": "sources/ja/ipad-01-html-report.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "dcd8e0c508f36fed1b4cdb8df93d00ff2a856986e0aed693c8185d78db11bbd8"
+    },
+    {
+      "path": "sources/ja/ipad-04-markdown-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "683302201339b467327ff9226409e82f333f1f07bec305927b0507e05af2b4eb"
+    },
+    {
+      "path": "sources/ja/ipad-03-json-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "f5b1de16add639b6eeebdac1f8a0b6208a96c12d38c4f0fcc5ffdd6a8e2fef17"
+    },
+    {
+      "path": "sources/ja/ipad-06-yaml-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "f277598c9903f3f0b0613f8468b21f4fd6a9aa71dde4a2c1689129ed71a66e66"
+    },
+    {
+      "path": "sources/ja/ipad-02-batch-import.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "2218ab55b2fdbfe205a418b35bd8f8401369c9c366b0bcc461641ed8140997ac"
+    },
+    {
+      "path": "sources/ja/ipad-05-library.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "92f7b2f53c31048daf1d9de79e540f9f36fc11b77cfada0574c1babb742eef8b"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-01-html-report.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "c9884b9c63aaf89d0d168efab268b96324e195045ced605b35b57841f36727f9"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-04-markdown-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "35d70b97cdc00dd02faff585491e0d7771faf94472879662a98ccec90544f4f5"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-03-json-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "61ce3334645fec8e04818cc18571e665f8e917730995e4b095188c23393421bc"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-06-yaml-preview.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "8b3f62cf75cfd8a7a716ffb85e726d81ae4176eb76bbdecf3b0ff4cdd07541aa"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-02-batch-import.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "6033a93954878dd79af8aab0a9c0d9c251fc8f60b3e5139e38cde02fd4a72533"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-05-library.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "mode": "RGBA",
+      "sha256": "c46db9caee59a2489df7c2c1cea5bb2551334315f82aad2b40fc819f0139c23e"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/en-US/ipad-01-html-report.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "fd3dca28588b0d9c1c6e6aa4ce32f7febe5555918318cec87fb053726b38204a",
+      "source": "sources/en-US/ipad-01-html-report.png",
+      "sourceSHA256": "a01a594463aa0cb9f63a3530a6c372a49017709d7400057c061ba53f78a9d495"
+    },
+    {
+      "path": "screenshots/en-US/ipad-02-markdown-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "fc0aabade22105fc535de1c34c87384f0d42d23caa4e6e960d7b12994d42e9f8",
+      "source": "sources/en-US/ipad-04-markdown-preview.png",
+      "sourceSHA256": "8824e87fe9130ddb5e47091bad91ab107f12dee11822e8aaa5c5fac10c33e6a6"
+    },
+    {
+      "path": "screenshots/en-US/ipad-03-json-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "aa64a3017a75dffa44ae8a95fdaf136acc34be9a2b7a2c4f2e5753089d50af47",
+      "source": "sources/en-US/ipad-03-json-preview.png",
+      "sourceSHA256": "0215118dd3cf246fcc1492c0406a9b195f48710c4f514a0bb46fb4188f87451e"
+    },
+    {
+      "path": "screenshots/en-US/ipad-04-yaml-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "7606b6f813468d82911a7a35caff6da6e2d4bd807775648b37c0a461e8ffe6f1",
+      "source": "sources/en-US/ipad-06-yaml-preview.png",
+      "sourceSHA256": "2421f00a522c55e40d7e69fff6c51d86ccbb5866cf2749514992439e0e66c406"
+    },
+    {
+      "path": "screenshots/en-US/ipad-05-batch-import.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "81f43f6ab0364e9920682a612dba726e1631ff78fa2bac416e8b247555c960ec",
+      "source": "sources/en-US/ipad-02-batch-import.png",
+      "sourceSHA256": "db0e5bb44984243d8197ede45a8b699e10ab72551c1d7e20ef4b64b769d04829"
+    },
+    {
+      "path": "screenshots/en-US/ipad-06-library.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "4d44cc285c8fc2ac1fc939d6a6641d6bf330db9555b17be93e9f81a8c20e432b",
+      "source": "sources/en-US/ipad-05-library.png",
+      "sourceSHA256": "f8ea213d11d80f7b47a2d67b1783a7d39c57236db2bef3ff641f92f941769e1c"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-01-html-report.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "759c16e239b017bea446046a2ca4c76245f64c8db173f0967ce397f053619bbe",
+      "source": "sources/zh-Hans/ipad-01-html-report.png",
+      "sourceSHA256": "490a1f12348372625d9d6999a8bc23fb2ef6431508c174358f0eca6d1536194b"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-02-markdown-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "5383759cb2ab1cd61a263c22d87ede3d9a8cef7259590fa76a44150f0e48a9f6",
+      "source": "sources/zh-Hans/ipad-04-markdown-preview.png",
+      "sourceSHA256": "a8413382d93d7cfbd1d68e0aa2a965b7e42a67525a7d2f046258ab1bb56d2ba6"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-03-json-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "7a294c5aefe8c2b84538db79414530dabbb768588c47cb29f0b3d18c6a8f162c",
+      "source": "sources/zh-Hans/ipad-03-json-preview.png",
+      "sourceSHA256": "5adec537c961d01c2963d9c14222842f2975573a7d170274098dcbf38f4d7840"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-04-yaml-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "cde7b41a036ffce848aedf05af2ff499eb6547ae83b2d459729673908b941089",
+      "source": "sources/zh-Hans/ipad-06-yaml-preview.png",
+      "sourceSHA256": "e43e9cad70c036eb60d6c654bfd35777d58d86475c82914bea8104d45f316cab"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-05-batch-import.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "5ccececf7e7747161392b576a71d1be16ba2c927f0fbd463c93914f9edebeb04",
+      "source": "sources/zh-Hans/ipad-02-batch-import.png",
+      "sourceSHA256": "b3f2c73d4eb85d9d129465a16ef2806826dc7fcd75a98cfe5f4d0c5fd992390e"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-06-library.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "cc00aa298955fda105ae91db59580a6e09fecafed2f75953ceb68af6cab9ca6d",
+      "source": "sources/zh-Hans/ipad-05-library.png",
+      "sourceSHA256": "d16f60a1bd29b9ecf096573cc2edc955e29f0a46262bbcba7bdfc7ae7c618787"
+    },
+    {
+      "path": "screenshots/ja/ipad-01-html-report.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "d15f100cc1656667b7c3fbf47abc21f297b00f2e3bbe9b81ae24b7a3ff64e03e",
+      "source": "sources/ja/ipad-01-html-report.png",
+      "sourceSHA256": "dcd8e0c508f36fed1b4cdb8df93d00ff2a856986e0aed693c8185d78db11bbd8"
+    },
+    {
+      "path": "screenshots/ja/ipad-02-markdown-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "41f3533dab46bbcbac4a467600df45134964d4a9c684b22631bea4ef64b4685b",
+      "source": "sources/ja/ipad-04-markdown-preview.png",
+      "sourceSHA256": "683302201339b467327ff9226409e82f333f1f07bec305927b0507e05af2b4eb"
+    },
+    {
+      "path": "screenshots/ja/ipad-03-json-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "d5300e31a2cf8e3df855f30348785ff2532412ef12fb15d488dd3d6f339f64b8",
+      "source": "sources/ja/ipad-03-json-preview.png",
+      "sourceSHA256": "f5b1de16add639b6eeebdac1f8a0b6208a96c12d38c4f0fcc5ffdd6a8e2fef17"
+    },
+    {
+      "path": "screenshots/ja/ipad-04-yaml-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "b315476476d8a655571d8f71d2b8f0cffcfce3c1c7b5dd1cb8c4ca49e10abebf",
+      "source": "sources/ja/ipad-06-yaml-preview.png",
+      "sourceSHA256": "f277598c9903f3f0b0613f8468b21f4fd6a9aa71dde4a2c1689129ed71a66e66"
+    },
+    {
+      "path": "screenshots/ja/ipad-05-batch-import.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "f5121e7f65d7b901ca3cd7490cc54396a2a0102bb71e096f75cd635715fba408",
+      "source": "sources/ja/ipad-02-batch-import.png",
+      "sourceSHA256": "2218ab55b2fdbfe205a418b35bd8f8401369c9c366b0bcc461641ed8140997ac"
+    },
+    {
+      "path": "screenshots/ja/ipad-06-library.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "2e8cfd3a8741b4248e3e416dfbf4eac3010929db0896245a6b53b27b44f34dc0",
+      "source": "sources/ja/ipad-05-library.png",
+      "sourceSHA256": "92f7b2f53c31048daf1d9de79e540f9f36fc11b77cfada0574c1babb742eef8b"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-01-html-report.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "3c27a8842e99e49cc436980461ba8881178fad19b9d47a4215e895224aa02e00",
+      "source": "sources/zh-Hant/ipad-01-html-report.png",
+      "sourceSHA256": "c9884b9c63aaf89d0d168efab268b96324e195045ced605b35b57841f36727f9"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-02-markdown-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "6d60f76ed5a5843adc492903b01decd85266c3332b899f90dba58ea841242b68",
+      "source": "sources/zh-Hant/ipad-04-markdown-preview.png",
+      "sourceSHA256": "35d70b97cdc00dd02faff585491e0d7771faf94472879662a98ccec90544f4f5"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-03-json-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "6c8f442c93a9c956b133f6cbb227d7f409064638907a2b4d91762f21e88f39fa",
+      "source": "sources/zh-Hant/ipad-03-json-preview.png",
+      "sourceSHA256": "61ce3334645fec8e04818cc18571e665f8e917730995e4b095188c23393421bc"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-04-yaml-preview.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "a5b9f06645a6c02c37be210cd64f9aa201926f20d16c11d6b686d7fcf254ba22",
+      "source": "sources/zh-Hant/ipad-06-yaml-preview.png",
+      "sourceSHA256": "8b3f62cf75cfd8a7a716ffb85e726d81ae4176eb76bbdecf3b0ff4cdd07541aa"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-05-batch-import.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "822398471ab8f971df785509586f567f0229dedecae80f091a910a47f72d5e3b",
+      "source": "sources/zh-Hant/ipad-02-batch-import.png",
+      "sourceSHA256": "6033a93954878dd79af8aab0a9c0d9c251fc8f60b3e5139e38cde02fd4a72533"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-06-library.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "3375be66ae602434116219f46fd58131c223458fffa7a00b5631ba327434fd80",
+      "source": "sources/zh-Hant/ipad-05-library.png",
+      "sourceSHA256": "c46db9caee59a2489df7c2c1cea5bb2551334315f82aad2b40fc819f0139c23e"
+    }
+  ],
+  "errors": []
+}

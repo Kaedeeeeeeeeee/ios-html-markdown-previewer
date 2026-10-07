@@ -69,10 +69,18 @@ JSON uses UTF-8 (an initial BOM is accepted), with a 2 MB structure limit,
 200,000 characters and 20,000 lines. The original imported bytes remain unchanged.
 JSON and YAML do not offer PDF export or ZIP page navigation.
 
-The upcoming-version [store copy](docs/plans/2026-10-02-store-positioning-1.7.md)
-and [usage measurement proposal](docs/plans/2026-10-02-usage-measurement.md) are
-local preparation. Usage analytics have not been integrated; the app still
-does not collect usage events or upload user documents.
+The 1.8 (13) [store copy](docs/app-store-listing.md) and
+[screenshot packet](docs/aso/2026-10-07-duo/materials/README.md) prepare four
+languages with six images for each of ordinary iPhone, iPad, and iPhone Duo,
+72 localized images total. Local material validation, remote asset processing,
+review submission, and public release are recorded separately. The earlier
+[usage measurement proposal](docs/plans/2026-10-02-usage-measurement.md) remains a
+proposal; the app does not upload usage events or user documents.
+
+[App Store rating requests](docs/updates/2026-10-03-review-prompts.md) use local
+reading counts: five foreground readings of at least 30 seconds across three
+dates, followed by a two-second pause back in the library. The same version is
+requested at most once, with at least 120 days between requests.
 
 Open a YAML file through Open File, Paste to Preview, or the built-in YAML sample.
 Use Structure to browse typed fields and Source to read comments and original

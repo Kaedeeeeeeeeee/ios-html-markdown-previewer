@@ -3,3 +3,6 @@ HTMLMarkdownPreviewer/Resources/Markdown/markdown-libraries.min.js linguist-gene
 HTMLMarkdownPreviewer/Resources/Markdown/markdown-libraries.min.js.LEGAL.txt linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof
 HTMLMarkdownPreviewer/Resources/Markdown/THIRD-PARTY-LICENSES.txt linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof
 HTMLMarkdownPreviewer/Resources/Markdown/katex.min.css linguist-generated=true
+
+# Unified patches require a space prefix on blank context lines.
+docs/aso/**/next-release-integration.patch whitespace=-blank-at-eol

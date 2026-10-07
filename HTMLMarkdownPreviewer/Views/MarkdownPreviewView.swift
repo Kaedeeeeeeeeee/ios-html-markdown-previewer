@@ -9,6 +9,7 @@ struct MarkdownPreviewView: View {
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var appliedTypography: MarkdownTypography?
+    @State private var appliedViewportSize: CGSize?
 
     @State private var blockedLink: BlockedMarkdownLink?
     @State private var index: MarkdownReadingIndex
@@ -19,9 +20,11 @@ struct MarkdownPreviewView: View {
     @State private var pendingRestoration: ReadingPosition?
     @State private var didRequestRestoreAnchor = false
     @State private var isRestoring = false
+    @State private var restorationConfirmationTask: Task<Void, Never>?
     @State private var pendingJump: (elementID: String, blockID: String)?
     @State private var matchRects: [MarkdownReadingIndex.SearchTarget: CGRect] = [:]
     @State private var pendingMatch: MarkdownReadingIndex.SearchTarget?
+    @State private var pendingReflowMatch: MarkdownReadingIndex.SearchTarget?
 
     private let coordinateSpace = "markdown-reading-viewport"
     private let contentID = "markdown-reading-content"
@@ -60,7 +63,8 @@ struct MarkdownPreviewView: View {
                     .frame(maxWidth: 680, alignment: .leading)
                     .padding(.horizontal, 24)
                     .padding(.vertical, 28)
-                    .frame(maxWidth: .infinity)
+                    // Apply width only after capturing the previous layout's anchor.
+                    .frame(width: appliedViewportSize?.width ?? viewport.size.width)
                     .id(contentID)
                     .background(frameReader(for: contentID))
                     .background {
@@ -74,19 +78,20 @@ struct MarkdownPreviewView: View {
                 .environment(\.markdownTypography, appliedTypography ?? requestedTypography)
                 .onChange(of: requestedTypography, initial: true) { _, typography in
                     guard appliedTypography != typography else { return }
-                    // Capture the old block/fraction before changing its layout.
-                    // Stable block identities let lazy content restore after reflow.
-                    if appliedTypography != nil, hasPrepared {
-                        recordPosition(viewportHeight: viewport.size.height)
-                        pendingRestoration = readingState?.position
-                        isRestoring = pendingRestoration != nil
-                        didRequestRestoreAnchor = false
-                        pendingJump = nil
-                        pendingMatch = nil
-                        frames = [:]
-                        matchRects = [:]
-                    }
+                    if appliedTypography != nil { prepareForReflow(viewportHeight: appliedViewportSize?.height ?? viewport.size.height) }
                     appliedTypography = typography
+                }
+                .task(id: viewport.size) {
+                    // Apply outside the current layout/preference transaction.
+                    // Otherwise a shrinking lazy stack can retain its old width.
+                    await Task.yield()
+                    let size = viewport.size
+                    guard !Task.isCancelled, size.width > 0, size.height > 0, appliedViewportSize != size else { return }
+                    if let previous = appliedViewportSize {
+                        prepareForReflow(viewportHeight: previous.height, invalidateLayout: previous.width != size.width)
+                    }
+                    appliedViewportSize = size
+                    restoreIfPossible(proxy: proxy, viewportHeight: size.height)
                 }
                 .onPreferenceChange(MarkdownReadingFrames.self) { values in
                     frames = values
@@ -101,7 +106,11 @@ struct MarkdownPreviewView: View {
                     matchRects = values
                     revealSelectedMatch(viewportHeight: viewport.size.height)
                 }
-                .onAppear { prepare(proxy: proxy, viewportHeight: viewport.size.height) }
+                .onAppear {
+                    prepare(proxy: proxy, viewportHeight: viewport.size.height)
+                    restoreIfPossible(proxy: proxy, viewportHeight: viewport.size.height)
+                }
+                .onDisappear { cancelRestorationConfirmation() }
                 .onChange(of: document) { _, _ in
                     hasPrepared = false
                     prepare(proxy: proxy, viewportHeight: viewport.size.height)
@@ -151,6 +160,8 @@ struct MarkdownPreviewView: View {
     private func prepare(proxy: ScrollViewProxy, viewportHeight: CGFloat) {
         guard !hasPrepared else { return }
         hasPrepared = true
+        cancelRestorationConfirmation()
+        pendingReflowMatch = nil
         index = MarkdownReadingIndex(document: document)
         readingState?.headings = index.headings
         pendingRestoration = readingState?.position
@@ -171,10 +182,12 @@ struct MarkdownPreviewView: View {
     }
 
     private func navigate(_ target: ReadingNavigationRequest.Target, proxy: ScrollViewProxy) {
+        cancelRestorationConfirmation()
         pendingRestoration = nil
         isRestoring = false
         pendingJump = nil
         pendingMatch = nil
+        pendingReflowMatch = nil
         switch target {
         case .heading(let id):
             guard let blockID = index.blockID(containing: id) else { return }
@@ -211,8 +224,13 @@ struct MarkdownPreviewView: View {
     }
 
     private func revealSelectedMatch(viewportHeight: CGFloat) {
-        guard let target = pendingMatch, let rect = matchRects[target],
+        guard !isRestoring, let target = pendingMatch, let rect = matchRects[target],
               let scrollView = scrollAccess.scrollView, viewportHeight > 0 else { return }
+        if scrollView.isTracking || scrollView.isDragging || scrollView.isDecelerating {
+            pendingMatch = nil
+            pendingReflowMatch = nil
+            return
+        }
         pendingMatch = nil
         if rect.minY < 12 || rect.maxY > viewportHeight - 12 {
             let offset = scrollView.contentOffset.y + rect.minY - viewportHeight * 0.35
@@ -223,19 +241,58 @@ struct MarkdownPreviewView: View {
         }
     }
 
+    private func prepareForReflow(viewportHeight: CGFloat, invalidateLayout: Bool = true) {
+        guard hasPrepared else { return }
+        cancelRestorationConfirmation()
+        // Keep the original anchor through consecutive width/typography changes.
+        if !isRestoring {
+            recordPosition(viewportHeight: viewportHeight)
+            pendingRestoration = readingState?.position
+            // Preserve a visible result through reflow, while respecting a user
+            // who has deliberately scrolled away from the selected match.
+            pendingReflowMatch = highlight.target.flatMap { target in
+                guard let rect = matchRects[target], rect.maxY > 0, rect.minY < viewportHeight,
+                      rect.maxX > 0, rect.minX < (appliedViewportSize?.width ?? .greatestFiniteMagnitude) else { return nil }
+                return target
+            }
+        }
+        isRestoring = pendingRestoration != nil
+        didRequestRestoreAnchor = false
+        pendingJump = nil
+        pendingMatch = nil
+        if invalidateLayout {
+            frames = [:]
+            matchRects = [:]
+        }
+    }
+
     private func restoreIfPossible(proxy: ScrollViewProxy, viewportHeight: CGFloat) {
         guard hasPrepared, isRestoring, let position = pendingRestoration,
               let scrollView = scrollAccess.scrollView,
               let contentFrame = frames[contentID], contentFrame.height > 0 else { return }
-        if position.progress <= 0, position.anchorID == nil
-            || MarkdownReadingIndex.StoredAnchor(position.anchorID)?.blockID == index.blockIDs.first {
-            scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.adjustedContentInset.top), animated: false)
+        // Direct interaction takes priority over a queued lazy-block restoration.
+        if scrollView.isTracking || scrollView.isDragging || scrollView.isDecelerating {
+            cancelRestorationConfirmation()
             pendingRestoration = nil
             isRestoring = false
+            pendingReflowMatch = nil
+            recordPosition(viewportHeight: viewportHeight)
             return
         }
-        let anchor = MarkdownReadingIndex.StoredAnchor(position.anchorID)
-        if let anchor, index.blockIDs.contains(anchor.blockID) {
+        let isBeginning = position.progress <= 0 && (position.anchorID == nil
+            || MarkdownReadingIndex.StoredAnchor(position.anchorID)?.blockID == index.blockIDs.first)
+        let anchor = MarkdownReadingIndex.StoredAnchor(position.anchorID).flatMap {
+            index.blockIDs.contains($0.blockID) ? $0 : nil
+        }
+        if isBeginning {
+            scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.adjustedContentInset.top), animated: false)
+            if pendingReflowMatch == nil {
+                cancelRestorationConfirmation()
+                pendingRestoration = nil
+                isRestoring = false
+                return
+            }
+        } else if let anchor {
             guard let blockFrame = frames[anchor.blockID] else {
                 if !didRequestRestoreAnchor {
                     didRequestRestoreAnchor = true
@@ -253,8 +310,44 @@ struct MarkdownPreviewView: View {
             let maximum = max(0, scrollView.contentSize.height - viewportHeight)
             scrollView.setContentOffset(CGPoint(x: 0, y: maximum * position.progress), animated: false)
         }
-        pendingRestoration = nil
-        isRestoring = false
+        // A lazy proxy.scrollTo can finish after this native offset update and
+        // overwrite it with the block's top. Keep the transaction alive until a
+        // later layout sample confirms the block/fraction at its final offset.
+        cancelRestorationConfirmation()
+        restorationConfirmationTask = Task { @MainActor in
+            do { try await Task.sleep(for: .milliseconds(80)) } catch { return }
+            guard !Task.isCancelled, isRestoring, pendingRestoration == position,
+                  let currentScroll = scrollAccess.scrollView else { return }
+            restorationConfirmationTask = nil
+            let desired: CGFloat
+            if isBeginning {
+                desired = -currentScroll.adjustedContentInset.top
+            } else if let anchor, let blockFrame = frames[anchor.blockID] {
+                desired = currentScroll.contentOffset.y + blockFrame.minY + blockFrame.height * anchor.fraction
+            } else if anchor != nil {
+                restoreIfPossible(proxy: proxy, viewportHeight: viewportHeight)
+                return
+            } else {
+                desired = max(0, currentScroll.contentSize.height - viewportHeight) * position.progress
+            }
+            if abs(currentScroll.contentOffset.y - clampedOffset(desired, in: currentScroll)) > 1 {
+                restoreIfPossible(proxy: proxy, viewportHeight: viewportHeight)
+                return
+            }
+            pendingRestoration = nil
+            isRestoring = false
+            if let target = pendingReflowMatch, target == highlight.target {
+                pendingMatch = target
+                revealSelectedMatch(viewportHeight: viewportHeight)
+            }
+            pendingReflowMatch = nil
+            recordPosition(viewportHeight: viewportHeight)
+        }
+    }
+
+    private func cancelRestorationConfirmation() {
+        restorationConfirmationTask?.cancel()
+        restorationConfirmationTask = nil
     }
 
     private func clampedOffset(_ value: CGFloat, in scrollView: UIScrollView) -> CGFloat {

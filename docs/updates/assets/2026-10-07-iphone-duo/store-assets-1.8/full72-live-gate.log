@@ -1,0 +1,16 @@
+Previous version 1.7 is READY_FOR_SALE; next-release preparation gate passed.
+Using configured App Store version e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5.
+Store metadata verified: 4 locales, 32 fields exact; draft AppInfo=5671d2ce-b5b9-4011-8752-ea88106cf760.
+Asset Library inventory verified: locale=en-US group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=en-US group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=en-US group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hans group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=ja group=IPHONE_DUO_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPAD_13_PROFILE count=6.
+Asset Library inventory verified: locale=zh-Hant group=IPHONE_DUO_PROFILE count=6.
+Store assets verified: four locales and 72 ordered screenshots; no remote writes.

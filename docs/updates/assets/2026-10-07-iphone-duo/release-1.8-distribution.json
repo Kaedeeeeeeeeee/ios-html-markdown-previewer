@@ -1,0 +1,181 @@
+{
+  "status": "LOCAL_DISTRIBUTION_ARTIFACTS_VERIFIED",
+  "recordedAtUTC": "2026-10-07T09:10:05.456306+00:00",
+  "scope": "Read-only verification of existing local Distribution archive and App Store Connect export. No private key read, source mutation, build, simulator operation, upload or review action performed by this receipt collector.",
+  "source": {
+    "head": "27fe3fc9429b15073b72cca4f13322f51c793bed",
+    "workingTreeAtArchive": "clean",
+    "workingTreeAtCollection": "clean",
+    "archiveDiagnosticSource": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/SignedArchiveDiagnostics/20261007T090451Z-signed-archive/signed-archive-diagnostic-report.md",
+    "matchesEarlierAppSourceCommit": "fb8e0ccfb1ca89d3f795f44ff94befbce67c15fa",
+    "appSourceTreeObject": "570bdfb2d79899f20671bb45c24f0f5f19f741b8",
+    "earlierAppSourceTreeObject": "570bdfb2d79899f20671bb45c24f0f5f19f741b8",
+    "changedProductionSourcePaths": [],
+    "comparedPaths": [
+      "HTMLMarkdownPreviewer",
+      "HTMLMarkdownPreviewer.xcodeproj",
+      "project.yml"
+    ],
+    "earlierFrozenSourceReport": "/tmp/html-release-1.8-frozen-source-20261007.json"
+  },
+  "archive": {
+    "status": "PASS",
+    "path": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/HTMLPreviewer.xcarchive",
+    "configuration": "Release",
+    "destination": "generic/platform=iOS",
+    "metadata": {
+      "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
+      "CFBundleShortVersionString": "1.8",
+      "CFBundleVersion": "13",
+      "DTSDKName": "iphoneos27.1",
+      "DTXcode": "2710",
+      "DTXcodeBuild": "27A9275",
+      "MinimumOSVersion": "17.0",
+      "UIDeviceFamily": [
+        1,
+        2
+      ],
+      "ITSAppUsesNonExemptEncryption": false
+    },
+    "diagnosticGeneratedAtUTC": "2026-10-07T09:05:39Z",
+    "creationDateUTC": "2026-10-07T09:05:38Z",
+    "appExecutableSHA256": "2066b24ec8b4c399ff238c9b5293e288bd516beb69db256f6de2424f5424db88",
+    "appInfoPlistSHA256": "2dc7f0014e6b3e536bcad0e1336d1c5d6399aa6c4489c9a8f232ae8a62873e25",
+    "codesignVerification": {
+      "command": [
+        "codesign",
+        "--verify",
+        "--strict",
+        "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/HTMLPreviewer.xcarchive/Products/Applications/HTMLMarkdownPreviewer.app"
+      ],
+      "exitCode": 0,
+      "stderr": ""
+    },
+    "codesignDisplay": {
+      "authorityChain": [
+        "Apple Distribution: SHIFENG ZHANG (Y4FV6WUU4V)",
+        "Apple Worldwide Developer Relations Certification Authority",
+        "Apple Root CA"
+      ],
+      "teamIdentifier": "Y4FV6WUU4V",
+      "cdhash": "25b4d64986c340d4395d678f1343ceb0b961e749",
+      "format": "app bundle with Mach-O thin (arm64)"
+    },
+    "allowDevelopmentSigning": false,
+    "allowProvisioningUpdates": false
+  },
+  "export": {
+    "status": "PASS",
+    "ipaPath": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/Export/HTMLMarkdownPreviewer.ipa",
+    "ipaSHA256": "34906d093b13265d24485a50860a57608402c9fd4c7f5940923112f228be5a06",
+    "ipaBytes": 5428833,
+    "metadata": {
+      "CFBundleIdentifier": "com.kaede.htmlmarkdownpreviewer",
+      "CFBundleShortVersionString": "1.8",
+      "CFBundleVersion": "13",
+      "DTSDKName": "iphoneos27.1",
+      "DTXcode": "2710",
+      "DTXcodeBuild": "27A9275",
+      "MinimumOSVersion": "17.0",
+      "UIDeviceFamily": [
+        1,
+        2
+      ],
+      "ITSAppUsesNonExemptEncryption": false
+    },
+    "ipaExecutableSHA256": "60c66b1006d298bde1f72b0e868aa68ddb93e50574ce251840a2ef029f5851b7",
+    "metadataMatchesArchive": true,
+    "method": "app-store-connect",
+    "destination": "export",
+    "signingStyle": "manual",
+    "certificate": {
+      "SHA1": "CAB1F79C429CD517B797AE1F500927A924B1875B",
+      "dateExpires": "2027/05/17",
+      "type": "Apple Distribution"
+    },
+    "profile": {
+      "UUID": "6878486a-441b-41d8-9967-3305bafed034",
+      "dateExpires": "2027/05/17",
+      "name": "HTML Markdown Previewer App Store"
+    },
+    "entitlements": {
+      "application-identifier": "Y4FV6WUU4V.com.kaede.htmlmarkdownpreviewer",
+      "beta-reports-active": true,
+      "com.apple.developer.team-identifier": "Y4FV6WUU4V",
+      "get-task-allow": false
+    },
+    "architectures": [
+      "arm64"
+    ],
+    "existingIPAVerificationReport": "/tmp/html-release-1.8-ipa-verification-20261007.json",
+    "ipaSignatureScope": "Apple Distribution certificate and no-debug entitlement recorded by the actual export DistributionSummary; IPA bundle was read directly from ZIP for metadata/executable identity, not separately extracted for codesign verification."
+  },
+  "firstArchiveFailure": {
+    "status": "FAILED",
+    "log": "/tmp/html-release-1.8-signed-archive-20261007.log",
+    "reason": "A global command-line PROVISIONING_PROFILE_SPECIFIER was applied to Swift Package targets that do not support provisioning profiles.",
+    "affectedTargets": [
+      "ZIPFoundation",
+      "Markdown",
+      "cmark-gfm-extensions",
+      "cmark-gfm",
+      "CAtomic",
+      "ZIPFoundation_ZIPFoundation"
+    ],
+    "errorRecordCount": 6,
+    "initialCommand": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild archive -project /Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Release -destination generic/platform=iOS -archivePath /Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/HTMLPreviewer.xcarchive -derivedDataPath /Volumes/DevSSD/Projects/html_preview/DerivedData -skipPackagePluginValidation DEVELOPMENT_TEAM=Y4FV6WUU4V CODE_SIGNING_ALLOWED=YES CODE_SIGN_STYLE=Manual \"CODE_SIGN_IDENTITY=Apple Distribution: SHIFENG ZHANG (Y4FV6WUU4V)\" \"PROVISIONING_PROFILE_SPECIFIER=HTML Markdown Previewer App Store\"",
+    "recovery": {
+      "action": "Unset global signing/profile overrides for the retry and use project target signing settings; no source changes.",
+      "unsetEnvironmentNames": [
+        "CODE_SIGN_STYLE",
+        "CODE_SIGN_IDENTITY",
+        "PROVISIONING_PROFILE_SPECIFIER"
+      ],
+      "actionSource": "Release-owner report; corroborated by the actual retry command omitting all three command-line overrides.",
+      "retryCommand": "/Applications/Xcode-27.1.app/Contents/Developer/usr/bin/xcodebuild archive -project /Volumes/DevSSD/Projects/html_preview/HTMLMarkdownPreviewer.xcodeproj -scheme HTMLMarkdownPreviewer -configuration Release -destination generic/platform=iOS -archivePath /Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/HTMLPreviewer.xcarchive -derivedDataPath /Volumes/DevSSD/Projects/html_preview/DerivedData -skipPackagePluginValidation DEVELOPMENT_TEAM=Y4FV6WUU4V CODE_SIGNING_ALLOWED=YES",
+      "retryStatus": "PASS"
+    }
+  },
+  "evidenceFiles": [
+    {
+      "path": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/SignedArchiveDiagnostics/20261007T090451Z-signed-archive/signed-archive-diagnostic-report.md",
+      "sha256": "bea0e712f4b973bc86537dea56125833ec87108e65c33dcf866992fadd7588b0"
+    },
+    {
+      "path": "/tmp/html-release-1.8-signed-archive-retry-20261007.log",
+      "sha256": "7628959657572848f17aabd4eca00f01203bfbbadfa864e9959ff4b0a874d659"
+    },
+    {
+      "path": "/tmp/html-release-1.8-signed-archive-20261007.log",
+      "sha256": "4b236dec46fb31c80b2f134a74235f8509834956664d392cc9600f10cad751d8"
+    },
+    {
+      "path": "/tmp/html-release-1.8-export-20261007.log",
+      "sha256": "afb85e41aab496231ca05d6a7001d276035a1e648d65f1555cb6d84cb4f02f8a"
+    },
+    {
+      "path": "/tmp/html-release-1.8-ipa-verification-20261007.json",
+      "sha256": "d9845946205f1408dc987434a24b210c0169359e7d3f5d466d4d6abcdda46d38"
+    },
+    {
+      "path": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/Export/DistributionSummary.plist",
+      "sha256": "f7f3a8227d0bfacc09e052339ab0e3c6cb766b6048f886123d9fc5218b613885"
+    },
+    {
+      "path": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/Export/ExportOptions.plist",
+      "sha256": "029169e7ec168e72cbef386660b75f575512d51f8e1147a983e355280e84e134"
+    },
+    {
+      "path": "/Volumes/DevSSD/Projects/html_preview/DerivedData/Release1.8/HTMLPreviewer.xcarchive/Info.plist",
+      "sha256": "d36639c07c247f5cde075acaf824ce5e2d5d01ea9b3590b331091f5a7c4b82db"
+    }
+  ],
+  "notAssessed": [
+    "Upload completion",
+    "App Store Connect build processing/VALID state",
+    "Build selection",
+    "Review submission/approval",
+    "Public release",
+    "Physical-device or signed-build final smoke acceptance"
+  ]
+}

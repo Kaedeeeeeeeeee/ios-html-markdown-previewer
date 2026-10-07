@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUTC": "2026-10-07T08:58:17.708150+00:00",
+  "status": "PASS",
+  "appId": "6785794966",
+  "versionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+  "versionString": "1.8",
+  "approvedPlanSha256": "aaaec853c3b1c0bcb2aa4dd0e3ca325b61570f5c21dab288b8334ed8c49e018c",
+  "receiptPath": "/tmp/html-asset-library-1.8-phone-ipad48-receipt-20261007.json",
+  "receiptSha256": "8f948619c0909c2ab44c6ce544c461d5ce3b3e87c86cfd3581b9b442ac8483cf",
+  "verificationPath": "/tmp/html-asset-library-1.8-phone-ipad48-verification-20261007.json",
+  "verificationSha256": "fc0772eb61f9a301f2a828a84529745905bee79fe131b9d13fadd85b74bc2332",
+  "uploadedImages": 48,
+  "allDeliveredPngPixelsExact": true,
+  "completedMutationCounts": {
+    "POST": 104,
+    "PATCH": 48,
+    "DELETE": 36
+  },
+  "unknownMutationResults": 0,
+  "groups": [
+    {
+      "locale": "en-US",
+      "placementGroup": "IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE",
+      "orderedPlacementIds": [
+        "aac00019-4770-8396-8f00-d8f15b795992",
+        "c5000019-4770-8396-8f3f-b8b34a2b1980",
+        "07400019-4770-8396-8f04-e8703d837bd6",
+        "99c00019-4770-8396-8f3c-f1b39ea4ffae",
+        "4dc00019-4770-8396-8f16-69d26f90fbc6",
+        "c5000019-4770-8396-8f2a-c7d9aebb0640"
+      ]
+    },
+    {
+      "locale": "en-US",
+      "placementGroup": "IPAD_13_PROFILE",
+      "orderedPlacementIds": [
+        "87400019-4770-8396-8f1f-4483be7b5930",
+        "21000019-4770-8396-8f2a-563c09fb9c87",
+        "09c00019-4770-8396-8f33-8f12b63939d3",
+        "6f800019-4770-8396-8f24-d2e6ee81adde",
+        "1cc00019-4770-8396-8f08-df882d3bcd23",
+        "de400019-4770-8396-8f19-b54e0df98ed7"
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "placementGroup": "IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE",
+      "orderedPlacementIds": [
+        "d7400019-4770-8396-8f0c-0ab313a30485",
+        "47c00019-4770-8396-8f3b-d812a87baa3a",
+        "2c800019-4770-8396-8f18-4ec8da5b7254",
+        "d4400019-4770-8396-8f2d-f30313724545",
+        "c6400019-4770-8396-8f2c-f762bf736ca1",
+        "fd400019-4770-8396-8f17-12c1b17f8528"
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "placementGroup": "IPAD_13_PROFILE",
+      "orderedPlacementIds": [
+        "3d400019-4770-8396-8f23-8666c78d9b6b",
+        "8a000019-4770-8396-8f1b-262d5010d2f8",
+        "13400019-4770-8396-8f2e-be8d0972cf89",
+        "c4c00019-4770-8396-8f3b-22f133c88ea0",
+        "7f800019-4770-8396-8f12-928b0a4404cb",
+        "8a000019-4770-8396-8f1c-ef84a8438af8"
+      ]
+    },
+    {
+      "locale": "ja",
+      "placementGroup": "IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE",
+      "orderedPlacementIds": [
+        "12000019-4770-8396-8f0f-aaa8dc7d5ba3",
+        "41800019-4770-8396-8f34-877a333e400c",
+        "6b000019-4770-8396-8f2e-64d0ae1a2e5e",
+        "a8000019-4770-8396-8f3c-a8c7f403d4b4",
+        "8f400019-4770-8396-8f0e-ce1c5ee14731",
+        "44400019-4770-8396-8f3d-f8d1c4abe069"
+      ]
+    },
+    {
+      "locale": "ja",
+      "placementGroup": "IPAD_13_PROFILE",
+      "orderedPlacementIds": [
+        "75000019-4770-8396-8f10-0327023a3ad7",
+        "cd800019-4770-8396-8f17-4c6627ddc1e6",
+        "aec00019-4770-8396-8f11-b3283aa717be",
+        "4a000019-4770-8396-8f1e-32ec7a3435bd",
+        "c8800019-4770-8396-8f2c-979cb12ed851",
+        "d1000019-4770-8396-8f19-1964b8cb6e3d"
+      ]
+    },
+    {
+      "locale": "zh-Hant",
+      "placementGroup": "IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE",
+      "orderedPlacementIds": [
+        "4a000019-4770-8396-8f20-89cb2a6470f5",
+        "a3800019-4770-8396-8f11-7289c640f727",
+        "c0c00019-4770-8396-8f00-fbc13c0d213f",
+        "fac00019-4770-8396-8f15-42d7a3590c6d",
+        "d8800019-4770-8396-8f34-9a36098bad09",
+        "f4800019-4770-8396-8f3f-3dae876fe069"
+      ]
+    },
+    {
+      "locale": "zh-Hant",
+      "placementGroup": "IPAD_13_PROFILE",
+      "orderedPlacementIds": [
+        "b5400019-4770-8396-8f11-e55ccd5cbdea",
+        "92800019-4770-8396-8f1d-37f06077b160",
+        "61800019-4770-8396-8f28-d89f5823c7db",
+        "68800019-4770-8396-8f16-b18a3cfac8ee",
+        "f1400019-4770-8396-8f00-4f01a2b52223",
+        "3a400019-4770-8396-8f0a-913de1bb48d3"
+      ]
+    }
+  ],
+  "independentFreshReadback": {
+    "verified": true,
+    "errors": [],
+    "capturedAt": "2026-10-07T08:57:37.889910+00:00"
+  },
+  "duoComparison": {
+    "beforeCount": 24,
+    "afterCount": 24,
+    "samePlacementOrderAndImageIds": true,
+    "scopeBoundary": "Execution actions exclusively targeted approved ordinary phone/iPad groups on 1.8; no Duo group/receipt or published 1.7 localization was targeted."
+  },
+  "notClaimed": [
+    "overall72 metadata/assets gate",
+    "build/archive/upload",
+    "review submission",
+    "public release"
+  ]
+}

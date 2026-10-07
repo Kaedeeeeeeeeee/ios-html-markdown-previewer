@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "status": "local_layout_draft_not_uploaded",
+  "preparedAtUTC": "2026-10-07T06:47:10.389325+00:00",
+  "purpose": "Sanitized evidence for a local store-screenshot strategy and static preview; no account identifiers, credentials, resource URLs or asset tokens copied.",
+  "onlineVersion": {
+    "version": "1.7",
+    "build": "12",
+    "appStoreState": "READY_FOR_SALE",
+    "appVersionState": "READY_FOR_DISTRIBUTION",
+    "buildProcessingState": "VALID",
+    "versionBuildAssociationSource": "Live verification confirmed App Store Connect UI; API files independently corroborate version state and build processing."
+  },
+  "currentScreenshotInventory": {
+    "locales": [
+      "en-US",
+      "zh-Hans",
+      "ja"
+    ],
+    "sets": [
+      {
+        "locale": "en-US",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "count": 6,
+        "filenames": [
+          "ipad-01-html-report.png",
+          "ipad-02-batch-import.png",
+          "ipad-03-json-preview.png",
+          "ipad-04-markdown-preview.png",
+          "ipad-05-library.png",
+          "ipad-06-yaml-preview.png"
+        ],
+        "imageSizes": [
+          [
+            2064,
+            2752
+          ]
+        ],
+        "deliveryStates": [
+          "COMPLETE"
+        ]
+      },
+      {
+        "locale": "en-US",
+        "displayType": "APP_IPHONE_67",
+        "count": 6,
+        "filenames": [
+          "iphone-01-html-report.png",
+          "iphone-02-batch-import.png",
+          "iphone-03-json-preview.png",
+          "iphone-04-markdown-preview.png",
+          "iphone-05-library.png",
+          "iphone-06-yaml-preview.png"
+        ],
+        "imageSizes": [
+          [
+            1320,
+            2868
+          ]
+        ],
+        "deliveryStates": [
+          "COMPLETE"
+        ]
+      },
+      {
+        "locale": "zh-Hans",
+        "displayType": "APP_IPHONE_67",
+        "count": 6,
+        "filenames": [
+          "iphone-01-html-report.png",
+          "iphone-02-batch-import.png",
+          "iphone-03-json-preview.png",
+          "iphone-04-markdown-preview.png",
+          "iphone-05-library.png",
+          "iphone-06-yaml-preview.png"
+        ],
+        "imageSizes": [
+          [
+            1320,
+            2868
+          ]
+        ],
+        "deliveryStates": [
+          "COMPLETE"
+        ]
+      },
+      {
+        "locale": "zh-Hans",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "count": 6,
+        "filenames": [
+          "ipad-01-html-report.png",
+          "ipad-02-batch-import.png",
+          "ipad-03-json-preview.png",
+          "ipad-04-markdown-preview.png",
+          "ipad-05-library.png",
+          "ipad-06-yaml-preview.png"
+        ],
+        "imageSizes": [
+          [
+            2064,
+            2752
+          ]
+        ],
+        "deliveryStates": [
+          "COMPLETE"
+        ]
+      },
+      {
+        "locale": "ja",
+        "displayType": "APP_IPAD_PRO_3GEN_129",
+        "count": 6,
+        "filenames": [
+          "ipad-01-html-report.png",
+          "ipad-02-batch-import.png",
+          "ipad-03-json-preview.png",
+          "ipad-04-markdown-preview.png",
+          "ipad-05-library.png",
+          "ipad-06-yaml-preview.png"
+        ],
+        "imageSizes": [
+          [
+            2064,
+            2752
+          ]
+        ],
+        "deliveryStates": [
+          "COMPLETE"
+        ]
+      },
+      {
+        "locale": "ja",
+        "displayType": "APP_IPHONE_67",
+        "count": 6,
+        "filenames": [
+          "iphone-01-html-report.png",
+          "iphone-02-batch-import.png",
+          "iphone-03-json-preview.png",
+          "iphone-04-markdown-preview.png",
+          "iphone-05-library.png",
+          "iphone-06-yaml-preview.png"
+        ],
+        "imageSizes": [
+          [
+            1320,
+            2868
+          ]
+        ],
+        "deliveryStates": [
+          "COMPLETE"
+        ]
+      }
+    ],
+    "total": 36
+  },
+  "duoStoreGroup": {
+    "source": "Live English App Store Connect UI verification on 2026-10-07",
+    "label": "iPhone Duo",
+    "requirement": "Optional",
+    "assetStatus": "No assets added",
+    "groupCount": 1,
+    "innerOuterAreSeparateUploadGroups": false,
+    "verifiedAPIEnum": null,
+    "automaticInnerOuterSelectionVerified": false
+  },
+  "traditionalChinese": {
+    "locale": "zh-Hant",
+    "backendLocalizationExists": false,
+    "source": "Current App Store Connect localization audit",
+    "localMaterialPacketExists": "../2026-10-03/materials/"
+  },
+  "duoOfficialSizes": {
+    "source": "Live reading of Apple screenshot specifications on 2026-10-07",
+    "url": "https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/",
+    "dimensions": [
+      {
+        "screen": "outer",
+        "orientation": "portrait",
+        "width": 1398,
+        "height": 2034
+      },
+      {
+        "screen": "outer",
+        "orientation": "landscape",
+        "width": 2034,
+        "height": 1398
+      },
+      {
+        "screen": "inner",
+        "orientation": "portrait",
+        "width": 2007,
+        "height": 2853
+      },
+      {
+        "screen": "inner",
+        "orientation": "landscape",
+        "width": 2853,
+        "height": 2007
+      }
+    ]
+  },
+  "cliCapabilityAudit": {
+    "source": "sizes.json and screenshot-create-schema.json",
+    "sizesContainsDuo": false,
+    "createFieldType": "ScreenshotDisplayType",
+    "duoEnumInvented": false,
+    "limit": "CLI inventory does not establish Duo is unsupported in the live store UI."
+  },
+  "sourceCaptures": [
+    {
+      "path": "sources/zh-Hans/duo-inner-html.png",
+      "locale": "zh-Hans",
+      "screen": "inner",
+      "displayId": 3,
+      "pose": "Open",
+      "pixelWidth": 2853,
+      "pixelHeight": 2007,
+      "imageMode": "RGBA",
+      "bytes": 600830,
+      "sha256": "81e4a9f1877d4e1909bdfea9158dabc59ff9942a6839e2208d3be2398cb4fef9",
+      "sourceMTimeUnixNanoseconds": "1791355720392160648",
+      "sourceMTimeUTC": "2026-10-07T06:48:40.392161+00:00",
+      "mtimeMeaning": "Source filesystem modification time; not an independently timed UI action.",
+      "captureKind": "Actual simulator display capture",
+      "visualReview": "Visual review inspected the stable original and confirmed the same synthetic weekly report; inner library contains only weekly-report.html and developer-notes.md.",
+      "imageEdited": false,
+      "testCase": null
+    },
+    {
+      "path": "sources/zh-Hans/duo-outer-html.png",
+      "locale": "zh-Hans",
+      "screen": "outer",
+      "displayId": 1,
+      "pose": "Closed",
+      "pixelWidth": 1398,
+      "pixelHeight": 2034,
+      "imageMode": "RGBA",
+      "bytes": 472026,
+      "sha256": "e62c28d78748599a39fa0a419e895fc0fd827d0bf97cecbdfa8ccfc62053bdbe",
+      "sourceMTimeUnixNanoseconds": "1791355752058160521",
+      "sourceMTimeUTC": "2026-10-07T06:49:12.058161+00:00",
+      "mtimeMeaning": "Source filesystem modification time; not an independently timed UI action.",
+      "captureKind": "Actual simulator display capture",
+      "visualReview": "Visual review inspected the stable original and confirmed the same synthetic weekly report; inner library contains only weekly-report.html and developer-notes.md.",
+      "imageEdited": false,
+      "testCase": null
+    }
+  ],
+  "releaseActions": {
+    "uploaded": false,
+    "submitted": false,
+    "pushed": false,
+    "oldPacketModified": false
+  },
+  "rawAuditReferences": {
+    "versions.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/versions.json",
+      "sha256": "5b9248ef451771ff04d56cfc396c79ec2ac8b7b43a58ea8a7df3988259323021",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    },
+    "builds.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/builds.json",
+      "sha256": "5e1d8dd171dae7d4b57b3778b4416e2b8eff2a0244581fe5096e015c10255d3b",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    },
+    "screenshots-en.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/screenshots-en.json",
+      "sha256": "1004137c22858d19a62f5541e513e1e0260ac89beac666d109cca720ab50049a",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    },
+    "screenshots-zh-Hans.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/screenshots-zh-Hans.json",
+      "sha256": "b49f4e32e504c7ff24ab22ddd14ad9a3d267482e9847fadb09d8e6a8c62cc556",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    },
+    "screenshots-ja.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/screenshots-ja.json",
+      "sha256": "98045f47402086ba1985dc29d7bb960fe1aa3f54837dbeea83549aff8c94cc2a",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    },
+    "sizes.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/sizes.json",
+      "sha256": "d29b34b5bd3067c3d62b84cfbd76da025cee7e40a8541b8f844d868b93241b33",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    },
+    "screenshot-create-schema.json": {
+      "originalPath": "/tmp/html-release-prep-20261007/screenshot-create-schema.json",
+      "sha256": "a7d610c495e75b24ad7bd19279643ebdcd1cb53bc069ce501b6f089a323c28d5",
+      "role": "Read-only audit input; raw account/resource fields are not copied."
+    }
+  },
+  "limitations": [
+    "HTML is a responsive layout draft, not final upload-ready PNG output.",
+    "No promise of automatic inner/outer asset switching.",
+    "Source screenshots preserve original pixels; CSS only scales proportionally.",
+    "Final four-locale artwork, backend localization and upload support remain release-preparation work."
+  ],
+  "captureContext": {
+    "deviceName": "iPhone Duo",
+    "deviceId": "F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7",
+    "runtime": "27.1 (24A94232)",
+    "toolchain": "Xcode 27.1 (27A9275)",
+    "appConfiguration": "Debug simulator",
+    "marketingVersion": "1.7",
+    "buildNumber": "12",
+    "source": "The installed trace-free final Duo Debug build, reused for these captures.",
+    "notReleaseArchive": true,
+    "preparedVersionConfig": "1.8 configuration preparation is separate; these images are not attributed to a 1.8 Release archive.",
+    "document": "Same synthetic weekly-report.html from the isolated UITestLibrary",
+    "libraryContents": [
+      "weekly-report.html",
+      "developer-notes.md"
+    ],
+    "isolation": "HTML_PREVIEWER_UI_TESTS=1; synthetic UITestLibrary content only",
+    "statusBar": "9:41 override",
+    "originalUIPixelsRedrawn": false,
+    "uiRenderedBy": "Actual native app and WebKit renderer",
+    "deviceLifecycle": {
+      "source": "Capture-session completion report",
+      "finalState": "Shutdown",
+      "statusBarOverrideCleared": true,
+      "devicesCreated": 0,
+      "devicesDeleted": 0
+    }
+  },
+  "updatedAtUTC": "2026-10-07T06:52:01.207209+00:00",
+  "browserLayoutValidation": {
+    "browser": "Ego Lite",
+    "session": "Ego45/p1",
+    "source": "Live rendered page verification and visual inspection of the full-page screenshot",
+    "pageWidthCSSPixels": 1716,
+    "horizontalOverflow": false,
+    "images": [
+      {
+        "path": "sources/zh-Hans/duo-inner-html.png",
+        "loaded": true,
+        "naturalWidth": 2853,
+        "naturalHeight": 2007
+      },
+      {
+        "path": "sources/zh-Hans/duo-outer-html.png",
+        "loaded": true,
+        "naturalWidth": 1398,
+        "naturalHeight": 2034
+      }
+    ],
+    "visualReview": "Rendered full-page screenshot visually inspected and accepted for layout review.",
+    "screenshot": {
+      "path": "previews/duo-layout-preview.png",
+      "sourcePath": "/tmp/html-release-prep-20261007/duo-layout-preview.png",
+      "pixelWidth": 1716,
+      "pixelHeight": 1418,
+      "sha256": "cbf31c9c7632aba334d6f23eabceb1e807c76e9ac1ff1f9f169bf0fa8378bc1f",
+      "copiedWithoutImageEditing": true
+    },
+    "scope": "Responsive HTML review only; not final upload artwork."
+  },
+  "imageExportPolicy": {
+    "sourceMode": "RGBA retained as originally captured",
+    "sourceImagesModified": false,
+    "finalUploadPNGMode": "opaque RGB without alpha channel",
+    "officialRequirementURL": "https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/",
+    "currentHTMLIsFinalUploadPNG": false,
+    "browserPreviewScreenshotIsFinalUploadPNG": false
+  }
+}

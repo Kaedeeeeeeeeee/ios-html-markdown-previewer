@@ -25,3 +25,6 @@
 "library.duplicate.update" = "Update Existing";
 "library.duplicate.keepBoth" = "Keep Both";
 "library.duplicate.hint" = "Updating replaces the saved contents and keeps its name, pin, and preview mode. The reading position is reset when contents change.";
+
+"library.selectFile" = "Select a File";
+"library.selectFileDescription" = "Choose a file from your library, or open a new file to start reading.";

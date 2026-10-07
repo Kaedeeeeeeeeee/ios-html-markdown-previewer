@@ -83,24 +83,27 @@ require_file "scripts/serve-validation-samples.sh"
 require_file "scripts/verify-public-pages.sh"
 require_file "fastlane/Fastfile"
 require_text "project.yml" "type: bundle\\.ui-testing" "project.yml includes UI test target"
-require_text "project.yml" "CURRENT_PROJECT_VERSION: 12" "project.yml build number is 12"
-require_text "project.yml" "MARKETING_VERSION: 1\\.7" "project.yml marketing version is 1.7"
-require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.7;" "generated Xcode project marketing version is 1.7"
-require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 12;" "generated Xcode project build number is 12"
+require_text "project.yml" "CURRENT_PROJECT_VERSION: 13" "project.yml build number is 13"
+require_file "scripts/select-release-toolchain.sh"
+require_text ".github/workflows/ios-ci.yml" "bash scripts/select-release-toolchain\\.sh --github-env" "iOS CI requires the release toolchain"
+require_text ".github/workflows/app-store-upload.yml" "bash scripts/select-release-toolchain\\.sh --github-env" "App Store archive requires the release toolchain"
+require_text "project.yml" "MARKETING_VERSION: 1\\.8" "project.yml marketing version is 1.8"
+require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "MARKETING_VERSION = 1\\.8;" "generated Xcode project marketing version is 1.8"
+require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "CURRENT_PROJECT_VERSION = 13;" "generated Xcode project build number is 13"
 require_text "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj" "PRODUCT_BUNDLE_IDENTIFIER = com\\.kaede\\.htmlmarkdownpreviewer;" "bundle identifier is com.kaede.htmlmarkdownpreviewer"
 require_text "project.yml" "ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon" "AppIcon asset catalog is configured"
-require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_NUMBER: \"12\"" "App Store upload workflow targets build 12"
-require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_VERSION_STRING: \"1\\.7\"" "App Store upload workflow targets version 1.7"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_BUILD_NUMBER: \"13\"" "App Store upload workflow targets build 13"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_VERSION_STRING: \"1\\.8\"" "App Store upload workflow targets version 1.8"
 require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_RELEASE_TYPE: AFTER_APPROVAL" "App Store workflow requests automatic release after approval"
 require_text ".github/scripts/submit-app-store-review.rb" "configure_and_verify_release_type" "App Store submission verifies automatic release configuration"
-require_text ".github/workflows/app-store-upload.yml" "Sync localized metadata and screenshots" "App Store upload workflow syncs localized store assets"
+require_text ".github/workflows/app-store-upload.yml" "APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY:" "App Store upload workflow verifies modern store assets read-only"
 require_text ".github/workflows/app-store-upload.yml" "submit_for_review:" "App Store upload workflow keeps review submission explicit"
-require_text ".github/workflows/app-store-upload.yml" "clean_screenshot_duplicates:" "App Store upload workflow cleans duplicate screenshots explicitly"
-require_text "fastlane/Fastfile" "overwrite_screenshots: true" "Fastlane replaces stale App Store screenshots"
-require_text "fastlane/Fastfile" "skip_app_version_update: false" "Fastlane creates or updates the App Store version"
+require_text ".github/workflows/app-store-upload.yml" "verify_store_assets:" "App Store upload workflow requires explicit modern asset verification"
+require_text "fastlane/Fastfile" "lane :verify_store_assets" "Fastlane exposes read-only modern store asset verification"
+require_file "scripts/asset-library/upload_assets.py"
 require_text ".github/scripts/submit-app-store-review.rb" "/v1/apps/#\\{APP_ID\\}/appStoreVersions" "App Store verification resolves versions through the app relationship"
 require_text ".github/scripts/submit-app-store-review.rb" "verify_expected_screenshot_inventory!" "App Store verification requires exact screenshot inventory before submission"
-require_text ".github/scripts/submit-app-store-review.rb" "request\\(:delete, \"/v1/appScreenshots/" "App Store cleanup deletes duplicate screenshot resources"
+require_text ".github/scripts/submit-app-store-review.rb" "Legacy screenshot cleanup is disabled" "Submission cannot delete legacy screenshot resources"
 
 echo
 echo "== Package resolution =="
@@ -613,81 +616,15 @@ require_text "docs/support.md" "https://gist\\.github\\.com/Kaedeeeeeeeeee/394a0
 
 echo
 echo "== Screenshots =="
-require_file "docs/app-store-screenshots/copy.json"
 require_file "scripts/generate-app-store-screenshots.swift"
-for name in \
-  iphone-01-html-report \
-  iphone-02-batch-import \
-  iphone-03-json-preview \
-  iphone-04-markdown-preview \
-  iphone-05-library \
-  iphone-06-yaml-preview; do
-  check_png_dimensions "docs/app-store-screenshots/$name.png" 1320 2868
-done
-for name in \
-  ipad-01-html-report \
-  ipad-02-batch-import \
-  ipad-03-json-preview \
-  ipad-04-markdown-preview \
-  ipad-05-library \
-  ipad-06-yaml-preview; do
-  check_png_dimensions "docs/app-store-screenshots/$name.png" 2064 2752
-done
-for locale in en-US zh-Hans ja; do
-  for name in \
-    iphone-01-html-report \
-    iphone-02-batch-import \
-    iphone-03-json-preview \
-    iphone-04-markdown-preview \
-    iphone-05-library \
-  iphone-06-yaml-preview; do
-    check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 1320 2868
-  done
-  for name in \
-    ipad-01-html-report \
-    ipad-02-batch-import \
-    ipad-03-json-preview \
-    ipad-04-markdown-preview \
-    ipad-05-library \
-  ipad-06-yaml-preview; do
-    check_png_dimensions "docs/app-store-screenshots/$locale/$name.png" 2064 2752
-  done
-done
-if python3 - "$ROOT_DIR/docs/app-store-screenshots/copy.json" <<'PY'
-import json
-import sys
-
-with open(sys.argv[1], "r", encoding="utf-8") as handle:
-    copy = json.load(handle)
-
-required_locales = {"en-US", "zh-Hans", "ja"}
-required_screenshots = {
-    "01-html-report",
-    "02-batch-import",
-    "03-json-preview",
-    "04-markdown-preview",
-    "05-library",
-    "06-yaml-preview",
-}
-if set(copy) != required_locales:
-    raise SystemExit(f"unexpected screenshot locales: {sorted(copy)}")
-
-for locale in sorted(required_locales):
-    entries = copy[locale].get("screenshots", {})
-    if set(entries) != required_screenshots:
-        raise SystemExit(f"unexpected screenshot copy keys for {locale}: {sorted(entries)}")
-    for key, value in entries.items():
-        for field in ("eyebrow", "title", "subtitle"):
-            if not str(value.get(field, "")).strip():
-                raise SystemExit(f"empty {locale}/{key}/{field}")
-PY
-then
-  ok "App Store screenshot copy covers en-US, zh-Hans, and ja"
+require_file "scripts/audit-integrated-release-materials.py"
+if python3 "$ROOT_DIR/scripts/audit-integrated-release-materials.py"; then
+  ok "Current four-locale 72-image screenshot and metadata identities match the verified packet"
 else
-  fail "App Store screenshot copy is incomplete or invalid"
+  fail "Current four-locale 72-image integrated materials gate failed"
 fi
 
-for locale in en-US zh-Hans ja; do
+for locale in en-US zh-Hans ja zh-Hant; do
   for field in name subtitle promotional_text description keywords release_notes support_url privacy_url; do
     require_file "fastlane/metadata/$locale/$field.txt"
   done
@@ -705,7 +642,7 @@ limits = {
     "keywords.txt": 100,
     "release_notes.txt": 4000,
 }
-for locale in ("en-US", "zh-Hans", "ja"):
+for locale in ("en-US", "zh-Hans", "ja", "zh-Hant"):
     for filename, limit in limits.items():
         value = (root / locale / filename).read_text(encoding="utf-8").strip()
         if not value:
@@ -1192,15 +1129,15 @@ else
 fi
 
 echo
-echo "== StoreKit, accounts, and ads absence =="
+echo "== In-app purchases, accounts, and ads absence =="
 if command -v rg >/dev/null 2>&1; then
-  rg -n "StoreKit|SKPayment|InAppPurchase|AdMob|GAD[A-Z]|AppLovin|FirebaseAnalytics|Sign in with Apple|ASAuthorization" \
+  rg -n 'SKPayment|InAppPurchase|Product\.products|\.purchase\(|Transaction\.|AppStore\.sync|SubscriptionStoreView|AdMob|GAD[A-Z]|AppLovin|FirebaseAnalytics|Sign in with Apple|ASAuthorization' \
     "$ROOT_DIR/HTMLMarkdownPreviewer" \
     "$ROOT_DIR/project.yml" \
     >/tmp/html-previewer-release-audit-search.log 2>/dev/null
   search_status=$?
 else
-  grep -R -n -E "StoreKit|SKPayment|InAppPurchase|AdMob|GAD[A-Z]|AppLovin|FirebaseAnalytics|Sign in with Apple|ASAuthorization" \
+  grep -R -n -E 'SKPayment|InAppPurchase|Product\.products|\.purchase\(|Transaction\.|AppStore\.sync|SubscriptionStoreView|AdMob|GAD[A-Z]|AppLovin|FirebaseAnalytics|Sign in with Apple|ASAuthorization' \
     "$ROOT_DIR/HTMLMarkdownPreviewer" \
     "$ROOT_DIR/project.yml" \
     >/tmp/html-previewer-release-audit-search.log 2>/dev/null
@@ -1209,9 +1146,9 @@ fi
 
 if [[ "$search_status" -eq 0 ]]; then
   cat /tmp/html-previewer-release-audit-search.log >&2
-  fail "release build should not contain StoreKit, account, analytics, or ad SDK references"
+  fail "release build should not contain in-app purchase, account, analytics, or ad SDK references"
 else
-  ok "no StoreKit, account, analytics, or ad SDK references found"
+  ok "no in-app purchase, account, analytics, or ad SDK references found"
 fi
 
 echo

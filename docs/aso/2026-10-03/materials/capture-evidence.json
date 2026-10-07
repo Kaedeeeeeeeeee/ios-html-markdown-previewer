@@ -1,0 +1,397 @@
+{
+  "scope": "Selected live native UI snapshots from actual report and Markdown capture sessions. English iPhone scenes were inspected directly and are not duplicated here.",
+  "snapshots": [
+    {
+      "locale": "zh-Hans",
+      "family": "iphone",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0wszoxz",
+        "seq": 21,
+        "count": 42,
+        "targets": [
+          "e9|tap|button|HTML 预览器||BackButton",
+          "e12|tap|button|项目周报||document-title-button",
+          "e33|tap|button|阅读工具||reading-tools-menu",
+          "e34|tap|button|||",
+          "e36|tap|button|预览模式||preview-mode-menu",
+          "e37|tap|button|||",
+          "e39|tap|button|共享文件||share-file-button",
+          "e40|tap|button|文件详情||file-details-button"
+        ],
+        "scroll": [
+          "e18|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e30|text|text|交互模式||",
+          "e31|text|text|页面脚本可以运行。外部跳转仍会被阻止。||"
+        ],
+        "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2"
+      }
+    },
+    {
+      "locale": "zh-Hans",
+      "family": "iphone",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0oiuqma",
+        "seq": 25,
+        "count": 38,
+        "targets": [
+          "e9|tap|button|HTML 预览器||BackButton",
+          "e12|tap|button|开发笔记||document-title-button",
+          "e29|tap|button|阅读工具||reading-tools-menu",
+          "e30|tap|button|||",
+          "e32|tap|button|预览模式||preview-mode-menu",
+          "e33|tap|button|||",
+          "e35|tap|button|共享文件||share-file-button",
+          "e36|tap|button|文件详情||file-details-button"
+        ],
+        "scroll": [
+          "e18|swipe|scroll-view|||"
+        ],
+        "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2"
+      }
+    },
+    {
+      "locale": "ja",
+      "family": "iphone",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0do8otd",
+        "seq": 33,
+        "count": 42,
+        "targets": [
+          "e9|tap|button|HTMLプレビュー||BackButton",
+          "e12|tap|button|プロジェクト週報||document-title-button",
+          "e33|tap|button|閲覧ツール||reading-tools-menu",
+          "e34|tap|button|||",
+          "e36|tap|button|プレビューモード||preview-mode-menu",
+          "e37|tap|button|||",
+          "e39|tap|button|ファイルを共有||share-file-button",
+          "e40|tap|button|ファイルの詳細||file-details-button"
+        ],
+        "scroll": [
+          "e18|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e30|text|text|インタラクティブ||",
+          "e31|text|text|ページ内スクリプトを実行できます。外部ナビゲーションは引き続きブロックされます。||"
+        ],
+        "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2"
+      }
+    },
+    {
+      "locale": "ja",
+      "family": "iphone",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0yrhyex",
+        "seq": 37,
+        "count": 38,
+        "targets": [
+          "e9|tap|button|HTMLプレビュー||BackButton",
+          "e12|tap|button|開発ノート||document-title-button",
+          "e29|tap|button|閲覧ツール||reading-tools-menu",
+          "e30|tap|button|||",
+          "e32|tap|button|プレビューモード||preview-mode-menu",
+          "e33|tap|button|||",
+          "e35|tap|button|ファイルを共有||share-file-button",
+          "e36|tap|button|ファイルの詳細||file-details-button"
+        ],
+        "scroll": [
+          "e18|swipe|scroll-view|||"
+        ],
+        "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2"
+      }
+    },
+    {
+      "locale": "zh-Hant",
+      "family": "iphone",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0b1cqp1",
+        "seq": 45,
+        "count": 42,
+        "targets": [
+          "e9|tap|button|HTML 預覽器||BackButton",
+          "e12|tap|button|專案週報||document-title-button",
+          "e33|tap|button|閱讀工具||reading-tools-menu",
+          "e34|tap|button|||",
+          "e36|tap|button|預覽模式||preview-mode-menu",
+          "e37|tap|button|||",
+          "e39|tap|button|分享檔案||share-file-button",
+          "e40|tap|button|檔案詳細資料||file-details-button"
+        ],
+        "scroll": [
+          "e18|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e30|text|text|互動模式||",
+          "e31|text|text|頁面腳本可以執行。外部跳轉仍會被阻止。||"
+        ],
+        "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2"
+      }
+    },
+    {
+      "locale": "zh-Hant",
+      "family": "iphone",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0lbz44m",
+        "seq": 49,
+        "count": 38,
+        "targets": [
+          "e9|tap|button|HTML 預覽器||BackButton",
+          "e12|tap|button|開發筆記||document-title-button",
+          "e29|tap|button|閱讀工具||reading-tools-menu",
+          "e30|tap|button|||",
+          "e32|tap|button|預覽模式||preview-mode-menu",
+          "e33|tap|button|||",
+          "e35|tap|button|分享檔案||share-file-button",
+          "e36|tap|button|檔案詳細資料||file-details-button"
+        ],
+        "scroll": [
+          "e18|swipe|scroll-view|||"
+        ],
+        "udid": "2CFB4656-369B-4D63-B713-1DAC57B0C1A2"
+      }
+    },
+    {
+      "locale": "en-US",
+      "family": "ipad",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0nkwtq8",
+        "seq": 16,
+        "count": 43,
+        "targets": [
+          "e10|tap|button|HTML Previewer||",
+          "e13|tap|button|Weekly project report||document-title-button",
+          "e34|tap|button|Reading Tools||reading-tools-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|Preview Mode||preview-mode-menu",
+          "e39|tap|button|||",
+          "e42|tap|button|Share File||share-file-button",
+          "e43|tap|button|File Details||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e31|text|text|Interactive||",
+          "e32|text|text|Page scripts can run. External navigation remains blocked.||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "en-US",
+      "family": "ipad",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "1wiyg46",
+        "seq": 20,
+        "count": 39,
+        "targets": [
+          "e10|tap|button|HTML Previewer||",
+          "e13|tap|button|Developer notes||document-title-button",
+          "e30|tap|button|Reading Tools||reading-tools-menu",
+          "e31|tap|button|||",
+          "e34|tap|button|Preview Mode||preview-mode-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|Share File||share-file-button",
+          "e39|tap|button|File Details||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "zh-Hans",
+      "family": "ipad",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "1a5n6kx",
+        "seq": 28,
+        "count": 43,
+        "targets": [
+          "e10|tap|button|HTML 预览器||",
+          "e13|tap|button|项目周报||document-title-button",
+          "e34|tap|button|阅读工具||reading-tools-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|预览模式||preview-mode-menu",
+          "e39|tap|button|||",
+          "e42|tap|button|共享文件||share-file-button",
+          "e43|tap|button|文件详情||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e31|text|text|交互模式||",
+          "e32|text|text|页面脚本可以运行。外部跳转仍会被阻止。||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "zh-Hans",
+      "family": "ipad",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "015o0pz",
+        "seq": 32,
+        "count": 39,
+        "targets": [
+          "e10|tap|button|HTML 预览器||",
+          "e13|tap|button|开发笔记||document-title-button",
+          "e30|tap|button|阅读工具||reading-tools-menu",
+          "e31|tap|button|||",
+          "e34|tap|button|预览模式||preview-mode-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|共享文件||share-file-button",
+          "e39|tap|button|文件详情||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "ja",
+      "family": "ipad",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "01h5m9l",
+        "seq": 41,
+        "count": 43,
+        "targets": [
+          "e10|tap|button|HTMLプレビュー||",
+          "e13|tap|button|プロジェクト週報||document-title-button",
+          "e34|tap|button|閲覧ツール||reading-tools-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|プレビューモード||preview-mode-menu",
+          "e39|tap|button|||",
+          "e42|tap|button|ファイルを共有||share-file-button",
+          "e43|tap|button|ファイルの詳細||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e31|text|text|インタラクティブ||",
+          "e32|text|text|ページ内スクリプトを実行できます。外部ナビゲーションは引き続きブロックされます。||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "ja",
+      "family": "ipad",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "03ov8gx",
+        "seq": 45,
+        "count": 39,
+        "targets": [
+          "e10|tap|button|HTMLプレビュー||",
+          "e13|tap|button|開発ノート||document-title-button",
+          "e30|tap|button|閲覧ツール||reading-tools-menu",
+          "e31|tap|button|||",
+          "e34|tap|button|プレビューモード||preview-mode-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|ファイルを共有||share-file-button",
+          "e39|tap|button|ファイルの詳細||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "zh-Hant",
+      "family": "ipad",
+      "file": "weekly-report.html",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "1mi02vr",
+        "seq": 54,
+        "count": 43,
+        "targets": [
+          "e10|tap|button|HTML 預覽器||",
+          "e13|tap|button|專案週報||document-title-button",
+          "e34|tap|button|閱讀工具||reading-tools-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|預覽模式||preview-mode-menu",
+          "e39|tap|button|||",
+          "e42|tap|button|分享檔案||share-file-button",
+          "e43|tap|button|檔案詳細資料||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "text": [
+          "e31|text|text|互動模式||",
+          "e32|text|text|頁面腳本可以執行。外部跳轉仍會被阻止。||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    },
+    {
+      "locale": "zh-Hant",
+      "family": "ipad",
+      "file": "developer-notes.md",
+      "capture": {
+        "type": "runtime-snapshot",
+        "rs": "1",
+        "screenHash": "0e2tz1d",
+        "seq": 58,
+        "count": 39,
+        "targets": [
+          "e10|tap|button|HTML 預覽器||",
+          "e13|tap|button|開發筆記||document-title-button",
+          "e30|tap|button|閱讀工具||reading-tools-menu",
+          "e31|tap|button|||",
+          "e34|tap|button|預覽模式||preview-mode-menu",
+          "e35|tap|button|||",
+          "e38|tap|button|分享檔案||share-file-button",
+          "e39|tap|button|檔案詳細資料||file-details-button"
+        ],
+        "scroll": [
+          "e19|swipe|scroll-view|||"
+        ],
+        "udid": "9216FE52-CA0E-4113-8ED5-19B4BF9755CE"
+      }
+    }
+  ]
+}

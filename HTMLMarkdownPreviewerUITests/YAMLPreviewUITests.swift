@@ -27,7 +27,7 @@ final class YAMLPreviewUITests: XCTestCase {
                       "Confirm the second document is visible before saving its reading position.")
         screenshot("Second YAML document source", app)
 
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        navigateHome(app)
         let recent = app.buttons["recent-document-app-config.yaml"]
         XCTAssertTrue(recent.waitForExistence(timeout: 5))
         recent.tap()
@@ -133,7 +133,7 @@ final class YAMLPreviewUITests: XCTestCase {
         app.buttons["yaml-toggle-services.web"].tap()
         XCTAssertEqual(app.staticTexts["yaml-value-services.web.port"].label, "3000")
         screenshot("04 Chinese YAML second document", app)
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        navigateHome(app)
         app.buttons["library-filter-menu"].tap()
         app.buttons["YAML"].tap()
         XCTAssertTrue(app.buttons["recent-document-app-config.yaml"].waitForExistence(timeout: 5))
@@ -225,6 +225,18 @@ final class YAMLPreviewUITests: XCTestCase {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in predicate() }, object: nil)
         return XCTWaiter.wait(for: [expectation], timeout: 45) == .completed
     }
+    private func navigateHome(_ app: XCUIApplication) {
+        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
+        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
+            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        )).firstMatch
+        XCTAssertTrue(wait {
+            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
+        }, "The document must expose a native library back button")
+        (systemBack.exists && systemBack.isHittable ? systemBack : legacyBack).tap()
+        XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 5),
+                      "Back must return to the document library")
+    }
     private func find(_ query: String, app: XCUIApplication) {
         let field = app.textFields["yaml-search-field"]
         XCTAssertTrue(wait { field.isHittable })
@@ -282,7 +294,7 @@ final class YAMLPreviewUITests: XCTestCase {
     private func assertCopiedText(_ expected: String, filename: String, app: XCUIApplication) {
         // Verify clipboard contents through the system Paste control. Direct
         // cross-app API reads trigger the runner's iOS paste permission prompt.
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        navigateHome(app)
         XCTAssertTrue(wait { app.buttons["paste-preview-button"].isHittable })
         app.buttons["paste-preview-button"].tap()
         let button = app.buttons["paste-system-button"]

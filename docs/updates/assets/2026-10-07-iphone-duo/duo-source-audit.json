@@ -1,0 +1,1118 @@
+{
+  "protectedBaselineRoot": "/tmp/html-previewer-duo-baseline-20261007/files",
+  "comparison": "SHA256 each original baseline regular file against current same-relative-path file; the 3 explicitly adapted baseline views are expected changes.",
+  "baselineFileCount": 164,
+  "byteIdenticalCount": 161,
+  "changedBaselineFiles": [
+    "HTMLMarkdownPreviewer/AppView.swift",
+    "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift",
+    "HTMLMarkdownPreviewer/Views/ShareSheetButton.swift"
+  ],
+  "missingBaselineFiles": [],
+  "initialDirtyTrackedFilesStillIdentical": [
+    "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj",
+    "README.md",
+    "scripts/capture-release-screenshots.sh",
+    "scripts/generate-app-store-screenshots.swift",
+    "scripts/portable-release-materials-audit.sh",
+    "scripts/release-audit.sh"
+  ],
+  "taskSourceChanges": [
+    {
+      "path": "HTMLMarkdownPreviewer/AppView.swift",
+      "baseline": "copied working tree file",
+      "currentSHA256": "9f256dac2b064ae03be672275034ba269ef8b137c6c7efa3faf0af5a2ecbbef5"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Services/ReadingLibraryTestFixtures.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "8ab1e1c1dd670f54e8c96ffc0327313827193d88d8516eda0b6fc34f6b0a6ef7"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Utilities/LibraryStrings.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "d79cfb703a79b61e8f45f6f21e3fe9ad826eff30040bd4d89435c7de88d93607"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/DocumentPreviewView.swift",
+      "baseline": "copied working tree file",
+      "currentSHA256": "adf48f59f4278cfe6d0f3c68a48c14dc43bc11c1c0b8745016b22d8c14b32df2"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/MarkdownPreviewView.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "cc13e61c55bdbdbd01cb625330f77f4fd2d691bbb004fc609cbcef8b589ab77b"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/PastePreviewView.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "6197ea887a38d0e0508c80fa445c53b1d13da2d159a56598c815dccd4b338dd8"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/ReadingToolsView.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "b999030643ef1b5820b8a7010027e7843c01b28870604c4f8407437743107b6f"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/SettingsView.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "a185dc144fea97609139989791868922e44195793cde6b2272f276a533ce36dc"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/ShareSheetButton.swift",
+      "baseline": "copied working tree file",
+      "currentSHA256": "c74f9fec284978b6150be57ad4a61a7924938571cdc09d1e3ed2627dd13b6305"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/YAMLPreviewView.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "8f35d2814e405e809fd9a51eeb17a327ec5b0e3d7043e84da50fc9ea81f5a51a"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Web/HTMLReadingController.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "09c312ac5f76b1f0dc2d985aa57531bc8b63563c0a6e0aaf8de45e2cf01bb5e3"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/en.lproj/Library.strings",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "4c48c3cdcb2a52e308787071baf316cf16f72ee435141030b30e60460defd355"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/ja.lproj/Library.strings",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "a8160a010b70d228866781c6402bc68f86d9fce29df9844051e57672059d3f67"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/zh-Hans.lproj/Library.strings",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "77a49907ee93be94a95e6e2fe08271ae42e9bb9e82522315a13be736757f0bfc"
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/zh-Hant.lproj/Library.strings",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "97b3bd045104554fd1eb9ec6f319c6021fa72fb0b7b8b02232c6b9216899b1b6"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerTests/HTMLReadingTests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "f4a041d9e6b5b6f23ce686abd5a342c4de252755b1cddab70def92a56c7fbcb2"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerTests/MarkdownReadingTests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "13c52f2b3e88f1420b272095e88a2cc7b77b309ff58f79da17412beb3e580197"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerUITests/JSONPreviewUITests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "bd6d20f9ac692e0c5fc47180e1d9c8c615702666cba547863895a93091d60998"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerUITests/ReadingAndPasteUITests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "010d0b6b21f4db5db7637289b22514fab5fab6bd293cee60b325035da2853f6d"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerUITests/ReadingLibraryUITests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "64c3e7cf60708ac5d95c652c84e54b153ae25de7808f5ef2b9dfbd48c4257621"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerUITests/SmokeUITests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "9a8d0f7217758444aadb5a3e259374fe2eaf4c9c97a8405c8dd7ca4f1e8573d2"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerUITests/YAMLPreviewUITests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "bd714182462b1f668e3f29c56cad27e63510268625f1981487ce89dd82973b55"
+    },
+    {
+      "path": "HTMLMarkdownPreviewerUITests/ZIPNavigationUITests.swift",
+      "baseline": "Git HEAD (not initially dirty)",
+      "currentSHA256": "b619d585d56b22001f8e62d2d6d297ffefaeca900eff4d87168854afa7f9bd51"
+    }
+  ],
+  "sourceChangeCount": 23,
+  "taskDocs": [
+    "docs/updates/2026-10-07-iphone-duo.md",
+    "docs/updates/assets/2026-10-07-iphone-duo/"
+  ],
+  "untouchedPreexistingUntrackedReviewFiles": [
+    "HTMLMarkdownPreviewer/Services/ReviewPromptController.swift",
+    "HTMLMarkdownPreviewer/Views/ReviewPromptRequestView.swift",
+    "HTMLMarkdownPreviewerTests/ReviewPromptTests.swift"
+  ],
+  "scopeNote": "Git diff includes prior user work; baseline comparison separates preserved initial ASO/scripts/project/ReviewPrompt from this Duo task.",
+  "protectedFiles": [
+    {
+      "path": "HTMLMarkdownPreviewer/Services/ReviewPromptController.swift",
+      "baselineSHA256": "74cc00a6e987f2353718afb6b4cf9980c6a34316919a64126518d16ab78d7c96",
+      "currentSHA256": "74cc00a6e987f2353718afb6b4cf9980c6a34316919a64126518d16ab78d7c96",
+      "byteIdentical": true
+    },
+    {
+      "path": "HTMLMarkdownPreviewer/Views/ReviewPromptRequestView.swift",
+      "baselineSHA256": "bf24340bf106edc8683ab0b2f7ea6dfca7d7b17d9697d579b4446c0864ae788e",
+      "currentSHA256": "bf24340bf106edc8683ab0b2f7ea6dfca7d7b17d9697d579b4446c0864ae788e",
+      "byteIdentical": true
+    },
+    {
+      "path": "HTMLMarkdownPreviewer.xcodeproj/project.pbxproj",
+      "baselineSHA256": "628bb9375f63ac28f0ed467421385b017ebd682cbf2a2604ca3caacb25908478",
+      "currentSHA256": "628bb9375f63ac28f0ed467421385b017ebd682cbf2a2604ca3caacb25908478",
+      "byteIdentical": true
+    },
+    {
+      "path": "HTMLMarkdownPreviewerTests/ReviewPromptTests.swift",
+      "baselineSHA256": "f95d57da5184d720a1f2e1596e012a09e8b49f1e734aca81db25e06f39114cf3",
+      "currentSHA256": "f95d57da5184d720a1f2e1596e012a09e8b49f1e734aca81db25e06f39114cf3",
+      "byteIdentical": true
+    },
+    {
+      "path": "README.md",
+      "baselineSHA256": "8caa37629ed376f7687e5c44b964cc54e399407466a0d29ba7db9fb4447ade5d",
+      "currentSHA256": "8caa37629ed376f7687e5c44b964cc54e399407466a0d29ba7db9fb4447ade5d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/README.md",
+      "baselineSHA256": "db61ee68a03ea1cd07e63203c1fca3076cb34414bf39b4d030581d1c828f9556",
+      "currentSHA256": "db61ee68a03ea1cd07e63203c1fca3076cb34414bf39b4d030581d1c828f9556",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/capture-evidence.json",
+      "baselineSHA256": "310ed8ee72ebdc2cedadcc4067935f1a407b3dc1d09ff0aa2abe1a04f388501b",
+      "currentSHA256": "310ed8ee72ebdc2cedadcc4067935f1a407b3dc1d09ff0aa2abe1a04f388501b",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/checksums-sha256.txt",
+      "baselineSHA256": "64bca7517d90f9c6d2d184e34ca20ff0bc4b20061b3d7f98a03646bff8bd6922",
+      "currentSHA256": "64bca7517d90f9c6d2d184e34ca20ff0bc4b20061b3d7f98a03646bff8bd6922",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/copy.json",
+      "baselineSHA256": "3d3e409db147fb302734364c1088323654e74f8b67f0ec5d81db7c8c51a9fd9d",
+      "currentSHA256": "3d3e409db147fb302734364c1088323654e74f8b67f0ec5d81db7c8c51a9fd9d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/en-US/developer-notes.md",
+      "baselineSHA256": "5a08c7e46dafccaf60cff501bdcfdc516c4ddf87c093b56f13ed1e7a4f5603ec",
+      "currentSHA256": "5a08c7e46dafccaf60cff501bdcfdc516c4ddf87c093b56f13ed1e7a4f5603ec",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/en-US/weekly-report.html",
+      "baselineSHA256": "3432274dace7934cc343487aba042b181de9abb293420bca31c9fbcff35d45ae",
+      "currentSHA256": "3432274dace7934cc343487aba042b181de9abb293420bca31c9fbcff35d45ae",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/ja/developer-notes.md",
+      "baselineSHA256": "5fb23ff1cb1a5454d3fc3db0a35c28bc1e463e14d9763149878093d66de20d8d",
+      "currentSHA256": "5fb23ff1cb1a5454d3fc3db0a35c28bc1e463e14d9763149878093d66de20d8d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/ja/weekly-report.html",
+      "baselineSHA256": "9e5a046eb96bd53463a9bab1de65fd25574cada95b00810fbd85857939525c48",
+      "currentSHA256": "9e5a046eb96bd53463a9bab1de65fd25574cada95b00810fbd85857939525c48",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/zh-Hans/developer-notes.md",
+      "baselineSHA256": "c0bdb64b238ddc6c4eee14e431b8d7e256c012c42a93d8f51a9543492b5e3cff",
+      "currentSHA256": "c0bdb64b238ddc6c4eee14e431b8d7e256c012c42a93d8f51a9543492b5e3cff",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/zh-Hans/weekly-report.html",
+      "baselineSHA256": "7c538c1e892eb71f07fb0a89f1cf0b7bcfc6bc914e34faa9d490b6bc1978d3c2",
+      "currentSHA256": "7c538c1e892eb71f07fb0a89f1cf0b7bcfc6bc914e34faa9d490b6bc1978d3c2",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/zh-Hant/developer-notes.md",
+      "baselineSHA256": "95f9e6fd80ac6e6d677146eb9d7a91a8bbb30cfe2251e7fa4311d689030acf4f",
+      "currentSHA256": "95f9e6fd80ac6e6d677146eb9d7a91a8bbb30cfe2251e7fa4311d689030acf4f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/fixtures/zh-Hant/weekly-report.html",
+      "baselineSHA256": "e3e4f7d6b1b62eb59b688adc342660e285c83d2a9907d923e2e78ff9a7808a01",
+      "currentSHA256": "e3e4f7d6b1b62eb59b688adc342660e285c83d2a9907d923e2e78ff9a7808a01",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/index.html",
+      "baselineSHA256": "a315f4b29297c087163415e921ccc26489220cbfbada121d4f50ba5ed4d595af",
+      "currentSHA256": "a315f4b29297c087163415e921ccc26489220cbfbada121d4f50ba5ed4d595af",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/integration-validation.json",
+      "baselineSHA256": "3ca363abe5a94d20a669e55b69f609ba6f6f6c36f111030c6d7148c8e7a967f4",
+      "currentSHA256": "3ca363abe5a94d20a669e55b69f609ba6f6f6c36f111030c6d7148c8e7a967f4",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/en-US/description.txt",
+      "baselineSHA256": "c624d5aa70a7afb0b6b1f48af86a548bea1ae8c678cd276f8be3def95f841beb",
+      "currentSHA256": "c624d5aa70a7afb0b6b1f48af86a548bea1ae8c678cd276f8be3def95f841beb",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/en-US/keywords.txt",
+      "baselineSHA256": "e94a9554560d80e36285b0db4d88a0de06f48af1271c8220c14a403616aa1818",
+      "currentSHA256": "e94a9554560d80e36285b0db4d88a0de06f48af1271c8220c14a403616aa1818",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/en-US/name.txt",
+      "baselineSHA256": "7cc03e78f16533770a3bda8acbcf29e576cc2a282497cb2f29767eef3c51b86c",
+      "currentSHA256": "7cc03e78f16533770a3bda8acbcf29e576cc2a282497cb2f29767eef3c51b86c",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/en-US/promotional_text.txt",
+      "baselineSHA256": "435b511b1224d54cb73691fb24eedcff2c65f1c08e72d01c924a9595b57a9760",
+      "currentSHA256": "435b511b1224d54cb73691fb24eedcff2c65f1c08e72d01c924a9595b57a9760",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/en-US/subtitle.txt",
+      "baselineSHA256": "73f0e778fa3a6c622ffd09556e8b06f5554488e57b7a2b9bd4a6aae8cbb5a2fb",
+      "currentSHA256": "73f0e778fa3a6c622ffd09556e8b06f5554488e57b7a2b9bd4a6aae8cbb5a2fb",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/ja/description.txt",
+      "baselineSHA256": "c9bec43f9c7a80c656c0c321485449075857c4cea89e76064a866d6256157fdf",
+      "currentSHA256": "c9bec43f9c7a80c656c0c321485449075857c4cea89e76064a866d6256157fdf",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/ja/keywords.txt",
+      "baselineSHA256": "9c1af0ae273d305824325384929747af3eabb36f76a702fc60e21a748ad244c9",
+      "currentSHA256": "9c1af0ae273d305824325384929747af3eabb36f76a702fc60e21a748ad244c9",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/ja/name.txt",
+      "baselineSHA256": "215e2b0933c46c08359e1fb19a9a057f4634ac9d335b25f4323a15b58273fd92",
+      "currentSHA256": "215e2b0933c46c08359e1fb19a9a057f4634ac9d335b25f4323a15b58273fd92",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/ja/promotional_text.txt",
+      "baselineSHA256": "f79928f581c47f0c1d7efb4bfeac946a9e298774a1dd69a74340ecd7f30bae9c",
+      "currentSHA256": "f79928f581c47f0c1d7efb4bfeac946a9e298774a1dd69a74340ecd7f30bae9c",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/ja/subtitle.txt",
+      "baselineSHA256": "775b76068dc6058a173dd442552c6f34f6a308fe4089e40242d1e349076f3e21",
+      "currentSHA256": "775b76068dc6058a173dd442552c6f34f6a308fe4089e40242d1e349076f3e21",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hans/description.txt",
+      "baselineSHA256": "0d7eae3fc69c24fed12b562da074e47f5fe3dfd9451423b98a33579ccff8370f",
+      "currentSHA256": "0d7eae3fc69c24fed12b562da074e47f5fe3dfd9451423b98a33579ccff8370f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hans/keywords.txt",
+      "baselineSHA256": "639cda7bff3a3f732101cbdb353893f1e9721df390c01a97404787961f3667f5",
+      "currentSHA256": "639cda7bff3a3f732101cbdb353893f1e9721df390c01a97404787961f3667f5",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hans/name.txt",
+      "baselineSHA256": "0982c100f9baa6a30e445a1ecea29bdb5ce472e5ec79a0b2273d1ea31a1697ed",
+      "currentSHA256": "0982c100f9baa6a30e445a1ecea29bdb5ce472e5ec79a0b2273d1ea31a1697ed",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hans/promotional_text.txt",
+      "baselineSHA256": "01daa87f238c74fc1ad744178c53a298ce91b6eaaf1b3b940465f5824fa9d8bb",
+      "currentSHA256": "01daa87f238c74fc1ad744178c53a298ce91b6eaaf1b3b940465f5824fa9d8bb",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hans/subtitle.txt",
+      "baselineSHA256": "80983a8117afba3c524b86f10f560d17351ba3250d53944848de2af84390d508",
+      "currentSHA256": "80983a8117afba3c524b86f10f560d17351ba3250d53944848de2af84390d508",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hant/description.txt",
+      "baselineSHA256": "d5e4260483483c5508f1c3f733593168e8c92038bd6e214ec7e078c5c30f7064",
+      "currentSHA256": "d5e4260483483c5508f1c3f733593168e8c92038bd6e214ec7e078c5c30f7064",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hant/keywords.txt",
+      "baselineSHA256": "d4d1a49e415a259a23a50843c7100ade47fe344c3cb6dd51fb3c6919a1676c98",
+      "currentSHA256": "d4d1a49e415a259a23a50843c7100ade47fe344c3cb6dd51fb3c6919a1676c98",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hant/name.txt",
+      "baselineSHA256": "eca76381f2fdd9e6a8889b316a00ceb26a3b4c15124ccd1eccb94ae6ed14a9ba",
+      "currentSHA256": "eca76381f2fdd9e6a8889b316a00ceb26a3b4c15124ccd1eccb94ae6ed14a9ba",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hant/promotional_text.txt",
+      "baselineSHA256": "603dd7685409dc8b50142a799bcd29610b89a842f1ba584f23b8b6616dd7e2f6",
+      "currentSHA256": "603dd7685409dc8b50142a799bcd29610b89a842f1ba584f23b8b6616dd7e2f6",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/metadata/zh-Hant/subtitle.txt",
+      "baselineSHA256": "3e5f495751c598d2cf39d10afce7c03817d2077e1cc045857b3512d750bffa8a",
+      "currentSHA256": "3e5f495751c598d2cf39d10afce7c03817d2077e1cc045857b3512d750bffa8a",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/next-release-integration.patch",
+      "baselineSHA256": "c6895cf6b576c89e364a55525bc9468e230db6f41e4fe6f7289dd622313079c3",
+      "currentSHA256": "c6895cf6b576c89e364a55525bc9468e230db6f41e4fe6f7289dd622313079c3",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/order.json",
+      "baselineSHA256": "8c2f256f871b5c8eb319c26ebd566bcf2349c74bf7e9521cb4a2b19c7a7c0e03",
+      "currentSHA256": "8c2f256f871b5c8eb319c26ebd566bcf2349c74bf7e9521cb4a2b19c7a7c0e03",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/all-locales-review.jpg",
+      "baselineSHA256": "f80291870192c3b79eb387ac16a3a9bd4b388a4276191fb460336fa50fd29b58",
+      "currentSHA256": "f80291870192c3b79eb387ac16a3a9bd4b388a4276191fb460336fa50fd29b58",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/en-US-ipad.png",
+      "baselineSHA256": "bd508c9f5dc06e0acf5c6614b21e82a496870e0e278cf865958c533a7b23efaf",
+      "currentSHA256": "bd508c9f5dc06e0acf5c6614b21e82a496870e0e278cf865958c533a7b23efaf",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/en-US-iphone.png",
+      "baselineSHA256": "d4c7fc793776a0d2b589b4597bef820bd916098c46fa13b166099b9fc7eeb402",
+      "currentSHA256": "d4c7fc793776a0d2b589b4597bef820bd916098c46fa13b166099b9fc7eeb402",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/ja-ipad.png",
+      "baselineSHA256": "252224cb6b15c1905f66b27a04f3b92233e3a7201eee79aaa53cce76e5c85e00",
+      "currentSHA256": "252224cb6b15c1905f66b27a04f3b92233e3a7201eee79aaa53cce76e5c85e00",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/ja-iphone.png",
+      "baselineSHA256": "f21e846f8deee24a129d20031fea6ecbb5e98a0198b47d0be190cb4a737a2965",
+      "currentSHA256": "f21e846f8deee24a129d20031fea6ecbb5e98a0198b47d0be190cb4a737a2965",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/zh-Hans-hero.jpg",
+      "baselineSHA256": "3458b60cf6e95fb11512f11945970fef69927c0d48b5a341da834acce648a19e",
+      "currentSHA256": "3458b60cf6e95fb11512f11945970fef69927c0d48b5a341da834acce648a19e",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/zh-Hans-ipad.png",
+      "baselineSHA256": "5dfb8376d48de3cb3ea90eaf389977736ce7f7c7b2cf49c3b50ef8d8c7b3fa15",
+      "currentSHA256": "5dfb8376d48de3cb3ea90eaf389977736ce7f7c7b2cf49c3b50ef8d8c7b3fa15",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/zh-Hans-iphone.png",
+      "baselineSHA256": "e8af83c5ad991ce73c53b2e2808ff51d751483dd5bad97486c64606ee1941147",
+      "currentSHA256": "e8af83c5ad991ce73c53b2e2808ff51d751483dd5bad97486c64606ee1941147",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/zh-Hant-ipad.png",
+      "baselineSHA256": "82ad3907aec32f1e7dd8f2e95833b3158ec20c463a6866cf21bb1deb114d12b7",
+      "currentSHA256": "82ad3907aec32f1e7dd8f2e95833b3158ec20c463a6866cf21bb1deb114d12b7",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/previews/zh-Hant-iphone.png",
+      "baselineSHA256": "b5902bbcbbd462e16d4af5554172929cab2d762cf258b4b1c117429247ccb36d",
+      "currentSHA256": "b5902bbcbbd462e16d4af5554172929cab2d762cf258b4b1c117429247ccb36d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/provenance.json",
+      "baselineSHA256": "7624214e83d86d5d7c8661afdd2bd8e1f904bb63c908224283fc9f9db60756b9",
+      "currentSHA256": "7624214e83d86d5d7c8661afdd2bd8e1f904bb63c908224283fc9f9db60756b9",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/ipad-01-html-report.png",
+      "baselineSHA256": "1c823d605250b526200f09b2cdb64b0cefeca6ac3459f7640134c59159e23634",
+      "currentSHA256": "1c823d605250b526200f09b2cdb64b0cefeca6ac3459f7640134c59159e23634",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/ipad-02-markdown-preview.png",
+      "baselineSHA256": "33b1af0be3f0bfc38a71b0aa60771d191a5f0440f21a83590754af36b730d4e3",
+      "currentSHA256": "33b1af0be3f0bfc38a71b0aa60771d191a5f0440f21a83590754af36b730d4e3",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/ipad-03-json-preview.png",
+      "baselineSHA256": "0c04742b7a187e4ca5f5b234981d1a2fd0083431e8078df238852f444dade09f",
+      "currentSHA256": "0c04742b7a187e4ca5f5b234981d1a2fd0083431e8078df238852f444dade09f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/ipad-04-yaml-preview.png",
+      "baselineSHA256": "b568656b81a870baf33d4b25e449ae55a289b4e6d013ec3afd1ddc89498fecb2",
+      "currentSHA256": "b568656b81a870baf33d4b25e449ae55a289b4e6d013ec3afd1ddc89498fecb2",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/ipad-05-batch-import.png",
+      "baselineSHA256": "1260cc462a3f2de695df3f250e1f8f72c86ed8c45a518d04203c11cfcd92d1bb",
+      "currentSHA256": "1260cc462a3f2de695df3f250e1f8f72c86ed8c45a518d04203c11cfcd92d1bb",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/ipad-06-library.png",
+      "baselineSHA256": "5725c84ffeddd09c48dc36662e41fd92dba898fe5a6283255765e7c9f832112b",
+      "currentSHA256": "5725c84ffeddd09c48dc36662e41fd92dba898fe5a6283255765e7c9f832112b",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/iphone-01-html-report.png",
+      "baselineSHA256": "65a2e7494f9aed1eff9a23dbe9a76d3781acc8271be5033b899e29b85862373d",
+      "currentSHA256": "65a2e7494f9aed1eff9a23dbe9a76d3781acc8271be5033b899e29b85862373d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/iphone-02-markdown-preview.png",
+      "baselineSHA256": "a2fb16446c30f57ac3616ee26bb78ecdb7fe63db4c765699eb782d3ecb2b9f87",
+      "currentSHA256": "a2fb16446c30f57ac3616ee26bb78ecdb7fe63db4c765699eb782d3ecb2b9f87",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/iphone-03-json-preview.png",
+      "baselineSHA256": "ebdd80933db958a01ddd90e76935c8c913f99fd88e9b363d879ada0f71b12a0f",
+      "currentSHA256": "ebdd80933db958a01ddd90e76935c8c913f99fd88e9b363d879ada0f71b12a0f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/iphone-04-yaml-preview.png",
+      "baselineSHA256": "c88430c248a198398ddfab947cd2e775557ffa9f15c46821197e1126fd46be61",
+      "currentSHA256": "c88430c248a198398ddfab947cd2e775557ffa9f15c46821197e1126fd46be61",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/iphone-05-batch-import.png",
+      "baselineSHA256": "9f762fc8121553b66714407b6af8ec94eb18a08f79acda81be430fdeec69ced8",
+      "currentSHA256": "9f762fc8121553b66714407b6af8ec94eb18a08f79acda81be430fdeec69ced8",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/en-US/iphone-06-library.png",
+      "baselineSHA256": "31b64e0b9f0842ed2d428e1256bca33561185dc50ca26d73a20d77503c4c9214",
+      "currentSHA256": "31b64e0b9f0842ed2d428e1256bca33561185dc50ca26d73a20d77503c4c9214",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/ipad-01-html-report.png",
+      "baselineSHA256": "061eccab89b8036f1ad26d0198c96c7f4db52c2c7623b6b0e7e5895a193057fa",
+      "currentSHA256": "061eccab89b8036f1ad26d0198c96c7f4db52c2c7623b6b0e7e5895a193057fa",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/ipad-02-markdown-preview.png",
+      "baselineSHA256": "493c5065ff4f3b9654b677d876c0f005674bf13428a75bdc8c615b72bd0d1479",
+      "currentSHA256": "493c5065ff4f3b9654b677d876c0f005674bf13428a75bdc8c615b72bd0d1479",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/ipad-03-json-preview.png",
+      "baselineSHA256": "940e8711f14ccb2ae7fb99d95a3fad7cc1c0f5b627d734ec7646e846ba1f7aae",
+      "currentSHA256": "940e8711f14ccb2ae7fb99d95a3fad7cc1c0f5b627d734ec7646e846ba1f7aae",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/ipad-04-yaml-preview.png",
+      "baselineSHA256": "5a28ad5ea8fdb980cdf0e724806d87ec6f3dba577041749a5821f6b66777cf5b",
+      "currentSHA256": "5a28ad5ea8fdb980cdf0e724806d87ec6f3dba577041749a5821f6b66777cf5b",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/ipad-05-batch-import.png",
+      "baselineSHA256": "f6e2b4ff7307fa6257c4518100f9d112739eab0275f8d5b5922701e746894f0f",
+      "currentSHA256": "f6e2b4ff7307fa6257c4518100f9d112739eab0275f8d5b5922701e746894f0f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/ipad-06-library.png",
+      "baselineSHA256": "1a770f65455e7165b7c3198043f198ec298ed11086897b0154d3cc6103321062",
+      "currentSHA256": "1a770f65455e7165b7c3198043f198ec298ed11086897b0154d3cc6103321062",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/iphone-01-html-report.png",
+      "baselineSHA256": "a9953ccaa7306930f2239d641dfcb76480a0e2cd7016036813a5527a84721977",
+      "currentSHA256": "a9953ccaa7306930f2239d641dfcb76480a0e2cd7016036813a5527a84721977",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/iphone-02-markdown-preview.png",
+      "baselineSHA256": "78144756386b0a67807d241ed25a6c42b4386d96820a7fe611d1afc1e4d50d3f",
+      "currentSHA256": "78144756386b0a67807d241ed25a6c42b4386d96820a7fe611d1afc1e4d50d3f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/iphone-03-json-preview.png",
+      "baselineSHA256": "36f50b2e04c18e5bd97956796f029d30e3629cc3a0112222248efcd266dad723",
+      "currentSHA256": "36f50b2e04c18e5bd97956796f029d30e3629cc3a0112222248efcd266dad723",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/iphone-04-yaml-preview.png",
+      "baselineSHA256": "5ced47d09f561eb01293d524e34dc7e4b682ca1438b192660e6e0413ecf0f62e",
+      "currentSHA256": "5ced47d09f561eb01293d524e34dc7e4b682ca1438b192660e6e0413ecf0f62e",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/iphone-05-batch-import.png",
+      "baselineSHA256": "4b7dacbf1f0fadc60bb642e848d4348bccef66122406e3751b1b67a988ab9cf0",
+      "currentSHA256": "4b7dacbf1f0fadc60bb642e848d4348bccef66122406e3751b1b67a988ab9cf0",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/ja/iphone-06-library.png",
+      "baselineSHA256": "9f8f9ef4513791d914acece60eee587d3f74109273092294a70f90752d5d44ea",
+      "currentSHA256": "9f8f9ef4513791d914acece60eee587d3f74109273092294a70f90752d5d44ea",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/ipad-01-html-report.png",
+      "baselineSHA256": "9d6492e90de0852e3598a9061264ad57ebdc15170f858697acad3dfb8da2adb1",
+      "currentSHA256": "9d6492e90de0852e3598a9061264ad57ebdc15170f858697acad3dfb8da2adb1",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/ipad-02-markdown-preview.png",
+      "baselineSHA256": "3cbba4243e57430921c9d69be30d96abfd5efac813a12c06a51fd87d8409cfb5",
+      "currentSHA256": "3cbba4243e57430921c9d69be30d96abfd5efac813a12c06a51fd87d8409cfb5",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/ipad-03-json-preview.png",
+      "baselineSHA256": "a54ad9b7b9f83b6a3bae0ff54b4198c8ceab2f50594cc68c0ea6136ea09da166",
+      "currentSHA256": "a54ad9b7b9f83b6a3bae0ff54b4198c8ceab2f50594cc68c0ea6136ea09da166",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/ipad-04-yaml-preview.png",
+      "baselineSHA256": "50532948a000ddebbdd31b39576bb442a6bfb4328b07b435009753bfa8b9c286",
+      "currentSHA256": "50532948a000ddebbdd31b39576bb442a6bfb4328b07b435009753bfa8b9c286",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/ipad-05-batch-import.png",
+      "baselineSHA256": "1d2d8f0f6f5a130f35106ab237db5c62702965fd443f999718f6521a59158f41",
+      "currentSHA256": "1d2d8f0f6f5a130f35106ab237db5c62702965fd443f999718f6521a59158f41",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/ipad-06-library.png",
+      "baselineSHA256": "e1787683bd554e8d1c025807d7cc9b06f8a13a0bdc529506bb18b851929f597c",
+      "currentSHA256": "e1787683bd554e8d1c025807d7cc9b06f8a13a0bdc529506bb18b851929f597c",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/iphone-01-html-report.png",
+      "baselineSHA256": "c55553ffd94903b1ea39e3623f0eb88918d7957f63f06c7b7cb447fa33af1a46",
+      "currentSHA256": "c55553ffd94903b1ea39e3623f0eb88918d7957f63f06c7b7cb447fa33af1a46",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/iphone-02-markdown-preview.png",
+      "baselineSHA256": "1e8e11b7a695e3a43a7549bf7423f10949b59bfc7950fb01af5d3423ebe5db43",
+      "currentSHA256": "1e8e11b7a695e3a43a7549bf7423f10949b59bfc7950fb01af5d3423ebe5db43",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/iphone-03-json-preview.png",
+      "baselineSHA256": "cbf69abd15c755d4b792fe19cb510bf6a634be4c5152cfa6249c5b9529295e24",
+      "currentSHA256": "cbf69abd15c755d4b792fe19cb510bf6a634be4c5152cfa6249c5b9529295e24",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/iphone-04-yaml-preview.png",
+      "baselineSHA256": "76d808112ca2c2bc8010359c32397c25ed2c8955afc13007e13ea02443266a09",
+      "currentSHA256": "76d808112ca2c2bc8010359c32397c25ed2c8955afc13007e13ea02443266a09",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/iphone-05-batch-import.png",
+      "baselineSHA256": "a6afa689fb62230cdc5ba6d1b0407472126c4365841481b254f558f1d0d6a2dc",
+      "currentSHA256": "a6afa689fb62230cdc5ba6d1b0407472126c4365841481b254f558f1d0d6a2dc",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hans/iphone-06-library.png",
+      "baselineSHA256": "f0ac157da1ac06b347405416d3f82d22a8455006dd8f351ebc7d8638c5179bba",
+      "currentSHA256": "f0ac157da1ac06b347405416d3f82d22a8455006dd8f351ebc7d8638c5179bba",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/ipad-01-html-report.png",
+      "baselineSHA256": "1c56bda391af2177f9c5ec4585b39d8e6cfc2604a97416892e24e5a10c556303",
+      "currentSHA256": "1c56bda391af2177f9c5ec4585b39d8e6cfc2604a97416892e24e5a10c556303",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/ipad-02-markdown-preview.png",
+      "baselineSHA256": "5f7992b985ad7166d1fe8c310f974eb5d9c6ecc1eb829713afb0f8381869f0b1",
+      "currentSHA256": "5f7992b985ad7166d1fe8c310f974eb5d9c6ecc1eb829713afb0f8381869f0b1",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/ipad-03-json-preview.png",
+      "baselineSHA256": "feea8b3e7545da3f7c4e9f177e4c0eb500622e1cbd3b1755d63af4d7c9e48a10",
+      "currentSHA256": "feea8b3e7545da3f7c4e9f177e4c0eb500622e1cbd3b1755d63af4d7c9e48a10",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/ipad-04-yaml-preview.png",
+      "baselineSHA256": "ef8aaedbacb673406ae6fc4c446c5eabf74ad673fa80de8a7a256bb520495116",
+      "currentSHA256": "ef8aaedbacb673406ae6fc4c446c5eabf74ad673fa80de8a7a256bb520495116",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/ipad-05-batch-import.png",
+      "baselineSHA256": "657b03bd3215a4c7f7b23243c3645b830e9e264e8235fc8a2535535c438e02ee",
+      "currentSHA256": "657b03bd3215a4c7f7b23243c3645b830e9e264e8235fc8a2535535c438e02ee",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/ipad-06-library.png",
+      "baselineSHA256": "f0f7af9a0945854961174449da80f9513047cfeee5c1bcbe9da22dda646ed195",
+      "currentSHA256": "f0f7af9a0945854961174449da80f9513047cfeee5c1bcbe9da22dda646ed195",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/iphone-01-html-report.png",
+      "baselineSHA256": "2d76e56033dae9e5351e57a453a0a30b90323519eae546825428be0ffd2e9737",
+      "currentSHA256": "2d76e56033dae9e5351e57a453a0a30b90323519eae546825428be0ffd2e9737",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/iphone-02-markdown-preview.png",
+      "baselineSHA256": "4350b4e8e1b3efd227f9a36a37c4e716489643c06055e35928767a4c48718146",
+      "currentSHA256": "4350b4e8e1b3efd227f9a36a37c4e716489643c06055e35928767a4c48718146",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/iphone-03-json-preview.png",
+      "baselineSHA256": "d051ae0718b36620254962e350bb604df1fbb062e5ccaef94cd5e55118ce5029",
+      "currentSHA256": "d051ae0718b36620254962e350bb604df1fbb062e5ccaef94cd5e55118ce5029",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/iphone-04-yaml-preview.png",
+      "baselineSHA256": "3a876a6bf8e412ba645d53869ca14b09fb8b1a265f92e538dba75ca29aaba440",
+      "currentSHA256": "3a876a6bf8e412ba645d53869ca14b09fb8b1a265f92e538dba75ca29aaba440",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/iphone-05-batch-import.png",
+      "baselineSHA256": "f469595f3f0ce294f32a717b6e289d78d5f0c06c2216e631290a104344134c70",
+      "currentSHA256": "f469595f3f0ce294f32a717b6e289d78d5f0c06c2216e631290a104344134c70",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/screenshots/zh-Hant/iphone-06-library.png",
+      "baselineSHA256": "289e69a2abaf787b2c6cee1f2bf86935bc57f3be92ae8dfe4d5e88f2514b02c5",
+      "currentSHA256": "289e69a2abaf787b2c6cee1f2bf86935bc57f3be92ae8dfe4d5e88f2514b02c5",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/ipad-01-html-report.png",
+      "baselineSHA256": "47e9168460db11060a1a73f694110f0cd60f2f317bbb8c5cf2878776f39cdaf9",
+      "currentSHA256": "47e9168460db11060a1a73f694110f0cd60f2f317bbb8c5cf2878776f39cdaf9",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/ipad-02-batch-import.png",
+      "baselineSHA256": "25f312cca68d600d0f331502abab83b971319407b39ba80c42a65a91e1bf4e7c",
+      "currentSHA256": "25f312cca68d600d0f331502abab83b971319407b39ba80c42a65a91e1bf4e7c",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/ipad-03-json-preview.png",
+      "baselineSHA256": "c9f69fbdcd1cad2032891d83cd2ad39a9c647945b3b53488d244c04edf29d8bc",
+      "currentSHA256": "c9f69fbdcd1cad2032891d83cd2ad39a9c647945b3b53488d244c04edf29d8bc",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/ipad-04-markdown-preview.png",
+      "baselineSHA256": "036532c6502917c63e046674e87a5a54ac3bc82e4b2f2e183e9e8db9f07b81c2",
+      "currentSHA256": "036532c6502917c63e046674e87a5a54ac3bc82e4b2f2e183e9e8db9f07b81c2",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/ipad-05-library.png",
+      "baselineSHA256": "bb249b34cfd243d65c740611d85bf5a538285687ea94ad0c2e464d131f0777d5",
+      "currentSHA256": "bb249b34cfd243d65c740611d85bf5a538285687ea94ad0c2e464d131f0777d5",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/ipad-06-yaml-preview.png",
+      "baselineSHA256": "0ffd190825672545d48b2f4cc4f9d4d459bdfbb76c4a29c98b91fb5428a801d8",
+      "currentSHA256": "0ffd190825672545d48b2f4cc4f9d4d459bdfbb76c4a29c98b91fb5428a801d8",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/iphone-01-html-report.png",
+      "baselineSHA256": "2f8fffd77d205c28350e077d97b9096e884e55b9b78d80a86e96727986c857ea",
+      "currentSHA256": "2f8fffd77d205c28350e077d97b9096e884e55b9b78d80a86e96727986c857ea",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/iphone-02-batch-import.png",
+      "baselineSHA256": "ee4b0c49cfdedd49c07dc71971aed3db01dd351cd297cbebaa84516b9794b36a",
+      "currentSHA256": "ee4b0c49cfdedd49c07dc71971aed3db01dd351cd297cbebaa84516b9794b36a",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/iphone-03-json-preview.png",
+      "baselineSHA256": "05c8b49e1a639adc92a54a8161c339c3052a8ea8ac5fb632052ef7565ea571d0",
+      "currentSHA256": "05c8b49e1a639adc92a54a8161c339c3052a8ea8ac5fb632052ef7565ea571d0",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/iphone-04-markdown-preview.png",
+      "baselineSHA256": "b295c1989626ea54af29129665d75524bf7d1fa0231025ea234c306f01d7a748",
+      "currentSHA256": "b295c1989626ea54af29129665d75524bf7d1fa0231025ea234c306f01d7a748",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/iphone-05-library.png",
+      "baselineSHA256": "f0feb13c1e1fd1484173d78e830908e30ab165535ea5fe6fe5757864c54e0339",
+      "currentSHA256": "f0feb13c1e1fd1484173d78e830908e30ab165535ea5fe6fe5757864c54e0339",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/en-US/iphone-06-yaml-preview.png",
+      "baselineSHA256": "db5ae029554938ee6f8f04a3f910f6514e2a91a7c92b19d51027b94af7b206c8",
+      "currentSHA256": "db5ae029554938ee6f8f04a3f910f6514e2a91a7c92b19d51027b94af7b206c8",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/ipad-01-html-report.png",
+      "baselineSHA256": "2fd7b162f968a9c71743cbfd0ee75b3418b6f6dbdbf671c9f3fe1454e3a777d5",
+      "currentSHA256": "2fd7b162f968a9c71743cbfd0ee75b3418b6f6dbdbf671c9f3fe1454e3a777d5",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/ipad-02-batch-import.png",
+      "baselineSHA256": "0d332a050dca277c04d4a8fff31e5aa5c979f0e43b6e8d1edbbad5c19e61af6b",
+      "currentSHA256": "0d332a050dca277c04d4a8fff31e5aa5c979f0e43b6e8d1edbbad5c19e61af6b",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/ipad-03-json-preview.png",
+      "baselineSHA256": "f69f9505c26079054a10888ab9df0fd47d562d3cee47a5297d4855a6d46a0951",
+      "currentSHA256": "f69f9505c26079054a10888ab9df0fd47d562d3cee47a5297d4855a6d46a0951",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/ipad-04-markdown-preview.png",
+      "baselineSHA256": "a1c74cf441e883c291c936944407052ae013057a728d8dbf85622a81c591be92",
+      "currentSHA256": "a1c74cf441e883c291c936944407052ae013057a728d8dbf85622a81c591be92",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/ipad-05-library.png",
+      "baselineSHA256": "48e16c1f137ffaaf672f1542909f5bba85e7d9e12dd30cce6bc53d55eac9f12d",
+      "currentSHA256": "48e16c1f137ffaaf672f1542909f5bba85e7d9e12dd30cce6bc53d55eac9f12d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/ipad-06-yaml-preview.png",
+      "baselineSHA256": "e2434ac2ccdd8d3620ad5dd2f7920a50f4781d297a5ed8572e9c716790aa04d3",
+      "currentSHA256": "e2434ac2ccdd8d3620ad5dd2f7920a50f4781d297a5ed8572e9c716790aa04d3",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/iphone-01-html-report.png",
+      "baselineSHA256": "389447c6f120432a6f4bd3eef2a449659dddc60323ba9596aa1ed625a71c3ffd",
+      "currentSHA256": "389447c6f120432a6f4bd3eef2a449659dddc60323ba9596aa1ed625a71c3ffd",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/iphone-02-batch-import.png",
+      "baselineSHA256": "9a0db1c2585da0c49dd7ea74d9e09bd5fa65288648cc3082fa3837ed3193f55c",
+      "currentSHA256": "9a0db1c2585da0c49dd7ea74d9e09bd5fa65288648cc3082fa3837ed3193f55c",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/iphone-03-json-preview.png",
+      "baselineSHA256": "415919ad74e174d9eaa3d765bcb6909732f824b797e941889599a389072efe4a",
+      "currentSHA256": "415919ad74e174d9eaa3d765bcb6909732f824b797e941889599a389072efe4a",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/iphone-04-markdown-preview.png",
+      "baselineSHA256": "c5971929e8fc173dbdb5701e71ee6583b80a9594802ee78b5038bd9feec3479e",
+      "currentSHA256": "c5971929e8fc173dbdb5701e71ee6583b80a9594802ee78b5038bd9feec3479e",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/iphone-05-library.png",
+      "baselineSHA256": "474201736d8ceee739f812e53636ff46a2317cd9dced8f0877bb6d52bf0c29b5",
+      "currentSHA256": "474201736d8ceee739f812e53636ff46a2317cd9dced8f0877bb6d52bf0c29b5",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/ja/iphone-06-yaml-preview.png",
+      "baselineSHA256": "7e9d914b07a3f4bf8774c64c8038c951fe903704c3723fec7fd343c65f2619d7",
+      "currentSHA256": "7e9d914b07a3f4bf8774c64c8038c951fe903704c3723fec7fd343c65f2619d7",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/ipad-01-html-report.png",
+      "baselineSHA256": "53c212181214ed4248a3ae0b2e79847f0286b19d95cd2e790c839493abe59c48",
+      "currentSHA256": "53c212181214ed4248a3ae0b2e79847f0286b19d95cd2e790c839493abe59c48",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/ipad-02-batch-import.png",
+      "baselineSHA256": "3cae49cdb42432df8f22d99f087dd2441a5b9156279b9dfe7e06386c77d82b44",
+      "currentSHA256": "3cae49cdb42432df8f22d99f087dd2441a5b9156279b9dfe7e06386c77d82b44",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/ipad-03-json-preview.png",
+      "baselineSHA256": "2217643b1a42ba4684149f663314670046e5343c41de97675d11c0d56e1f1962",
+      "currentSHA256": "2217643b1a42ba4684149f663314670046e5343c41de97675d11c0d56e1f1962",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/ipad-04-markdown-preview.png",
+      "baselineSHA256": "49ec30dfcfc931f08e9f6a784ce29131ea9dac8b6a65c3846d4cdcf9a81efe79",
+      "currentSHA256": "49ec30dfcfc931f08e9f6a784ce29131ea9dac8b6a65c3846d4cdcf9a81efe79",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/ipad-05-library.png",
+      "baselineSHA256": "2800349a19782c8bab4ac615c73d72934eb9df5b73132e57105356645e3c9a2f",
+      "currentSHA256": "2800349a19782c8bab4ac615c73d72934eb9df5b73132e57105356645e3c9a2f",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/ipad-06-yaml-preview.png",
+      "baselineSHA256": "6df97fcad6189a481a9978f1b0d7767d1ed98a80ed12f84f6448a09c991182e6",
+      "currentSHA256": "6df97fcad6189a481a9978f1b0d7767d1ed98a80ed12f84f6448a09c991182e6",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/iphone-01-html-report.png",
+      "baselineSHA256": "c22e75de2cdd9d9a642be158e3cb8c242ac0f8a8b1c1b4e32ad80e014a9a1b3a",
+      "currentSHA256": "c22e75de2cdd9d9a642be158e3cb8c242ac0f8a8b1c1b4e32ad80e014a9a1b3a",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/iphone-02-batch-import.png",
+      "baselineSHA256": "92b56f334b40eb10fe2b376f934089e02d08251607442f43e34d20449eb64bfd",
+      "currentSHA256": "92b56f334b40eb10fe2b376f934089e02d08251607442f43e34d20449eb64bfd",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/iphone-03-json-preview.png",
+      "baselineSHA256": "0304b9786ead42d29d31b9c7e3b603a7478ddf11c035cdc884d85c04c6da892d",
+      "currentSHA256": "0304b9786ead42d29d31b9c7e3b603a7478ddf11c035cdc884d85c04c6da892d",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/iphone-04-markdown-preview.png",
+      "baselineSHA256": "70ac12826e9132fb5fce36c7ed2575d7a6cf89d43a650d87fa2db173fe0b9b08",
+      "currentSHA256": "70ac12826e9132fb5fce36c7ed2575d7a6cf89d43a650d87fa2db173fe0b9b08",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/iphone-05-library.png",
+      "baselineSHA256": "df53a626021ed9cbd3777f096cd86a44081a270dea2c8f69a170ee0cb91274f2",
+      "currentSHA256": "df53a626021ed9cbd3777f096cd86a44081a270dea2c8f69a170ee0cb91274f2",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hans/iphone-06-yaml-preview.png",
+      "baselineSHA256": "5118ae66ec622cd7f9144a27b2dce9c1d85f7c6fd0726a057aa977ede97ea217",
+      "currentSHA256": "5118ae66ec622cd7f9144a27b2dce9c1d85f7c6fd0726a057aa977ede97ea217",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/ipad-01-html-report.png",
+      "baselineSHA256": "67dd63c2f303bb20130dd89b58ef56844c55a137aca374bee9379cf2b2bd5486",
+      "currentSHA256": "67dd63c2f303bb20130dd89b58ef56844c55a137aca374bee9379cf2b2bd5486",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/ipad-02-batch-import.png",
+      "baselineSHA256": "ee8d138e973c24850e41e9c1a870cfea3a6b23a0d7a96a320f147487d864eeb0",
+      "currentSHA256": "ee8d138e973c24850e41e9c1a870cfea3a6b23a0d7a96a320f147487d864eeb0",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/ipad-03-json-preview.png",
+      "baselineSHA256": "45cbd6af68fc74f8632c583783832e40b1df17ecab4a404cca7e55fd74d40c76",
+      "currentSHA256": "45cbd6af68fc74f8632c583783832e40b1df17ecab4a404cca7e55fd74d40c76",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/ipad-04-markdown-preview.png",
+      "baselineSHA256": "8ac13ed4bc0643c0dd881a4456d89f18885e2befbf01c33902d262bb548eec31",
+      "currentSHA256": "8ac13ed4bc0643c0dd881a4456d89f18885e2befbf01c33902d262bb548eec31",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/ipad-05-library.png",
+      "baselineSHA256": "28ebd373e6b51cbffaf85d2b8c93098706e141fc030796abb262909221dcaa23",
+      "currentSHA256": "28ebd373e6b51cbffaf85d2b8c93098706e141fc030796abb262909221dcaa23",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/ipad-06-yaml-preview.png",
+      "baselineSHA256": "720a24a312dd9a2d4480e5d1977ec6aa865d5d1533b2221ed81ea0e7f5895e58",
+      "currentSHA256": "720a24a312dd9a2d4480e5d1977ec6aa865d5d1533b2221ed81ea0e7f5895e58",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/iphone-01-html-report.png",
+      "baselineSHA256": "2f214a0ef2bbb7b2e35d8167f0e3cce62bcaea80f2f597cb6e218fd13f38bdb9",
+      "currentSHA256": "2f214a0ef2bbb7b2e35d8167f0e3cce62bcaea80f2f597cb6e218fd13f38bdb9",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/iphone-02-batch-import.png",
+      "baselineSHA256": "006522ed90192fda0af6739a007c98e22f8ed34ac46df612387bf90974afa440",
+      "currentSHA256": "006522ed90192fda0af6739a007c98e22f8ed34ac46df612387bf90974afa440",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/iphone-03-json-preview.png",
+      "baselineSHA256": "35f28b2af4c310ebc72166b23416dd5eb4656f2fb610b861d9caa97e96da309b",
+      "currentSHA256": "35f28b2af4c310ebc72166b23416dd5eb4656f2fb610b861d9caa97e96da309b",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/iphone-04-markdown-preview.png",
+      "baselineSHA256": "d7f783085cfd00a960305dd70604dd66c0fd18e06ddad3624ad862733d322923",
+      "currentSHA256": "d7f783085cfd00a960305dd70604dd66c0fd18e06ddad3624ad862733d322923",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/iphone-05-library.png",
+      "baselineSHA256": "38b5a7b295fb32c149bba9d29c01f8955c9d46bd75a963c2b880955b594544e4",
+      "currentSHA256": "38b5a7b295fb32c149bba9d29c01f8955c9d46bd75a963c2b880955b594544e4",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/sources/zh-Hant/iphone-06-yaml-preview.png",
+      "baselineSHA256": "e5df3df931a6569c2bba0912ce6e40cfafcba56149a7898c4206ce30e0623759",
+      "currentSHA256": "e5df3df931a6569c2bba0912ce6e40cfafcba56149a7898c4206ce30e0623759",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/materials/validation.json",
+      "baselineSHA256": "1b005b5f6b67c9405113cee7e169ad9ab81cf2409112ae20ff39797f6ee07fc4",
+      "currentSHA256": "1b005b5f6b67c9405113cee7e169ad9ab81cf2409112ae20ff39797f6ee07fc4",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/metadata-candidate.json",
+      "baselineSHA256": "afc802077cae1234ba9e176b55b0c2eee890a9b447e3c7d47725a4884d901c9b",
+      "currentSHA256": "afc802077cae1234ba9e176b55b0c2eee890a9b447e3c7d47725a4884d901c9b",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/plan.md",
+      "baselineSHA256": "1113993d0d3ae81b184c956cae8e375e404c69decea287e03520492ee4a1fee0",
+      "currentSHA256": "1113993d0d3ae81b184c956cae8e375e404c69decea287e03520492ee4a1fee0",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/screenshot-brief.json",
+      "baselineSHA256": "e5ca0ce36496f2f5a00ec7923917e34249c3dbaa1e3c90b7095c5a6358b4d2f1",
+      "currentSHA256": "e5ca0ce36496f2f5a00ec7923917e34249c3dbaa1e3c90b7095c5a6358b4d2f1",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/aso/2026-10-03/validation.json",
+      "baselineSHA256": "e1f3431483199758b7b7fb686fc11459de9128ccaf1938399de144a5f4647f46",
+      "currentSHA256": "e1f3431483199758b7b7fb686fc11459de9128ccaf1938399de144a5f4647f46",
+      "byteIdentical": true
+    },
+    {
+      "path": "docs/updates/2026-10-03-review-prompts.md",
+      "baselineSHA256": "a8b87f18d882df053e3ab365cf697dff49590e06a340474b1197936538d73a17",
+      "currentSHA256": "a8b87f18d882df053e3ab365cf697dff49590e06a340474b1197936538d73a17",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/audit-aso-materials.py",
+      "baselineSHA256": "a6731409e3416df96a0c83ab44bb65a61407eba2309dded18611300f788437fc",
+      "currentSHA256": "a6731409e3416df96a0c83ab44bb65a61407eba2309dded18611300f788437fc",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/capture-release-screenshots.sh",
+      "baselineSHA256": "a5c75a0133d8124c821ec0fa558f5c5aad291849c317864ebf7f0138d9af8f80",
+      "currentSHA256": "a5c75a0133d8124c821ec0fa558f5c5aad291849c317864ebf7f0138d9af8f80",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/generate-app-store-screenshots.swift",
+      "baselineSHA256": "165553d79404418fbd884402e0da4ced8e52ae503e5c0ad84651e8151546c32d",
+      "currentSHA256": "165553d79404418fbd884402e0da4ced8e52ae503e5c0ad84651e8151546c32d",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/portable-release-materials-audit.sh",
+      "baselineSHA256": "64b72b4fcd426f0254d30c7b15a46643c89948adba81e699f9e0e0174e3f5930",
+      "currentSHA256": "64b72b4fcd426f0254d30c7b15a46643c89948adba81e699f9e0e0174e3f5930",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/prepare-aso-integration-patch.py",
+      "baselineSHA256": "692cd9009a9393b9bbb88a747ae6d3cc8d66aa99046307b9ed28b8e166726a97",
+      "currentSHA256": "692cd9009a9393b9bbb88a747ae6d3cc8d66aa99046307b9ed28b8e166726a97",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/prepare-aso-materials.py",
+      "baselineSHA256": "d00483402282e04322a670c4656b64bc1cfbee8b61ecd911120fd1dc0680d2a2",
+      "currentSHA256": "d00483402282e04322a670c4656b64bc1cfbee8b61ecd911120fd1dc0680d2a2",
+      "byteIdentical": true
+    },
+    {
+      "path": "scripts/release-audit.sh",
+      "baselineSHA256": "37a2e8e557b78abacde11fa00b9e79f1821cf2eee96409b914b147e97520b10c",
+      "currentSHA256": "37a2e8e557b78abacde11fa00b9e79f1821cf2eee96409b914b147e97520b10c",
+      "byteIdentical": true
+    }
+  ],
+  "verifiedAtUTC": "2026-10-07T06:20:16.961690+00:00",
+  "verificationScope": "Final trace-free source snapshot after root clean build; 161 protected baseline files remain byte-identical."
+}

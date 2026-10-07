@@ -1,0 +1,142 @@
+{
+  "en-US": {
+    "storefront": "English (U.S.)",
+    "screenshots": {
+      "01-html-report": {
+        "eyebrow": "HTML & ZIP REPORTS",
+        "title": "Open HTML reports\non the go",
+        "subtitle": "Read HTML and ZIP reports on iPhone and iPad."
+      },
+      "04-markdown-preview": {
+        "eyebrow": "CODE & MATH",
+        "title": "Read Markdown\ncode and math",
+        "subtitle": "Highlight code. Display equations and diagrams offline."
+      },
+      "03-json-preview": {
+        "eyebrow": "JSON STRUCTURE",
+        "title": "See JSON structure\nclearly",
+        "subtitle": "Expand nested data. Copy large IDs without rounding."
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML CONFIGURATION",
+        "title": "Inspect YAML\nconfiguration",
+        "subtitle": "Expand structure, search fields, and check source."
+      },
+      "02-batch-import": {
+        "eyebrow": "MULTIPLE FILES",
+        "title": "Import several files\nat once",
+        "subtitle": "Handle duplicates and review import results."
+      },
+      "05-library": {
+        "eyebrow": "YOUR FILE LIBRARY",
+        "title": "Keep useful files\nclose",
+        "subtitle": "Search filenames, pin documents, and read again."
+      }
+    }
+  },
+  "zh-Hans": {
+    "storefront": "简体中文",
+    "screenshots": {
+      "01-html-report": {
+        "eyebrow": "HTML 与 ZIP 报告",
+        "title": "收到 HTML 报告\n随手打开",
+        "subtitle": "在 iPhone 和 iPad 上查看 HTML 与 ZIP 报告"
+      },
+      "04-markdown-preview": {
+        "eyebrow": "代码与公式",
+        "title": "代码与公式\n清晰呈现",
+        "subtitle": "阅读 Markdown 代码、数学公式与流程图"
+      },
+      "03-json-preview": {
+        "eyebrow": "JSON 结构",
+        "title": "JSON 结构\n一眼看清",
+        "subtitle": "展开嵌套数据，大整数复制不丢位"
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML 配置",
+        "title": "YAML 配置\n清晰可读",
+        "subtitle": "展开结构、搜索字段，核对高亮源码"
+      },
+      "02-batch-import": {
+        "eyebrow": "多文件导入",
+        "title": "多份文件\n一次导入",
+        "subtitle": "处理重复文件，查看导入结果"
+      },
+      "05-library": {
+        "eyebrow": "你的文件库",
+        "title": "常用文件\n下次接着看",
+        "subtitle": "按文件名搜索、置顶资料，再次打开继续阅读"
+      }
+    }
+  },
+  "ja": {
+    "storefront": "日本語",
+    "screenshots": {
+      "01-html-report": {
+        "eyebrow": "HTML・ZIPレポート",
+        "title": "届いたHTMLレポートを\nすぐ読む",
+        "subtitle": "iPhoneとiPadでHTML・ZIPレポートを閲覧。"
+      },
+      "04-markdown-preview": {
+        "eyebrow": "コードと数式",
+        "title": "Markdownの\nコードも数式も",
+        "subtitle": "構文ハイライト、数式、Mermaid図をオフライン表示。"
+      },
+      "03-json-preview": {
+        "eyebrow": "JSONの構造",
+        "title": "JSONの中身を\n見やすく",
+        "subtitle": "入れ子を展開。大きな整数IDも正確にコピー。"
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML設定",
+        "title": "YAML設定の構造を\n見やすく",
+        "subtitle": "構造を展開。項目を検索。ソースも確認。"
+      },
+      "02-batch-import": {
+        "eyebrow": "複数ファイル",
+        "title": "複数ファイルを\nまとめて取り込む",
+        "subtitle": "重複ファイルを選んで処理。結果も確認。"
+      },
+      "05-library": {
+        "eyebrow": "ファイルライブラリ",
+        "title": "よく使うファイルを\n手元に",
+        "subtitle": "名前で検索して固定。次回もすぐに開ける。"
+      }
+    }
+  },
+  "zh-Hant": {
+    "storefront": "繁體中文",
+    "screenshots": {
+      "01-html-report": {
+        "eyebrow": "HTML 與 ZIP 報告",
+        "title": "收到 HTML 報告\n隨手開啟",
+        "subtitle": "在 iPhone 和 iPad 上檢視 HTML 與 ZIP 報告"
+      },
+      "04-markdown-preview": {
+        "eyebrow": "程式碼與公式",
+        "title": "程式碼與公式\n清晰呈現",
+        "subtitle": "閱讀 Markdown 程式碼、數學公式與流程圖"
+      },
+      "03-json-preview": {
+        "eyebrow": "JSON 結構",
+        "title": "JSON 結構\n一眼看清",
+        "subtitle": "展開巢狀資料，大整數複製不丟位"
+      },
+      "06-yaml-preview": {
+        "eyebrow": "YAML 設定",
+        "title": "YAML 設定\n清晰可讀",
+        "subtitle": "展開結構、搜尋欄位，核對原始碼"
+      },
+      "02-batch-import": {
+        "eyebrow": "多檔案匯入",
+        "title": "多份檔案\n一次匯入",
+        "subtitle": "處理重複檔案，查看匯入結果"
+      },
+      "05-library": {
+        "eyebrow": "你的檔案庫",
+        "title": "常用檔案\n下次接著看",
+        "subtitle": "依檔名搜尋、釘選資料，再次開啟繼續閱讀"
+      }
+    }
+  }
+}

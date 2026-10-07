@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 @MainActor
 final class SmokeUITests: XCTestCase {
@@ -113,9 +114,27 @@ final class SmokeUITests: XCTestCase {
 
     func testBuiltInSamplesAndSettingsSmoke() throws {
         continueAfterFailure = false
+        let previousOrientation = XCUIDevice.shared.orientation
+        defer {
+            if #available(iOS 27.1, *) {
+                XCUIDevice.shared.orientation = previousOrientation.isValidInterfaceOrientation ? previousOrientation : .portrait
+            }
+        }
         let app = makeApp()
         app.launchArguments = ["--screenshot-reset-library"]
         launch(app)
+        if #available(iOS 27.1, *) {
+            XCUIDevice.shared.orientation = .landscapeRight
+            let landscape = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                let window = app.windows.firstMatch
+                return app.frame.width > app.frame.height && window.exists
+                    && window.frame.width > window.frame.height
+            }, object: nil)
+            let landscapeResult = XCTWaiter.wait(for: [landscape], timeout: 15)
+            if landscapeResult != .completed { attachOrientationGeometry(requested: .landscapeRight, app: app) }
+            XCTAssertEqual(landscapeResult, .completed,
+                           "App and window must settle in landscape before testing short-viewport library scrolling")
+        }
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["open-file-button"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["open-zip-package-button"].waitForExistence(timeout: 5))
@@ -193,12 +212,20 @@ final class SmokeUITests: XCTestCase {
 
     private func openSample(identifier: String, app: XCUIApplication) {
         let sample = app.buttons[identifier]
-        let disclosure = app.descendants(matching: .any)["samples-disclosure"].firstMatch
-        // List rows outside the viewport may not exist in the accessibility tree yet.
-        // Find an already-expanded sample by scrolling before toggling its disclosure.
-        if !sample.exists, disclosure.exists, !scrollUntilHittable(sample, app: app) {
+        let disclosure = app.buttons.matching(identifier: "samples-disclosure").firstMatch
+        // The disclosure itself can be outside the lazy List's AX tree after
+        // returning from a reader. Reveal it before inspecting expansion state.
+        if !sample.exists || !sample.isHittable {
             XCTAssertTrue(scrollUntilHittable(disclosure, app: app), "Missing samples disclosure")
-            tapElement(disclosure, app: app)
+            if disclosure.images["collapsed"].exists {
+                tapElement(disclosure, app: app)
+            } else if !disclosure.images["expanded"].exists,
+                      !scrollUntilHittable(sample, app: app) {
+                // Older systems may omit the disclosure-state image. Search
+                // expanded rows before toggling that legacy presentation.
+                XCTAssertTrue(scrollUntilHittable(disclosure, app: app), "Missing samples disclosure")
+                tapElement(disclosure, app: app)
+            }
         }
         XCTAssertTrue(scrollUntilHittable(sample, app: app), "Missing sample button: \(identifier)")
         sample.tap()
@@ -214,13 +241,27 @@ final class SmokeUITests: XCTestCase {
         exportPDFAndVerifyShareSheet(sample: sample, app: app)
 
         if repeatExport {
-            if app.otherElements["PopoverDismissRegion"].exists {
-                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1)).tap()
+            let closeButtons = app.buttons.matching(NSPredicate(
+                format: "label IN %@", ["Close", "閉じる", "关闭", "關閉"]
+            ))
+            let close = closeButtons.allElementsBoundByIndex.first(where: { $0.isHittable })
+                ?? closeButtons.firstMatch
+            if close.exists {
+                let closeReady = XCTNSPredicateExpectation(
+                    predicate: NSPredicate { _, _ in close.exists && close.isHittable },
+                    object: nil
+                )
+                XCTAssertEqual(XCTWaiter.wait(for: [closeReady], timeout: 10), .completed,
+                               "The share sheet Close button must be tappable")
+                close.tap()
+                XCTAssertTrue(waitUntilAbsent(close), "The share sheet Close button must disappear after dismissal")
             } else {
-                let close = app.buttons.matching(NSPredicate(
-                    format: "label IN %@", ["Close", "閉じる", "关闭", "關閉"]
-                )).firstMatch
-                tapElement(close, app: app)
+                let dismissRegion = app.otherElements["PopoverDismissRegion"]
+                XCTAssertTrue(dismissRegion.waitForExistence(timeout: 5),
+                              "A share popover without Close must expose its dismissal region")
+                dismissRegion.tap()
+                XCTAssertTrue(waitUntilAbsent(dismissRegion),
+                              "The share popover dismissal region must disappear after dismissal")
             }
             let shareButton = app.buttons["share-file-button"]
             let shareReady = XCTNSPredicateExpectation(
@@ -336,10 +377,28 @@ final class SmokeUITests: XCTestCase {
     }
 
     private func navigateHome(app: XCUIApplication) {
-        let backButton = app.navigationBars.buttons["HTML Previewer"]
-        XCTAssertTrue(backButton.waitForExistence(timeout: 10))
+        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
+        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
+            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        )).firstMatch
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed,
+                       "The document must expose a native library back button")
+        let backButton = systemBack.exists && systemBack.isHittable ? systemBack : legacyBack
         backButton.tap()
         XCTAssertTrue(app.navigationBars["HTML Previewer"].waitForExistence(timeout: 5))
+        let paste = app.buttons["paste-preview-button"]
+        // Back preserves the library's Samples scroll position. Its top rows
+        // may not be materialized until the actual library is scrolled upward.
+        for _ in 0..<6 {
+            if paste.exists && paste.isHittable { break }
+            app.swipeDown()
+        }
+        XCTAssertTrue(paste.waitForExistence(timeout: 5),
+                      "Back must return to the document library")
+        XCTAssertTrue(paste.isHittable, "The returned library's Paste entry must be visible and accessible")
     }
 
     private func tapElement(

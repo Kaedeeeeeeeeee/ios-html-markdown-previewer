@@ -20,7 +20,7 @@ final class JSONPreviewUITests: XCTestCase {
         app.buttons["Source"].tap()
         XCTAssertTrue(element("json-source-content", app).waitForExistence(timeout: 5))
         screenshot("JSON 02 source and line numbers", app)
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        navigateHome(app)
         let recent = app.buttons["recent-document-api-response.json"]
         XCTAssertTrue(recent.waitForExistence(timeout: 5))
         recent.tap()
@@ -111,6 +111,19 @@ final class JSONPreviewUITests: XCTestCase {
         XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in condition() }, object: nil)], timeout: 15) == .completed
     }
 
+    private func navigateHome(_ app: XCUIApplication) {
+        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
+        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
+            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        )).firstMatch
+        XCTAssertTrue(wait {
+            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
+        }, "The document must expose a native library back button")
+        (systemBack.exists && systemBack.isHittable ? systemBack : legacyBack).tap()
+        XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 5),
+                      "Back must return to the document library")
+    }
+
     private func find(_ text: String, app: XCUIApplication) {
         let field = app.textFields["json-search-field"]
         XCTAssertTrue(field.isHittable)
@@ -157,7 +170,7 @@ final class JSONPreviewUITests: XCTestCase {
     }
 
     private func assertCopiedText(_ text: String, filename: String, app: XCUIApplication) {
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        navigateHome(app)
         XCTAssertTrue(wait { app.buttons["paste-preview-button"].isHittable })
         app.buttons["paste-preview-button"].tap()
         let button = app.buttons["paste-system-button"]

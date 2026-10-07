@@ -8,16 +8,16 @@ on:
         required: false
         type: boolean
         default: false
-      sync_store_assets:
-        description: "Upload localized metadata and replace screenshots from the repository."
+      verify_store_assets:
+        description: "Require four-locale metadata and 72 modern Asset Library screenshots to be synchronized and verified before upload."
         required: false
         type: boolean
         default: true
       clean_screenshot_duplicates:
-        description: "Remove exact duplicate screenshots and require six images per locale and device family."
+        description: "Unsupported legacy option; true fails closed. Screenshot changes require the approved modern Asset Library uploader."
         required: false
         type: boolean
-        default: true
+        default: false
       submit_for_review:
         description: "Submit the selected build for App Review after upload verification."
         required: false
@@ -30,18 +30,24 @@ permissions:
 jobs:
   upload:
     name: Archive and Upload Build
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 90
     env:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
       APP_STORE_CONNECT_APP_ID: "6785794966"
-      APP_STORE_CONNECT_VERSION_STRING: "1.7"
-      APP_STORE_CONNECT_BUILD_NUMBER: "12"
+      APP_STORE_CONNECT_VERSION_STRING: "1.8"
+      APP_STORE_CONNECT_BUILD_NUMBER: "13"
+      APP_STORE_CONNECT_PREVIOUS_VERSION_STRING: "1.7"
       APP_STORE_CONNECT_PLATFORM: IOS
+      FASTLANE_METADATA_PATH: ${{ github.workspace }}/fastlane/metadata
+      APP_STORE_CONNECT_SCREENSHOTS_PATH: ${{ github.workspace }}/docs/app-store-screenshots
       APP_STORE_CONNECT_RELEASE_TYPE: AFTER_APPROVAL
       APP_STORE_CONNECT_CLEAN_SCREENSHOT_DUPLICATES: ${{ inputs.clean_screenshot_duplicates }}
       APP_STORE_CONNECT_SUBMIT_FOR_REVIEW: ${{ inputs.submit_for_review }}
       APPLE_TEAM_ID: Y4FV6WUU4V
+      # The hosted preview currently ships an earlier beta. Distribution uses
+      # the same verified RC as the local Release route, or stops before archive.
+      RELEASE_XCODE_BUILD: 27A9275
       ASC_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
       ASC_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
       ASC_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
@@ -50,6 +56,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Verify integrated release materials
+        run: python3 scripts/audit-integrated-release-materials.py
+
       - name: Prepare build paths
         run: |
           set -euo pipefail
@@ -57,22 +66,10 @@ jobs:
           echo "DERIVED_DATA_PATH=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
           echo "EXPORT_PATH=$RUNNER_TEMP/AppStoreUpload" >> "$GITHUB_ENV"
 
-      - name: Select Xcode 26.6
+      - name: Require Xcode and iOS SDK 27.1
         if: ${{ github.event.inputs.submit_only != 'true' }}
-        run: |
-          set -euo pipefail
-          for developer_dir in \
-            /Applications/Xcode_26.6_Release_Candidate_2.app/Contents/Developer \
-            /Applications/Xcode_26.6.app/Contents/Developer \
-            /Applications/Xcode.app/Contents/Developer; do
-            if [[ -d "$developer_dir" ]]; then
-              sudo xcode-select -s "$developer_dir"
-              break
-            fi
-          done
-          sw_vers
-          xcodebuild -version
-          xcodebuild -showsdks | grep -E 'iphoneos|iphonesimulator'
+        # Auto-discover installations rather than inherit the image's default Xcode.
+        run: env -u DEVELOPER_DIR bash scripts/select-release-toolchain.sh --github-env
 
       - name: Install App Store Connect API key
         run: |
@@ -86,6 +83,26 @@ jobs:
           printf '%s' "$ASC_API_KEY_BASE64" | base64 -D -o "$API_KEY_PATH"
           chmod 600 "$API_KEY_PATH"
           echo "ASC_API_KEY_PATH=$API_KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Require approval of the previous version
+        env:
+          APP_STORE_CONNECT_CHECK_RELEASE_GATE_ONLY: "true"
+        run: ruby .github/scripts/submit-app-store-review.rb
+
+      - name: Verify pre-synchronized modern App Store assets
+        env:
+          APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY: "true"
+          VERIFY_STORE_ASSETS: ${{ inputs.verify_store_assets }}
+        run: |
+          set -euo pipefail
+          if [[ "$VERIFY_STORE_ASSETS" != "true" ]]; then
+            echo "The four-locale metadata and 72-image Asset Library gate cannot be skipped." >&2
+            exit 2
+          fi
+          # GET-only. Does not require build 13, upload images, or alter published AppInfo.
+          # Synchronize first with scripts/asset-library/upload_assets.py under its
+          # approved plan SHA and exact app/version/locale/group execution scope.
+          ruby .github/scripts/submit-app-store-review.rb
 
       - name: Resolve Swift packages
         if: ${{ github.event.inputs.submit_only != 'true' }}
@@ -124,6 +141,13 @@ jobs:
           set -euo pipefail
           APP_INFO="$ARCHIVE_PATH/Products/Applications/HTMLMarkdownPreviewer.app/Info.plist"
           plutil -p "$APP_INFO" | grep -E 'BuildMachineOSBuild|CFBundleShortVersionString|CFBundleVersion|DTPlatformVersion|DTSDKName|DTXcode|DTXcodeBuild|MinimumOSVersion'
+          archive_sdk="$(plutil -extract DTSDKName raw -o - "$APP_INFO")"
+          if [[ ! "$archive_sdk" =~ ^iphoneos27\.1(\.[0-9]+)?$ ]]; then
+            echo "Archive SDK $archive_sdk does not meet the iPhone Duo release requirement." >&2
+            exit 1
+          fi
+          [[ "$(plutil -extract CFBundleShortVersionString raw -o - "$APP_INFO")" == "$APP_STORE_CONNECT_VERSION_STRING" ]]
+          [[ "$(plutil -extract CFBundleVersion raw -o - "$APP_INFO")" == "$APP_STORE_CONNECT_BUILD_NUMBER" ]]
 
       - name: Upload archive to App Store Connect
         if: ${{ github.event.inputs.submit_only != 'true' }}
@@ -159,39 +183,6 @@ jobs:
             -authenticationKeyPath "$ASC_API_KEY_PATH" \
             -authenticationKeyID "$ASC_API_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_API_ISSUER_ID"
-
-      - name: Ensure fastlane is available
-        if: ${{ inputs.sync_store_assets && github.event.inputs.submit_only != 'true' }}
-        run: |
-          set -euo pipefail
-          if ! command -v fastlane >/dev/null 2>&1; then
-            brew install fastlane
-          fi
-          fastlane --version
-
-      - name: Stage localized App Store screenshots
-        if: ${{ inputs.sync_store_assets && github.event.inputs.submit_only != 'true' }}
-        run: |
-          set -euo pipefail
-          SCREENSHOT_STAGING="$RUNNER_TEMP/AppStoreScreenshots"
-          mkdir -p "$SCREENSHOT_STAGING"
-          for locale in en-US zh-Hans ja; do
-            cp -R "docs/app-store-screenshots/$locale" "$SCREENSHOT_STAGING/$locale"
-          done
-          screenshot_count="$(find "$SCREENSHOT_STAGING" -type f -name '*.png' | wc -l | tr -d ' ')"
-          if [[ "$screenshot_count" != "36" ]]; then
-            echo "Expected 36 localized App Store screenshots, found $screenshot_count." >&2
-            exit 1
-          fi
-          echo "FASTLANE_SCREENSHOTS_PATH=$SCREENSHOT_STAGING" >> "$GITHUB_ENV"
-
-      - name: Sync localized metadata and screenshots
-        if: ${{ inputs.sync_store_assets && github.event.inputs.submit_only != 'true' }}
-        env:
-          FASTLANE_DISABLE_COLORS: "1"
-          FASTLANE_SKIP_UPDATE_CHECK: "1"
-          FASTLANE_METADATA_PATH: ${{ github.workspace }}/fastlane/metadata
-        run: fastlane ios sync_store_assets
 
       - name: Verify uploaded build and optionally submit for review
         run: ruby .github/scripts/submit-app-store-review.rb

@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "scope": "Local compositor check, using repeated pre-release HTML screenshots only as temporary geometry fixtures; no final scene or final capture equivalence claimed.",
+  "checkedOutputs": [
+    {
+      "file": "duo-01-html-report.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "duo-02-markdown-preview.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "duo-03-json-preview.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "duo-04-yaml-preview.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "duo-05-batch-import.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "duo-06-library.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "mixedAspectContactSheet": "PASS - each image is fitted independently",
+  "olderPacketAuditCompatibility": "PASS 48 via temporary symlink mirror; old packet unmodified",
+  "temporaryOutputs": "/tmp/html-duo-compositor-check-8v7ye4ad",
+  "captureScriptBashSyntax": "PASS",
+  "oldFormalInventoryRejection": {
+    "status": "PASS",
+    "scope": "Expected pre-integration failure: existing old formal assets do not satisfy new 72-image gate. This is not final integration acceptance.",
+    "gateExitCode": 1,
+    "diagnosticEvidence": "/tmp/html-duo-integrated-gate-pre-capture.json"
+  },
+  "normalDeviceCompatibility": {
+    "status": "PASS",
+    "outputCount": 12,
+    "scope": "Temporary normal-device compositor check from old source fixtures; not new1.8 capture evidence.",
+    "sizes": {
+      "iphone": [
+        1320,
+        2868
+      ],
+      "ipad": [
+        2064,
+        2752
+      ]
+    },
+    "mode": "RGB"
+  }
+}

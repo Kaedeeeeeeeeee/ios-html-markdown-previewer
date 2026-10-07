@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "sourceRef": "origin/codex/next-release-1.7.1",
+  "sourceCommit": "280c50ba504ede8f24d59dec61df9950c3e57f9d",
+  "scope": "Four-language reviewed ASO fields and support/privacy URLs; release notes maintained independently and untouched by this task.",
+  "fields": [
+    {
+      "path": "fastlane/metadata/en-US/name.txt",
+      "sha256": "7cc03e78f16533770a3bda8acbcf29e576cc2a282497cb2f29767eef3c51b86c"
+    },
+    {
+      "path": "fastlane/metadata/en-US/subtitle.txt",
+      "sha256": "73f0e778fa3a6c622ffd09556e8b06f5554488e57b7a2b9bd4a6aae8cbb5a2fb"
+    },
+    {
+      "path": "fastlane/metadata/en-US/keywords.txt",
+      "sha256": "e94a9554560d80e36285b0db4d88a0de06f48af1271c8220c14a403616aa1818"
+    },
+    {
+      "path": "fastlane/metadata/en-US/promotional_text.txt",
+      "sha256": "435b511b1224d54cb73691fb24eedcff2c65f1c08e72d01c924a9595b57a9760"
+    },
+    {
+      "path": "fastlane/metadata/en-US/description.txt",
+      "sha256": "c624d5aa70a7afb0b6b1f48af86a548bea1ae8c678cd276f8be3def95f841beb"
+    },
+    {
+      "path": "fastlane/metadata/en-US/support_url.txt",
+      "sha256": "670ad8cc901919c9d8b25ab3ff5962cf3c9320f089784cb92d438c3e64bdc059"
+    },
+    {
+      "path": "fastlane/metadata/en-US/privacy_url.txt",
+      "sha256": "422b47402fe3f759156b08556082874c31dc6866de73ff643ae34c86943fed50"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/name.txt",
+      "sha256": "0982c100f9baa6a30e445a1ecea29bdb5ce472e5ec79a0b2273d1ea31a1697ed"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/subtitle.txt",
+      "sha256": "80983a8117afba3c524b86f10f560d17351ba3250d53944848de2af84390d508"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/keywords.txt",
+      "sha256": "639cda7bff3a3f732101cbdb353893f1e9721df390c01a97404787961f3667f5"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/promotional_text.txt",
+      "sha256": "01daa87f238c74fc1ad744178c53a298ce91b6eaaf1b3b940465f5824fa9d8bb"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/description.txt",
+      "sha256": "0d7eae3fc69c24fed12b562da074e47f5fe3dfd9451423b98a33579ccff8370f"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/support_url.txt",
+      "sha256": "670ad8cc901919c9d8b25ab3ff5962cf3c9320f089784cb92d438c3e64bdc059"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hans/privacy_url.txt",
+      "sha256": "422b47402fe3f759156b08556082874c31dc6866de73ff643ae34c86943fed50"
+    },
+    {
+      "path": "fastlane/metadata/ja/name.txt",
+      "sha256": "215e2b0933c46c08359e1fb19a9a057f4634ac9d335b25f4323a15b58273fd92"
+    },
+    {
+      "path": "fastlane/metadata/ja/subtitle.txt",
+      "sha256": "775b76068dc6058a173dd442552c6f34f6a308fe4089e40242d1e349076f3e21"
+    },
+    {
+      "path": "fastlane/metadata/ja/keywords.txt",
+      "sha256": "9c1af0ae273d305824325384929747af3eabb36f76a702fc60e21a748ad244c9"
+    },
+    {
+      "path": "fastlane/metadata/ja/promotional_text.txt",
+      "sha256": "f79928f581c47f0c1d7efb4bfeac946a9e298774a1dd69a74340ecd7f30bae9c"
+    },
+    {
+      "path": "fastlane/metadata/ja/description.txt",
+      "sha256": "c9bec43f9c7a80c656c0c321485449075857c4cea89e76064a866d6256157fdf"
+    },
+    {
+      "path": "fastlane/metadata/ja/support_url.txt",
+      "sha256": "670ad8cc901919c9d8b25ab3ff5962cf3c9320f089784cb92d438c3e64bdc059"
+    },
+    {
+      "path": "fastlane/metadata/ja/privacy_url.txt",
+      "sha256": "422b47402fe3f759156b08556082874c31dc6866de73ff643ae34c86943fed50"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/name.txt",
+      "sha256": "eca76381f2fdd9e6a8889b316a00ceb26a3b4c15124ccd1eccb94ae6ed14a9ba"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/subtitle.txt",
+      "sha256": "3e5f495751c598d2cf39d10afce7c03817d2077e1cc045857b3512d750bffa8a"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/keywords.txt",
+      "sha256": "d4d1a49e415a259a23a50843c7100ade47fe344c3cb6dd51fb3c6919a1676c98"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/promotional_text.txt",
+      "sha256": "603dd7685409dc8b50142a799bcd29610b89a842f1ba584f23b8b6616dd7e2f6"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/description.txt",
+      "sha256": "d5e4260483483c5508f1c3f733593168e8c92038bd6e214ec7e078c5c30f7064"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/support_url.txt",
+      "sha256": "670ad8cc901919c9d8b25ab3ff5962cf3c9320f089784cb92d438c3e64bdc059"
+    },
+    {
+      "path": "fastlane/metadata/zh-Hant/privacy_url.txt",
+      "sha256": "422b47402fe3f759156b08556082874c31dc6866de73ff643ae34c86943fed50"
+    }
+  ],
+  "releaseNotesCopied": false
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "duoUploadGroupCount": 1,
+  "duoAPIEnum": null,
+  "devices": [
+    {
+      "prefix": "iphone",
+      "label": "iPhone 6.9-inch",
+      "width": 1320,
+      "height": 2868,
+      "isPhone": true
+    },
+    {
+      "prefix": "ipad",
+      "label": "iPad 13-inch",
+      "width": 2064,
+      "height": 2752,
+      "isPhone": false
+    },
+    {
+      "prefix": "duo",
+      "label": "iPhone Duo · inner / outer",
+      "width": 2853,
+      "height": 2007,
+      "isPhone": false,
+      "frames": {
+        "01-html-report": {
+          "width": 2853,
+          "height": 2007,
+          "sourceWidth": 2853,
+          "sourceHeight": 2007,
+          "screen": "inner",
+          "pose": "Open",
+          "displayId": 3
+        },
+        "03-json-preview": {
+          "width": 2853,
+          "height": 2007,
+          "sourceWidth": 2853,
+          "sourceHeight": 2007,
+          "screen": "inner",
+          "pose": "Open",
+          "displayId": 3
+        },
+        "05-library": {
+          "width": 2853,
+          "height": 2007,
+          "sourceWidth": 2853,
+          "sourceHeight": 2007,
+          "screen": "inner",
+          "pose": "Open",
+          "displayId": 3
+        },
+        "04-markdown-preview": {
+          "width": 1398,
+          "height": 2034,
+          "sourceWidth": 1398,
+          "sourceHeight": 2034,
+          "screen": "outer",
+          "pose": "Closed",
+          "displayId": 1
+        },
+        "06-yaml-preview": {
+          "width": 1398,
+          "height": 2034,
+          "sourceWidth": 1398,
+          "sourceHeight": 2034,
+          "screen": "outer",
+          "pose": "Closed",
+          "displayId": 1
+        },
+        "02-batch-import": {
+          "width": 1398,
+          "height": 2034,
+          "sourceWidth": 1398,
+          "sourceHeight": 2034,
+          "screen": "outer",
+          "pose": "Closed",
+          "displayId": 1
+        }
+      }
+    }
+  ],
+  "duoBackendProfileVerification": {
+    "source": "Live GET independently verified by release owner on 2026-10-07",
+    "profile": "IPHONE_DUO_PROFILE",
+    "displayClass": "IPHONE_DUO",
+    "alphaAllowed": false,
+    "maxScreenshots": 10,
+    "allowedDimensions": [
+      [
+        2034,
+        1398
+      ],
+      [
+        1398,
+        2034
+      ],
+      [
+        2853,
+        2007
+      ],
+      [
+        2007,
+        2853
+      ]
+    ],
+    "apiScreenshotDisplayTypeEnum": null
+  }
+}

@@ -1,3 +1,4 @@
+import StoreKit
 import SwiftUI
 
 struct AppView: View {
@@ -5,9 +6,13 @@ struct AppView: View {
     private let batchImportStager: BatchImportStager
     private let sampleProvider: BuiltInSampleProvider
 
+    @State private var reviewPrompt: ReviewPromptController
+    @Environment(\.requestReview) private var requestReview
+
     @AppStorage("home.samplesExpanded") private var areSamplesExpanded = false
     @State private var documents: [PreviewDocument] = []
-    @State private var path: [PreviewDocument] = []
+    @State private var selectedDocumentID: UUID?
+    @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
     @State private var isImporterPresented = false
     @State private var importPickerScope: ImportPickerScope = .previewDocument
     @State private var isSettingsPresented = false
@@ -37,11 +42,15 @@ struct AppView: View {
         self.store = store
         self.batchImportStager = BatchImportStager(libraryRootURL: store.importsURL.deletingLastPathComponent())
         self.sampleProvider = BuiltInSampleProvider()
+        let environment = ProcessInfo.processInfo.environment
+        self._reviewPrompt = State(initialValue: ReviewPromptController(
+            isEnabled: environment["HTML_PREVIEWER_UI_TESTS"] != "1" && environment["XCTestConfigurationFilePath"] == nil
+        ))
     }
 
     var body: some View {
-        NavigationStack(path: $path) {
-            List {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            List(selection: $selectedDocumentID) {
                 Section {
                     Button {
                         presentImporter(scope: .previewDocument)
@@ -117,81 +126,82 @@ struct AppView: View {
                     }
                 }
             }
+            .background {
+                ReviewPromptRequestView(controller: reviewPrompt, isAvailable: isReviewRequestAvailable) {
+                    requestReview()
+                }
+            }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: LibraryStrings.searchPlaceholder)
             .scrollDismissesKeyboard(.interactively)
             .navigationTitle(AppStrings.App.title)
-            .navigationDestination(for: PreviewDocument.self) { document in
-                DocumentPreviewView(document: document, store: store)
-                    .onAppear {
-                        markOpened(document)
-                    }
-            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    if path.isEmpty {
-                        Button {
-                            isSettingsPresented = true
-                        } label: {
-                            Image(systemName: "gearshape")
-                        }
-                        .accessibilityLabel(AppStrings.Accessibility.settings)
-                        .accessibilityIdentifier("settings-button")
+                    Button {
+                        isSettingsPresented = true
+                    } label: {
+                        Image(systemName: "gearshape")
                     }
+                    .accessibilityLabel(AppStrings.Accessibility.settings)
+                    .accessibilityIdentifier("settings-button")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    if path.isEmpty, !documents.isEmpty { EditButton() }
+                    if !documents.isEmpty { EditButton() }
                 }
             }
-            .sheet(isPresented: $isSettingsPresented, onDismiss: processImportQueue) {
-                SettingsView(clearImportedFiles: clearImportedFiles)
+            .navigationSplitViewColumnWidth(min: 260, ideal: 320, max: 400)
+        } detail: {
+            documentDetail
+        }
+        .navigationSplitViewStyle(.balanced)
+        .sheet(isPresented: $isSettingsPresented, onDismiss: processImportQueue) {
+            SettingsView(clearImportedFiles: clearImportedFiles)
+        }
+        .sheet(isPresented: $isPastePreviewPresented, onDismiss: openPastedDocument) {
+            PastePreviewView(store: store) { prepared in
+                pastedImport = prepared
             }
-            .sheet(isPresented: $isPastePreviewPresented, onDismiss: openPastedDocument) {
-                PastePreviewView(store: store) { prepared in
-                    pastedImport = prepared
-                }
+        }
+        .sheet(item: $renameDocument, onDismiss: processImportQueue) { document in
+            RenameDocumentView(document: document) { name in
+                _ = try store.rename(document, to: name)
+                reloadDocuments()
             }
-            .sheet(item: $renameDocument, onDismiss: processImportQueue) { document in
-                RenameDocumentView(document: document) { name in
-                    _ = try store.rename(document, to: name)
-                    reloadDocuments()
-                }
+        }
+        .sheet(item: $pendingImport, onDismiss: importReviewDidDismiss) { prepared in
+            DuplicateImportView(
+                prepared: prepared,
+                onResolve: { resolvePendingImport(prepared, as: $0) },
+                onCancel: { cancelImport(prepared) },
+                cancelTitle: activeImportSession?.isBatch == true ? BatchImportStrings.skip : AppStrings.Actions.cancel
+            )
+            .interactiveDismissDisabled()
+        }
+        .sheet(item: $batchImportSummary, onDismiss: batchSummaryDidDismiss) { summary in
+            BatchImportSummaryView(summary: summary) {
+                isBatchSummaryDismissing = true
+                batchImportSummary = nil
             }
-            .sheet(item: $pendingImport, onDismiss: importReviewDidDismiss) { prepared in
-                DuplicateImportView(
-                    prepared: prepared,
-                    onResolve: { resolvePendingImport(prepared, as: $0) },
-                    onCancel: { cancelImport(prepared) },
-                    cancelTitle: activeImportSession?.isBatch == true ? BatchImportStrings.skip : AppStrings.Actions.cancel
-                )
-                .interactiveDismissDisabled()
-            }
-            .sheet(item: $batchImportSummary, onDismiss: batchSummaryDidDismiss) { summary in
-                BatchImportSummaryView(summary: summary) {
-                    isBatchSummaryDismissing = true
-                    batchImportSummary = nil
-                }
-            }
-            .disabled(isPreparingImports || inFlightImportID != nil)
-            .overlay {
-                if isPreparingImports || inFlightImportID != nil {
-                    VStack(spacing: 12) {
-                        if isPreparingImports {
-                            ProgressView(value: Double(preparationCompletedCount), total: Double(max(preparationTotalCount, 1)))
-                            Text(BatchImportStrings.preparing(preparationCompletedCount, total: preparationTotalCount))
-                                .font(.subheadline)
-                        } else if let session = activeImportSession {
-                            ProgressView(value: Double(session.outcomes.count), total: Double(max(session.items.count, 1)))
-                            Text(BatchImportStrings.processing(session.outcomes.count, total: session.items.count))
-                                .font(.subheadline)
-                        }
+        }
+        .disabled(isPreparingImports || inFlightImportID != nil)
+        .overlay {
+            if isPreparingImports || inFlightImportID != nil {
+                VStack(spacing: 12) {
+                    if isPreparingImports {
+                        ProgressView(value: Double(preparationCompletedCount), total: Double(max(preparationTotalCount, 1)))
+                        Text(BatchImportStrings.preparing(preparationCompletedCount, total: preparationTotalCount))
+                            .font(.subheadline)
+                    } else if let session = activeImportSession {
+                        ProgressView(value: Double(session.outcomes.count), total: Double(max(session.items.count, 1)))
+                        Text(BatchImportStrings.processing(session.outcomes.count, total: session.items.count))
+                            .font(.subheadline)
                     }
-                    .padding(24)
-                    .frame(maxWidth: 300)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
-                    .accessibilityElement(children: .combine)
-                    .accessibilityIdentifier(isPreparingImports ? "batch-import-preparing" : "batch-import-processing")
                 }
+                .padding(24)
+                .frame(maxWidth: 300)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier(isPreparingImports ? "batch-import-preparing" : "batch-import-processing")
             }
         }
         .fileImporter(
@@ -208,6 +218,11 @@ struct AppView: View {
         }
         .onOpenURL { url in
             importURL(url, source: .externalOpen)
+        }
+        .onChange(of: selectedDocumentID) { _, documentID in
+            if let document = documents.first(where: { $0.id == documentID }) {
+                markOpened(document)
+            }
         }
         .onChange(of: isImporterPresented) { _, isPresented in
             if !isPresented { processImportQueue() }
@@ -226,8 +241,59 @@ struct AppView: View {
         }
     }
 
+    private var selectedDocument: PreviewDocument? {
+        documents.first { $0.id == selectedDocumentID }
+    }
+
+    @ViewBuilder
+    private var documentDetail: some View {
+        if let document = selectedDocument {
+            let identity = DocumentReaderIdentity(document: document)
+            DocumentPreviewView(document: document, store: store, isReadingObscured: isReadingObscured,
+                                isReadingSelected: { selectedDocument.map(DocumentReaderIdentity.init) == identity }) { activeSeconds in
+                // SwiftUI can temporarily hide a column while adapting its layout.
+                // Only a changed selection or payload represents a completed reading.
+                guard selectedDocument.map(DocumentReaderIdentity.init) != identity else { return }
+                reviewPrompt.recordCompletedReading(documentID: document.id, source: document.importSource,
+                                                    activeSeconds: activeSeconds)
+            }
+            .id(identity)
+        } else {
+            ContentUnavailableView(
+                LibraryStrings.selectFile,
+                systemImage: "doc.text",
+                description: Text(LibraryStrings.selectFileDescription)
+            )
+            .accessibilityIdentifier("library-detail-placeholder")
+        }
+    }
+
+    private func reconcileSelection() {
+        if let selectedDocumentID, !documents.contains(where: { $0.id == selectedDocumentID }) {
+            self.selectedDocumentID = nil
+        }
+    }
+
     private var filteredDocuments: [PreviewDocument] {
         selectedFilter.documents(in: documents, matching: searchText)
+    }
+
+    private var isReadingObscured: Bool {
+        isImporterPresented || isSettingsPresented || isPastePreviewPresented || renameDocument != nil
+            || pastedImport != nil || pendingImport != nil || nextImportReview != nil
+            || batchImportSummary != nil || pendingBatchImportSummary != nil
+            || isBatchSummaryDismissing || isImportReviewDismissing
+            || isPreparingImports || inFlightImportID != nil
+            || errorMessage != nil || deferredImportError != nil
+    }
+
+    private var isReviewRequestAvailable: Bool {
+        selectedDocumentID == nil && searchText.isEmpty && !isImporterPresented && !isSettingsPresented && !isPastePreviewPresented
+            && pastedImport == nil && renameDocument == nil && pendingImport == nil && nextImportReview == nil
+            && batchImportSummary == nil && pendingBatchImportSummary == nil && !isBatchSummaryDismissing
+            && !isImportReviewDismissing && !isPreparingImports && inFlightImportID == nil
+            && activeImportSession == nil && importQueue.isEmpty && preparationQueue.isEmpty
+            && errorMessage == nil && deferredImportError == nil
     }
 
     private var pinnedDocuments: [PreviewDocument] { filteredDocuments.filter(\.isPinned) }
@@ -261,7 +327,7 @@ struct AppView: View {
 
     private func documentRows(_ visibleDocuments: [PreviewDocument]) -> some View {
         ForEach(visibleDocuments) { document in
-            NavigationLink(value: document) {
+            NavigationLink(value: document.id) {
                 DocumentRow(document: document)
             }
             .accessibilityIdentifier("recent-document-\(document.originalFilename)")
@@ -392,7 +458,7 @@ struct AppView: View {
         guard let item = session.nextItem else {
             activeImportSession = nil
             if session.isBatch {
-                path.removeAll()
+                selectedDocumentID = nil
                 searchText = ""
                 selectedFilter = .all
                 pendingBatchImportSummary = session.summary
@@ -509,8 +575,8 @@ struct AppView: View {
         reloadDocuments()
         searchText = ""
         selectedFilter = .all
-        // Updating an externally opened file replaces a stale preview rather than stacking it underneath.
-        path = [document]
+        // The payload path changes on replacement, refreshing only that reader.
+        selectedDocumentID = document.id
     }
 
     private func importSample(_ sample: BuiltInSample) {
@@ -575,7 +641,15 @@ struct AppView: View {
                     _ = try service.importDocument(from: provider.makeSampleURL(for: sample), source: .bundledSample)
                 }
                 reloadDocuments()
+                columnVisibility = .all
             } catch { showError(error) }
+        }
+        if ProcessInfo.processInfo.environment["HTML_PREVIEWER_UI_TESTS"] == "1",
+           let argument = arguments.first(where: { $0.hasPrefix("--screenshot-open-document=") }),
+           let document = documents.first(where: {
+               $0.originalFilename == String(argument.dropFirst("--screenshot-open-document=".count))
+           }) {
+            openDocument(document)
         }
         #endif
 
@@ -600,6 +674,7 @@ struct AppView: View {
     private func reloadDocuments() {
         do {
             documents = try store.loadDocuments()
+            reconcileSelection()
         } catch {
             showError(error)
         }
@@ -609,6 +684,7 @@ struct AppView: View {
         do {
             _ = try store.markOpened(document)
             documents = try store.loadDocuments()
+            reconcileSelection()
         } catch {
             showError(error)
         }
@@ -621,6 +697,7 @@ struct AppView: View {
                 try store.delete(document)
             }
             documents = try store.loadDocuments()
+            reconcileSelection()
         } catch {
             showError(error)
         }
@@ -629,7 +706,8 @@ struct AppView: View {
     private func clearImportedFiles() throws {
         try store.deleteAll()
         documents = try store.loadDocuments()
-        path.removeAll()
+        reconcileSelection()
+        selectedDocumentID = nil
         searchText = ""
         selectedFilter = .all
     }
@@ -640,6 +718,17 @@ struct AppView: View {
 
     private func userFacingMessage(for error: Error) -> String {
         BatchImportErrorMessage.message(for: error)
+    }
+}
+
+// Metadata such as the name, pin and last-opened date is not reader identity.
+private struct DocumentReaderIdentity: Hashable {
+    let documentID: UUID
+    let originalFileRelativePath: String
+
+    init(document: PreviewDocument) {
+        documentID = document.id
+        originalFileRelativePath = document.originalFileRelativePath
     }
 }
 

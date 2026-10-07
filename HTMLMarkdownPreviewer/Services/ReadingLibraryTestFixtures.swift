@@ -134,7 +134,7 @@ enum ReadingLibraryTestFixtures {
         <style>body{font:16px -apple-system;line-height:1.5;padding:18px;color:#173a35;background:#f5faf8}h1{font-size:24px}p{max-width:44rem}</style>
         </head><body><h1>QA HTML \(token.uuidString)</h1><p>HTML layout marker</p>
         <p>A local report keeps its typography while the reader adjusts page zoom. The document stays available without a network connection.</p>
-        <h2>Details</h2><p>Full screen makes room for the report. The restore button brings navigation and reading controls back.</p>
+        <h2 id="details">Details</h2><p>Full screen makes room for the <a href="#details">report</a>. The restore button brings navigation and reading controls back.</p>
         </body></html>
         """
     }

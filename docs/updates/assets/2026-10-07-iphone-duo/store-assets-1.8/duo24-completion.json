@@ -1,0 +1,163 @@
+{
+  "completed": true,
+  "appId": "6785794966",
+  "versionId": "e9e623b5-1cad-42fd-a8fc-db5b0f2be9f5",
+  "versionString": "1.8",
+  "planSha256": "2f99c2f037e58f8be4853a43765af3d3878615538317bbb6693d2c2d1f50e9f6",
+  "resumeReviewSha256": "6b9fc38f02cd0210106e88603a9d377c8454420b629a74186279f9f73020bbd6",
+  "images": 24,
+  "validatedImages": 24,
+  "deliveryPixelExact": 24,
+  "sourceBytesSha256Rechecked": true,
+  "sourceAlphaFree": true,
+  "readyMismatchObservations": 6,
+  "totalSourceBytes": 46645338,
+  "operations": {
+    "POST appAssetLibraryImages": 24,
+    "PATCH appAssetLibraryImages": 24,
+    "POST appAssetLibraryPlacements": 24,
+    "POST appAssetLibraryPlacementOrderingRequests": 4
+  },
+  "unknownOrPending": 0,
+  "groups": [
+    {
+      "locale": "en-US",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "fileNames": [
+        "duo-01-html-report.png",
+        "duo-02-markdown-preview.png",
+        "duo-03-json-preview.png",
+        "duo-04-yaml-preview.png",
+        "duo-05-batch-import.png",
+        "duo-06-library.png"
+      ],
+      "placementIds": [
+        "b0400019-4770-8396-8f15-39da985e3fa9",
+        "db400019-4770-8396-8f10-314032b741e4",
+        "3e800019-4770-8396-8f06-a2a0980e4eb7",
+        "c8400019-4770-8396-8f0d-bf57c891ad89",
+        "5e400019-4770-8396-8f23-7f1b03872437",
+        "4d800019-4770-8396-8f25-1a8d3125a7f4"
+      ],
+      "imageIds": [
+        "2b400019-4770-8396-8001-aa91a763ed99",
+        "52000019-4770-8396-8018-9e5beff253f6",
+        "2f400019-4770-8396-8024-7287cb59cd68",
+        "73400019-4770-8396-8026-993dd121c747",
+        "cec00019-4770-8396-8031-72dbf37b5921",
+        "05400019-4770-8396-803e-df2f686c5135"
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "fileNames": [
+        "duo-01-html-report.png",
+        "duo-02-markdown-preview.png",
+        "duo-03-json-preview.png",
+        "duo-04-yaml-preview.png",
+        "duo-05-batch-import.png",
+        "duo-06-library.png"
+      ],
+      "placementIds": [
+        "51800019-4770-8396-8f29-20be3efe90d3",
+        "d1400019-4770-8396-8f25-81a10da5abdb",
+        "bcc00019-4770-8396-8f33-4884851253f9",
+        "63800019-4770-8396-8f28-876a03b6fc49",
+        "2f000019-4770-8396-8f02-e043462f3f46",
+        "ebc00019-4770-8396-8f35-99c0a3785710"
+      ],
+      "imageIds": [
+        "e6400019-4770-8396-8039-23bdaaffea0a",
+        "77400019-4770-8396-8006-6718509ee819",
+        "6cc00019-4770-8396-8027-0418cf86d931",
+        "98c00019-4770-8396-8008-8047e5cf2275",
+        "d4000019-4770-8396-8009-09aaddec8b0c",
+        "19400019-4770-8396-8029-a310122aec3a"
+      ]
+    },
+    {
+      "locale": "ja",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "fileNames": [
+        "duo-01-html-report.png",
+        "duo-02-markdown-preview.png",
+        "duo-03-json-preview.png",
+        "duo-04-yaml-preview.png",
+        "duo-05-batch-import.png",
+        "duo-06-library.png"
+      ],
+      "placementIds": [
+        "88000019-4770-8396-8f2b-86b391b83dbc",
+        "29400019-4770-8396-8f07-2ede3afd6c3c",
+        "6ec00019-4770-8396-8f03-938fb00fbb33",
+        "8e000019-4770-8396-8f1a-53288695f9c9",
+        "51400019-4770-8396-8f1c-2382f036faaf",
+        "bfc00019-4770-8396-8f30-8a9caaaa84c6"
+      ],
+      "imageIds": [
+        "25000019-4770-8396-8030-7a83af326e70",
+        "ae000019-4770-8396-8023-478e3b97331a",
+        "7d000019-4770-8396-8002-6d9a5215eec7",
+        "c2800019-4770-8396-802a-248cc92c96f2",
+        "e9000019-4770-8396-801d-07f55d900f73",
+        "fcc00019-4770-8396-8027-f749948e4727"
+      ]
+    },
+    {
+      "locale": "zh-Hant",
+      "placementGroup": "IPHONE_DUO_PROFILE",
+      "fileNames": [
+        "duo-01-html-report.png",
+        "duo-02-markdown-preview.png",
+        "duo-03-json-preview.png",
+        "duo-04-yaml-preview.png",
+        "duo-05-batch-import.png",
+        "duo-06-library.png"
+      ],
+      "placementIds": [
+        "80400019-4770-8396-8f2b-55bfddf093a3",
+        "02800019-4770-8396-8f11-6f18e3599eba",
+        "3b000019-4770-8396-8f05-73d2b1b3504d",
+        "a5000019-4770-8396-8f38-9adb6694cd55",
+        "ea000019-4770-8396-8f1f-c04701d23697",
+        "ef400019-4770-8396-8f22-3612cccd8ca7"
+      ],
+      "imageIds": [
+        "58c00019-4770-8396-8000-09b2f942c5ee",
+        "d4800019-4770-8396-8031-f7b5cac50d5a",
+        "87800019-4770-8396-8024-210b2424c8d3",
+        "43400019-4770-8396-801e-cd0998ddfddc",
+        "a7000019-4770-8396-8013-06a7fa704a72",
+        "5ac00019-4770-8396-801c-d5dc8039f4d7"
+      ]
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "errors": [],
+    "capturedAt": "2026-10-07T08:41:05.919181+00:00"
+  },
+  "independentVerification": {
+    "verified": true,
+    "errors": [],
+    "capturedAt": "2026-10-07T08:43:26.437223+00:00"
+  },
+  "published1.7": [
+    {
+      "locale": "zh-Hans",
+      "screenshotPlacements": 12,
+      "idsAndImagesUnchanged": true
+    },
+    {
+      "locale": "en-US",
+      "screenshotPlacements": 12,
+      "idsAndImagesUnchanged": true
+    },
+    {
+      "locale": "ja",
+      "screenshotPlacements": 12,
+      "idsAndImagesUnchanged": true
+    }
+  ]
+}

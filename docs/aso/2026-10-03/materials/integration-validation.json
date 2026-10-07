@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "appliedToTemporaryCopiesOnly": true,
+  "releaseRepositoryPatchApplied": false,
+  "checks": [
+    "patch applies against current working files",
+    "four locales and 48 CI assets",
+    "exact six-image backend order per device",
+    "Ruby and Bash syntax",
+    "capture defaults preserve source keys and compose new order"
+  ]
+}
