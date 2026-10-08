@@ -117,8 +117,8 @@ for path in [
 ]:
     require_file(path)
 
-require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*13\b", "project.yml build number is 13")
-require_text("project.yml", r"MARKETING_VERSION:\s*1\.8\b", "project.yml marketing version is 1.8")
+require_text("project.yml", r"CURRENT_PROJECT_VERSION:\s*14\b", "project.yml build number is 14")
+require_text("project.yml", r"MARKETING_VERSION:\s*1\.8\.1\b", "project.yml marketing version is 1.8.1")
 require_text(".github/workflows/ios-ci.yml", r"bash scripts/select-release-toolchain\.sh --github-env", "iOS CI requires the release toolchain")
 require_text(".github/workflows/app-store-upload.yml", r"bash scripts/select-release-toolchain\.sh --github-env", "App Store archive requires the release toolchain")
 require_file("scripts/select-release-toolchain.sh")
@@ -127,8 +127,8 @@ require_text("project.yml", r"PRODUCT_BUNDLE_IDENTIFIER:\s*com\.kaede\.htmlmarkd
 require_text("project.yml", r"ASSETCATALOG_COMPILER_APPICON_NAME:\s*AppIcon", "project.yml configures AppIcon")
 require_text("project.yml", r"ZIPFoundation:[\s\S]*from:\s*0\.9\.20", "ZIPFoundation dependency version is declared")
 require_text("project.yml", r"SwiftMarkdown:[\s\S]*from:\s*0\.8\.0", "Swift Markdown dependency version is declared")
-require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"13"', "App Store upload workflow targets build 13")
-require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_VERSION_STRING:\s*"1\.8"', "App Store upload workflow targets version 1.8")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_BUILD_NUMBER:\s*"14"', "App Store upload workflow targets build 14")
+require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_VERSION_STRING:\s*"1\.8\.1"', "App Store upload workflow targets version 1.8.1")
 require_text(".github/workflows/app-store-upload.yml", r"APP_STORE_CONNECT_RELEASE_TYPE:\s*AFTER_APPROVAL", "App Store workflow requests automatic release after approval")
 require_text(".github/scripts/submit-app-store-review.rb", r"configure_and_verify_release_type", "App Store submission verifies automatic release configuration")
 require_text(".github/workflows/app-store-upload.yml", r'APP_STORE_CONNECT_CHECK_STORE_ASSETS_ONLY:\s*"true"', "App Store upload workflow verifies modern store assets read-only")
@@ -140,8 +140,8 @@ require_text(".github/scripts/submit-app-store-review.rb", r'/v1/apps/#\{APP_ID\
 require_text(".github/scripts/submit-app-store-review.rb", r"verify_expected_screenshot_inventory!", "App Store verification requires exact screenshot inventory before submission")
 require_text(".github/scripts/submit-app-store-review.rb", r"Legacy screenshot cleanup is disabled", "Submission cannot delete legacy screenshot resources")
 
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.8;", "generated Xcode project marketing version is 1.8")
-require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 13;", "generated Xcode project build number is 13")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"MARKETING_VERSION = 1\.8\.1;", "generated Xcode project marketing version is 1.8.1")
+require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"CURRENT_PROJECT_VERSION = 14;", "generated Xcode project build number is 14")
 require_text("HTMLMarkdownPreviewer.xcodeproj/project.pbxproj", r"PRODUCT_BUNDLE_IDENTIFIER = com\.kaede\.htmlmarkdownpreviewer;", "generated Xcode project bundle identifier is correct")
 
 print("\n== Info.plist ==")
