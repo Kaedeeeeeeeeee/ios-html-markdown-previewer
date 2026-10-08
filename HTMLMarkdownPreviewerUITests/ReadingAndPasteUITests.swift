@@ -155,8 +155,15 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertTrue(title.label.contains(name))
         XCTAssertLessThan(title.frame.maxY, app.frame.height * 0.3)
 
-        let actionIDs = ["reading-tools-menu", "preview-mode-menu", "share-file-button", "file-details-button"]
-        let actions = actionIDs.map { app.buttons[$0] }
+        let legacyActionIDs = ["reading-tools-menu", "preview-mode-menu", "share-file-button", "file-details-button"]
+        let actionIDs: [String]
+        if #available(iOS 27.1, *) {
+            // The system toolbar also offers Find directly.
+            actionIDs = ["reading-find-toolbar-button"] + legacyActionIDs
+        } else {
+            actionIDs = legacyActionIDs
+        }
+        let actions = legacyActionIDs.map { app.buttons[$0] }
         if #available(iOS 27.1, *) {
             assertSystemPreviewActions(actionIDs, app: app)
             screenshot("Long multilingual title with system reading toolbar", app: app)
@@ -423,6 +430,30 @@ final class ReadingAndPasteUITests: XCTestCase {
         XCTAssertFalse(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "recent-document-")).firstMatch.exists)
     }
 
+    func testToolbarFindFocusesSearchAndKeepsResultControlsReachable() throws {
+        guard #available(iOS 27.1, *) else { throw XCTSkip("The system reading toolbar requires iOS 27.1") }
+        let app = launchFresh(sample: "html")
+        let find = app.buttons["reading-find-toolbar-button"]
+        XCTAssertTrue(eventuallyEnabled(find), "Find should be a direct reading action")
+        find.press(forDuration: 0.2)
+        let field = app.textFields["reading-search-field"]
+        XCTAssertTrue(eventuallyHittable(field))
+        let focused = wait { (field.value(forKey: "hasKeyboardFocus") as? Bool) == true }
+        if !focused { attachInterfaceSnapshot("Toolbar Find did not focus search", app: app) }
+        XCTAssertTrue(focused, "Opening search from the toolbar must focus its field")
+        field.typeText("bookshop")
+        waitForLabel("1 of 1", identifier: "reading-match-count", app: app)
+        for identifier in ["reading-previous-match", "reading-next-match", "reading-search-close"] {
+            let control = app.buttons[identifier]
+            XCTAssertTrue(eventuallyHittable(control), "Result navigation must stay reachable: \(identifier)")
+            XCTAssertTrue(app.frame.contains(control.frame))
+            XCTAssertFalse(control.frame.intersects(field.frame), "Search controls must not cover the field")
+        }
+        screenshot("Search opened from the toolbar", app: app)
+        closeSearch(app)
+        XCTAssertTrue(eventuallyHittable(find), "Closing search restores the reading actions")
+    }
+
     func testSearchNoResultsAndClosingSearchRestoresNormalReading() {
         let app = launchFresh(sample: "markdown")
         XCTAssertTrue(app.staticTexts["Make room to read"].waitForExistence(timeout: 10))
@@ -619,7 +650,10 @@ final class ReadingAndPasteUITests: XCTestCase {
         // The CI recording showed this menu still open after a 50-ms tap.
         // Issue one normal short press, then require the actual sheet transition.
         contents.press(forDuration: 0.2)
-        let opened = eventuallyHittable(app.buttons["reading-contents-done"])
+        // Compact widths present a sheet with Done; wide readers keep the
+        // outline open beside the document as an inspector.
+        let heading = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "reading-heading-")).firstMatch
+        let opened = wait { app.buttons["reading-contents-done"].isHittable || (heading.exists && heading.isHittable) }
         if !opened {
             attachInterfaceSnapshot("Reading contents sheet did not open", app: app)
         }

@@ -9,6 +9,7 @@ enum LibraryStrings {
     static let selectFileDescription = text("library.selectFileDescription", "Choose a file from your library, or open a new file to start reading.")
     static let searchPlaceholder = text("library.search", "Search files")
     static let filter = text("library.filter", "File Type")
+    static let edit = text("library.edit", "Edit")
     static let allFiles = text("library.all", "All Files")
     static let pinned = text("library.pinned", "Pinned")
     static let pin = text("library.pin", "Pin")

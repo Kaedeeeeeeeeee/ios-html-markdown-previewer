@@ -35,6 +35,8 @@ struct AppView: View {
     @State private var renameDocument: PreviewDocument?
     @State private var searchText = ""
     @State private var selectedFilter: DocumentLibraryFilter = .all
+    @State private var libraryEditMode: EditMode = .inactive
+    @State private var foldColumnWidth: CGFloat?
     @State private var errorMessage: String?
     @State private var didHandleLaunchArguments = false
 
@@ -52,26 +54,24 @@ struct AppView: View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             List(selection: $selectedDocumentID) {
                 Section {
-                    Button {
-                        presentImporter(scope: .previewDocument)
-                    } label: {
-                        Label(AppStrings.Actions.openFile, systemImage: "doc.badge.plus")
+                    // One row keeps every import action visible while leaving
+                    // most of a short display or sidebar for the library.
+                    HStack(spacing: 8) {
+                        ImportActionTile(title: AppStrings.Actions.openFile, systemImage: "doc.badge.plus") {
+                            presentImporter(scope: .previewDocument)
+                        }
+                        .accessibilityIdentifier("open-file-button")
+                        ImportActionTile(title: AppStrings.Actions.openZIPPackage, systemImage: "archivebox") {
+                            presentImporter(scope: .zipPackage)
+                        }
+                        .accessibilityIdentifier("open-zip-package-button")
+                        ImportActionTile(title: PasteStrings.title, systemImage: "doc.on.clipboard") {
+                            isPastePreviewPresented = true
+                        }
+                        .accessibilityIdentifier("paste-preview-button")
                     }
-                    .accessibilityIdentifier("open-file-button")
-
-                    Button {
-                        presentImporter(scope: .zipPackage)
-                    } label: {
-                        Label(AppStrings.Actions.openZIPPackage, systemImage: "archivebox")
-                    }
-                    .accessibilityIdentifier("open-zip-package-button")
-
-                    Button {
-                        isPastePreviewPresented = true
-                    } label: {
-                        Label(PasteStrings.title, systemImage: "doc.on.clipboard")
-                    }
-                    .accessibilityIdentifier("paste-preview-button")
+                    .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    .listRowBackground(Color.clear)
                 } footer: {
                     Text(BatchImportStrings.selectionHint)
                 }
@@ -133,27 +133,50 @@ struct AppView: View {
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: LibraryStrings.searchPlaceholder)
             .scrollDismissesKeyboard(.interactively)
+            .environment(\.editMode, $libraryEditMode)
             .navigationTitle(AppStrings.App.title)
+            // A narrow sidebar truncates an inline title between its buttons.
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         isSettingsPresented = true
                     } label: {
-                        Image(systemName: "gearshape")
+                        Label(AppStrings.Accessibility.settings, systemImage: "gearshape")
                     }
-                    .accessibilityLabel(AppStrings.Accessibility.settings)
                     .accessibilityIdentifier("settings-button")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    if !documents.isEmpty { EditButton() }
+                    if !documents.isEmpty {
+                        // A titled symbol fits a narrow sidebar and can move to
+                        // a vertical bar; a text-only Edit button cannot.
+                        Button {
+                            withAnimation { libraryEditMode = libraryEditMode.isEditing ? .inactive : .active }
+                        } label: {
+                            Label(libraryEditMode.isEditing ? AppStrings.Actions.done : LibraryStrings.edit,
+                                  systemImage: libraryEditMode.isEditing ? "checkmark" : "checklist")
+                        }
+                        .accessibilityIdentifier("library-edit-button")
+                    }
                 }
             }
-            .navigationSplitViewColumnWidth(min: 260, ideal: 320, max: 400)
+            // When Duo is partially open like a book, end the library at the
+            // fold so the reader occupies one side instead of straddling it.
+            .navigationSplitViewColumnWidth(min: foldColumnWidth ?? 260, ideal: foldColumnWidth ?? 320,
+                                            max: foldColumnWidth ?? 400)
         } detail: {
             documentDetail
         }
         .navigationSplitViewStyle(.balanced)
+        .background {
+            GeometryReader { proxy in
+                Color.clear.onChange(of: FoldGeometry.verticalFoldLeading(in: proxy), initial: true) { _, leading in
+                    let width = leading.map { max(260, $0) }
+                    if foldColumnWidth != width { withAnimation(.snappy) { foldColumnWidth = width } }
+                }
+            }
+        }
         .sheet(isPresented: $isSettingsPresented, onDismiss: processImportQueue) {
             SettingsView(clearImportedFiles: clearImportedFiles)
         }
@@ -808,4 +831,36 @@ private struct DocumentRow: View {
 
 #Preview {
     AppView()
+}
+
+private struct ImportActionTile: View {
+    let title: String
+    let systemImage: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Image(systemName: systemImage)
+                    .font(.title3)
+                    .foregroundStyle(.tint)
+                    .frame(height: 24)
+                    .accessibilityHidden(true)
+                Text(title)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.primary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
+            }
+            .padding(.horizontal, 4)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: 72)
+            .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+        // Plain keeps the label in the primary color beside the tinted symbol.
+        .buttonStyle(.plain)
+        .accessibilityLabel(title)
+    }
 }

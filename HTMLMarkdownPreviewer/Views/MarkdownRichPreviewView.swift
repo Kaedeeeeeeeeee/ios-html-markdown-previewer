@@ -33,6 +33,7 @@ struct MarkdownRichPreviewView: View {
                     readingState: readingState,
                     query: readingState?.query ?? "",
                     navigationRequest: readingState?.navigationRequest,
+                    fold: readingState?.fold,
                     appearance: typography,
                     onPreviewReady: { webView in
                         isReady = webView != nil
@@ -155,6 +156,7 @@ private struct MarkdownRichWebView: UIViewRepresentable {
     let readingState: DocumentReadingState?
     let query: String
     let navigationRequest: ReadingNavigationRequest?
+    let fold: ReaderFoldBand?
     let appearance: MarkdownRichTypography
     let onPreviewReady: (WKWebView?) -> Void
     let onError: (String) -> Void

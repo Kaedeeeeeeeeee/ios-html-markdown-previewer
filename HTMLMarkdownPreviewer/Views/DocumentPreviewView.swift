@@ -34,6 +34,7 @@ struct DocumentPreviewView: View {
     @State private var isPackagePagesPresented = false
     @State private var previewGeneration = UUID()
     @State private var pendingPackageFragment: String?
+    @State private var readerWidth: CGFloat = 0
     @AppStorage("reading.htmlZoom") private var htmlZoom = 1.0
     @AppStorage("reading.markdownFontScale") private var markdownFontScale = 1.0
     @AppStorage("reading.markdownLineSpacing") private var markdownLineSpacing = 4.0
@@ -112,7 +113,26 @@ struct DocumentPreviewView: View {
     }
 
     var body: some View {
-        previewContent
+        // A constant container keeps the reader's identity when the outline column appears.
+        HStack(spacing: 0) {
+            previewContent
+                .modifier(ReaderFoldObserver(reading: reading))
+            if usesOutlineColumn && readingSheet == .contents {
+                Divider()
+                // A wide reader keeps the outline beside the document, so several
+                // headings can be visited without reopening it.
+                DocumentOutlineView(reading: reading, staysOpenAfterSelection: true) {
+                    readingSheet = nil
+                }
+                .frame(width: 280)
+                .transition(.move(edge: .trailing))
+            }
+        }
+        .background {
+            GeometryReader { proxy in
+                Color.clear.onChange(of: proxy.size.width, initial: true) { _, width in readerWidth = width }
+            }
+        }
         .modifier(SharePresentationModifier(presentation: sharePresentation))
         .navigationTitle(document.displayName)
         .navigationBarTitleDisplayMode(.inline)
@@ -221,6 +241,11 @@ struct DocumentPreviewView: View {
             }
         }
         .onChange(of: reading.isReady) { applyPackageMarkdownAnchor() }
+        #if DEBUG
+        .onChange(of: reading.isReady) { _, isReady in
+            if isReady { applyScreenshotReaderArguments() }
+        }
+        #endif
         .onAppear {
             isReaderVisible = true
             startPreviewLoadingIfNeeded()
@@ -257,7 +282,7 @@ struct DocumentPreviewView: View {
         .sheet(isPresented: $isDetailsPresented) {
             DocumentDetailsView(document: document, store: store, previewMode: previewMode)
         }
-        .sheet(item: $readingSheet) { _ in
+        .sheet(item: compactReadingSheet) { _ in
             DocumentOutlineView(reading: reading)
         }
         .sheet(isPresented: $isAppearancePresented) {
@@ -284,7 +309,39 @@ struct DocumentPreviewView: View {
     private var canAccumulateReviewReadingTime: Bool {
         isReaderVisible && scenePhase == .active && isReviewContentReady && !isReadingObscured
             && !isInteractiveConfirmationPresented && !isDetailsPresented && !isExporting && !isSharing && exportError == nil
-            && readingSheet == nil && !isAppearancePresented && !isPackagePagesPresented
+            && (readingSheet == nil || usesOutlineColumn) && !isAppearancePresented && !isPackagePagesPresented
+    }
+
+    #if DEBUG
+    /// Screenshot captures open reader tools without driving each display's touches.
+    private func applyScreenshotReaderArguments() {
+        guard ProcessInfo.processInfo.environment["HTML_PREVIEWER_UI_TESTS"] == "1" else { return }
+        let arguments = CommandLine.arguments
+        if let argument = arguments.first(where: { $0.hasPrefix("--screenshot-reader-query=") }) {
+            // Match a reader typing after the keyboard has resized the viewport.
+            isSearchPresented = true
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(1.5))
+                reading.query = String(argument.dropFirst("--screenshot-reader-query=".count))
+                guard arguments.contains("--screenshot-reader-submit") else { return }
+                // Like the keyboard's Search key: dismiss it and reveal the result.
+                try? await Task.sleep(for: .seconds(1.5))
+                searchEditingSession.endEditing()
+                reading.navigate(to: .match(max(0, reading.selectedMatch)))
+            }
+        }
+        if arguments.contains("--screenshot-reader-outline") { readingSheet = .contents }
+    }
+    #endif
+
+    /// Leaves the document at least a comfortable reading width beside a 280-point outline.
+    private var usesOutlineColumn: Bool {
+        horizontalSizeClass == .regular && readerWidth >= 640
+    }
+
+    private var compactReadingSheet: Binding<ReadingSheet?> {
+        Binding(get: { usesOutlineColumn ? nil : readingSheet },
+                set: { readingSheet = $0 })
     }
 
     private var usesSystemPreviewToolbar: Bool {
@@ -299,6 +356,16 @@ struct DocumentPreviewView: View {
     @ToolbarContentBuilder
     private var systemPreviewToolbar: some ToolbarContent {
         if supportsReadingTools {
+            ToolbarItem(placement: .bottomBar) {
+                Button {
+                    isSearchPresented = true
+                } label: {
+                    Label(ReadingStrings.find, systemImage: "magnifyingglass")
+                }
+                .disabled(!reading.isReady)
+                .accessibilityIdentifier("reading-find-toolbar-button")
+            }
+            .previewActionPriority(isPrimary: true)
             ToolbarItem(placement: .bottomBar) {
                 readingToolsMenu(usesSystemLabel: true)
             }
@@ -345,7 +412,10 @@ struct DocumentPreviewView: View {
             }
             .accessibilityIdentifier("reading-find-button")
             Button {
-                readingSheet = .contents
+                // A wide reader's outline is a column; the same command closes it.
+                withAnimation(.snappy) {
+                    readingSheet = usesOutlineColumn && readingSheet == .contents ? nil : .contents
+                }
             } label: {
                 Label(ReadingStrings.contents, systemImage: "list.bullet.indent")
             }
@@ -794,32 +864,60 @@ private struct PreviewStatus: Equatable {
     let systemImage: String
 }
 
+/// One line by default so short displays keep their height for the document.
+/// The complete explanation stays one tap (or VoiceOver action) away.
 private struct PreviewStatusBar: View {
     let status: PreviewStatus
     var showsDescription = true
+    @State private var isExpanded = false
 
     var body: some View {
-        HStack(alignment: .top, spacing: 10) {
+        HStack(alignment: isDetailed ? .top : .firstTextBaseline, spacing: 8) {
             Image(systemName: status.systemImage)
+                .font(.footnote)
                 .foregroundStyle(.secondary)
-                .frame(width: 20)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(status.title)
-                    .font(.footnote.weight(.semibold))
-                if showsDescription {
-                    Text(status.message)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                .frame(width: 18)
+            if isDetailed {
+                VStack(alignment: .leading, spacing: 2) {
+                    title
+                    message.fixedSize(horizontal: false, vertical: true)
                 }
+            } else {
+                title.layoutPriority(1)
+                if showsDescription { message.lineLimit(1) }
             }
             Spacer(minLength: 0)
+            if showsDescription {
+                Image(systemName: "chevron.down")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            }
         }
         .padding(.horizontal)
-        .padding(.vertical, 8)
+        .padding(.vertical, 6)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(.regularMaterial)
+        .contentShape(Rectangle())
+        .onTapGesture { toggle() }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(status.title): \(status.message)")
+        .accessibilityAction { toggle() }
+    }
+
+    private var isDetailed: Bool { isExpanded && showsDescription }
+
+    private var title: some View {
+        Text(status.title).font(.footnote.weight(.semibold))
+    }
+
+    private var message: some View {
+        Text(status.message).font(.caption).foregroundStyle(.secondary)
+    }
+
+    private func toggle() {
+        guard showsDescription else { return }
+        withAnimation(.snappy(duration: 0.2)) { isExpanded.toggle() }
     }
 }
 
