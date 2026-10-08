@@ -120,15 +120,34 @@ Ordinary iPhone, iOS 18.5 (the CI configuration):
 iPhone Duo, iOS 27.1, dedicated simulator, Closed:
 
 - Passed: JSON search/source/reopen (toolbar options), pasted Markdown
-  search/outline/resume, and search with no results then closing search.
-- Toolbar Find focused the search field, accepted typing, and found the result
-  in an earlier run; that run failed only on the since-reverted side-bar result
-  controls.
-- Not established under this load: the long-title and smoke tests stopped
-  waiting for their requested landscape window to settle, and two later Find
-  runs never got past the app's launch screen. No baseline comparison of the
-  landscape settling completed.
+  search/outline/resume, search with no results then closing search, and
+  toolbar Find (focus, typing, result controls) once the host was quiet.
+- The long-title and smoke tests stop waiting for their requested landscape
+  window to settle. The unchanged `2c08a0f` build fails both in the same way on
+  the same simulator, so this predates these changes.
+
+The iOS 27.1 simulator runtime installed here supports only iPhone Duo, so the
+iOS 27.1 system toolbar paths (Find, JSON/YAML options, single-row search) have
+been exercised only on Duo. Other iPhones use the existing controls until they
+run iOS 27.1.
+
+Supplementary runs on a quiet host, iOS 27.0 (the current release for other
+devices):
+
+- iPhone 17: the CI UI test set plus the long-title and search-closing tests
+  passed 15 of 15.
+- iPad Pro 11-inch (M5): `testIPadWideLibrarySelectionAndReaderSearchSurviveRotation`
+  passed; the library, JSON beside the library, and the outline column were
+  inspected visually.
+
+The first PR CI run failed in `testSystemPasteDetectsJSONAndCopiesExactNumberAndCollection`
+(no back button after reopening a document from Recent). On an iOS 27.0 iPhone
+the new build passed and the unchanged build failed with the same message, so it
+is an existing flake. Two reruns ended before any test ran: the test runner hung
+or exited while bootstrapping.
 
 Visually inspected on the Duo simulator: Closed library, HTML, ZIP, and JSON;
 Open HTML, JSON, YAML, and the outline column; Partially Open book and tabletop
 poses; the outline moving from a column to a sheet when the device closes.
+Also inspected: [iPhone, iOS 27.0](assets/2026-10-08-duo-ux-polish/iphone-27.0-library-reader-search.png)
+and [iPad, iOS 27.0](assets/2026-10-08-duo-ux-polish/ipad-27.0-library-json-outline.png).
