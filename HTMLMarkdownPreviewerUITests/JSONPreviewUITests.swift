@@ -166,7 +166,10 @@ final class JSONPreviewUITests: XCTestCase {
 
     private func tapMenuAction(_ id: String, app: XCUIApplication) {
         let button = app.buttons[id]
-        XCTAssertTrue(wait { button.exists && button.isHittable })
+        // Wait for existence and hittability separately so each poll issues a
+        // single accessibility query (see navigateHome).
+        XCTAssertTrue(button.waitForExistence(timeout: 15))
+        XCTAssertTrue(wait { button.isHittable })
         button.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         XCTAssertTrue(wait { !button.exists })
     }
