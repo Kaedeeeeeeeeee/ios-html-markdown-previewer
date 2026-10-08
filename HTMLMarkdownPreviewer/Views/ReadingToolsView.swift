@@ -2,6 +2,44 @@ import SwiftUI
 import UIKit
 import Observation
 
+/// Reserved-region queries exist only on iOS 27.1, where iPhone Duo can fold.
+enum FoldGeometry {
+    /// A fold dividing `proxy` into upper and lower parts (Duo partially open
+    /// while held in portrait), in fractions of its height.
+    static func horizontalBand(in proxy: GeometryProxy) -> ReaderFoldBand? {
+        guard #available(iOS 27.1, *), proxy.size.height > 0 else { return nil }
+        guard let frame = proxy.reservedRegions(kind: .division)
+            .first(where: { $0.isActive && $0.frame.width > $0.frame.height })?.frame else { return nil }
+        return ReaderFoldBand(top: Double(frame.minY / proxy.size.height),
+                              bottom: Double(frame.maxY / proxy.size.height))
+    }
+
+    /// The leading edge of a fold dividing `proxy` into side-by-side parts
+    /// (Duo partially open like a book).
+    static func verticalFoldLeading(in proxy: GeometryProxy) -> CGFloat? {
+        guard #available(iOS 27.1, *) else { return nil }
+        guard let frame = proxy.reservedRegions(kind: .division)
+            .first(where: { $0.isActive && $0.frame.height > $0.frame.width })?.frame,
+              frame.minX > 0, frame.maxX < proxy.size.width else { return nil }
+        return frame.minX
+    }
+}
+
+/// Publishes the reader's fold so result navigation can keep matches off it.
+struct ReaderFoldObserver: ViewModifier {
+    let reading: DocumentReadingState
+
+    func body(content: Content) -> some View {
+        content.background {
+            GeometryReader { proxy in
+                Color.clear.onChange(of: FoldGeometry.horizontalBand(in: proxy), initial: true) { _, band in
+                    if reading.fold != band { reading.fold = band }
+                }
+            }
+        }
+    }
+}
+
 /// The reader owns editing intent because a split column can replace its host.
 @MainActor
 @Observable
@@ -313,7 +351,8 @@ private struct MigratingSearchField: UIViewRepresentable {
 }
 
 /// Change positions without replacing the field when keyboard/size classes change.
-/// If the compact row cannot fit, use the original two-row arrangement.
+/// Results share the field's row whenever the width leaves the field comfortable;
+/// otherwise use the original two-row arrangement.
 private struct ResponsiveSearchLayout: Layout {
     var prefersCompact: Bool
     var hasQuery: Bool
@@ -370,11 +409,14 @@ private struct ResponsiveSearchLayout: Layout {
         let idealField = subviews[0].sizeThatFits(.unspecified)
         let minimumField = subviews[0].sizeThatFits(ProposedViewSize(width: 0, height: nil)).width
         let controlsWidth = naturalCount.width + previous.width + next.width + close.width + 32
+        // Compact heights accept the minimum field; otherwise a single row must
+        // still leave room for a readable query.
+        let rowField = prefersCompact ? minimumField : max(minimumField, 200)
         let idealWidth = hasQuery && prefersCompact ? idealField.width + controlsWidth : max(
             idealField.width + close.width + 10, naturalCount.width + previous.width + next.width + 16
         )
         let width = max(0, proposedWidth ?? idealWidth)
-        let singleRow = !hasQuery || (prefersCompact && minimumField + controlsWidth <= width)
+        let singleRow = !hasQuery || rowField + controlsWidth <= width
         let fieldWidth = max(0, width - (hasQuery && singleRow ? controlsWidth : close.width + 10))
         let field = subviews[0].sizeThatFits(ProposedViewSize(width: fieldWidth, height: nil))
         let countWidth = singleRow ? naturalCount.width : max(0, width - previous.width - next.width - 16)
@@ -391,40 +433,68 @@ private struct ResponsiveSearchLayout: Layout {
 
 struct DocumentOutlineView: View {
     let reading: DocumentReadingState
+    var staysOpenAfterSelection = false
+    var onClose: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if reading.headings.isEmpty {
-                    ContentUnavailableView(ReadingStrings.noHeadings, systemImage: "list.bullet.indent",
-                                           description: Text(ReadingStrings.noHeadingsDescription))
-                } else {
-                    List(reading.headings) { heading in
-                        Button {
-                            reading.navigate(to: .heading(heading.id))
-                            dismiss()
-                        } label: {
-                            Text(heading.title)
-                                .fontWeight(heading.level <= 2 ? .semibold : .regular)
-                                .foregroundStyle(.primary)
-                                .padding(.leading, CGFloat(max(0, min(5, heading.level - 1))) * 14)
-                                .padding(.vertical, 4)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .contentShape(Rectangle())
-                        }
-                        .accessibilityIdentifier("reading-heading-\(heading.id)")
-                    }
+        if staysOpenAfterSelection {
+            // A column beside the reader has its own header instead of a nested
+            // navigation stack inside the split view's detail.
+            VStack(spacing: 0) {
+                HStack {
+                    Text(ReadingStrings.contents).font(.headline)
+                    Spacer(minLength: 8)
+                    doneButton
                 }
+                .padding(.horizontal, 16)
+                .frame(minHeight: 44)
+                Divider()
+                outline
             }
-            .navigationTitle(ReadingStrings.contents)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(AppStrings.Actions.done) { dismiss() }
-                        .accessibilityIdentifier("reading-contents-done")
-                }
+            .background(Color(.secondarySystemBackground))
+        } else {
+            NavigationStack {
+                outline
+                    .navigationTitle(ReadingStrings.contents)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) { doneButton }
+                    }
             }
         }
+    }
+
+    private var doneButton: some View {
+        Button(AppStrings.Actions.done) { close() }
+            .accessibilityIdentifier("reading-contents-done")
+    }
+
+    @ViewBuilder
+    private var outline: some View {
+        if reading.headings.isEmpty {
+            ContentUnavailableView(ReadingStrings.noHeadings, systemImage: "list.bullet.indent",
+                                   description: Text(ReadingStrings.noHeadingsDescription))
+        } else {
+            List(reading.headings) { heading in
+                Button {
+                    reading.navigate(to: .heading(heading.id))
+                    if !staysOpenAfterSelection { close() }
+                } label: {
+                    Text(heading.title)
+                        .fontWeight(heading.level <= 2 ? .semibold : .regular)
+                        .foregroundStyle(.primary)
+                        .padding(.leading, CGFloat(max(0, min(5, heading.level - 1))) * 14)
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
+                }
+                .accessibilityIdentifier("reading-heading-\(heading.id)")
+            }
+        }
+    }
+
+    private func close() {
+        if let onClose { onClose() } else { dismiss() }
     }
 }

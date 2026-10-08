@@ -4,6 +4,36 @@ import SwiftUI
 @testable import HTMLMarkdownPreviewer
 
 final class MarkdownReadingTests: XCTestCase {
+    func testFoldBandRejectsBandsOutsideTheViewportAndClampsPartialOnes() {
+        XCTAssertNil(ReaderFoldBand(top: 1.1, bottom: 1.2))
+        XCTAssertNil(ReaderFoldBand(top: -0.2, bottom: 0))
+        XCTAssertNil(ReaderFoldBand(top: 0.6, bottom: 0.4))
+        XCTAssertEqual(ReaderFoldBand(top: -0.1, bottom: 0.2), ReaderFoldBand(top: 0, bottom: 0.2))
+    }
+
+    func testRevealTopKeepsTheUsualPositionWithoutAFold() {
+        XCTAssertEqual(ReaderFoldBand.revealTop(targetHeight: 30, viewportHeight: 800, fold: nil), 280)
+    }
+
+    func testRevealTopPlacesAResultAboveTheFoldWhenItFits() throws {
+        let fold = try XCTUnwrap(ReaderFoldBand(top: 0.48, bottom: 0.52))
+        let top = ReaderFoldBand.revealTop(targetHeight: 30, viewportHeight: 1000, fold: fold)
+        XCTAssertEqual(top, 350)
+        XCTAssertFalse(fold.intersects(top: top, bottom: top + 30, viewportHeight: 1000))
+
+        // A taller result moves up until its bottom clears the fold.
+        let tall = ReaderFoldBand.revealTop(targetHeight: 200, viewportHeight: 1000, fold: fold)
+        XCTAssertEqual(tall, 268)
+        XCTAssertFalse(fold.intersects(top: tall, bottom: tall + 200, viewportHeight: 1000))
+    }
+
+    func testRevealTopPlacesAResultBelowTheFoldWhenTheUpperPartIsTooShort() throws {
+        let fold = try XCTUnwrap(ReaderFoldBand(top: 0.2, bottom: 0.25))
+        let top = ReaderFoldBand.revealTop(targetHeight: 180, viewportHeight: 1000, fold: fold)
+        XCTAssertEqual(top, 262)
+        XCTAssertFalse(fold.intersects(top: top, bottom: top + 180, viewportHeight: 1000))
+    }
+
     func testRepeatedHeadingsHaveDistinctDestinationsIncludingNestedHeadings() {
         let index = MarkdownReadingIndex(document: MarkdownDocument(blocks: [
             .heading(level: 1, text: AttributedString("Repeated")),

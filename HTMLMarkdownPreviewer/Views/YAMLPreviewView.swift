@@ -6,18 +6,31 @@ struct YAMLPreviewView: View {
     let reading: DocumentReadingState
     var format: StructuredDocumentFormat = .yaml
     @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private var usesCompactControls: Bool {
         if #available(iOS 27.1, *) { return verticalSizeClass == .compact }
         return false
     }
 
+    /// Short heights and wide readers both have room for one row of controls.
+    private var usesHorizontalControls: Bool {
+        usesCompactControls || horizontalSizeClass == .regular
+    }
+
+    /// iOS 27.1 hosts these actions in the system toolbar, which can sit
+    /// beside the reader and keeps the ellipsis for the system overflow menu.
+    private var usesToolbarOptions: Bool {
+        if #available(iOS 27.1, *) { return true }
+        return false
+    }
+
     private var controlsLayout: AnyLayout {
-        usesCompactControls ? AnyLayout(HStackLayout(spacing: 10)) : AnyLayout(VStackLayout(spacing: 10))
+        usesHorizontalControls ? AnyLayout(HStackLayout(spacing: 12)) : AnyLayout(VStackLayout(spacing: 10))
     }
 
     private var searchLayout: AnyLayout {
-        usesCompactControls ? AnyLayout(HStackLayout(spacing: 8)) : AnyLayout(VStackLayout(spacing: 8))
+        usesHorizontalControls ? AnyLayout(HStackLayout(spacing: 8)) : AnyLayout(VStackLayout(spacing: 8))
     }
 
     private var optionsTitle: String { format == .json ? JSONStrings.options : YAMLStrings.options }
@@ -35,6 +48,7 @@ struct YAMLPreviewView: View {
     @State private var scrollRequest = ScrollRequest(target: "")
     @State private var copied = false
     @State private var copyTask: Task<Void, Never>?
+    @State private var contentFold: ReaderFoldBand?
     @FocusState private var isSearchFocused: Bool
 
     private struct ScrollRequest: Equatable {
@@ -44,7 +58,11 @@ struct YAMLPreviewView: View {
     }
 
     private var searchScrollAnchor: UnitPoint {
-        if #available(iOS 27.1, *) { return UnitPoint(x: 0, y: 0.5) }
+        if #available(iOS 27.1, *) {
+            // A fold across the middle would cut the centered row in half.
+            if let contentFold { return UnitPoint(x: 0, y: max(0.05, contentFold.top - 0.12)) }
+            return UnitPoint(x: 0, y: 0.5)
+        }
         return .topLeading
     }
 
@@ -146,6 +164,13 @@ struct YAMLPreviewView: View {
                 loadError = error.localizedDescription
             }
         }
+        .toolbar {
+            if #available(iOS 27.1, *), let document {
+                ToolbarItem(placement: .bottomBar) {
+                    optionsMenu(document)
+                }
+            }
+        }
         .onChange(of: query) { resetSearch() }
         .onChange(of: visibleID) { persistLocation() }
         .onDisappear { copyTask?.cancel() }
@@ -182,25 +207,9 @@ struct YAMLPreviewView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                Menu {
-                    Button(YAMLStrings.expandAll, systemImage: "arrow.down.right.and.arrow.up.left") { collapsed.removeAll() }
-                        .disabled(mode != .structure || issue != nil)
-                        .accessibilityIdentifier("\(format.rawValue)-expand-all")
-                    Button(YAMLStrings.collapseAll, systemImage: "arrow.up.left.and.arrow.down.right") {
-                        collapsed = Set((sheet?.rows ?? []).filter { $0.depth > 0 && $0.isExpandable }.map(\.id))
-                    }
-                    .disabled(mode != .structure || issue != nil || !trimmedQuery.isEmpty)
-                    .accessibilityIdentifier("\(format.rawValue)-collapse-all")
-                    Divider()
-                    Button(YAMLStrings.copySource, systemImage: "doc.on.doc") { copy(document.source) }
-                        .disabled(document.issue?.code == "sizeLimit")
-                        .accessibilityIdentifier("\(format.rawValue)-copy-source")
-                } label: {
-                    Image(systemName: "ellipsis.circle").font(.title3)
-                        .frame(minWidth: 44, minHeight: 44)
+                if !usesToolbarOptions {
+                    optionsMenu(document)
                 }
-                .accessibilityLabel(optionsTitle)
-                .accessibilityIdentifier("\(format.rawValue)-options-menu")
             }
             .font(.subheadline)
             .fixedSize(horizontal: usesCompactControls, vertical: false)
@@ -212,6 +221,7 @@ struct YAMLPreviewView: View {
                 Text(YAMLStrings.source).tag(YAMLPreviewMode.source)
             }
             .pickerStyle(.segmented)
+            .frame(maxWidth: usesHorizontalControls && !usesCompactControls ? 300 : .infinity)
             .accessibilityIdentifier("\(format.rawValue)-view-picker")
             .layoutPriority(1)
         }
@@ -241,6 +251,32 @@ struct YAMLPreviewView: View {
         .background(Color.orange.opacity(0.1))
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("\(format.rawValue)-diagnostic")
+    }
+
+    private func optionsMenu(_ document: YAMLDocument) -> some View {
+        Menu {
+            Button(YAMLStrings.expandAll, systemImage: "arrow.down.right.and.arrow.up.left") { collapsed.removeAll() }
+                .disabled(mode != .structure || issue != nil)
+                .accessibilityIdentifier("\(format.rawValue)-expand-all")
+            Button(YAMLStrings.collapseAll, systemImage: "arrow.up.left.and.arrow.down.right") {
+                collapsed = Set((sheet?.rows ?? []).filter { $0.depth > 0 && $0.isExpandable }.map(\.id))
+            }
+            .disabled(mode != .structure || issue != nil || !trimmedQuery.isEmpty)
+            .accessibilityIdentifier("\(format.rawValue)-collapse-all")
+            Divider()
+            Button(YAMLStrings.copySource, systemImage: "doc.on.doc") { copy(document.source) }
+                .disabled(document.issue?.code == "sizeLimit")
+                .accessibilityIdentifier("\(format.rawValue)-copy-source")
+        } label: {
+            if usesToolbarOptions {
+                Label(optionsTitle, systemImage: "list.bullet.indent")
+            } else {
+                Image(systemName: "ellipsis.circle").font(.title3)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+        }
+        .accessibilityLabel(optionsTitle)
+        .accessibilityIdentifier("\(format.rawValue)-options-menu")
     }
 
     private var searchBar: some View {
@@ -273,7 +309,7 @@ struct YAMLPreviewView: View {
                     Text(YAMLStrings.results(resultIndex, count: resultIDs.count))
                         .font(.caption).foregroundStyle(.secondary)
                         .accessibilityIdentifier("\(format.rawValue)-match-count")
-                    if !usesCompactControls { Spacer() }
+                    if !usesHorizontalControls { Spacer() }
                     Button { moveResult(forward: false) } label: {
                         Image(systemName: "chevron.up")
                             .frame(width: usesCompactControls ? 44 : 40, height: usesCompactControls ? 44 : 32)
@@ -286,7 +322,7 @@ struct YAMLPreviewView: View {
                         .accessibilityLabel(YAMLStrings.next).accessibilityIdentifier("\(format.rawValue)-next-result")
                 }
                 .disabled(resultIDs.isEmpty)
-                .fixedSize(horizontal: usesCompactControls, vertical: false)
+                .fixedSize(horizontal: usesHorizontalControls, vertical: false)
             }
         }
         .padding(.horizontal, 16).padding(.vertical, usesCompactControls ? 4 : 10)
@@ -308,6 +344,10 @@ struct YAMLPreviewView: View {
                 .scrollDismissesKeyboard(.interactively)
                 .id(mode) // Source and tree use different row heights and scroll geometry.
                 .accessibilityIdentifier(mode == .source ? "\(format.rawValue)-source-content" : "\(format.rawValue)-structure-content")
+                .onChange(of: FoldGeometry.horizontalBand(in: viewport), initial: true) { _, fold in
+                    contentFold = fold
+                    if fold != nil, let selectedResult { requestScroll(selectedResult, anchor: searchScrollAnchor) }
+                }
                 .onChange(of: viewport.size) {
                     if #available(iOS 27.1, *), isSearchFocused, let selectedResult {
                         // Folding and software-keyboard changes can retain a
@@ -364,13 +404,14 @@ struct YAMLPreviewView: View {
             Text(emptyTitle).foregroundStyle(.secondary).padding(20)
         } else {
             ForEach(visibleRows) { row in
-                treeRow(row)
+                treeRow(row, keyColumnWidth: viewportWidth >= 480 ? min(220, viewportWidth * 0.3) : nil)
                     .id(row.id)
             }
         }
     }
 
-    private func treeRow(_ row: YAMLRow) -> some View {
+    /// A key column width puts key, value and type on one line in wide readers.
+    private func treeRow(_ row: YAMLRow, keyColumnWidth: CGFloat?) -> some View {
         let depth = max(0, row.depth - ((sheet?.rows.first?.isCollection == true) ? 1 : 0))
         let isMatch = !trimmedQuery.isEmpty && row.matches(trimmedQuery)
         let selected = selectedResult == row.id
@@ -392,21 +433,23 @@ struct YAMLPreviewView: View {
                         .foregroundStyle(.tertiary).frame(width: 28, height: 30)
                 }
                 VStack(alignment: .leading, spacing: 5) {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text(row.depth == 0 ? YAMLStrings.root : row.label.isEmpty ? "\"\"" : row.label)
-                            .font(.system(.subheadline, design: .monospaced).weight(.medium))
-                            .foregroundStyle(.primary)
-                        Spacer(minLength: 0)
-                        Text(YAMLStrings.kind(row.kind, count: row.count))
-                            .font(.caption2).foregroundStyle(.secondary)
-                    }
-                    if !row.isCollection {
-                        Text(row.value.isEmpty ? "\"\"" : row.value)
-                            .font(.system(.subheadline, design: .monospaced))
-                            .foregroundStyle(row.kind == .string ? Color.primary : Color.accentColor)
-                            .textSelection(.enabled)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .accessibilityIdentifier("\(format.rawValue)-value-\(row.path)")
+                    if let keyColumnWidth {
+                        // Wide readers keep key, value and type on one line,
+                        // so the value sits beside its key instead of below it.
+                        HStack(alignment: .firstTextBaseline, spacing: 16) {
+                            rowKey(row)
+                                .frame(width: keyColumnWidth, alignment: .leading)
+                            if !row.isCollection { rowValue(row) }
+                            Spacer(minLength: 0)
+                            rowKind(row)
+                        }
+                    } else {
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            rowKey(row)
+                            Spacer(minLength: 0)
+                            rowKind(row)
+                        }
+                        if !row.isCollection { rowValue(row) }
                     }
                     if !row.anchor.isEmpty {
                         Text("&\(row.anchor)").font(.system(.caption, design: .monospaced)).foregroundStyle(.secondary)
@@ -439,6 +482,26 @@ struct YAMLPreviewView: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("\(format.rawValue)-row-\(row.path)")
+    }
+
+    private func rowKey(_ row: YAMLRow) -> some View {
+        Text(row.depth == 0 ? YAMLStrings.root : row.label.isEmpty ? "\"\"" : row.label)
+            .font(.system(.subheadline, design: .monospaced).weight(.medium))
+            .foregroundStyle(.primary)
+    }
+
+    private func rowValue(_ row: YAMLRow) -> some View {
+        Text(row.value.isEmpty ? "\"\"" : row.value)
+            .font(.system(.subheadline, design: .monospaced))
+            .foregroundStyle(row.kind == .string ? Color.primary : Color.accentColor)
+            .textSelection(.enabled)
+            .fixedSize(horizontal: false, vertical: true)
+            .accessibilityIdentifier("\(format.rawValue)-value-\(row.path)")
+    }
+
+    private func rowKind(_ row: YAMLRow) -> some View {
+        Text(YAMLStrings.kind(row.kind, count: row.count))
+            .font(.caption2).foregroundStyle(.secondary)
     }
 
     private func sourceLine(_ line: YAMLSourceLine) -> some View {

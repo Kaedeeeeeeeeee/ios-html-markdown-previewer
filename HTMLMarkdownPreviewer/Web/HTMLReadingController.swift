@@ -24,6 +24,8 @@ final class HTMLReadingController {
     private var lastQuery: String?
     private var lastNavigationID: UUID?
     private var isSearching = false
+    private var sentFold: ReaderFoldBand?
+    private var hasSentFold = false
 
     init(state: DocumentReadingState, entryURL: URL, documentKind: DocumentKind = .html) {
         self.state = state
@@ -52,6 +54,7 @@ final class HTMLReadingController {
         lastQuery = nil
         lastNavigationID = nil
         isSearching = false
+        hasSentFold = false
         state.resetContent()
     }
 
@@ -117,6 +120,7 @@ final class HTMLReadingController {
     /// Called when the SwiftUI input or a navigation request changes.
     func synchronize() {
         guard state.isReady, let webView, let sessionID else { return }
+        synchronizeFold(in: webView, sessionID: sessionID)
         if lastQuery != state.query {
             // Reapply an existing query after reload without losing the restored
             // reading position. A newly entered query still jumps to its first hit.
@@ -155,6 +159,21 @@ final class HTMLReadingController {
             }
             self.updatePosition(from: snapshot)
         }
+    }
+
+    /// Result navigation avoids the fold of a partially open iPhone Duo.
+    private func synchronizeFold(in webView: WKWebView, sessionID: String) {
+        let fold = state.fold
+        guard !hasSentFold || sentFold != fold else { return }
+        hasSentFold = true
+        sentFold = fold
+        webView.callDocumentJavaScript(
+            "await globalThis.__htmlPreviewReading?.setFold(fold, sessionID); return null;",
+            arguments: ["fold": fold.map { [$0.top, $0.bottom] } ?? NSNull(), "sessionID": sessionID],
+            in: nil,
+            in: Self.contentWorld,
+            completionHandler: nil
+        )
     }
 
     func detach() {
@@ -675,6 +694,30 @@ private extension HTMLReadingController {
                 notify();
             }, 120);
         }
+        // Fractions of the visible viewport divided by a fold, or null.
+        let foldFractions = null;
+        function foldBand() {
+            if (!foldFractions) return null;
+            const view = viewportFor(null);
+            const height = view.bottom - view.top;
+            return { top: view.top + foldFractions[0] * height, bottom: view.top + foldFractions[1] * height };
+        }
+        async function setFold(fold, expectedToken) {
+            if (disposed || expectedToken !== token) return;
+            foldFractions = Array.isArray(fold) && fold.length === 2 && fold.every(Number.isFinite) ? fold : null;
+            const band = foldBand();
+            const range = ranges[selectedMatch];
+            if (!band || !range || activeNavigationRevision !== null) return;
+            const rect = targetRect(range);
+            const view = viewportFor(null);
+            // Respect a reader who has scrolled away from the selected result.
+            if (rect.bottom <= view.top || rect.top >= view.bottom) return;
+            if (rect.bottom > band.top && rect.top < band.bottom) {
+                const revision = beginOperation();
+                await select(selectedMatch, revision);
+                if (isCurrent(revision)) notify();
+            }
+        }
         function targetRect(range) {
             if (range.__markdownAtomic) return range.__markdownAtomic.getBoundingClientRect();
             return rangeRects(range).find(rect => rect.width > 0 && rect.height > 0) || range.getBoundingClientRect();
@@ -765,7 +808,15 @@ private extension HTMLReadingController {
             if (!isCurrent(revision)) return;
             const rect = targetRect(range);
             const box = usableViewport(null, target);
-            const top = alignToStart ? rect.top - box.top : nearestDelta(rect.top, rect.bottom, box.top, box.bottom);
+            let top = alignToStart ? rect.top - box.top : nearestDelta(rect.top, rect.bottom, box.top, box.bottom);
+            const band = alignToStart ? null : foldBand();
+            if (band && rect.bottom - top > band.top && rect.top - top < band.bottom) {
+                // Keep a result clear of the fold: above it when it fits, otherwise below.
+                const height = rect.bottom - rect.top;
+                const above = band.top - 12 - height;
+                const destination = above >= box.top ? above : Math.min(box.bottom - height, band.bottom + 12);
+                top = rect.top - destination;
+            }
             const root = rootScrollGeometry();
             const rootLeft = root.left;
             const rootTop = root.top;
@@ -1030,7 +1081,7 @@ private extension HTMLReadingController {
         window.addEventListener('resize', onResize, { passive: true });
         window.visualViewport?.addEventListener('scroll', onScroll, { passive: true });
         window.visualViewport?.addEventListener('resize', onResize, { passive: true });
-        return { search, navigate, dispose, snapshot, initialize, reflow, rememberViewport, suspendHighlights, resumeHighlights,
+        return { search, navigate, dispose, snapshot, initialize, reflow, rememberViewport, suspendHighlights, resumeHighlights, setFold,
             headings: headings.map(({ id, title, level }) => ({ id, title, level })) };
     })();
     globalThis.__htmlPreviewReading = reader;

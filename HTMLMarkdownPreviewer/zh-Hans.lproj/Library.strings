@@ -28,3 +28,4 @@
 
 "library.selectFile" = "选择文件";
 "library.selectFileDescription" = "从资料库中选择文件，或打开新文件开始阅读。";
+"library.edit" = "编辑";

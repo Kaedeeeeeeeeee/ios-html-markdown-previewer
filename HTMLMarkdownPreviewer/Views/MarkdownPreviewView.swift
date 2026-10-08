@@ -122,6 +122,16 @@ struct MarkdownPreviewView: View {
                     guard let request else { return }
                     navigate(request.target, proxy: proxy)
                 }
+                .onChange(of: readingState?.fold) { _, fold in
+                    // A fold appearing under a visible selected result moves it
+                    // aside; a result the reader scrolled away from stays put.
+                    let height = viewport.size.height
+                    guard let fold, let target = highlight.target, let rect = matchRects[target],
+                          rect.maxY > 0, rect.minY < height,
+                          fold.intersects(top: rect.minY, bottom: rect.maxY, viewportHeight: height) else { return }
+                    pendingMatch = target
+                    revealSelectedMatch(viewportHeight: height)
+                }
             }
         }
         .background(Color(.systemBackground))
@@ -232,8 +242,11 @@ struct MarkdownPreviewView: View {
             return
         }
         pendingMatch = nil
-        if rect.minY < 12 || rect.maxY > viewportHeight - 12 {
-            let offset = scrollView.contentOffset.y + rect.minY - viewportHeight * 0.35
+        let fold = readingState?.fold
+        let crossesFold = fold?.intersects(top: rect.minY, bottom: rect.maxY, viewportHeight: viewportHeight) == true
+        if rect.minY < 12 || rect.maxY > viewportHeight - 12 || crossesFold {
+            let top = ReaderFoldBand.revealTop(targetHeight: rect.height, viewportHeight: viewportHeight, fold: fold)
+            let offset = scrollView.contentOffset.y + rect.minY - top
             scrollView.setContentOffset(
                 CGPoint(x: scrollView.contentOffset.x, y: clampedOffset(offset, in: scrollView)),
                 animated: false

@@ -143,6 +143,76 @@ final class HTMLReadingTests: XCTestCase {
         XCTAssertEqual(cleaned, true)
     }
 
+    func testSelectedMatchMovesClearOfAPartiallyOpenFold() async throws {
+        let directory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let filler = String(repeating: "Reading continues on both sides of the fold. ", count: 30)
+        let url = directory.appendingPathComponent("fold.html")
+        try fixture((0..<8).map { index in
+            "<p>\(filler)</p><p><span id='target-\(index)'>fold needle</span></p>"
+        }.joined()).write(to: url, atomically: true, encoding: .utf8)
+        let session = try await ReadingTestSession(entryURL: url)
+        defer { session.close() }
+        try await session.load(url)
+        session.state.query = "fold needle"
+        session.reader.synchronize()
+        try await waitUntil { session.state.matchCount == 8 }
+
+        // A result already in view needs no scroll without a fold, even on the crease.
+        try await placeTarget("target-3", atViewportFraction: 0.5, session: session)
+        session.state.navigate(to: .match(3))
+        session.reader.synchronize()
+        try await waitForFoldPlacement(id: "target-3", crossesBand: true, session: session)
+
+        // An appearing fold moves the visible selected result aside.
+        session.state.fold = ReaderFoldBand(top: 0.45, bottom: 0.55)
+        session.reader.synchronize()
+        try await waitForFoldPlacement(id: "target-3", crossesBand: false, session: session)
+
+        // Navigation keeps later results off the fold too.
+        try await placeTarget("target-5", atViewportFraction: 0.5, session: session)
+        session.state.navigate(to: .match(5))
+        session.reader.synchronize()
+        try await waitUntil { session.state.selectedMatch == 5 }
+        try await waitForFoldPlacement(id: "target-5", crossesBand: false, session: session)
+    }
+
+    private func placeTarget(_ id: String, atViewportFraction fraction: Double, session: ReadingTestSession) async throws {
+        _ = try await session.webView.callDocumentJavaScript("""
+        const rect = document.getElementById(id).getBoundingClientRect();
+        window.scrollTo(0, scrollY + rect.top - innerHeight * fraction);
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        return null;
+        """, arguments: ["id": id, "fraction": fraction], contentWorld: HTMLReadingController.contentWorld)
+    }
+
+    /// The test fold covers 45–55% of the visible viewport.
+    private func waitForFoldPlacement(id: String, crossesBand: Bool, session: ReadingTestSession) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        var stableSince: ContinuousClock.Instant?
+        while true {
+            let value = try await session.webView.callDocumentJavaScript("""
+            const rect = document.getElementById(id).getBoundingClientRect();
+            const view = window.visualViewport;
+            const top = view?.offsetTop || 0;
+            const height = view?.height || innerHeight;
+            const visible = rect.top >= top && rect.bottom <= top + height;
+            const crosses = rect.bottom > top + height * .45 && rect.top < top + height * .55;
+            return visible && crosses === expected;
+            """, arguments: ["id": id, "expected": crossesBand], contentWorld: HTMLReadingController.contentWorld)
+            if value as? Bool == true {
+                if stableSince == nil { stableSince = ContinuousClock.now }
+                if let stableSince, ContinuousClock.now - stableSince >= .milliseconds(200) { return }
+            } else { stableSince = nil }
+            guard ContinuousClock.now < deadline else {
+                await recordViewportGeometry(id: id, stage: "fold placement", session: session, keepAttachment: true)
+                XCTFail("Result \(id) did not settle \(crossesBand ? "on" : "clear of") the fold")
+                throw ReadingTestError.timedOut
+            }
+            try await Task.sleep(for: .milliseconds(30))
+        }
+    }
+
     func testLatestSearchWinsAndClearingSearchRemovesResults() async throws {
         let directory = try makeTemporaryDirectory()
         defer { try? FileManager.default.removeItem(at: directory) }

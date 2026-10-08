@@ -25,6 +25,7 @@ struct HTMLPreviewView: View {
                     readingState: readingState,
                     query: readingState?.query ?? "",
                     navigationRequest: readingState?.navigationRequest,
+                    fold: readingState?.fold,
                     pageZoom: ReadingAppearance.normalizedHTMLZoom(pageZoom),
                     onPreviewReady: onPreviewReady,
                     onLocalPageNavigation: onLocalPageNavigation,
@@ -72,6 +73,7 @@ private struct HTMLWebView: UIViewRepresentable {
     let readingState: DocumentReadingState?
     let query: String
     let navigationRequest: ReadingNavigationRequest?
+    let fold: ReaderFoldBand?
     let pageZoom: Double
     let onPreviewReady: (WKWebView?) -> Void
     let onLocalPageNavigation: ((URL) -> Bool)?

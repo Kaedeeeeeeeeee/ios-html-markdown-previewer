@@ -28,3 +28,4 @@
 
 "library.selectFile" = "ファイルを選択";
 "library.selectFileDescription" = "ライブラリからファイルを選ぶか、新しいファイルを開いて読み始めてください。";
+"library.edit" = "編集";

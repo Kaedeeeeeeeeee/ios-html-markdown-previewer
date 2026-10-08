@@ -327,13 +327,16 @@ final class SmokeUITests: XCTestCase {
     }
 
     private func scrollUntilHittable(_ element: XCUIElement, app: XCUIApplication) -> Bool {
+        // A row clipped by the bottom edge reports hittable while its visible
+        // slice lies in the home-indicator area, where the system ignores taps.
+        let isClearOfBottomEdge = { element.isHittable && element.frame.maxY <= app.frame.maxY - 44 }
         for _ in 0..<6 {
-            if element.waitForExistence(timeout: 1), element.isHittable {
+            if element.waitForExistence(timeout: 1), isClearOfBottomEdge() {
                 return true
             }
             app.swipeUp()
         }
-        return element.exists && element.isHittable
+        return element.exists && isClearOfBottomEdge()
     }
 
     private func scrollUntilExists(_ element: XCUIElement, app: XCUIApplication) -> Bool {
