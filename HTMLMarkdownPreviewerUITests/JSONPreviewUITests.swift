@@ -112,14 +112,16 @@ final class JSONPreviewUITests: XCTestCase {
     }
 
     private func navigateHome(_ app: XCUIApplication) {
-        let systemBack = app.buttons.matching(identifier: "BackButton").firstMatch
-        let legacyBack = app.navigationBars.buttons.matching(NSPredicate(
-            format: "label == %@ AND identifier != %@", "HTML Previewer", "document-title-button"
+        // One query matches the iOS 26+ "BackButton" and the legacy titled back
+        // button, so each poll costs a single accessibility snapshot. A waited
+        // exists/isHittable predicate over both let one slow snapshot exhaust the
+        // timeout, after which XCTWaiter interrupted the remaining queries.
+        let back = app.navigationBars.buttons.matching(NSPredicate(
+            format: "identifier == %@ OR (label == %@ AND identifier != %@)",
+            "BackButton", "HTML Previewer", "document-title-button"
         )).firstMatch
-        XCTAssertTrue(wait {
-            (systemBack.exists && systemBack.isHittable) || (legacyBack.exists && legacyBack.isHittable)
-        }, "The document must expose a native library back button")
-        (systemBack.exists && systemBack.isHittable ? systemBack : legacyBack).tap()
+        XCTAssertTrue(back.waitForExistence(timeout: 15), "The document must expose a native library back button")
+        back.tap()
         XCTAssertTrue(app.buttons["paste-preview-button"].waitForExistence(timeout: 5),
                       "Back must return to the document library")
     }
