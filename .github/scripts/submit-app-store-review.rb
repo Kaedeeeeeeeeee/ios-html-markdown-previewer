@@ -34,6 +34,7 @@ EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja zh-Hant].freeze
 REPOSITORY_ROOT = File.expand_path("../..", __dir__)
 STORE_METADATA_ROOT = ENV.fetch("FASTLANE_METADATA_PATH", File.join(REPOSITORY_ROOT, "fastlane/metadata"))
 STORE_SCREENSHOTS_ROOT = ENV.fetch("APP_STORE_CONNECT_SCREENSHOTS_PATH", File.join(REPOSITORY_ROOT, "docs/app-store-screenshots"))
+RELEASE_NOTES_HANDOFF = File.join(REPOSITORY_ROOT, "docs/updates/#{APP_STORE_VERSION_STRING}-release-notes.md")
 VERSION_METADATA_FIELDS = { "description" => "description", "keywords" => "keywords", "promotionalText" => "promotional_text", "whatsNew" => "release_notes", "supportUrl" => "support_url" }.freeze
 APP_INFO_METADATA_FIELDS = { "name" => "name", "subtitle" => "subtitle", "privacyPolicyUrl" => "privacy_url" }.freeze
 USABLE_IMAGE_STATES = %w[PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW ACCEPTED APPROVED COMPLETE].freeze
@@ -411,8 +412,17 @@ def local_screenshot_identity(locale, filename)
   { width: width, height: height, size: bytes.bytesize, sha256: Digest::SHA256.hexdigest(bytes) }
 end
 
+# Reused screenshots keep the reference name of the version that uploaded them.
+# Only this version's own release-note handoff can declare that earlier version.
+def screenshot_source_version
+  handoff = File.file?(RELEASE_NOTES_HANDOFF) ? File.read(RELEASE_NOTES_HANDOFF) : ""
+  handoff[/Screenshots carried over unchanged from (\d+(?:\.\d+)+) \(\d+\)\./, 1] || APP_STORE_VERSION_STRING
+end
+
 def verify_expected_screenshot_inventory!(localizations = nil)
   localizations ||= app_store_version_localizations
+  source_version = screenshot_source_version
+  puts "Expecting screenshot reference names from version #{source_version}."
   catalog_data = request(:get, "/v1/appAssetLibraryRefData").fetch("data")
   if catalog_data.is_a?(Array)
     raise "Expected one live asset catalog" unless catalog_data.length == 1
@@ -443,7 +453,7 @@ def verify_expected_screenshot_inventory!(localizations = nil)
         local = local_screenshot_identity(locale, filename)
         image = images.fetch(placement.dig("relationships", "image", "data", "id")) { raise "Missing included screenshot image" }
         attrs = image.fetch("attributes")
-        expected_reference = "release-#{APP_STORE_VERSION_STRING}-#{local.fetch(:sha256)[0, 16]}"
+        expected_reference = "release-#{source_version}-#{local.fetch(:sha256)[0, 16]}"
         unless attrs["fileName"] == filename && attrs["fileSize"] == local.fetch(:size) && attrs["referenceName"] == expected_reference &&
             USABLE_IMAGE_STATES.include?(attrs["state"]) && USABLE_PLACEMENT_STATES.include?(placement.dig("attributes", "state"))
           raise "Screenshot identity/state mismatch: #{locale}/#{group}/#{filename}"

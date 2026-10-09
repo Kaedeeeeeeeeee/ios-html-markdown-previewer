@@ -58,6 +58,9 @@ class StoreAssetsGateTest < Minitest::Test
     @old_screenshots_root = STORE_SCREENSHOTS_ROOT
     Object.send(:remove_const, :STORE_SCREENSHOTS_ROOT)
     Object.const_set(:STORE_SCREENSHOTS_ROOT, @directory)
+    @old_release_notes_handoff = RELEASE_NOTES_HANDOFF
+    Object.send(:remove_const, :RELEASE_NOTES_HANDOFF)
+    Object.const_set(:RELEASE_NOTES_HANDOFF, File.join(@directory, "release-notes.md"))
     @version = { "id" => "draft-version", "attributes" => { "versionString" => "1.8", "platform" => "IOS", "appStoreState" => "PREPARE_FOR_SUBMISSION" }, "relationships" => { "app" => { "data" => { "id" => "fixture-app" } } } }
     @infos = [{ "id" => "live-info", "attributes" => { "state" => "READY_FOR_DISTRIBUTION" } }, { "id" => "draft-info", "attributes" => { "state" => "PREPARE_FOR_SUBMISSION" } }]
     @localizations = EXPECTED_SCREENSHOT_LOCALES.map do |locale|
@@ -95,6 +98,16 @@ class StoreAssetsGateTest < Minitest::Test
     FileUtils.remove_entry(@directory)
     Object.send(:remove_const, :STORE_SCREENSHOTS_ROOT)
     Object.const_set(:STORE_SCREENSHOTS_ROOT, @old_screenshots_root)
+    Object.send(:remove_const, :RELEASE_NOTES_HANDOFF)
+    Object.const_set(:RELEASE_NOTES_HANDOFF, @old_release_notes_handoff)
+  end
+
+  def use_reference_version(version)
+    @placements.each_value do |response|
+      response["included"].each do |image|
+        image["attributes"]["referenceName"] = image["attributes"]["referenceName"].sub(/\Arelease-[^-]+-/, "release-#{version}-")
+      end
+    end
   end
 
   def metadata(locale, fields)
@@ -181,6 +194,19 @@ class StoreAssetsGateTest < Minitest::Test
     attrs["specId"] = "spec-IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE"
     attrs["imageAsset"]["width"] = 3
     blocked("specification/dimensions")
+  end
+
+  def test_declared_carry_over_accepts_earlier_reference_names
+    use_reference_version("1.7")
+    File.write(RELEASE_NOTES_HANDOFF, "Screenshots carried over unchanged from 1.7 (12).\n")
+    capture_io { run_store_gate }
+  end
+
+  def test_undeclared_or_different_carry_over_is_rejected
+    use_reference_version("1.7")
+    blocked("identity/state mismatch")
+    File.write(RELEASE_NOTES_HANDOFF, "Screenshots carried over unchanged from 1.6 (11).\n")
+    blocked("identity/state mismatch")
   end
 
   def test_failed_placement_and_missing_catalog_group_are_rejected
