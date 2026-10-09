@@ -35,9 +35,9 @@ jobs:
     env:
       APP_IDENTIFIER: com.kaede.htmlmarkdownpreviewer
       APP_STORE_CONNECT_APP_ID: "6785794966"
-      APP_STORE_CONNECT_VERSION_STRING: "1.8"
-      APP_STORE_CONNECT_BUILD_NUMBER: "13"
-      APP_STORE_CONNECT_PREVIOUS_VERSION_STRING: "1.7"
+      APP_STORE_CONNECT_VERSION_STRING: "1.8.1"
+      APP_STORE_CONNECT_BUILD_NUMBER: "14"
+      APP_STORE_CONNECT_PREVIOUS_VERSION_STRING: "1.8"
       APP_STORE_CONNECT_PLATFORM: IOS
       FASTLANE_METADATA_PATH: ${{ github.workspace }}/fastlane/metadata
       APP_STORE_CONNECT_SCREENSHOTS_PATH: ${{ github.workspace }}/docs/app-store-screenshots
@@ -99,7 +99,7 @@ jobs:
             echo "The four-locale metadata and 72-image Asset Library gate cannot be skipped." >&2
             exit 2
           fi
-          # GET-only. Does not require build 13, upload images, or alter published AppInfo.
+          # GET-only. Does not require build 14, upload images, or alter published AppInfo.
           # Synchronize first with scripts/asset-library/upload_assets.py under its
           # approved plan SHA and exact app/version/locale/group execution scope.
           ruby .github/scripts/submit-app-store-review.rb

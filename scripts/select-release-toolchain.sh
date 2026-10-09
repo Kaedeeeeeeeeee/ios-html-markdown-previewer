@@ -27,7 +27,7 @@ select_release_toolchain() {
     for sdk in iphoneos iphonesimulator; do
       sdk_version="$(DEVELOPER_DIR="$candidate" xcrun --sdk "$sdk" --show-sdk-version 2>/dev/null)" || sdk_version="unavailable"
       if [[ ! "$sdk_version" =~ ^27\.1(\.[0-9]+)?$ ]]; then
-        printf '%s has unsupported %s SDK %s; release 1.8 requires 27.1.\n' "$candidate" "$sdk" "$sdk_version" >&2
+        printf '%s has unsupported %s SDK %s; release 1.8.1 requires 27.1.\n' "$candidate" "$sdk" "$sdk_version" >&2
         valid=false
         break
       fi

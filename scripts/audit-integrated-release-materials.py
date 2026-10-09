@@ -87,6 +87,10 @@ release_handoff = ROOT / "docs/updates" / f"{version}-release-notes.md"
 check(release_handoff.is_file(), "Current release-note handoff is missing")
 check("fastlane/metadata/{en-US,zh-Hans,ja,zh-Hant}/release_notes.txt" in value(release_handoff),
       "Release-note handoff must identify the four actual active metadata files")
+# Captures must come from the upload target unless this version's own handoff
+# declares the exact earlier version and build whose screenshots it reuses.
+carry_over = re.search(r"Screenshots carried over unchanged from (\d+(?:\.\d+)+) \((\d+)\)\.", value(release_handoff))
+capture_version, capture_build = carry_over.groups() if carry_over else (version, build)
 
 for locale in locales:
     folder = upload / locale
@@ -112,8 +116,8 @@ for locale in locales:
                   f"Source changed since packet validation: {locale}/{name}")
             capture_path = packet / "capture-records" / locale / f"{family}-{source_key}.json"
             capture = json.loads(capture_path.read_text()) if capture_path.exists() else {}
-            check(capture.get("appVersion") == version and capture.get("buildNumber") == build,
-                  f"Capture version differs from upload target: {locale}/{name}")
+            check(capture.get("appVersion") == capture_version and capture.get("buildNumber") == capture_build,
+                  f"Capture version differs from upload target or declared carry-over: {locale}/{name}")
             check(capture.get("sha256") == validated.get("sourceSHA256") and bool(capture.get("installedExecutableSHA256")),
                   f"Capture identity missing or stale: {locale}/{name}")
             if upload.resolve() != (packet / "screenshots").resolve() and locale == "en-US":
@@ -143,11 +147,12 @@ for locale in locales:
 
 check(len(screenshots) == expected_count, f"Expected {expected_count} integrated images, found {len(screenshots)}")
 result = {"status":"PASS" if not errors else "FAIL", "version":version, "build":build,
+          "captureVersion":capture_version, "captureBuild":capture_build,
           "scope":"Local identity of actual upload inputs, new 72-image inventory, opaque PNG geometry, metadata and release-note handoff. No API enum, upload, Apple acceptance, review or release is asserted.",
           "packet":str(packet), "uploadPath":str(upload), "locales":locales, "families":[d["prefix"] for d in devices],
           "screenshotCount":len(screenshots), "metadata":metadata, "screenshots":screenshots, "errors":errors}
 if args.output:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n")
-print(json.dumps({k:result[k] for k in ["status","version","build","screenshotCount","errors"]}))
+print(json.dumps({k:result[k] for k in ["status","version","build","captureVersion","captureBuild","screenshotCount","errors"]}))
 raise SystemExit(bool(errors))

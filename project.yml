@@ -6,8 +6,8 @@ options:
   createIntermediateGroups: true
 settings:
   base:
-    CURRENT_PROJECT_VERSION: 13
-    MARKETING_VERSION: 1.8
+    CURRENT_PROJECT_VERSION: 14
+    MARKETING_VERSION: 1.8.1
     SWIFT_VERSION: 6.0
 packages:
   ZIPFoundation:

@@ -73,7 +73,9 @@ The 1.8 (13) [store copy](docs/app-store-listing.md) and
 [screenshot packet](docs/aso/2026-10-07-duo/materials/README.md) prepare four
 languages with six images for each of ordinary iPhone, iPad, and iPhone Duo,
 72 localized images total. Local material validation, remote asset processing,
-review submission, and public release are recorded separately. The earlier
+review submission, and public release are recorded separately. 1.8.1 (14) reuses
+that copy and screenshot set with new [release notes](docs/updates/1.8.1-release-notes.md).
+The earlier
 [usage measurement proposal](docs/plans/2026-10-02-usage-measurement.md) remains a
 proposal; the app does not upload usage events or user documents.
 

@@ -1,6 +1,6 @@
-# App Store Listing — Version 1.8 (13)
+# App Store Listing — Version 1.8.1 (14)
 
-Prepared local metadata for the 1.8 release, mirrored from the active
+Prepared local metadata for the 1.8.1 release, mirrored from the active
 `fastlane/metadata/` files below. This document does not establish remote upload,
 Apple acceptance, review submission, or publication; live release records are separate.
 
@@ -77,10 +77,11 @@ yaml,md,reader,offline,pdf,source,code,mermaid,latex,config,file,report,readme,h
 
 Release Notes:
 
-- Adapts the library, reader, and native controls to iPhone Duo's inner and outer displays.
-- Keeps reading position when the reader resizes and helps visible search results stay in view. HTML and Markdown search can continue across folding transitions.
-- Makes JSON and YAML search results easier to read with the keyboard open in compact layouts.
-- Improves original-file and PDF sharing through rotation and folding, and keeps Paste Preview and Settings navigation controls available while scrolling.
+- Gives documents more room on iPhone Duo's outer display: the preview mode note fits on one line (tap it for the full explanation), and search keeps the result count and controls beside the field when there is space.
+- Open File, Open ZIP Package, and Paste to Preview now share one row in the library. On the outer display, Settings and Edit can move to the side toolbar, and the library title is no longer cut off on the inner display.
+- On larger displays, JSON and YAML show each field's key, value, and type on one line, and the Table of Contents can stay beside the document.
+- When iPhone Duo is partially open, the library stays on one side of the fold, and a selected search result moves clear of the fold.
+- On iOS 27.1, Find in Document is available directly from the toolbar.
 - Files continue to be processed and stored locally on your device.
 
 ## zh-Hans
@@ -135,10 +136,11 @@ YAML,MD,文件,打开,查看器,离线,源码,代码,PDF,导出,公式,流程图
 
 Release Notes:
 
-- 文件库、阅读器与系统控件适配 iPhone Duo 的内外屏。
-- 阅读区域尺寸变化时保留阅读位置，并让已显示的搜索结果保持可见；HTML 与 Markdown 搜索可在折叠切换后继续输入。
-- 优化紧凑布局，让打开键盘时的 JSON 与 YAML 搜索结果更易阅读。
-- 改善旋转、折叠过程中的原文件与 PDF 分享，并让粘贴预览和设置的导航控件在滚动时保持可用。
+- 在 iPhone Duo 外屏上为文档留出更多空间：预览模式说明改为单行显示（轻点可查看完整说明）；空间足够时，搜索结果数量与操作按钮会与搜索框保持在同一行。
+- 文件库中的“打开文件”“打开 ZIP 包”“粘贴预览”合并为一行。在外屏上，设置与编辑按钮可移至侧边工具栏；在内屏上，文件库标题不再被截断。
+- 在较大的屏幕上，JSON 与 YAML 的每个字段会在同一行显示键、值和类型，目录也可以停留在文档旁边。
+- iPhone Duo 部分展开时，文件库保持在折叠线一侧，选中的搜索结果会避开折叠线。
+- 在 iOS 27.1 上，可直接从工具栏使用“文内搜索”。
 - 文件继续在设备本地处理与保存。
 
 ## ja
@@ -193,10 +195,11 @@ YAML,md,ファイル,閲覧,開く,リーダー,オフライン,ソース,コー
 
 Release Notes:
 
-- ファイル一覧、リーダー、システムの操作ボタンがiPhone Duoの内側・外側ディスプレイに対応しました。
-- 表示領域のサイズが変わっても読書位置を保持し、表示中の検索結果が見えるように調整します。折りたたみ操作後もHTML・Markdownの検索入力を続けられます。
-- コンパクトな画面でキーボードを表示しているとき、JSON・YAMLの検索結果を読みやすくしました。
-- 回転・折りたたみ時の元ファイルとPDFの共有を改善し、スクロール中も貼り付けプレビューや設定のナビゲーション操作を利用できるようにしました。
+- iPhone Duoの外側ディスプレイで文書の表示領域を広げました。プレビューモードの説明を1行で表示し（タップで全文を表示）、幅に余裕があるときは検索結果の件数と操作ボタンを検索欄と同じ行に並べます。
+- ファイル一覧の「ファイルを開く」「ZIPパッケージを開く」「貼り付けてプレビュー」を1行にまとめました。外側ディスプレイでは設定と編集のボタンを側面のツールバーに配置でき、内側ディスプレイではファイル一覧のタイトルが途中で切れなくなりました。
+- 大きな画面では、JSON・YAMLの各項目のキー・値・型を1行で表示し、目次を文書の横に表示したままにできます。
+- iPhone Duoを途中まで開いた状態では、ファイル一覧が折り目の片側に収まり、選択中の検索結果が折り目を避けて表示されます。
+- iOS 27.1では、ツールバーから直接「文書内を検索」を使えます。
 - ファイルは引き続き端末内で処理・保存します。
 
 ## zh-Hant
@@ -251,10 +254,11 @@ YAML,MD,檔案,開啟,檢視器,離線,原始碼,程式碼,PDF,匯出,數學公�
 
 Release Notes:
 
-- 檔案庫、閱讀器與系統控制項適配 iPhone Duo 的內外螢幕。
-- 閱讀區域尺寸改變時保留閱讀位置，並讓已顯示的搜尋結果保持可見；HTML 與 Markdown 搜尋可在摺疊切換後繼續輸入。
-- 優化精簡版面，讓開啟鍵盤時的 JSON 與 YAML 搜尋結果更容易閱讀。
-- 改善旋轉、摺疊過程中的原始檔案與 PDF 分享，並讓貼上預覽和設定的導覽控制項在捲動時保持可用。
+- 在 iPhone Duo 外螢幕上為文件留出更多空間：預覽模式說明改為單行顯示（輕點可查看完整說明）；空間足夠時，搜尋結果數量與操作按鈕會與搜尋欄保持在同一行。
+- 檔案庫中的「開啟檔案」「開啟 ZIP 套件」「貼上預覽」合併為一行。在外螢幕上，設定與編輯按鈕可移至側邊工具列；在內螢幕上，檔案庫標題不再被截斷。
+- 在較大的螢幕上，JSON 與 YAML 的每個欄位會在同一行顯示鍵、值和類型，目錄也可以停留在文件旁邊。
+- iPhone Duo 部分展開時，檔案庫保持在摺疊線一側，選取的搜尋結果會避開摺疊線。
+- 在 iOS 27.1 上，可直接從工具列使用「文內搜尋」。
 - 檔案繼續在裝置本機處理與儲存。
 
 ## Screenshot Inventory
@@ -283,6 +287,10 @@ and [formal integration validation](aso/2026-10-07-duo/materials/integration-val
 have passed. [Provenance](aso/2026-10-07-duo/materials/provenance.json) retains the
 actual mixed Debug capture identities and later resize-only source fix; it does
 not claim a single final binary or Release-archive screenshot source.
+
+Version 1.8.1 reuses this 1.8 (13) set unchanged; see the
+[1.8.1 release-note handoff](updates/1.8.1-release-notes.md) for the carry-over
+declaration and why the set still represents the app.
 
 ## Review Notes
 

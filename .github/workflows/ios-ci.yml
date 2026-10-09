@@ -200,7 +200,9 @@ jobs:
           xcrun simctl erase "${{ steps.simulator.outputs.id }}"
 
       - name: Run UI smoke test
-        timeout-minutes: 25
+        # The 13 tests alone take about 20 minutes on the hosted runner, so a
+        # 25-minute budget cut off the last tests after the Duo reader changes.
+        timeout-minutes: 40
         run: |
           xcodebuild test \
             -project HTMLMarkdownPreviewer.xcodeproj \
