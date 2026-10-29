@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:3840px;height:2560px;overflow:hidden;background:linear-gradient(160deg,#04143d 0%,#0a3a9c 55%,#0a6cff 100%)}.stage{position:absolute;left:0;top:457px;width:3840px;height:1646px;transform:scale(1.3);transform-origin:50% 50%}
+body{font-family:Inter,sans-serif;position:relative}
+.bg{position:absolute;inset:-600px 0;
+ background:
+  radial-gradient(1500px 900px at 50% 46%, rgba(64,150,255,.55), transparent 70%),
+  radial-gradient(1200px 800px at 12% 100%, rgba(120,90,255,.35), transparent 70%),
+  radial-gradient(1100px 700px at 92% 0%, rgba(40,200,255,.25), transparent 70%),
+  linear-gradient(160deg,#04143d 0%,#0a3a9c 55%,#0a6cff 100%);}
+svg.orbits{position:absolute;inset:0}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.045) 2px,transparent 2px);background-size:120px 120px;mask-image:radial-gradient(1700px 800px at 50% 50%,#000 30%,transparent 80%)}
+.card{position:absolute;border-radius:56px;overflow:hidden}
+/* code card */
+.code{left:1150px;top:330px;width:900px;height:1000px;background:#0d1530;border:3px solid rgba(140,180,255,.25);
+ transform:rotate(-7deg);box-shadow:0 80px 160px rgba(0,10,40,.6);padding:70px 70px;font-family:"DejaVu Sans Mono",monospace;font-size:40px;line-height:74px;color:#c9d6ff}
+.dots{display:flex;gap:22px;margin-bottom:46px}.dots i{width:30px;height:30px;border-radius:50%;display:block}
+.t{color:#7aa7ff}.a{color:#ffb86b}.s{color:#7ee0a8}.c{color:#6b7aa8}.k{color:#ff7ab8}
+/* rendered page */
+.page{left:1780px;top:270px;width:960px;height:1110px;background:#f6f8fc;transform:rotate(5deg);box-shadow:0 100px 200px rgba(0,10,50,.55),0 0 0 3px rgba(255,255,255,.6);padding:80px 76px}
+.eyebrow{font:700 34px Inter;letter-spacing:6px;color:#2a63e8}
+.h1{font:800 80px "Inter Display",Inter;color:#0e1a33;margin:20px 0 50px;letter-spacing:-1px}
+.stats{display:flex;gap:30px}.stat{flex:1;background:#fff;border-radius:30px;padding:34px 34px;box-shadow:0 6px 20px rgba(20,40,90,.06)}
+.stat b{display:block;font:800 82px Inter;color:#2a63e8}.stat span{font:500 30px Inter;color:#6a7690}
+.chart{margin-top:36px;background:#fff;border-radius:30px;padding:44px 44px 40px;display:flex;align-items:flex-end;gap:34px;height:440px;box-shadow:0 6px 20px rgba(20,40,90,.06)}
+.chart i{flex:1;border-radius:18px 18px 6px 6px;background:linear-gradient(#78a6ff,#2a63e8);display:block}
+/* floating chips */
+.chip{position:absolute;display:flex;align-items:center;justify-content:center;font:800 64px Inter;color:#fff;border-radius:44px;
+ background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.08));border:3px solid rgba(255,255,255,.35);
+ box-shadow:0 40px 90px rgba(0,10,50,.45), inset 0 3px 0 rgba(255,255,255,.35);backdrop-filter:blur(20px);letter-spacing:1px}
+.glow{position:absolute;left:1920px;top:823px;width:10px;height:10px}
+</style></head><body><div class="stage">
+<div class="bg"></div>
+<div class="grid"></div>
+<svg class="orbits" viewBox="0 0 3840 1646" style="overflow:visible" fill="none">
+ <ellipse cx="1920" cy="823" rx="1250" ry="560" stroke="rgba(160,200,255,.22)" stroke-width="3" stroke-dasharray="6 18"/>
+ <ellipse cx="1920" cy="823" rx="1650" ry="760" stroke="rgba(160,200,255,.14)" stroke-width="3"/>
+ <ellipse cx="1920" cy="823" rx="900" ry="420" stroke="rgba(160,200,255,.16)" stroke-width="3"/>
+</svg>
+
+<div class="card code">
+ <div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+ <div><span class="t">&lt;section</span> <span class="a">class</span>=<span class="s">"report"</span><span class="t">&gt;</span></div>
+ <div>&nbsp;&nbsp;<span class="t">&lt;h1&gt;</span>Weekly report<span class="t">&lt;/h1&gt;</span></div>
+ <div>&nbsp;&nbsp;<span class="t">&lt;div</span> <span class="a">class</span>=<span class="s">"stats"</span><span class="t">&gt;</span></div>
+ <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t">&lt;b&gt;</span>12<span class="t">&lt;/b&gt;</span></div>
+ <div>&nbsp;&nbsp;<span class="t">&lt;/div&gt;</span></div>
+ <div class="c">&nbsp;&nbsp;&lt;!-- chart --&gt;</div>
+ <div>&nbsp;&nbsp;<span class="t">&lt;canvas</span> <span class="a">id</span>=<span class="s">"bars"</span><span class="t">&gt;</span></div>
+ <div><span class="t">&lt;/section&gt;</span></div>
+ <div style="margin-top:30px"><span class="k">##</span> Release notes</div>
+ <div><span class="k">-</span> <span class="k">**</span>Faster<span class="k">**</span> preview</div>
+ <div><span class="a">"status"</span>: <span class="s">"ready"</span></div>
+</div>
+
+<div class="card page">
+ <div class="eyebrow">WEEK 40</div>
+ <div class="h1">Weekly report</div>
+ <div class="stats">
+  <div class="stat"><b>12</b><span>Done</span></div>
+  <div class="stat"><b>3</b><span>Review</span></div>
+  <div class="stat"><b>5</b><span>Next</span></div>
+ </div>
+ <div class="chart"><i style="height:38%"></i><i style="height:62%"></i><i style="height:50%"></i><i style="height:84%"></i><i style="height:100%"></i></div>
+</div>
+
+<!-- floating format chips; outside the centre safe zone they may crop on iPhone -->
+<div class="chip" style="left:560px;top:250px;width:300px;height:170px;transform:rotate(-12deg)">HTML</div>
+<div class="chip" style="left:760px;top:1060px;width:220px;height:170px;transform:rotate(9deg)">MD</div>
+<div class="chip" style="left:600px;top:660px;width:200px;height:200px;transform:rotate(6deg);font-size:84px">{ }</div>
+<div class="chip" style="left:2940px;top:200px;width:300px;height:170px;transform:rotate(10deg)">JSON</div>
+<div class="chip" style="left:2990px;top:800px;width:300px;height:170px;transform:rotate(-8deg)">YAML</div>
+<div class="chip" style="left:2830px;top:1180px;width:250px;height:170px;transform:rotate(-14deg)">ZIP</div>
+<div class="chip" style="left:2470px;top:90px;width:170px;height:170px;transform:rotate(-6deg);font-size:72px">#</div>
+<div class="chip" style="left:1040px;top:120px;width:200px;height:170px;transform:rotate(8deg);font-size:64px">&lt;/&gt;</div>
+</div></body></html>
