@@ -75,6 +75,8 @@ languages with six images for each of ordinary iPhone, iPad, and iPhone Duo,
 72 localized images total. Local material validation, remote asset processing,
 review submission, and public release are recorded separately. 1.8.1 (14) reuses
 that copy and screenshot set with new [release notes](docs/updates/1.8.1-release-notes.md).
+1.8.2 (15) keeps the 1.8.1 app and replaces the screenshots with a set recomposed
+from the same captures ([release notes](docs/updates/1.8.2-release-notes.md)).
 The earlier
 [usage measurement proposal](docs/plans/2026-10-02-usage-measurement.md) remains a
 proposal; the app does not upload usage events or user documents.

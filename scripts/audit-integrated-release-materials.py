@@ -88,9 +88,11 @@ check(release_handoff.is_file(), "Current release-note handoff is missing")
 check("fastlane/metadata/{en-US,zh-Hans,ja,zh-Hant}/release_notes.txt" in value(release_handoff),
       "Release-note handoff must identify the four actual active metadata files")
 # Captures must come from the upload target unless this version's own handoff
-# declares the exact earlier version and build whose screenshots it reuses.
-carry_over = re.search(r"Screenshots carried over unchanged from (\d+(?:\.\d+)+) \((\d+)\)\.", value(release_handoff))
-capture_version, capture_build = carry_over.groups() if carry_over else (version, build)
+# declares the exact earlier version and build whose screenshots it reuses, or
+# whose captures its newly uploaded screenshots were recomposed from.
+carry_over = re.search(r"Screenshots (?:carried over unchanged from (\d+(?:\.\d+)+) \((\d+)\)|"
+                       r"recomposed from (\d+(?:\.\d+)+) \((\d+)\) captures)\.", value(release_handoff))
+capture_version, capture_build = [g for g in carry_over.groups() if g] if carry_over else (version, build)
 
 for locale in locales:
     folder = upload / locale
