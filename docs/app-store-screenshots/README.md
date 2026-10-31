@@ -88,3 +88,19 @@ JSON is standard read-only JSON; no JSONC or JSON PDF export is implied. Library
 search is filename search. The showcase import fixture demonstrates the result
 UI and does not substitute for an actual Files-import regression. Historical
 `verification-*.md/json` records describe their own releases and remain intact.
+
+## 2026-10-29 visual redesign (v2)
+
+The 72 final PNGs were recomposed from the same unchanged 10/07 sources with
+`scripts/store-art/generate-screenshots-v2.js` (Node + Playwright, Noto Sans
+SC/JP/TC from Google Fonts). Each image keeps the localized copy from
+`copy.json` and adds a larger centered headline, an enlarged device that bleeds
+off the canvas, and a zoomed callout cropped from the real capture. The callout
+is a crop of the actual screenshot; no UI is redrawn. Duo inner (landscape)
+uses a left headline column. Re-run, then copy the outputs into both this
+directory and the packet `screenshots/` folder and re-run
+`scripts/audit-aso-materials.py --packet docs/aso/2026-10-07-duo/materials`.
+
+The App Store product page header (3840 × 1646) and search-results artwork
+(3840 × 2560) live in [`../app-store-header/`](../app-store-header/), with
+their HTML sources.

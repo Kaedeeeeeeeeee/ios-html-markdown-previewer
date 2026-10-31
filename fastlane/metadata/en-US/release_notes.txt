@@ -1,6 +1,2 @@
-- Gives documents more room on iPhone Duo's outer display: the preview mode note fits on one line (tap it for the full explanation), and search keeps the result count and controls beside the field when there is space.
-- Open File, Open ZIP Package, and Paste to Preview now share one row in the library. On the outer display, Settings and Edit can move to the side toolbar, and the library title is no longer cut off on the inner display.
-- On larger displays, JSON and YAML show each field's key, value, and type on one line, and the Table of Contents can stay beside the document.
-- When iPhone Duo is partially open, the library stays on one side of the fold, and a selected search result moves clear of the fold.
-- On iOS 27.1, Find in Document is available directly from the toolbar.
+- Refreshed App Store screenshots that show each feature more clearly.
 - Files continue to be processed and stored locally on your device.
