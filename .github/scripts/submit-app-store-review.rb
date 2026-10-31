@@ -650,8 +650,6 @@ rescue AscError => e
   end
 end
 
-# App Store Connect now rejects a version relationship on creation (409);
-# the version is attached afterwards as a reviewSubmissionItem.
 def create_review_submission(app_id, platform)
   response = request(
     :post,
@@ -667,6 +665,12 @@ def create_review_submission(app_id, platform)
             data: {
               type: "apps",
               id: app_id
+            }
+          },
+          appStoreVersionForReview: {
+            data: {
+              type: "appStoreVersions",
+              id: app_store_version_id
             }
           }
         }

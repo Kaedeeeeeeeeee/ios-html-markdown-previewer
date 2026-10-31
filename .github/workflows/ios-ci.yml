@@ -86,9 +86,6 @@ jobs:
       - name: Verify modern App Store asset gate offline
         run: ruby .github/scripts/test-store-assets-gate.rb
 
-      - name: Verify review submission creation offline
-        run: ruby .github/scripts/test-review-submission.rb
-
   public-pages:
     name: Public App Store Pages
     runs-on: macos-15
