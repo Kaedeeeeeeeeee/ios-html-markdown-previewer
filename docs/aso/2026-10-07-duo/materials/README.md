@@ -21,7 +21,7 @@
 
 文件名为 `sources/<locale>/<family>-<source suffix>.png`，family 为 `iphone`、`ipad` 或 `duo`。库图最先拍，保留两份合成文档和五个内置样例，展示全部支持格式。Duo/iPad 同时实际打开周报显示库与正文；普通 iPhone 只显示文件库。随后 HTML/Markdown 从已注入文件实际打开；JSON/YAML 使用内置样例；多文件导入在同次启动重置隔离库后使用现有 showcase fixture，避免先前样例产生重复处理对话框，呈现导入结果。这些 fixture 是内容展示资料，不冒充一次真实 Files 导入回归。
 
-仅复用指定设备，每次一台：普通 iPhone `F56A2968-F35C-4455-8A34-43DCC6CDC319`；iPad `9216FE52-CA0E-4113-8ED5-19B4BF9755CE`；Duo `F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7`。调用前由设备负责人安装 1.8(13)、确定方向/实际姿态及 Booted 状态。脚本不构建、不安装、不 boot，也不自动改变 Duo 姿态。
+仅复用指定设备，每次一台：普通 iPhone `3FB274D0-D64D-443D-9C6F-9CA0F92251A6`（iPhone 18 Pro Max）；iPad `37995314-A097-4EB8-BA1C-F6396D8EFA5C`（iPad Pro 13-inch M5）；Duo `F90A798B-CBEA-4A0C-AD45-B22F7BF2E2A7`。这些是 2026-10-31 清理模拟器后的重拍设备，1.8(13) 实际捕获设备以 `provenance.json` 为准。调用前由设备负责人安装 1.8(13)、确定方向/实际姿态及 Booted 状态。脚本不构建、不安装、不 boot，也不自动改变 Duo 姿态。
 
 ```sh
 # 原生设置 Open 后：三内屏场景 × 四语言
@@ -37,11 +37,11 @@ DEVELOPER_DIR=/Applications/Xcode-27.1.app/Contents/Developer \
 # 普通 iPhone / iPad 分别运行；不选择额外设备
 DEVELOPER_DIR=/Applications/Xcode-27.1.app/Contents/Developer \
   bash scripts/capture-aso-sources.sh \
-  --device F56A2968-F35C-4455-8A34-43DCC6CDC319 --family iphone
+  --device 3FB274D0-D64D-443D-9C6F-9CA0F92251A6 --family iphone
 
 DEVELOPER_DIR=/Applications/Xcode-27.1.app/Contents/Developer \
   bash scripts/capture-aso-sources.sh \
-  --device 9216FE52-CA0E-4113-8ED5-19B4BF9755CE --family ipad
+  --device 37995314-A097-4EB8-BA1C-F6396D8EFA5C --family ipad
 ```
 
 支持 `--locales zh-Hans`、`--keys 01-html-report` 定向重拍。每次 locale 开始先重置隔离 `UITestLibrary`，确认 metadata 持续为空后注入模板；正常资料库不受影响。截图经本次独占 `/tmp` 目录原样复制，原图保持 RGBA。每张在 `capture-records/` 记录实际版本、build、已安装 executable/debug dylib SHA256、source SHA、locale/display/尺寸；视觉审阅另行完成。退出恢复外观并清除状态栏覆盖，最终 simulator 关机由设备负责人恢复。
