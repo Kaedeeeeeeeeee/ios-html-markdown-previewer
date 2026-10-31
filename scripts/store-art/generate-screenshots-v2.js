@@ -1,6 +1,9 @@
-// Generates App Store screenshots v2: node gen2.js <outRoot> [locale...]
+// Generates App Store screenshots v2 from the captured sources in the 10/07 packet.
+// Usage: node scripts/store-art/generate-screenshots-v2.js <outRoot> [locale...]
 const {chromium}=require('playwright');const fs=require('fs');
-const MAT='/home/claude/ios-html-markdown-previewer/docs/aso/2026-10-07-duo/materials/';
+const path=require('path'),os=require('os');
+const MAT=path.resolve(__dirname,'../../docs/aso/2026-10-07-duo/materials')+'/';
+const PAGES=path.join(os.tmpdir(),'store-art-pages');
 const copy=JSON.parse(fs.readFileSync(MAT+'copy.json'));
 const order=JSON.parse(fs.readFileSync(MAT+'order.json'));
 const outRoot=process.argv[2];const locales=process.argv.slice(3).length?process.argv.slice(3):order.locales;
@@ -89,7 +92,7 @@ for(const loc of locales)for(const prefix of ['iphone','ipad','duo'])for(let i=0
  const tt={...t,title:t.title.replace(/</g,'&lt;'),subtitle:t.subtitle.replace(/</g,'&lt;'),eyebrow:t.eyebrow.replace(/</g,'&lt;')};
  const srcFile=`${MAT}sources/${loc}/${prefix}-${key}.png`;
  const ctx=await b.newContext({ignoreHTTPSErrors:true,viewport:{width:d.W,height:d.H}});const p=await ctx.newPage();
- const f=`/tmp/claude-0/ss/pages/${loc}-${outName}.html`;fs.mkdirSync('/tmp/claude-0/ss/pages',{recursive:true});fs.writeFileSync(f,html(dev,d,loc,key,srcFile,tt));
+ const f=path.join(PAGES,`${loc}-${outName}.html`);fs.mkdirSync(PAGES,{recursive:true});fs.writeFileSync(f,html(dev,d,loc,key,srcFile,tt));
  await p.goto('file://'+f);await p.waitForLoadState('networkidle');await p.evaluate(()=>document.fonts.ready);
  const r=await fit(p);fs.mkdirSync(`${outRoot}/${loc}`,{recursive:true});
  await p.screenshot({path:`${outRoot}/${loc}/${outName}`});await ctx.close();
