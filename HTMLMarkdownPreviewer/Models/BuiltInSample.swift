@@ -5,6 +5,9 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
     case markdown
     case yaml
     case json
+    case mermaid
+    case csv
+    case svg
     case zipPackage
 
     var id: String {
@@ -21,6 +24,12 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             YAMLStrings.sampleTitle
         case .json:
             JSONStrings.sampleTitle
+        case .mermaid:
+            FormatStrings.mermaidSampleTitle
+        case .csv:
+            FormatStrings.csvSampleTitle
+        case .svg:
+            FormatStrings.svgSampleTitle
         case .zipPackage:
             AppStrings.Samples.zipTitle
         }
@@ -36,6 +45,12 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             YAMLStrings.sampleSubtitle
         case .json:
             JSONStrings.sampleSubtitle
+        case .mermaid:
+            FormatStrings.mermaidSampleSubtitle
+        case .csv:
+            FormatStrings.csvSampleSubtitle
+        case .svg:
+            FormatStrings.svgSampleSubtitle
         case .zipPackage:
             AppStrings.Samples.zipSubtitle
         }
@@ -51,6 +66,12 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             "app-config.yaml"
         case .json:
             "api-response.json"
+        case .mermaid:
+            "agent-workflow.mmd"
+        case .csv:
+            "benchmark-results.csv"
+        case .svg:
+            "weekly-chart.svg"
         case .zipPackage:
             "reading-week.zip"
         }
@@ -66,6 +87,12 @@ enum BuiltInSample: String, CaseIterable, Identifiable, Sendable {
             .yaml
         case .json:
             .json
+        case .mermaid:
+            .mermaid
+        case .csv:
+            .csv
+        case .svg:
+            .svg
         case .zipPackage:
             .zipPackage
         }

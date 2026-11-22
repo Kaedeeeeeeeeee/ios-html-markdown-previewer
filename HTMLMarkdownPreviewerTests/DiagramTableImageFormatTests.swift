@@ -156,6 +156,28 @@ final class DiagramTableImageFormatTests: XCTestCase {
         XCTAssertTrue(page.contains("<title>a&lt;b&gt;&quot;c</title>"))
     }
 
+    // MARK: Samples
+
+    func testSamplesRenderThroughTheNewReaders() throws {
+        let mermaid = MermaidDocumentRenderer().render(source: BuiltInSampleProvider.mermaidSample)
+        guard case .codeBlock(language: .some("mermaid"), code: let code)? = mermaid.blocks.first else { return XCTFail("\(mermaid.blocks)") }
+        XCTAssertTrue(code.contains("flowchart TD"))
+
+        let csv = CSVRenderService().render(text: BuiltInSampleProvider.csvSample)
+        let table = try XCTUnwrap(Self.table(in: csv))
+        XCTAssertEqual(table.header.count, 6)
+        XCTAssertEqual(table.rows.count, 8)
+        XCTAssertEqual(table.columnAlignments, [.leading, .leading, .trailing, .trailing, .trailing, .leading])
+        XCTAssertEqual(String(table.rows[2][5].characters), "Found the root cause, then added a test")
+
+        let svg = BuiltInSampleProvider.svgSample
+        for forbidden in ["<script", "href", "<image", "<foreignObject", "url("] {
+            XCTAssertFalse(svg.contains(forbidden), forbidden)
+        }
+        // <img> only draws well-formed XML.
+        XCTAssertTrue(XMLParser(data: Data(svg.utf8)).parse())
+    }
+
     private static func table(in document: MarkdownDocument) -> MarkdownTable? {
         for block in document.blocks {
             if case .table(let table) = block { return table }
@@ -163,3 +185,4 @@ final class DiagramTableImageFormatTests: XCTestCase {
         return nil
     }
 }
+

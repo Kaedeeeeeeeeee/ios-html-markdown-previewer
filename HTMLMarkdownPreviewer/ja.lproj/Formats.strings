@@ -3,3 +3,9 @@
 "csv.summary" = "%1$ld 行 · %2$ld 列";
 "csv.truncated" = "全 %2$ld 行のうち最初の %1$ld 行を表示しています。すべての行を読むには「生テキスト」を選択してください。";
 "svg.unavailable" = "この SVG 画像を表示できませんでした。ソースを読むには「生テキスト」を選択してください。";
+"sample.mermaid.title" = "エージェントのワークフロー";
+"sample.mermaid.subtitle" = "Mermaid · オフラインで描く図のファイル";
+"sample.csv.title" = "ベンチマーク結果";
+"sample.csv.subtitle" = "CSV · 数値がそろった読みやすい表";
+"sample.svg.title" = "週間グラフ";
+"sample.svg.subtitle" = "SVG · 安全に表示するベクター画像";

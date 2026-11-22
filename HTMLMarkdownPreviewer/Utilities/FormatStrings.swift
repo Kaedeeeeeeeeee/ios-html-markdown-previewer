@@ -12,6 +12,13 @@ enum FormatStrings {
         text("svg.unavailable", "This SVG image could not be displayed. Choose Raw Text to read its source.")
     }
 
+    static var mermaidSampleTitle: String { text("sample.mermaid.title", "Agent workflow") }
+    static var mermaidSampleSubtitle: String { text("sample.mermaid.subtitle", "Mermaid · A diagram file drawn offline") }
+    static var csvSampleTitle: String { text("sample.csv.title", "Benchmark results") }
+    static var csvSampleSubtitle: String { text("sample.csv.subtitle", "CSV · A readable table with aligned numbers") }
+    static var svgSampleTitle: String { text("sample.svg.title", "Weekly chart") }
+    static var svgSampleSubtitle: String { text("sample.svg.subtitle", "SVG · A vector image, shown safely") }
+
     static func csvSummary(rows: Int, columns: Int) -> String {
         String.localizedStringWithFormat(text("csv.summary", "%1$ld rows · %2$ld columns"), rows, columns)
     }

@@ -3,3 +3,9 @@
 "csv.summary" = "%1$ld 列 · %2$ld 欄";
 "csv.truncated" = "僅顯示前 %1$ld 列（共 %2$ld 列）。選擇「原始文字」可查看全部內容。";
 "svg.unavailable" = "無法顯示這張 SVG 圖片。選擇「原始文字」可查看原始碼。";
+"sample.mermaid.title" = "Agent 工作流程";
+"sample.mermaid.subtitle" = "Mermaid · 離線繪製的流程圖檔案";
+"sample.csv.title" = "基準測試結果";
+"sample.csv.subtitle" = "CSV · 數字對齊、清晰易讀的表格";
+"sample.svg.title" = "每週圖表";
+"sample.svg.subtitle" = "SVG · 安全顯示的向量圖";
