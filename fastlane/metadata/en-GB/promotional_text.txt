@@ -1,0 +1,1 @@
+Read HTML and ZIP reports, Markdown, JSON/YAML, plus new Mermaid diagrams, CSV tables and SVG images. Files are processed on device. No ads or subscriptions.

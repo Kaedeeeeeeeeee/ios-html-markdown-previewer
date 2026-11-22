@@ -150,7 +150,14 @@ jobs:
           for runtime, devices in devices_by_runtime.items():
               if not runtime.startswith("com.apple.CoreSimulator.SimRuntime.iOS-"):
                   continue
-              version = tuple(int(part) for part in runtime.rsplit("iOS-", 1)[1].split("-"))
+              # Runtime ids can carry a non-numeric suffix (for example a
+              # device-specific "-iPhone19" build); keep only the version parts.
+              version_parts = []
+              for part in runtime.rsplit("iOS-", 1)[1].split("-"):
+                  if not part.isdigit():
+                      break
+                  version_parts.append(int(part))
+              version = tuple(version_parts)
               for device in devices:
                   name = device.get("name", "")
                   # Ordinary smoke tests use a regular existing iPhone. Duo
@@ -158,17 +165,23 @@ jobs:
                   if device.get("isAvailable", False) and name.startswith("iPhone") and "Duo" not in name:
                       parts = name.split()
                       model = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0
+                      # Prefer sizes that stay compact-width in landscape. Plus
+                      # and Pro Max landscape is regular width, where the library
+                      # sits beside the reader and the UI tests' Back-button
+                      # navigation does not apply. Rank them below every
+                      # compact size, including the plain Pro.
                       if name.startswith("iPhone SE"):
                           variant = -1
                       elif name == f"iPhone {model}":
+                          variant = 4
+                      elif name.endswith(" Pro"):
                           variant = 3
-                      elif name.endswith(" Plus"):
-                          variant = 2
-                      elif name.endswith(" Pro") or name.endswith(" Pro Max"):
-                          variant = 1
-                      else:
+                      elif name.endswith(" Plus") or name.endswith(" Pro Max"):
                           variant = 0
+                      else:
+                          variant = 2
                       candidates.append((version, model, variant, name, device["udid"]))
+                      print(f"Candidate: {name} iOS {'.'.join(map(str, version))} ({runtime.rsplit('.', 1)[-1]})", file=sys.stderr)
 
           if not candidates:
               raise SystemExit("No available regular iPhone simulator found; Duo is reserved for separate native QA")
@@ -176,6 +189,9 @@ jobs:
           candidates.sort(reverse=True)
           version, _, _, name, udid = candidates[0]
           print(f"Selected simulator candidate: {name} iOS {'.'.join(map(str, version))}", file=sys.stderr)
+          # The test log is too long to show this step's output later; keep the
+          # chosen device visible as a run annotation.
+          print(f"::notice title=UI test simulator::{name} iOS {'.'.join(map(str, version))}", file=sys.stderr)
           print(udid)
           PY
           )"
@@ -201,6 +217,10 @@ jobs:
         run: |
           xcrun simctl shutdown "${{ steps.simulator.outputs.id }}" || true
           xcrun simctl erase "${{ steps.simulator.outputs.id }}"
+          # Finish the first boot after the erase here. Otherwise the first UI
+          # test's launch waits on it and can exceed Xcode's launch timeout.
+          xcrun simctl boot "${{ steps.simulator.outputs.id }}"
+          xcrun simctl bootstatus "${{ steps.simulator.outputs.id }}" -b
 
       - name: Run UI smoke test
         # The 13 tests alone take about 20 minutes on the hosted runner, so a

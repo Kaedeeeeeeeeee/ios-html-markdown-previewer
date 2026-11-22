@@ -1,2 +1,5 @@
-- Refreshed App Store screenshots that show each feature more clearly.
+- New: open Mermaid diagram files (.mmd, .mermaid), drawn offline.
+- New: read CSV and TSV files as tables with aligned number columns.
+- New: view SVG images safely, with scripts and remote resources blocked.
+- Try the new Mermaid, CSV, and SVG samples in the library.
 - Files continue to be processed and stored locally on your device.

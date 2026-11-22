@@ -32,6 +32,8 @@ EXPECTED_SCREENSHOT_GROUPS = {
 SCREENSHOT_SUFFIXES = %w[01-html-report 02-markdown-preview 03-mermaid-diagram 04-csv-table 05-json-preview 06-yaml-preview 07-batch-import 08-library].freeze
 EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja zh-Hant].freeze
 EXPECTED_SCREENSHOT_TOTAL = EXPECTED_SCREENSHOT_LOCALES.length * EXPECTED_SCREENSHOT_GROUPS.length * SCREENSHOT_SUFFIXES.length
+# en-GB and es-MX carry text metadata only; their screenshots fall back to en-US.
+EXPECTED_METADATA_LOCALES = (EXPECTED_SCREENSHOT_LOCALES + %w[en-GB es-MX]).freeze
 REPOSITORY_ROOT = File.expand_path("../..", __dir__)
 STORE_METADATA_ROOT = ENV.fetch("FASTLANE_METADATA_PATH", File.join(REPOSITORY_ROOT, "fastlane/metadata"))
 STORE_SCREENSHOTS_ROOT = ENV.fetch("APP_STORE_CONNECT_SCREENSHOTS_PATH", File.join(REPOSITORY_ROOT, "docs/app-store-screenshots"))
@@ -366,15 +368,15 @@ end
 def verify_store_metadata!
   localizations = asc_collection("/v1/appStoreVersions/#{app_store_version_id}/appStoreVersionLocalizations")["data"]
   actual_locales = localizations.map { |item| item.fetch("attributes").fetch("locale") }
-  unless actual_locales.sort == EXPECTED_SCREENSHOT_LOCALES.sort
-    raise "Expected exactly four version metadata locales, found #{actual_locales.inspect}."
+  unless actual_locales.sort == EXPECTED_METADATA_LOCALES.sort
+    raise "Expected exactly #{EXPECTED_METADATA_LOCALES.length} version metadata locales, found #{actual_locales.inspect}."
   end
   infos = asc_collection("/v1/apps/#{APP_ID}/appInfos")["data"]
   drafts = infos.select { |info| (info.dig("attributes", "state") || info.dig("attributes", "appStoreState")) == "PREPARE_FOR_SUBMISSION" }
   raise "Expected one editable AppInfo; published AppInfo must remain untouched." unless drafts.length == 1
   info_localizations = asc_collection("/v1/appInfos/#{drafts.first.fetch('id')}/appInfoLocalizations")["data"]
-  unless info_localizations.map { |item| item.fetch("attributes").fetch("locale") }.sort == EXPECTED_SCREENSHOT_LOCALES.sort
-    raise "Expected exactly four draft AppInfo locales."
+  unless info_localizations.map { |item| item.fetch("attributes").fetch("locale") }.sort == EXPECTED_METADATA_LOCALES.sort
+    raise "Expected exactly #{EXPECTED_METADATA_LOCALES.length} draft AppInfo locales."
   end
   by_locale = info_localizations.to_h { |item| [item.fetch("attributes").fetch("locale"), item] }
   localizations.each do |item|
@@ -382,7 +384,7 @@ def verify_store_metadata!
     verify_metadata_fields!(locale, item.fetch("attributes"), VERSION_METADATA_FIELDS)
     verify_metadata_fields!(locale, by_locale.fetch(locale).fetch("attributes"), APP_INFO_METADATA_FIELDS)
   end
-  puts "Store metadata verified: 4 locales, 32 fields exact; draft AppInfo=#{drafts.first.fetch('id')}."
+  puts "Store metadata verified: #{localizations.length} locales, #{localizations.length * 8} fields exact; draft AppInfo=#{drafts.first.fetch('id')}."
   localizations
 end
 
