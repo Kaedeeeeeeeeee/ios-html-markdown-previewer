@@ -1,0 +1,27 @@
+{
+  "capturedAtUTC": "2026-11-22T09:53:37.013244+00:00",
+  "path": "sources/zh-Hant/iphone-08-csv-table.png",
+  "deviceId": "3FB274D0-D64D-443D-9C6F-9CA0F92251A6",
+  "family": "iphone",
+  "sourceKey": "08-csv-table",
+  "locale": "zh-Hant",
+  "displayId": null,
+  "pixels": [
+    1320,
+    2868
+  ],
+  "mode": "RGBA",
+  "sha256": "2b38bd4507ee45e883bf394f122c0dcb3343beef5110ada2f7ac5984be9cebce",
+  "appVersion": "1.8.2",
+  "buildNumber": "15",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "a1f48c153180347cf0f88f967f1aa845d53ddea6281e20390aaed951910c9dac",
+    "HTMLMarkdownPreviewer.debug.dylib": "81b6030244c391e58c4097415afdb2fe3d678bae617e573545e03f3f32d8d261"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "pending",
+  "sourcePixelsEdited": false,
+  "operatorAdjustment": "Table scrolled horizontally in-app so the numeric columns are visible"
+}

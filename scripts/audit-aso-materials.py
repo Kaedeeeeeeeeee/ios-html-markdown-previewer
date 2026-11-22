@@ -28,8 +28,12 @@ families = args.families.split(",") if args.families else [d["prefix"] for d in 
 if not set(locales) <= set(order["locales"]) or not set(families) <= {d["prefix"] for d in devices}:
     parser.error("Unknown locale or family")
 devices = [d for d in devices if d["prefix"] in families]
-if len(order["sourceKeys"]) != len(order["outputSuffixes"]) or len(set(order["sourceKeys"])) != 6 or len(set(order["outputSuffixes"])) != 6:
-    parser.error("Order must pair six distinct source keys with six outputs")
+SCENES = 8
+if len(order["sourceKeys"]) != len(order["outputSuffixes"]) or len(set(order["sourceKeys"])) != SCENES or len(set(order["outputSuffixes"])) != SCENES:
+    parser.error("Order must pair eight distinct source keys with eight outputs")
+# Scenes added after 1.8(13) declare their own capture identity in order.json.
+capture_identities = order.get("captureIdentities", {})
+default_capture = capture_identities.get("default", ["1.8", "13"])
 errors, files, sources, metadata = [], [], [], {}
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
@@ -79,8 +83,9 @@ for locale in locales:
                     record = json.loads(record_path.read_text())
                     if record.get("sha256") != sha(source_path) or record.get("pixels") != list(native) or record.get("locale") != locale:
                         errors.append(f"Capture identity mismatch: {record_path}")
-                    if record.get("appVersion") != "1.8" or record.get("buildNumber") != "13":
-                        errors.append(f"Capture is not target 1.8(13): {record_path}")
+                    expected_capture = capture_identities.get(source, default_capture)
+                    if [record.get("appVersion"), record.get("buildNumber")] != expected_capture:
+                        errors.append(f"Capture is not declared {expected_capture[0]}({expected_capture[1]}): {record_path}")
                     if family == "duo" and record.get("displayId") != frame["displayId"]:
                         errors.append(f"Capture display mismatch: {record_path}")
             if args.sources_only:

@@ -29,8 +29,9 @@ EXPECTED_SCREENSHOT_GROUPS = {
   "IPAD_13_PROFILE" => "ipad",
   "IPHONE_DUO_PROFILE" => "duo"
 }.freeze
-SCREENSHOT_SUFFIXES = %w[01-html-report 02-markdown-preview 03-json-preview 04-yaml-preview 05-batch-import 06-library].freeze
+SCREENSHOT_SUFFIXES = %w[01-html-report 02-markdown-preview 03-mermaid-diagram 04-csv-table 05-json-preview 06-yaml-preview 07-batch-import 08-library].freeze
 EXPECTED_SCREENSHOT_LOCALES = %w[en-US zh-Hans ja zh-Hant].freeze
+EXPECTED_SCREENSHOT_TOTAL = EXPECTED_SCREENSHOT_LOCALES.length * EXPECTED_SCREENSHOT_GROUPS.length * SCREENSHOT_SUFFIXES.length
 REPOSITORY_ROOT = File.expand_path("../..", __dir__)
 STORE_METADATA_ROOT = ENV.fetch("FASTLANE_METADATA_PATH", File.join(REPOSITORY_ROOT, "fastlane/metadata"))
 STORE_SCREENSHOTS_ROOT = ENV.fetch("APP_STORE_CONNECT_SCREENSHOTS_PATH", File.join(REPOSITORY_ROOT, "docs/app-store-screenshots"))
@@ -445,7 +446,7 @@ def verify_expected_screenshot_inventory!(localizations = nil)
     images = response.fetch("included").select { |item| item["type"] == "appAssetLibraryImages" }.to_h { |item| [item.fetch("id"), item] }
     EXPECTED_SCREENSHOT_GROUPS.each do |group, prefix|
       placements = screenshots.select { |item| item.dig("attributes", "placementGroup") == group }
-      raise "Expected six #{locale}/#{group} screenshots, found #{placements.length}" unless placements.length == SCREENSHOT_SUFFIXES.length
+      raise "Expected #{SCREENSHOT_SUFFIXES.length} #{locale}/#{group} screenshots, found #{placements.length}" unless placements.length == SCREENSHOT_SUFFIXES.length
       # ASC supports sort=placementGroupPosition but does not expose that value
       # in placement attributes. Verify its returned order by exact image names.
       placements.zip(SCREENSHOT_SUFFIXES).each do |placement, suffix|
@@ -472,14 +473,14 @@ def verify_expected_screenshot_inventory!(localizations = nil)
       puts "Asset Library inventory verified: locale=#{locale} group=#{group} count=#{placements.length}."
     end
   end
-  raise "Expected 72 approved screenshots, found #{total}" unless total == 72
+  raise "Expected #{EXPECTED_SCREENSHOT_TOTAL} approved screenshots, found #{total}" unless total == EXPECTED_SCREENSHOT_TOTAL
 end
 
 def verify_store_assets!
   require_editable_store_version!
   localizations = verify_store_metadata!
   verify_expected_screenshot_inventory!(localizations)
-  puts "Store assets verified: four locales and 72 ordered screenshots; no remote writes."
+  puts "Store assets verified: four locales and #{EXPECTED_SCREENSHOT_TOTAL} ordered screenshots; no remote writes."
 end
 
 def dump_readiness(context)

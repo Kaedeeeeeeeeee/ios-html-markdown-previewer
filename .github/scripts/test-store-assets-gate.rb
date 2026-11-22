@@ -128,9 +128,9 @@ class StoreAssetsGateTest < Minitest::Test
     assert_includes error.message, message
   end
 
-  def test_full_72_image_32_field_readonly_gate_without_build
+  def test_full_96_image_32_field_readonly_gate_without_build
     capture_io { run_store_gate }
-    assert_equal 72, @placements.values.sum { |r| r["data"].length }
+    assert_equal 96, @placements.values.sum { |r| r["data"].length }
     assert @requests.any? { |path, _| path.end_with?("loc-zh-Hant/placements") }
     refute @requests.any? { |path, _| path.include?("builds") || path.include?("live-info/") }
   end
@@ -176,7 +176,7 @@ class StoreAssetsGateTest < Minitest::Test
 
   def test_missing_duo_and_wrong_order_are_rejected
     saved = first_response["data"].pop
-    blocked("Expected six")
+    blocked("Expected 8 ")
     first_response["data"] << saved
     first_response["data"][0], first_response["data"][1] = first_response["data"][1], first_response["data"][0]
     blocked("identity/state mismatch")

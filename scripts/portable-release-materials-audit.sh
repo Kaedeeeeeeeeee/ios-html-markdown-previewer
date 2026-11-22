@@ -265,9 +265,9 @@ integrated_gate = require_file("scripts/audit-integrated-release-materials.py")
 if integrated_gate.is_file():
     outcome = subprocess.run([sys.executable, str(integrated_gate)], cwd=root, text=True, capture_output=True)
     if outcome.returncode:
-        fail("Current four-locale 72-image integrated materials gate failed: " + outcome.stdout.strip() + outcome.stderr.strip())
+        fail("Current four-locale 96-image integrated materials gate failed: " + outcome.stdout.strip() + outcome.stderr.strip())
     else:
-        ok("Current four-locale 72-image screenshot and metadata identities match the verified packet")
+        ok("Current four-locale 96-image screenshot and metadata identities match the verified packet")
 
 metadata_limits = {
     "name.txt": 30,

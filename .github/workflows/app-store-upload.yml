@@ -9,7 +9,7 @@ on:
         type: boolean
         default: false
       verify_store_assets:
-        description: "Require four-locale metadata and 72 modern Asset Library screenshots to be synchronized and verified before upload."
+        description: "Require four-locale metadata and 96 modern Asset Library screenshots to be synchronized and verified before upload."
         required: false
         type: boolean
         default: true
@@ -96,7 +96,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$VERIFY_STORE_ASSETS" != "true" ]]; then
-            echo "The four-locale metadata and 72-image Asset Library gate cannot be skipped." >&2
+            echo "The four-locale metadata and 96-image Asset Library gate cannot be skipped." >&2
             exit 2
           fi
           # GET-only. Does not require build 15, upload images, or alter published AppInfo.

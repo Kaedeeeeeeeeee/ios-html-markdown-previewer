@@ -1,0 +1,26 @@
+{
+  "capturedAtUTC": "2026-11-22T09:42:18.283251+00:00",
+  "path": "sources/ja/ipad-07-mermaid-diagram.png",
+  "deviceId": "37995314-A097-4EB8-BA1C-F6396D8EFA5C",
+  "family": "ipad",
+  "sourceKey": "07-mermaid-diagram",
+  "locale": "ja",
+  "displayId": null,
+  "pixels": [
+    2064,
+    2752
+  ],
+  "mode": "RGBA",
+  "sha256": "40197421d80436859c415510116a78bbc040c56d28cb384230cde952e7788945",
+  "appVersion": "1.8.2",
+  "buildNumber": "15",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "a1f48c153180347cf0f88f967f1aa845d53ddea6281e20390aaed951910c9dac",
+    "HTMLMarkdownPreviewer.debug.dylib": "81b6030244c391e58c4097415afdb2fe3d678bae617e573545e03f3f32d8d261"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "pending",
+  "sourcePixelsEdited": false
+}

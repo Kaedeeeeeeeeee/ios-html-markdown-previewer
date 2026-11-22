@@ -1,7 +1,7 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Read-only verification of pre-synchronized four-locale metadata and 72 modern Asset Library screenshots"
+  desc "Read-only verification of pre-synchronized four-locale metadata and 96 modern Asset Library screenshots"
   lane :verify_store_assets do
     # Screenshot mutations use scripts/asset-library/upload_assets.py with an
     # approved plan hash and explicit scope. Never fall back to legacy deliver.

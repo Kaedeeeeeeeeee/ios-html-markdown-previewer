@@ -13,9 +13,9 @@
     "ipad",
     "duo"
   ],
-  "expectedScreenshotCount": 72,
-  "actualScreenshotCount": 72,
-  "actualSourceCount": 72,
+  "expectedScreenshotCount": 96,
+  "actualScreenshotCount": 96,
+  "actualSourceCount": 96,
   "metadata": {
     "en-US": {
       "name": {
@@ -126,6 +126,24 @@
       "sha256": "f26a5dcc988fff56473d66dec01f51338478350a7c9be7ec5ffdedcd7b6c210d"
     },
     {
+      "path": "sources/en-US/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "d384dae794ed8a30dd79a0fa4f359f98d9f4ebfb7e3daa09a1451862fa34ff29"
+    },
+    {
+      "path": "sources/en-US/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "94677ced87648bf0ed2bd679463e8e61369717182b7fcef05ad01f782fd91905"
+    },
+    {
       "path": "sources/en-US/iphone-03-json-preview.png",
       "pixels": [
         1206,
@@ -178,6 +196,24 @@
       ],
       "mode": "RGBA",
       "sha256": "8824e87fe9130ddb5e47091bad91ab107f12dee11822e8aaa5c5fac10c33e6a6"
+    },
+    {
+      "path": "sources/en-US/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "5071ee8d0277a65e53abb10236fd59d6c84e2610da466d386a792b9daaf56c51"
+    },
+    {
+      "path": "sources/en-US/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "2557cb2bcda88dbba1c2ed8657394e63c363e7dcc6578d9a7e65256d8857be3b"
     },
     {
       "path": "sources/en-US/ipad-03-json-preview.png",
@@ -234,6 +270,24 @@
       "sha256": "2d08c23378f49f678a9a91d003a43bac325e86b2c4311be345e2a612b4e41f7f"
     },
     {
+      "path": "sources/en-US/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "5e49a5a02021cdaabad691c6b80502658ec5e1134b332db2513713b596327ea0"
+    },
+    {
+      "path": "sources/en-US/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "1c4e15e9a4116fe27f40b0a10646b1da1cd1cb993f4416172a4c22ab91df64ab"
+    },
+    {
       "path": "sources/en-US/duo-03-json-preview.png",
       "pixels": [
         2853,
@@ -286,6 +340,24 @@
       ],
       "mode": "RGBA",
       "sha256": "0b9d7b37eca5ae379502f884b9278304cf06a652857d870170797ec524f22afc"
+    },
+    {
+      "path": "sources/zh-Hans/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "de45edc44f7da316527fad2828caa8f3154b9e739b204b65d094a25e0f6ffc63"
+    },
+    {
+      "path": "sources/zh-Hans/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "0283cdf4c7073f4a4f4934d683a18fbfbda1ff939566cd4bfca59d6636bf927f"
     },
     {
       "path": "sources/zh-Hans/iphone-03-json-preview.png",
@@ -342,6 +414,24 @@
       "sha256": "a8413382d93d7cfbd1d68e0aa2a965b7e42a67525a7d2f046258ab1bb56d2ba6"
     },
     {
+      "path": "sources/zh-Hans/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "2ddd7a2d353a5908b595869ff84e4fdea13647756527558ec160e9f0b5c10931"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "44af208f34ce6bb5d3f685e3b703bbc8541a38ca277886ea2772fad43f553343"
+    },
+    {
       "path": "sources/zh-Hans/ipad-03-json-preview.png",
       "pixels": [
         2048,
@@ -394,6 +484,24 @@
       ],
       "mode": "RGBA",
       "sha256": "4e35c9bd938fc142b19aa1e988c3f0340b0f460bd9786218fd37d48e53031f26"
+    },
+    {
+      "path": "sources/zh-Hans/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "6b6301936e9209d38630e5c8eee6234d3f6d0d9d8a1d62fe8190000dd8a33b55"
+    },
+    {
+      "path": "sources/zh-Hans/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "4506d282fd9c594af19e296231261a7d02df4307d205ac795c8bc402d6f93e20"
     },
     {
       "path": "sources/zh-Hans/duo-03-json-preview.png",
@@ -450,6 +558,24 @@
       "sha256": "1dd797dadc47d478d4705f5fe843b40563d1fb71408a40d7593e91569056b36a"
     },
     {
+      "path": "sources/ja/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "5fce6f4ccbdfba4ff7db09504f562e7394fddebbecba6bc5664c6db1332a7b1b"
+    },
+    {
+      "path": "sources/ja/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "eb997a72bb9c867f9bebfc9ad8cbca24328756e596df3b72b468badc3eb72c75"
+    },
+    {
       "path": "sources/ja/iphone-03-json-preview.png",
       "pixels": [
         1206,
@@ -502,6 +628,24 @@
       ],
       "mode": "RGBA",
       "sha256": "683302201339b467327ff9226409e82f333f1f07bec305927b0507e05af2b4eb"
+    },
+    {
+      "path": "sources/ja/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "40197421d80436859c415510116a78bbc040c56d28cb384230cde952e7788945"
+    },
+    {
+      "path": "sources/ja/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "3dc19eee4082244590421c7ee833bd5df92acc0ac99864abe068cd3893989a3d"
     },
     {
       "path": "sources/ja/ipad-03-json-preview.png",
@@ -558,6 +702,24 @@
       "sha256": "189315c0a741207ad647d1b33e41433ee1fa168fbedabfbdee5654a5c3bb812a"
     },
     {
+      "path": "sources/ja/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "6c84d51198cafbc00e905f77774a39ddf28a0ab8d928f4e51d3eb82230104c0f"
+    },
+    {
+      "path": "sources/ja/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "72ef82c739b6580213d8cd8091b04a49fa3a3f00eff4b420a738f86e5121f3ce"
+    },
+    {
       "path": "sources/ja/duo-03-json-preview.png",
       "pixels": [
         2853,
@@ -610,6 +772,24 @@
       ],
       "mode": "RGBA",
       "sha256": "73db91169ed28ec6dda780591e2c5a7d36f87d61e9f656f84cc3c444149e52b7"
+    },
+    {
+      "path": "sources/zh-Hant/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "468eae024e7ee458f10ef7f14328733b4cad83ecbc830348b9c6706c9f61d3d9"
+    },
+    {
+      "path": "sources/zh-Hant/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "2b38bd4507ee45e883bf394f122c0dcb3343beef5110ada2f7ac5984be9cebce"
     },
     {
       "path": "sources/zh-Hant/iphone-03-json-preview.png",
@@ -666,6 +846,24 @@
       "sha256": "35d70b97cdc00dd02faff585491e0d7771faf94472879662a98ccec90544f4f5"
     },
     {
+      "path": "sources/zh-Hant/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "ac81d84202e4347485ac1c8f5b9ee3519c99d7f50bcffdcabc42d5309f9e2697"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "cdfc841c93c3f942169f8b23152684e585a284f100dbbfe8168448afc0d47952"
+    },
+    {
       "path": "sources/zh-Hant/ipad-03-json-preview.png",
       "pixels": [
         2048,
@@ -718,6 +916,24 @@
       ],
       "mode": "RGBA",
       "sha256": "4de01013206e1f2e2455f228df7359dd5cc7568bf087486a7355b6ae18db17fb"
+    },
+    {
+      "path": "sources/zh-Hant/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "de2497121790f90451710a7b67fa3c99116905562dc42f20fd1114fc62d50589"
+    },
+    {
+      "path": "sources/zh-Hant/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "044a8183ab34f47117ab933933323a963afd37e50dfaf2575ee879f828330b84"
     },
     {
       "path": "sources/zh-Hant/duo-03-json-preview.png",
@@ -780,7 +996,29 @@
       "sourceSHA256": "f26a5dcc988fff56473d66dec01f51338478350a7c9be7ec5ffdedcd7b6c210d"
     },
     {
-      "path": "screenshots/en-US/iphone-03-json-preview.png",
+      "path": "screenshots/en-US/iphone-03-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "df77aca0cc318353fa3d9b757f69dd44bef8ca19bbdc1be01e59cdf0509659d4",
+      "source": "sources/en-US/iphone-07-mermaid-diagram.png",
+      "sourceSHA256": "d384dae794ed8a30dd79a0fa4f359f98d9f4ebfb7e3daa09a1451862fa34ff29"
+    },
+    {
+      "path": "screenshots/en-US/iphone-04-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "3caa7feda66013242f20bb8abd35146366e9355b01be770803c21f9eeafd2c83",
+      "source": "sources/en-US/iphone-08-csv-table.png",
+      "sourceSHA256": "94677ced87648bf0ed2bd679463e8e61369717182b7fcef05ad01f782fd91905"
+    },
+    {
+      "path": "screenshots/en-US/iphone-05-json-preview.png",
       "pixels": [
         1320,
         2868
@@ -791,7 +1029,7 @@
       "sourceSHA256": "66584afa2738f15e7d5b1c6e4907e9baceba7f0856f77c9c6f0dbdb1d56ca5e4"
     },
     {
-      "path": "screenshots/en-US/iphone-04-yaml-preview.png",
+      "path": "screenshots/en-US/iphone-06-yaml-preview.png",
       "pixels": [
         1320,
         2868
@@ -802,7 +1040,7 @@
       "sourceSHA256": "030e0389d90c26ac1949ab9e013e286869162d430ee130c8a05d18cbe210c4e2"
     },
     {
-      "path": "screenshots/en-US/iphone-05-batch-import.png",
+      "path": "screenshots/en-US/iphone-07-batch-import.png",
       "pixels": [
         1320,
         2868
@@ -813,7 +1051,7 @@
       "sourceSHA256": "736cbeb0880699c8540c29265611f9161fc4d564d4952fbe449096fae8931db6"
     },
     {
-      "path": "screenshots/en-US/iphone-06-library.png",
+      "path": "screenshots/en-US/iphone-08-library.png",
       "pixels": [
         1320,
         2868
@@ -846,7 +1084,29 @@
       "sourceSHA256": "8824e87fe9130ddb5e47091bad91ab107f12dee11822e8aaa5c5fac10c33e6a6"
     },
     {
-      "path": "screenshots/en-US/ipad-03-json-preview.png",
+      "path": "screenshots/en-US/ipad-03-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "0c9a708420441dba0077719a338d7c308f10f03b5c375d1bd900a0daa27dcc0a",
+      "source": "sources/en-US/ipad-07-mermaid-diagram.png",
+      "sourceSHA256": "5071ee8d0277a65e53abb10236fd59d6c84e2610da466d386a792b9daaf56c51"
+    },
+    {
+      "path": "screenshots/en-US/ipad-04-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "37052b39457a10147edc9bcf20b61560cfc60f086a44d6e3f4643d49edf7c1f8",
+      "source": "sources/en-US/ipad-08-csv-table.png",
+      "sourceSHA256": "2557cb2bcda88dbba1c2ed8657394e63c363e7dcc6578d9a7e65256d8857be3b"
+    },
+    {
+      "path": "screenshots/en-US/ipad-05-json-preview.png",
       "pixels": [
         2064,
         2752
@@ -857,7 +1117,7 @@
       "sourceSHA256": "0215118dd3cf246fcc1492c0406a9b195f48710c4f514a0bb46fb4188f87451e"
     },
     {
-      "path": "screenshots/en-US/ipad-04-yaml-preview.png",
+      "path": "screenshots/en-US/ipad-06-yaml-preview.png",
       "pixels": [
         2064,
         2752
@@ -868,7 +1128,7 @@
       "sourceSHA256": "2421f00a522c55e40d7e69fff6c51d86ccbb5866cf2749514992439e0e66c406"
     },
     {
-      "path": "screenshots/en-US/ipad-05-batch-import.png",
+      "path": "screenshots/en-US/ipad-07-batch-import.png",
       "pixels": [
         2064,
         2752
@@ -879,7 +1139,7 @@
       "sourceSHA256": "db0e5bb44984243d8197ede45a8b699e10ab72551c1d7e20ef4b64b769d04829"
     },
     {
-      "path": "screenshots/en-US/ipad-06-library.png",
+      "path": "screenshots/en-US/ipad-08-library.png",
       "pixels": [
         2064,
         2752
@@ -912,7 +1172,29 @@
       "sourceSHA256": "2d08c23378f49f678a9a91d003a43bac325e86b2c4311be345e2a612b4e41f7f"
     },
     {
-      "path": "screenshots/en-US/duo-03-json-preview.png",
+      "path": "screenshots/en-US/duo-03-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB",
+      "sha256": "24f259e5b3975939e2d9d545f8fa40b00711d687d6519c528e05416e32feb79d",
+      "source": "sources/en-US/duo-07-mermaid-diagram.png",
+      "sourceSHA256": "5e49a5a02021cdaabad691c6b80502658ec5e1134b332db2513713b596327ea0"
+    },
+    {
+      "path": "screenshots/en-US/duo-04-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB",
+      "sha256": "90d453835b294a6926206cceb63065d78adaeb13fb2733f0b62e55cc541edb63",
+      "source": "sources/en-US/duo-08-csv-table.png",
+      "sourceSHA256": "1c4e15e9a4116fe27f40b0a10646b1da1cd1cb993f4416172a4c22ab91df64ab"
+    },
+    {
+      "path": "screenshots/en-US/duo-05-json-preview.png",
       "pixels": [
         2853,
         2007
@@ -923,7 +1205,7 @@
       "sourceSHA256": "83cef90509c0a4353bace0ffc3525b8b5d7b5b335c01a03f483cde2b94c4ffc4"
     },
     {
-      "path": "screenshots/en-US/duo-04-yaml-preview.png",
+      "path": "screenshots/en-US/duo-06-yaml-preview.png",
       "pixels": [
         1398,
         2034
@@ -934,7 +1216,7 @@
       "sourceSHA256": "df3909ab5dd50ad96fcb165f236617793932ddab3499d29656c9e9aca03a2996"
     },
     {
-      "path": "screenshots/en-US/duo-05-batch-import.png",
+      "path": "screenshots/en-US/duo-07-batch-import.png",
       "pixels": [
         1398,
         2034
@@ -945,7 +1227,7 @@
       "sourceSHA256": "eefc084a1e812c345b6094dd348dbf965c46ce7f06804ee12493dbfeabc8f713"
     },
     {
-      "path": "screenshots/en-US/duo-06-library.png",
+      "path": "screenshots/en-US/duo-08-library.png",
       "pixels": [
         2853,
         2007
@@ -978,7 +1260,29 @@
       "sourceSHA256": "0b9d7b37eca5ae379502f884b9278304cf06a652857d870170797ec524f22afc"
     },
     {
-      "path": "screenshots/zh-Hans/iphone-03-json-preview.png",
+      "path": "screenshots/zh-Hans/iphone-03-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "543327ec6aab40728ba37fc50b7d70023e64101276c7cea68e7fd832e96cdec3",
+      "source": "sources/zh-Hans/iphone-07-mermaid-diagram.png",
+      "sourceSHA256": "de45edc44f7da316527fad2828caa8f3154b9e739b204b65d094a25e0f6ffc63"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-04-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "7bc8c322787a04a7ab10ce73c79cdfbbb7d7b7c2c6aa12ef4090bb0f39145112",
+      "source": "sources/zh-Hans/iphone-08-csv-table.png",
+      "sourceSHA256": "0283cdf4c7073f4a4f4934d683a18fbfbda1ff939566cd4bfca59d6636bf927f"
+    },
+    {
+      "path": "screenshots/zh-Hans/iphone-05-json-preview.png",
       "pixels": [
         1320,
         2868
@@ -989,7 +1293,7 @@
       "sourceSHA256": "a49182b340c2f20787e09e8e92967af1b03f40e4b52ab3925aecd16143ad005e"
     },
     {
-      "path": "screenshots/zh-Hans/iphone-04-yaml-preview.png",
+      "path": "screenshots/zh-Hans/iphone-06-yaml-preview.png",
       "pixels": [
         1320,
         2868
@@ -1000,7 +1304,7 @@
       "sourceSHA256": "122ae7a5c56a508ea0066992bcf32bfd458c6686d26ff54a792d08c0d995a7df"
     },
     {
-      "path": "screenshots/zh-Hans/iphone-05-batch-import.png",
+      "path": "screenshots/zh-Hans/iphone-07-batch-import.png",
       "pixels": [
         1320,
         2868
@@ -1011,7 +1315,7 @@
       "sourceSHA256": "dcc2a5988fb0fdaa12d12a355dd913cda7ac2dfb12882c41ed6e50f21cda4618"
     },
     {
-      "path": "screenshots/zh-Hans/iphone-06-library.png",
+      "path": "screenshots/zh-Hans/iphone-08-library.png",
       "pixels": [
         1320,
         2868
@@ -1044,7 +1348,29 @@
       "sourceSHA256": "a8413382d93d7cfbd1d68e0aa2a965b7e42a67525a7d2f046258ab1bb56d2ba6"
     },
     {
-      "path": "screenshots/zh-Hans/ipad-03-json-preview.png",
+      "path": "screenshots/zh-Hans/ipad-03-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "a3a486d1d2cd369a586d90eed73fd76c0c7274fce253b4014162851870756961",
+      "source": "sources/zh-Hans/ipad-07-mermaid-diagram.png",
+      "sourceSHA256": "2ddd7a2d353a5908b595869ff84e4fdea13647756527558ec160e9f0b5c10931"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-04-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "407e3bc49fb4bc0ef00d803dc75729f316884040e6d26c352ea8aec5aeb8787c",
+      "source": "sources/zh-Hans/ipad-08-csv-table.png",
+      "sourceSHA256": "44af208f34ce6bb5d3f685e3b703bbc8541a38ca277886ea2772fad43f553343"
+    },
+    {
+      "path": "screenshots/zh-Hans/ipad-05-json-preview.png",
       "pixels": [
         2064,
         2752
@@ -1055,7 +1381,7 @@
       "sourceSHA256": "5adec537c961d01c2963d9c14222842f2975573a7d170274098dcbf38f4d7840"
     },
     {
-      "path": "screenshots/zh-Hans/ipad-04-yaml-preview.png",
+      "path": "screenshots/zh-Hans/ipad-06-yaml-preview.png",
       "pixels": [
         2064,
         2752
@@ -1066,7 +1392,7 @@
       "sourceSHA256": "e43e9cad70c036eb60d6c654bfd35777d58d86475c82914bea8104d45f316cab"
     },
     {
-      "path": "screenshots/zh-Hans/ipad-05-batch-import.png",
+      "path": "screenshots/zh-Hans/ipad-07-batch-import.png",
       "pixels": [
         2064,
         2752
@@ -1077,7 +1403,7 @@
       "sourceSHA256": "b3f2c73d4eb85d9d129465a16ef2806826dc7fcd75a98cfe5f4d0c5fd992390e"
     },
     {
-      "path": "screenshots/zh-Hans/ipad-06-library.png",
+      "path": "screenshots/zh-Hans/ipad-08-library.png",
       "pixels": [
         2064,
         2752
@@ -1110,7 +1436,29 @@
       "sourceSHA256": "4e35c9bd938fc142b19aa1e988c3f0340b0f460bd9786218fd37d48e53031f26"
     },
     {
-      "path": "screenshots/zh-Hans/duo-03-json-preview.png",
+      "path": "screenshots/zh-Hans/duo-03-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB",
+      "sha256": "7ad955e50a11c531b39af05a5fa9f6bd5a00e6e8f6c4affec8351e72fd0983ed",
+      "source": "sources/zh-Hans/duo-07-mermaid-diagram.png",
+      "sourceSHA256": "6b6301936e9209d38630e5c8eee6234d3f6d0d9d8a1d62fe8190000dd8a33b55"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-04-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB",
+      "sha256": "b66a0c9c017aec9cde32b392b52ede53cb4bb63829a9195b65fae30d539cf8ea",
+      "source": "sources/zh-Hans/duo-08-csv-table.png",
+      "sourceSHA256": "4506d282fd9c594af19e296231261a7d02df4307d205ac795c8bc402d6f93e20"
+    },
+    {
+      "path": "screenshots/zh-Hans/duo-05-json-preview.png",
       "pixels": [
         2853,
         2007
@@ -1121,7 +1469,7 @@
       "sourceSHA256": "0fce2530c104224c80c873fb5dbdfc2c94bc9fe8eb5efe7401ea43a454d9b473"
     },
     {
-      "path": "screenshots/zh-Hans/duo-04-yaml-preview.png",
+      "path": "screenshots/zh-Hans/duo-06-yaml-preview.png",
       "pixels": [
         1398,
         2034
@@ -1132,7 +1480,7 @@
       "sourceSHA256": "eb6d8585f23eba387e886714971c171d69c9a9ac46d42426c064c1aca1ef824a"
     },
     {
-      "path": "screenshots/zh-Hans/duo-05-batch-import.png",
+      "path": "screenshots/zh-Hans/duo-07-batch-import.png",
       "pixels": [
         1398,
         2034
@@ -1143,7 +1491,7 @@
       "sourceSHA256": "13285b4e9585b4a4351a348373666a598cf890538b8958bb53fc3831c9a178d0"
     },
     {
-      "path": "screenshots/zh-Hans/duo-06-library.png",
+      "path": "screenshots/zh-Hans/duo-08-library.png",
       "pixels": [
         2853,
         2007
@@ -1176,7 +1524,29 @@
       "sourceSHA256": "1dd797dadc47d478d4705f5fe843b40563d1fb71408a40d7593e91569056b36a"
     },
     {
-      "path": "screenshots/ja/iphone-03-json-preview.png",
+      "path": "screenshots/ja/iphone-03-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "691cf2454264e57476fb08b6ea2fa8d8b35deb8e829dedc1fc9b088e3de602cf",
+      "source": "sources/ja/iphone-07-mermaid-diagram.png",
+      "sourceSHA256": "5fce6f4ccbdfba4ff7db09504f562e7394fddebbecba6bc5664c6db1332a7b1b"
+    },
+    {
+      "path": "screenshots/ja/iphone-04-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "8cdee48d4adcb4fe1c79af399d7f98c1bdd0a52344cbab0794ad290111c548d6",
+      "source": "sources/ja/iphone-08-csv-table.png",
+      "sourceSHA256": "eb997a72bb9c867f9bebfc9ad8cbca24328756e596df3b72b468badc3eb72c75"
+    },
+    {
+      "path": "screenshots/ja/iphone-05-json-preview.png",
       "pixels": [
         1320,
         2868
@@ -1187,7 +1557,7 @@
       "sourceSHA256": "5b935cf106c9df5ef3e65e84b98940f3055caf5bf50052005048e6360ab6a87f"
     },
     {
-      "path": "screenshots/ja/iphone-04-yaml-preview.png",
+      "path": "screenshots/ja/iphone-06-yaml-preview.png",
       "pixels": [
         1320,
         2868
@@ -1198,7 +1568,7 @@
       "sourceSHA256": "07cac94a0c2fef7438833d34314aec346614b7aa5f9234b61377ec13d2fc9405"
     },
     {
-      "path": "screenshots/ja/iphone-05-batch-import.png",
+      "path": "screenshots/ja/iphone-07-batch-import.png",
       "pixels": [
         1320,
         2868
@@ -1209,7 +1579,7 @@
       "sourceSHA256": "da6c0c64ed7f7d2fdd4ed19929e1bbbb1e1994b472cd0b49824991d82aa82b35"
     },
     {
-      "path": "screenshots/ja/iphone-06-library.png",
+      "path": "screenshots/ja/iphone-08-library.png",
       "pixels": [
         1320,
         2868
@@ -1242,7 +1612,29 @@
       "sourceSHA256": "683302201339b467327ff9226409e82f333f1f07bec305927b0507e05af2b4eb"
     },
     {
-      "path": "screenshots/ja/ipad-03-json-preview.png",
+      "path": "screenshots/ja/ipad-03-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "ec66e2e529aee46998197ea4d7d8537d63d869b424b20e7d2443fd363fe8f9fe",
+      "source": "sources/ja/ipad-07-mermaid-diagram.png",
+      "sourceSHA256": "40197421d80436859c415510116a78bbc040c56d28cb384230cde952e7788945"
+    },
+    {
+      "path": "screenshots/ja/ipad-04-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "3a81813b7c0a67f64ac25d41ecd07c6e337bd21a140e96e7cf5afa10df0db8dd",
+      "source": "sources/ja/ipad-08-csv-table.png",
+      "sourceSHA256": "3dc19eee4082244590421c7ee833bd5df92acc0ac99864abe068cd3893989a3d"
+    },
+    {
+      "path": "screenshots/ja/ipad-05-json-preview.png",
       "pixels": [
         2064,
         2752
@@ -1253,7 +1645,7 @@
       "sourceSHA256": "f5b1de16add639b6eeebdac1f8a0b6208a96c12d38c4f0fcc5ffdd6a8e2fef17"
     },
     {
-      "path": "screenshots/ja/ipad-04-yaml-preview.png",
+      "path": "screenshots/ja/ipad-06-yaml-preview.png",
       "pixels": [
         2064,
         2752
@@ -1264,7 +1656,7 @@
       "sourceSHA256": "f277598c9903f3f0b0613f8468b21f4fd6a9aa71dde4a2c1689129ed71a66e66"
     },
     {
-      "path": "screenshots/ja/ipad-05-batch-import.png",
+      "path": "screenshots/ja/ipad-07-batch-import.png",
       "pixels": [
         2064,
         2752
@@ -1275,7 +1667,7 @@
       "sourceSHA256": "2218ab55b2fdbfe205a418b35bd8f8401369c9c366b0bcc461641ed8140997ac"
     },
     {
-      "path": "screenshots/ja/ipad-06-library.png",
+      "path": "screenshots/ja/ipad-08-library.png",
       "pixels": [
         2064,
         2752
@@ -1308,7 +1700,29 @@
       "sourceSHA256": "189315c0a741207ad647d1b33e41433ee1fa168fbedabfbdee5654a5c3bb812a"
     },
     {
-      "path": "screenshots/ja/duo-03-json-preview.png",
+      "path": "screenshots/ja/duo-03-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB",
+      "sha256": "e1d37795ae61e012c06bed3a05074e4609db40fbc1d2c7a2ca3784688e431f10",
+      "source": "sources/ja/duo-07-mermaid-diagram.png",
+      "sourceSHA256": "6c84d51198cafbc00e905f77774a39ddf28a0ab8d928f4e51d3eb82230104c0f"
+    },
+    {
+      "path": "screenshots/ja/duo-04-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB",
+      "sha256": "aa61475246123076fe1c47bfc802c462c82e6d33a28b9500ede02d7e17e1fea8",
+      "source": "sources/ja/duo-08-csv-table.png",
+      "sourceSHA256": "72ef82c739b6580213d8cd8091b04a49fa3a3f00eff4b420a738f86e5121f3ce"
+    },
+    {
+      "path": "screenshots/ja/duo-05-json-preview.png",
       "pixels": [
         2853,
         2007
@@ -1319,7 +1733,7 @@
       "sourceSHA256": "3fa7151d9084642da1dad8b900bed17f907769589a4775b173551d15908b50ca"
     },
     {
-      "path": "screenshots/ja/duo-04-yaml-preview.png",
+      "path": "screenshots/ja/duo-06-yaml-preview.png",
       "pixels": [
         1398,
         2034
@@ -1330,7 +1744,7 @@
       "sourceSHA256": "962e83a87f916297474b5496dcc2f013e925256addab6175c08e0c49bb864bf0"
     },
     {
-      "path": "screenshots/ja/duo-05-batch-import.png",
+      "path": "screenshots/ja/duo-07-batch-import.png",
       "pixels": [
         1398,
         2034
@@ -1341,7 +1755,7 @@
       "sourceSHA256": "641723c1b86f56fe7398d7daeb83b69845b0e92abc04a802be856d6e00c11b96"
     },
     {
-      "path": "screenshots/ja/duo-06-library.png",
+      "path": "screenshots/ja/duo-08-library.png",
       "pixels": [
         2853,
         2007
@@ -1374,7 +1788,29 @@
       "sourceSHA256": "73db91169ed28ec6dda780591e2c5a7d36f87d61e9f656f84cc3c444149e52b7"
     },
     {
-      "path": "screenshots/zh-Hant/iphone-03-json-preview.png",
+      "path": "screenshots/zh-Hant/iphone-03-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "2b2144fd130880771dbbefc0b744fa8ab34e30433e80b8305b444c4e41235847",
+      "source": "sources/zh-Hant/iphone-07-mermaid-diagram.png",
+      "sourceSHA256": "468eae024e7ee458f10ef7f14328733b4cad83ecbc830348b9c6706c9f61d3d9"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-04-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "00d9e1710585f10bb21f49ce3747167dc5370370d89269038965c1fd6a019dcc",
+      "source": "sources/zh-Hant/iphone-08-csv-table.png",
+      "sourceSHA256": "2b38bd4507ee45e883bf394f122c0dcb3343beef5110ada2f7ac5984be9cebce"
+    },
+    {
+      "path": "screenshots/zh-Hant/iphone-05-json-preview.png",
       "pixels": [
         1320,
         2868
@@ -1385,7 +1821,7 @@
       "sourceSHA256": "47a696daff40d8776097471ea8c1957fb9f0eacdf92394882406a2b75d3310c5"
     },
     {
-      "path": "screenshots/zh-Hant/iphone-04-yaml-preview.png",
+      "path": "screenshots/zh-Hant/iphone-06-yaml-preview.png",
       "pixels": [
         1320,
         2868
@@ -1396,7 +1832,7 @@
       "sourceSHA256": "4904a648118cd18975385ec5e5e0dbff649f42c1b73a2df61090ef605d67d6a7"
     },
     {
-      "path": "screenshots/zh-Hant/iphone-05-batch-import.png",
+      "path": "screenshots/zh-Hant/iphone-07-batch-import.png",
       "pixels": [
         1320,
         2868
@@ -1407,7 +1843,7 @@
       "sourceSHA256": "920ed8ddb6dc430dd44783deb9a0831ddc35a83443af7d4dc4665d790a91542e"
     },
     {
-      "path": "screenshots/zh-Hant/iphone-06-library.png",
+      "path": "screenshots/zh-Hant/iphone-08-library.png",
       "pixels": [
         1320,
         2868
@@ -1440,7 +1876,29 @@
       "sourceSHA256": "35d70b97cdc00dd02faff585491e0d7771faf94472879662a98ccec90544f4f5"
     },
     {
-      "path": "screenshots/zh-Hant/ipad-03-json-preview.png",
+      "path": "screenshots/zh-Hant/ipad-03-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "2f51910cf5e59d0df62d0f0d3887436bc2f5009b172f231ca95a856b82d2de7a",
+      "source": "sources/zh-Hant/ipad-07-mermaid-diagram.png",
+      "sourceSHA256": "ac81d84202e4347485ac1c8f5b9ee3519c99d7f50bcffdcabc42d5309f9e2697"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-04-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "sha256": "f079d42ca49600f4d9c458fd08e2783257a7d07996e4e0809258db169acf606d",
+      "source": "sources/zh-Hant/ipad-08-csv-table.png",
+      "sourceSHA256": "cdfc841c93c3f942169f8b23152684e585a284f100dbbfe8168448afc0d47952"
+    },
+    {
+      "path": "screenshots/zh-Hant/ipad-05-json-preview.png",
       "pixels": [
         2064,
         2752
@@ -1451,7 +1909,7 @@
       "sourceSHA256": "61ce3334645fec8e04818cc18571e665f8e917730995e4b095188c23393421bc"
     },
     {
-      "path": "screenshots/zh-Hant/ipad-04-yaml-preview.png",
+      "path": "screenshots/zh-Hant/ipad-06-yaml-preview.png",
       "pixels": [
         2064,
         2752
@@ -1462,7 +1920,7 @@
       "sourceSHA256": "8b3f62cf75cfd8a7a716ffb85e726d81ae4176eb76bbdecf3b0ff4cdd07541aa"
     },
     {
-      "path": "screenshots/zh-Hant/ipad-05-batch-import.png",
+      "path": "screenshots/zh-Hant/ipad-07-batch-import.png",
       "pixels": [
         2064,
         2752
@@ -1473,7 +1931,7 @@
       "sourceSHA256": "6033a93954878dd79af8aab0a9c0d9c251fc8f60b3e5139e38cde02fd4a72533"
     },
     {
-      "path": "screenshots/zh-Hant/ipad-06-library.png",
+      "path": "screenshots/zh-Hant/ipad-08-library.png",
       "pixels": [
         2064,
         2752
@@ -1506,7 +1964,29 @@
       "sourceSHA256": "4de01013206e1f2e2455f228df7359dd5cc7568bf087486a7355b6ae18db17fb"
     },
     {
-      "path": "screenshots/zh-Hant/duo-03-json-preview.png",
+      "path": "screenshots/zh-Hant/duo-03-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGB",
+      "sha256": "ef119ab41c0f499d8a0d38ae58c48c6c261e21a9e785453bf3649fc5d4c5958c",
+      "source": "sources/zh-Hant/duo-07-mermaid-diagram.png",
+      "sourceSHA256": "de2497121790f90451710a7b67fa3c99116905562dc42f20fd1114fc62d50589"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-04-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGB",
+      "sha256": "357fecb16e98fe1bc5ae459c2e6fef08d922508f907832bb3895c4fa355f05be",
+      "source": "sources/zh-Hant/duo-08-csv-table.png",
+      "sourceSHA256": "044a8183ab34f47117ab933933323a963afd37e50dfaf2575ee879f828330b84"
+    },
+    {
+      "path": "screenshots/zh-Hant/duo-05-json-preview.png",
       "pixels": [
         2853,
         2007
@@ -1517,7 +1997,7 @@
       "sourceSHA256": "0862b1e303bb8d0445af6d8b120cd3c1143d94fb765e9f6793e9dc6731c16a9b"
     },
     {
-      "path": "screenshots/zh-Hant/duo-04-yaml-preview.png",
+      "path": "screenshots/zh-Hant/duo-06-yaml-preview.png",
       "pixels": [
         1398,
         2034
@@ -1528,7 +2008,7 @@
       "sourceSHA256": "49423a8243d2957a71995302b9d2acd8d7dba4426bae5882b8a48961ce062d79"
     },
     {
-      "path": "screenshots/zh-Hant/duo-05-batch-import.png",
+      "path": "screenshots/zh-Hant/duo-07-batch-import.png",
       "pixels": [
         1398,
         2034
@@ -1539,7 +2019,7 @@
       "sourceSHA256": "d64572914cc2616a99713ad69bc785f687456e6f3396ed05f21b9a70779903c4"
     },
     {
-      "path": "screenshots/zh-Hant/duo-06-library.png",
+      "path": "screenshots/zh-Hant/duo-08-library.png",
       "pixels": [
         2853,
         2007

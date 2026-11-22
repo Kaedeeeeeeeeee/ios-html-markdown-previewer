@@ -1,5 +1,6 @@
 // Generates App Store screenshots v2 from the captured sources in the 10/07 packet.
 // Usage: node scripts/store-art/generate-screenshots-v2.js <outRoot> [locale...]
+// Optional ONLY_KEYS=07-mermaid-diagram,08-csv-table renders just those source keys.
 const {chromium}=require('playwright');const fs=require('fs');
 const path=require('path'),os=require('os');
 const MAT=path.resolve(__dirname,'../../docs/aso/2026-10-07-duo/materials')+'/';
@@ -9,7 +10,8 @@ const order=JSON.parse(fs.readFileSync(MAT+'order.json'));
 const outRoot=process.argv[2];const locales=process.argv.slice(3).length?process.argv.slice(3):order.locales;
 const CJK={'en-US':'Noto Sans SC','zh-Hans':'Noto Sans SC','ja':'Noto Sans JP','zh-Hant':'Noto Sans TC'};
 const ACC={'01-html-report':['#2f7bff','#38bdf8'],'04-markdown-preview':['#8b5cf6','#c084fc'],'03-json-preview':['#06b6d4','#22d3ee'],
- '06-yaml-preview':['#6366f1','#22c55e'],'02-batch-import':['#3b82f6','#a78bfa'],'05-library':['#0ea5e9','#818cf8']};
+ '06-yaml-preview':['#6366f1','#22c55e'],'02-batch-import':['#3b82f6','#a78bfa'],'05-library':['#0ea5e9','#818cf8'],
+ '07-mermaid-diagram':['#f472b6','#a78bfa'],'08-csv-table':['#10b981','#34d399']};
 // Device layouts. Portrait: headline on top, device bleeding off the bottom. Landscape: headline left, device bleeding right.
 const DEV={
  iphone:{W:1320,H:2868,src:[1206,2622],screenW:1004,bz:26,rad:124,top:820,title:124,sub:46,eb:38,headTop:180,side:60,chip:50},
@@ -20,11 +22,13 @@ const DEV={
 // Callout crops in source pixels [x,y,w,h], per device and source key.
 const CROP={
  iphone:{'01-html-report':[30,1150,1146,690],'04-markdown-preview':[20,930,1166,490],'03-json-preview':[20,850,1166,370],
-  '06-yaml-preview':[20,840,1166,880],'02-batch-import':[20,490,1166,500],'05-library':[20,1250,1166,515]},
+  '06-yaml-preview':[20,840,1166,880],'02-batch-import':[20,490,1166,500],'05-library':[20,1250,1166,515],
+  '07-mermaid-diagram':[70,1000,1180,960],'08-csv-table':[72,520,1176,1220]},
  ipad:{'01-html-report':[260,660,1500,440],'04-markdown-preview':[320,520,1400,320],'03-json-preview':[20,440,1000,300],
-  '06-yaml-preview':[0,420,1000,720],'02-batch-import':[420,860,1180,320],'05-library':[0,620,640,360]},
- 'duo-outer':{'02-batch-import':[40,220,1110,510],'04-markdown-preview':[50,830,1080,480],'06-yaml-preview':[20,730,1190,720]},
- 'duo-inner':{'01-html-report':[170,990,2170,710],'03-json-preview':[20,720,1250,370],'05-library':[20,1180,900,480]},
+  '06-yaml-preview':[0,420,1000,720],'02-batch-import':[420,860,1180,320],'05-library':[0,620,640,360],
+  '07-mermaid-diagram':[450,740,1160,920],'08-csv-table':[340,300,1180,790]},
+ 'duo-outer':{'02-batch-import':[40,220,1110,510],'04-markdown-preview':[50,830,1080,480],'06-yaml-preview':[20,730,1190,720],'07-mermaid-diagram':[80,830,1000,800]},
+ 'duo-inner':{'01-html-report':[170,990,2170,710],'03-json-preview':[20,720,1250,370],'05-library':[20,1180,900,480],'08-csv-table':[283,440,1810,1180]},
 };
 // Locale-specific vertical shifts where longer copy pushes content down.
 const SHIFT={'en-US':{'04-markdown-preview':{iphone:88,'duo-outer':88}}};
@@ -32,13 +36,18 @@ const ZOOM={iphone:1.21,ipad:1.5,'duo-outer':1.2,'duo-inner':1.35};
 // Chips as fractions of the canvas [label,x,y,rot]
 const CHIPS={
  portrait:{'01-html-report':[['HTML',.023,.272,-10],['ZIP',.82,.293,9],['&lt;/&gt;',.80,.52,-6]],
-  '02-batch-import':[['@html',.05,.655,-7],['@md',.6,.70,6],['data.json',.083,.79,4],['config.yaml',.545,.845,-5]]},
- landscape:{'01-html-report':[['HTML',.05,.80,-8],['ZIP',.26,.86,7],['&lt;/&gt;',.35,.10,-6]]},
+  '02-batch-import':[['@html',.05,.655,-7],['@md',.6,.70,6],['data.json',.083,.79,4],['config.yaml',.545,.845,-5]],
+  '07-mermaid-diagram':[['.mmd',.03,.28,-9]],
+  '08-csv-table':[['CSV',.03,.28,-9],['TSV',.80,.29,8],['SVG',.80,.84,-6]]},
+ landscape:{'01-html-report':[['HTML',.05,.80,-8],['ZIP',.26,.86,7],['&lt;/&gt;',.35,.10,-6]],
+  '08-csv-table':[['CSV',.05,.80,-8],['TSV',.17,.87,7],['SVG',.28,.80,-5]]},
 };
 const FILE={'en-US':['report.html','notes.md'],'zh-Hans':['周报.html','笔记.md'],'ja':['レポート.html','ノート.md'],'zh-Hant':['週報.html','筆記.md']};
 
+// Native source size from the PNG header; newer captures may come from a different simulator model.
+function pngSize(f){const b=fs.readFileSync(f);return [b.readUInt32BE(16),b.readUInt32BE(20)]}
 function html(dev,d,loc,key,srcFile,t){
- const [sw0,sh0]=d.src, sw=d.screenW, s=sw/sw0, sh=Math.round(sh0*s), pw=sw+d.bz*2, ph=sh+d.bz*2;
+ const [sw0,sh0]=pngSize(srcFile), sw=d.screenW, s=sw/sw0, sh=Math.round(sh0*s), pw=sw+d.bz*2, ph=sh+d.bz*2;
  const px=d.landscape?d.left:(d.W-pw)/2, py=d.top;
  const c=[...CROP[dev][key]], z=ZOOM[dev]; c[1]+=SHIFT[loc]?.[key]?.[dev]||0; let cw=Math.min(c[2]*s*z,d.landscape?d.W-d.left+40:d.W-80), k=cw/c[2], ch=c[3]*k;
  let cl=px+d.bz+c[0]*s-(cw-c[2]*s)/2, ct=py+d.bz+c[1]*s-(ch-c[3]*s)/2;
@@ -85,8 +94,9 @@ async function fit(p){return p.evaluate(()=>{const h=document.querySelector('h1'
 
 (async()=>{const b=await chromium.launch({proxy:process.env.HTTPS_PROXY?{server:process.env.HTTPS_PROXY}:undefined});
 const devCfg=JSON.parse(fs.readFileSync(MAT+'devices.json')).devices;const duoFrames=devCfg.find(x=>x.prefix=='duo').frames;
-for(const loc of locales)for(const prefix of ['iphone','ipad','duo'])for(let i=0;i<6;i++){
- const key=order.sourceKeys[i], outName=`${prefix}-${order.outputSuffixes[i]}.png`;
+const only=process.env.ONLY_KEYS?process.env.ONLY_KEYS.split(','):null;
+for(const loc of locales)for(const prefix of ['iphone','ipad','duo'])for(let i=0;i<order.sourceKeys.length;i++){
+ const key=order.sourceKeys[i]; if(only&&!only.includes(key))continue; const outName=`${prefix}-${order.outputSuffixes[i]}.png`;
  const dev=prefix=='duo'?(duoFrames[key].screen=='inner'?'duo-inner':'duo-outer'):prefix, d=DEV[dev];
  const t=(prefix=='duo'&&copy[loc].deviceScreenshots?.duo?.[key])||copy[loc].screenshots[key];
  const tt={...t,title:t.title.replace(/</g,'&lt;'),subtitle:t.subtitle.replace(/</g,'&lt;'),eyebrow:t.eyebrow.replace(/</g,'&lt;')};
