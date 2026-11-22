@@ -1,1 +1,1 @@
-yaml,md,reader,offline,pdf,source,code,mermaid,latex,config,file,report,readme,htm,local,math
+md,yml,zip,preview,reader,offline,pdf,source,code,mermaid,latex,math,readme,file,open,web,ai,notes

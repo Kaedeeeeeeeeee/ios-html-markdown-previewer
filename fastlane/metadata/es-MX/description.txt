@@ -1,0 +1,31 @@
+Abre reportes HTML y ZIP que recibes, lee notas en Markdown e inspecciona archivos JSON o YAML en iPhone y iPad. Los archivos se procesan en tu dispositivo.
+
+Lee el contenido sin perder el formato
+- Ve diseños, gráficos y animaciones HTML.
+- Lee tablas de Markdown y código resaltado, y copia el código con un toque.
+- Muestra fórmulas matemáticas y diagramas Mermaid de Markdown sin conexión.
+- Navega por páginas HTML y Markdown dentro de reportes ZIP con sus recursos CSS e imágenes locales.
+- Busca dentro de HTML y Markdown, salta entre encabezados, ajusta la apariencia de lectura y retoma donde te quedaste.
+
+Inspecciona JSON y YAML
+- Expande objetos y arreglos anidados, busca campos y valores, y revisa el código fuente resaltado con números de línea.
+- Copia valores o rutas de campos y salta a la línea correspondiente del código fuente.
+- Ve y copia IDs numéricos grandes de JSON sin redondear sus dígitos.
+- Ubica errores de sintaxis por línea y columna. YAML también admite varios documentos.
+
+Importa, organiza y comparte
+- Abre archivos desde Archivos, Mail, AirDrop, apps de mensajería, servicios en la nube u otras apps. La disponibilidad del menú Abrir/Compartir depende de iOS y de la app de origen.
+- Selecciona varios documentos o paquetes ZIP. Actualiza duplicados, conserva ambas copias u omite archivos individuales, y luego revisa los resultados de la importación.
+- Pega texto HTML, Markdown, JSON o YAML para crear una vista previa local.
+- Encuentra archivos guardados por nombre, fija los documentos frecuentes y cambia los títulos que se muestran.
+- Comparte los archivos originales o paquetes ZIP completos. Exporta vistas previas de HTML y Markdown como PDF.
+- Prueba los ejemplos integrados de HTML, Markdown, JSON, YAML y ZIP.
+
+Extensiones compatibles: .html, .htm, .md, .markdown, .json, .yaml, .yml y .zip. Las vistas previas de JSON y YAML son de solo lectura y comparten el archivo original. No se admiten comentarios JSONC ni comas finales. La exportación a PDF está disponible para HTML y Markdown.
+
+La interfaz de la app está disponible en inglés, japonés y chino.
+
+Privacidad y compra
+Los archivos se procesan en el dispositivo; la app no sube tus archivos. Sin cuenta ni anuncios. Pago único, sin suscripciones ni compras dentro de la app.
+
+Los archivos HTML nuevos, incluido el HTML dentro de paquetes ZIP, se abren en modo Interactivo con JavaScript de la página y recursos externos habilitados. El contenido HTML puede hacer solicitudes de red. Selecciona Vista previa segura para bloquear los scripts de la página y los recursos HTTP/HTTPS externos. La navegación externa y el envío de formularios permanecen bloqueados en ambos modos. Las preferencias de vista previa guardadas se conservan al volver a abrir los archivos.

@@ -1,0 +1,1 @@
+markdown,json,yaml,md,lector,archivo,abrir,documento,vista,previa,website,browser,report,offline,pdf

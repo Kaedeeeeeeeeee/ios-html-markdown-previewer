@@ -1,0 +1,2 @@
+- Updated the App Store listing so the app is easier to find.
+- Files continue to be processed and stored locally on your device.

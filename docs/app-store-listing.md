@@ -1,6 +1,6 @@
-# App Store Listing — Version 1.8.2 (15)
+# App Store Listing — Version 1.8.3 (16)
 
-Prepared local metadata for the 1.8.2 release, mirrored from the active
+Prepared local metadata for the 1.8.3 release, mirrored from the active
 `fastlane/metadata/` files below. This document does not establish remote upload,
 Apple acceptance, review submission, or publication; live release records are separate.
 
@@ -15,6 +15,8 @@ Apple acceptance, review submission, or publication; live release records are se
 ## Localized Store Listings
 
 - `en-US`
+- `en-GB` (text only; uses en-US screenshots)
+- `es-MX` (text only; uses en-US screenshots)
 - `zh-Hans`
 - `ja`
 - `zh-Hant`
@@ -33,7 +35,7 @@ HTML Previewer
 
 Subtitle:
 
-Markdown, JSON & ZIP Viewer
+Markdown, JSON & YAML Viewer
 
 Promotional Text:
 
@@ -73,12 +75,124 @@ New HTML files, including HTML inside ZIP packages, open in Interactive mode wit
 
 Keywords:
 
-yaml,md,reader,offline,pdf,source,code,mermaid,latex,config,file,report,readme,htm,local,math
+md,yml,zip,preview,reader,offline,pdf,source,code,mermaid,latex,math,readme,file,open,web,ai,notes
 
 Release Notes:
 
-- Refreshed App Store screenshots that show each feature more clearly.
+- Updated the App Store listing so the app is easier to find.
 - Files continue to be processed and stored locally on your device.
+
+## en-GB
+
+Name:
+
+HTML Previewer
+
+Subtitle:
+
+Markdown, JSON & YAML Viewer
+
+Promotional Text:
+
+Read HTML and ZIP reports, Markdown code and math, and JSON/YAML structures. Files are processed on device. Paid download. No ads or subscriptions.
+
+Description:
+
+Open received HTML and ZIP reports, read Markdown notes, and inspect JSON or YAML on iPhone and iPad. Files are processed on your device.
+
+Read the content, keep the formatting
+- View HTML layouts, graphics, and animations.
+- Read Markdown tables and highlighted code, with one-tap code copying.
+- Display Markdown math equations and Mermaid diagrams offline.
+- Browse HTML and Markdown pages inside ZIP reports with local CSS and image assets.
+- Search within HTML and Markdown, navigate headings, adjust reading appearance, and reopen at your saved reading position.
+
+Inspect JSON and YAML
+- Expand nested objects and arrays, search fields and values, and check highlighted source with line numbers.
+- Copy values or field paths and jump to the corresponding source line.
+- View and copy large JSON numeric IDs without rounding their digits.
+- Locate syntax errors by line and column. YAML also supports multiple documents.
+
+Import, organise, and share
+- Open files from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps. Open/share menu availability depends on iOS and the source app.
+- Select multiple documents or ZIP packages. Update duplicates, keep both copies, or skip individual files, then review import results.
+- Paste HTML, Markdown, JSON, or YAML text to create a local preview.
+- Find saved files by filename, pin frequent documents, and rename display titles.
+- Share original files or complete ZIP packages. Export HTML and Markdown previews as PDF.
+- Try the built-in HTML, Markdown, JSON, YAML, and ZIP samples.
+
+Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
+
+Privacy and purchase
+Files are processed on device; the app does not upload your files. No account or ads. Paid download with no subscription or in-app purchase.
+
+New HTML files, including HTML inside ZIP packages, open in Interactive mode with page JavaScript and external resources enabled. The HTML content can make network requests. Select Safe Preview to block page scripts and external HTTP/HTTPS resources. External navigation and form navigation remain blocked in both modes. Saved preview choices are preserved when reopening files.
+
+Keywords:
+
+md,yml,zip,preview,reader,offline,pdf,source,code,mermaid,latex,math,readme,file,open,web,ai,notes
+
+Release Notes:
+
+- Updated the App Store listing so the app is easier to find.
+- Files continue to be processed and stored locally on your device.
+
+## es-MX
+
+Name:
+
+HTML Previewer
+
+Subtitle:
+
+Visor de páginas web y código
+
+Promotional Text:
+
+Lee reportes HTML y ZIP, código y fórmulas en Markdown, y estructuras JSON/YAML. Los archivos se procesan en tu dispositivo. Pago único, sin anuncios ni suscripciones.
+
+Description:
+
+Abre reportes HTML y ZIP que recibes, lee notas en Markdown e inspecciona archivos JSON o YAML en iPhone y iPad. Los archivos se procesan en tu dispositivo.
+
+Lee el contenido sin perder el formato
+- Ve diseños, gráficos y animaciones HTML.
+- Lee tablas de Markdown y código resaltado, y copia el código con un toque.
+- Muestra fórmulas matemáticas y diagramas Mermaid de Markdown sin conexión.
+- Navega por páginas HTML y Markdown dentro de reportes ZIP con sus recursos CSS e imágenes locales.
+- Busca dentro de HTML y Markdown, salta entre encabezados, ajusta la apariencia de lectura y retoma donde te quedaste.
+
+Inspecciona JSON y YAML
+- Expande objetos y arreglos anidados, busca campos y valores, y revisa el código fuente resaltado con números de línea.
+- Copia valores o rutas de campos y salta a la línea correspondiente del código fuente.
+- Ve y copia IDs numéricos grandes de JSON sin redondear sus dígitos.
+- Ubica errores de sintaxis por línea y columna. YAML también admite varios documentos.
+
+Importa, organiza y comparte
+- Abre archivos desde Archivos, Mail, AirDrop, apps de mensajería, servicios en la nube u otras apps. La disponibilidad del menú Abrir/Compartir depende de iOS y de la app de origen.
+- Selecciona varios documentos o paquetes ZIP. Actualiza duplicados, conserva ambas copias u omite archivos individuales, y luego revisa los resultados de la importación.
+- Pega texto HTML, Markdown, JSON o YAML para crear una vista previa local.
+- Encuentra archivos guardados por nombre, fija los documentos frecuentes y cambia los títulos que se muestran.
+- Comparte los archivos originales o paquetes ZIP completos. Exporta vistas previas de HTML y Markdown como PDF.
+- Prueba los ejemplos integrados de HTML, Markdown, JSON, YAML y ZIP.
+
+Extensiones compatibles: .html, .htm, .md, .markdown, .json, .yaml, .yml y .zip. Las vistas previas de JSON y YAML son de solo lectura y comparten el archivo original. No se admiten comentarios JSONC ni comas finales. La exportación a PDF está disponible para HTML y Markdown.
+
+La interfaz de la app está disponible en inglés, japonés y chino.
+
+Privacidad y compra
+Los archivos se procesan en el dispositivo; la app no sube tus archivos. Sin cuenta ni anuncios. Pago único, sin suscripciones ni compras dentro de la app.
+
+Los archivos HTML nuevos, incluido el HTML dentro de paquetes ZIP, se abren en modo Interactivo con JavaScript de la página y recursos externos habilitados. El contenido HTML puede hacer solicitudes de red. Selecciona Vista previa segura para bloquear los scripts de la página y los recursos HTTP/HTTPS externos. La navegación externa y el envío de formularios permanecen bloqueados en ambos modos. Las preferencias de vista previa guardadas se conservan al volver a abrir los archivos.
+
+Keywords:
+
+markdown,json,yaml,md,lector,archivo,abrir,documento,vista,previa,website,browser,report,offline,pdf
+
+Release Notes:
+
+- Actualizamos la información de la App Store para que la app sea más fácil de encontrar.
+- Los archivos se siguen procesando y guardando localmente en tu dispositivo.
 
 ## zh-Hans
 
@@ -88,7 +202,7 @@ HTML 预览器
 
 Subtitle:
 
-Markdown 阅读、JSON 查看与 ZIP 报告
+Markdown 阅读器，JSON 查看器
 
 Promotional Text:
 
@@ -128,11 +242,11 @@ Description:
 
 Keywords:
 
-YAML,MD,文件,打开,查看器,离线,源码,代码,PDF,导出,公式,流程图,Mermaid,LaTeX,配置,README,本地
+预览,MD,YAML,ZIP,网页,文件,文档,打开,离线,源码,代码,高亮,PDF,导出,公式,数学,流程图,Mermaid,LaTeX,README,本地,压缩包,笔记,AI,htm,配置,结构
 
 Release Notes:
 
-- 更新了 App Store 截图，更清楚地展示各项功能。
+- 更新了 App Store 介绍信息，让 App 更容易被找到。
 - 文件继续在设备本地处理与保存。
 
 ## ja
@@ -143,7 +257,7 @@ HTMLプレビュー
 
 Subtitle:
 
-Markdown・JSON・ZIPビューア
+Markdown・JSON・YAML ビューア
 
 Promotional Text:
 
@@ -183,11 +297,11 @@ JSON・YAMLの構造を確認
 
 Keywords:
 
-YAML,md,ファイル,閲覧,開く,リーダー,オフライン,ソース,コード,PDF,書き出し,数式,図,Mermaid,LaTeX,設定,README,ローカル
+マークダウン,md,ZIP,ビューワー,リーダー,開く,閲覧,表示,オフライン,ソース,コード,PDF,書き出し,数式,図,Mermaid,LaTeX,README,圧縮,ノート,AI,ファイル
 
 Release Notes:
 
-- 各機能がわかりやすく伝わるよう、App Storeのスクリーンショットを刷新しました。
+- App Storeの紹介情報を更新し、見つけやすくしました。
 - ファイルは引き続き端末内で処理・保存します。
 
 ## zh-Hant
@@ -198,7 +312,7 @@ HTML 預覽器
 
 Subtitle:
 
-Markdown 閱讀、JSON 檢視與 ZIP 報告
+Markdown 閱讀器，JSON 檢視器
 
 Promotional Text:
 
@@ -238,11 +352,11 @@ Description:
 
 Keywords:
 
-YAML,MD,檔案,開啟,檢視器,離線,原始碼,程式碼,PDF,匯出,數學公式,流程圖,Mermaid,LaTeX,設定,README,本機
+預覽,MD,YAML,ZIP,網頁,檔案,文件,開啟,離線,原始碼,程式碼,高亮,PDF,匯出,公式,數學,流程圖,Mermaid,LaTeX,README,本機,壓縮檔,筆記,AI,htm,設定
 
 Release Notes:
 
-- 更新了 App Store 截圖，更清楚地展示各項功能。
+- 更新了 App Store 介紹資訊，讓 App 更容易被找到。
 - 檔案繼續在裝置本機處理與儲存。
 
 ## Screenshot Inventory
