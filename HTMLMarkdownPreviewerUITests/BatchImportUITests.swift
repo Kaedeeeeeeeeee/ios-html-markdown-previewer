@@ -127,8 +127,14 @@ final class BatchImportUITests: XCTestCase {
                     let value = current.value as? String ?? ""
                     return value.isEmpty || value == current.placeholderValue
                 }, object: nil)
-                try require(XCTWaiter.wait(for: [emptyQuery], timeout: 5) == .completed,
-                            "Clearing library search must finish before typing")
+                // Clearing can re-render the library and scroll the search
+                // bar out of view. Reveal it again before deciding it failed.
+                var cleared = XCTWaiter.wait(for: [emptyQuery], timeout: 5) == .completed
+                for _ in 0..<2 where !cleared {
+                    if !app.searchFields.firstMatch.exists || !app.searchFields.firstMatch.isHittable { app.swipeDown() }
+                    cleared = XCTWaiter.wait(for: [emptyQuery], timeout: 5) == .completed
+                }
+                try require(cleared, "Clearing library search must finish before typing")
                 // Clearing updates the query and accessibility tree. Resolve
                 // and focus the current field before sending the next filename.
                 field = app.searchFields.firstMatch

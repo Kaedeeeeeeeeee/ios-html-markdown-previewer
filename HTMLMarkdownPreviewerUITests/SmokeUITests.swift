@@ -334,7 +334,11 @@ final class SmokeUITests: XCTestCase {
         // slice lies in the home-indicator area, where the system ignores taps.
         let isClearOfBottomEdge = { element.isHittable && element.frame.maxY <= app.frame.maxY - 44 }
         var nudgedFrame: CGRect?
-        for _ in 0..<6 {
+        for attempt in 0..<12 {
+            // Scroll back the other way if the first passes went past the
+            // row: with eight built-in samples a swipe in a short landscape
+            // viewport can carry an early sample row above the top edge.
+            let scrollsDown = attempt >= 8
             if element.waitForExistence(timeout: 1), isClearOfBottomEdge() {
                 return true
             }
@@ -353,7 +357,11 @@ final class SmokeUITests: XCTestCase {
                 let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
                 start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
             } else {
-                app.swipeUp()
+                // A bounded drag instead of a fling, so a lazy row cannot be
+                // skipped over between two accessibility snapshots.
+                let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: scrollsDown ? 0.3 : 0.8))
+                let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: scrollsDown ? 0.7 : 0.4))
+                start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .default, thenHoldForDuration: 0.2)
             }
         }
         return element.exists && isClearOfBottomEdge()
