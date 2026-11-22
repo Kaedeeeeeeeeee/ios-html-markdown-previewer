@@ -619,9 +619,9 @@ echo "== Screenshots =="
 require_file "scripts/generate-app-store-screenshots.swift"
 require_file "scripts/audit-integrated-release-materials.py"
 if python3 "$ROOT_DIR/scripts/audit-integrated-release-materials.py"; then
-  ok "Current four-locale 72-image screenshot and metadata identities match the verified packet"
+  ok "Current four-locale 96-image screenshot and metadata identities match the verified packet"
 else
-  fail "Current four-locale 72-image integrated materials gate failed"
+  fail "Current four-locale 96-image integrated materials gate failed"
 fi
 
 for locale in en-US en-GB es-MX zh-Hans ja zh-Hant; do

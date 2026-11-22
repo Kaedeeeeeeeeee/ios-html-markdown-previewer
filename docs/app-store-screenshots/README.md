@@ -113,7 +113,7 @@ Two scenes were added for the Mermaid, CSV/TSV and SVG previews: `03-mermaid-dia
 and `04-csv-table`; the earlier scenes moved from 03–06 to 05–08. The 72 earlier
 images were renamed only, their bytes are unchanged. The 24 new images were rendered
 with `ONLY_KEYS=07-mermaid-diagram,08-csv-table node scripts/store-art/generate-screenshots-v2.js <out>`
-from new Debug captures of 1.8.2 (15) code (declared per scene in the packet
+from new Debug captures of 1.9.0 (17) code (declared per scene in the packet
 `order.json` `captureIdentities`). Re-rendering the earlier scenes today does not
 reproduce their bytes exactly (fonts/Chromium), so they were not regenerated.
 The ordinary iPhone CSV source was captured after scrolling the table sideways in

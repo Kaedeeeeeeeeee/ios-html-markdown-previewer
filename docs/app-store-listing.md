@@ -415,14 +415,15 @@ Release Notes:
 
 ## Screenshot Inventory
 
-The current local release matrix is four languages × three device groups × six
-scenes: **72 localized images**. Each locale has six ordinary iPhone, six iPad,
-and six Duo images. The additional 18 root-level English files are exact local
+The current local release matrix is four languages × three device groups × eight
+scenes: **96 localized images**. Each locale has eight ordinary iPhone, eight iPad,
+and eight Duo images. The additional 24 root-level English files are exact local
 compatibility mirrors, not additional uploads.
 
-The order is HTML report, Markdown/code/math, JSON, YAML, batch import, and library.
-Duo is one six-image group with three actual Open inner-display scenes and three
-Closed outer-display scenes; automatic pose-specific storefront selection is not
+The order is HTML report, Markdown/code/math, Mermaid diagram, CSV table, JSON,
+YAML, batch import, and library. Duo is one eight-image group with four actual Open
+inner-display scenes (HTML, CSV, JSON, library) and four Closed outer-display scenes
+(Markdown, Mermaid, YAML, import); automatic pose-specific storefront selection is not
 claimed. Ordinary iPhone canvases are 1320 × 2868; iPad canvases are 2064 × 2752.
 The chosen Duo canvases are 2853 × 2007 inner landscape and 1398 × 2034 outer portrait.
 Final upload PNGs are opaque RGB; native source RGBA bytes are retained.

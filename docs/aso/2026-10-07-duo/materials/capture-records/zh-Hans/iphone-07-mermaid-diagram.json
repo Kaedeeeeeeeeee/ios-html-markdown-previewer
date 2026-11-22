@@ -1,5 +1,5 @@
 {
-  "capturedAtUTC": "2026-11-22T09:37:15.300243+00:00",
+  "capturedAtUTC": "2026-11-22T10:09:02.491709+00:00",
   "path": "sources/zh-Hans/iphone-07-mermaid-diagram.png",
   "deviceId": "3FB274D0-D64D-443D-9C6F-9CA0F92251A6",
   "family": "iphone",
@@ -11,16 +11,17 @@
     2868
   ],
   "mode": "RGBA",
-  "sha256": "de45edc44f7da316527fad2828caa8f3154b9e739b204b65d094a25e0f6ffc63",
-  "appVersion": "1.8.2",
-  "buildNumber": "15",
+  "sha256": "6770ab8e22153faac524a3c618981c38ae47b92d126d29403c85510643777315",
+  "appVersion": "1.9.0",
+  "buildNumber": "17",
   "installedExecutableSHA256": {
-    "HTMLMarkdownPreviewer": "a1f48c153180347cf0f88f967f1aa845d53ddea6281e20390aaed951910c9dac",
+    "HTMLMarkdownPreviewer": "8afb29dcdbf0a9f1817e1c14308913c418fdb306cc57c84cd04bcc94e172034d",
     "HTMLMarkdownPreviewer.debug.dylib": "81b6030244c391e58c4097415afdb2fe3d678bae617e573545e03f3f32d8d261"
   },
   "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
   "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
   "poseSelection": "Native operator sets pose before capture; script does not change pose",
-  "visualReview": "pending",
-  "sourcePixelsEdited": false
+  "visualReview": "contact_sheet_review_passed",
+  "sourcePixelsEdited": false,
+  "visualReviewScope": "Four-language final contact sheets of the Mermaid and CSV slides inspected: diagram fully drawn, number columns aligned and readable, headline and subtitle fit, callout not cut off."
 }
