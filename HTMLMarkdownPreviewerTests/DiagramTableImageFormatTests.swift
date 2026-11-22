@@ -143,6 +143,7 @@ final class DiagramTableImageFormatTests: XCTestCase {
 
     // MARK: SVG
 
+    @MainActor
     func testSVGPageEmbedsTheImageOnlyThroughADataURL() {
         let svg = Data(#"<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><image href="https://example.com/x.png"/></svg>"#.utf8)
         let page = SVGPreviewView.page(svgData: svg, title: "a<b>\"c")
