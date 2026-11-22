@@ -4,13 +4,19 @@ enum SupportedDocumentTypes {
     static let markdown = UTType(importedAs: "net.daringfireball.markdown")
     static let xhtml = UTType(filenameExtension: "xhtml") ?? .html
     static let yaml = UTType(importedAs: "public.yaml", conformingTo: .plainText)
+    /// Mermaid has no system type; this matches the declaration in Info.plist.
+    static let mermaid = UTType(importedAs: "io.mermaid.diagram", conformingTo: .plainText)
 
     static let previewDocuments: [UTType] = [
         .html,
         xhtml,
         markdown,
         yaml,
-        .json
+        .json,
+        mermaid,
+        .commaSeparatedText,
+        .tabSeparatedText,
+        .svg
     ]
 
     static let zipPackages: [UTType] = [

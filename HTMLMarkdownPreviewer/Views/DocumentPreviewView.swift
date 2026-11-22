@@ -96,6 +96,11 @@ struct DocumentPreviewView: View {
             case .json(let fileURL):
                 YAMLPreviewView(fileURL: fileURL, reading: reading, format: .json)
                     .id(generation)
+            case .svg(let fileURL):
+                SVGPreviewView(fileURL: fileURL, onPreviewReady: { webView in
+                    if generation == previewGeneration { loadedWebView = webView }
+                })
+                    .id(generation)
             case .unsupported:
                 ContentUnavailableView(
                     AppStrings.Errors.previewUnavailableTitle,
@@ -302,6 +307,7 @@ struct DocumentPreviewView: View {
         switch state {
         case .rawText: true
         case .markdown, .html, .yaml, .json: reading.isReady
+        case .svg: loadedWebView != nil
         case .loading, .unsupported, .failed: false
         }
     }
@@ -554,6 +560,20 @@ struct DocumentPreviewView: View {
                         mode: previewMode.htmlPreviewMode
                     )
                 }
+            case .mermaid, .csv:
+                if previewMode == .rawText {
+                    state = .rawText(try TextFileReader().readText(from: entryFileURL))
+                } else if activeDocumentType == .mermaid {
+                    state = .markdown(try MermaidDocumentRenderer().render(fileURL: entryFileURL))
+                } else {
+                    state = .markdown(try CSVRenderService().render(fileURL: entryFileURL))
+                }
+            case .svg:
+                if previewMode == .rawText {
+                    state = .rawText(try TextFileReader().readText(from: entryFileURL))
+                } else {
+                    state = .svg(fileURL: entryFileURL)
+                }
             case .yaml:
                 state = .yaml(fileURL: entryFileURL)
             case .json:
@@ -585,7 +605,7 @@ struct DocumentPreviewView: View {
     private var canExportPDF: Bool {
         switch state {
         case .markdown: true
-        case .html: loadedWebView != nil
+        case .html, .svg: loadedWebView != nil
         default: false
         }
     }
@@ -594,7 +614,7 @@ struct DocumentPreviewView: View {
     private func exportPDF() async throws -> URL {
         let exporter = PDFExportService()
         switch state {
-        case .html:
+        case .html, .svg:
             guard let loadedWebView else { throw PDFExportError.previewNotReady }
             return try await exporter.export(webView: loadedWebView, title: exportTitle)
         case .markdown(let markdown):
@@ -605,16 +625,16 @@ struct DocumentPreviewView: View {
     }
 
     private var previewModeIcon: String {
-        activeDocumentType == .markdown && previewMode != .rawText ? "text.alignleft" : previewMode.systemImage
+        activeDocumentType.offersRenderedAndSourceModes && previewMode != .rawText ? activeDocumentType.systemImage : previewMode.systemImage
     }
 
     private var supportsPreviewModeMenu: Bool {
-        activeDocumentType == .html || activeDocumentType == .markdown
+        activeDocumentType == .html || activeDocumentType.offersRenderedAndSourceModes
     }
 
     @ViewBuilder
     private var previewModeButtons: some View {
-        if activeDocumentType == .markdown {
+        if activeDocumentType.offersRenderedAndSourceModes {
             Button {
                 setPreviewMode(.safePreview)
             } label: {
@@ -828,6 +848,7 @@ private enum PreviewContentState {
     case rawText(String)
     case yaml(fileURL: URL)
     case json(fileURL: URL)
+    case svg(fileURL: URL)
     case unsupported
     case failed(String)
 }

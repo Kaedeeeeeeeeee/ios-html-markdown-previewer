@@ -24,6 +24,12 @@ enum FileTypeDetector {
             return .yaml
         case "json":
             return .json
+        case "mmd", "mermaid":
+            return .mermaid
+        case "csv", "tsv":
+            return .csv
+        case "svg":
+            return .svg
         case "zip":
             return .zipPackage
         default:
@@ -56,6 +62,18 @@ enum FileTypeDetector {
 
         if type.conforms(to: .json) {
             return .json
+        }
+
+        if type == SupportedDocumentTypes.mermaid || type.conforms(to: SupportedDocumentTypes.mermaid) {
+            return .mermaid
+        }
+
+        if type.conforms(to: .commaSeparatedText) || type.conforms(to: .tabSeparatedText) {
+            return .csv
+        }
+
+        if type.conforms(to: .svg) {
+            return .svg
         }
 
         return .unsupported

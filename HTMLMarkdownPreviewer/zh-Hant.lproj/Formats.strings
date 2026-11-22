@@ -1,0 +1,5 @@
+"mermaid.empty" = "這個 Mermaid 檔案是空的。";
+"csv.empty" = "這個表格檔案是空的。";
+"csv.summary" = "%1$ld 列 · %2$ld 欄";
+"csv.truncated" = "僅顯示前 %1$ld 列（共 %2$ld 列）。選擇「原始文字」可查看全部內容。";
+"svg.unavailable" = "無法顯示這張 SVG 圖片。選擇「原始文字」可查看原始碼。";
