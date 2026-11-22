@@ -101,7 +101,10 @@ final class SmokeUITests: XCTestCase {
         tapElement(disclosure, app: app)
         XCTAssertTrue(sample.waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["sample-markdown"].exists)
-        XCTAssertTrue(app.buttons["sample-zipPackage"].exists)
+        // With eight built-in samples the last row can sit below the fold of a
+        // lazy list, where it is not in the accessibility tree until scrolled.
+        XCTAssertTrue(scrollUntilExists(app.buttons["sample-zipPackage"], app: app),
+                      "Expanded samples should include the ZIP package sample")
 
         app.terminate()
         app.launchArguments = []
