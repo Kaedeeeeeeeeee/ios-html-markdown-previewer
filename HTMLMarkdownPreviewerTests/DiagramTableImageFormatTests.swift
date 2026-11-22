@@ -95,6 +95,8 @@ final class DiagramTableImageFormatTests: XCTestCase {
         XCTAssertEqual(CSVRenderService.detectDelimiter(in: "name;price\n\"a, b\";1,5\nc;2"), ";")
         XCTAssertEqual(CSVRenderService.detectDelimiter(in: "a\tb\n1\t2"), "\t")
         XCTAssertEqual(CSVRenderService.detectDelimiter(in: "single column\nvalue"), ",")
+        XCTAssertEqual(CSVRenderService.detectDelimiter(in: "Status (A|B|C|D|E),Count\nA,10"), ",")
+        XCTAssertEqual(CSVRenderService.detectDelimiter(in: "a|b|c,d\n1|2|3,4\n5|6|7,8"), "|")
     }
 
     func testTSVExtensionAlwaysUsesTabs() throws {

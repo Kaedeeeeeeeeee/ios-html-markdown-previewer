@@ -45,18 +45,21 @@ struct CSVRenderService {
         return MarkdownDocument(blocks: blocks)
     }
 
-    /// Picks the candidate that splits the first few records most consistently.
+    /// Picks the candidate that gives the most records the header's width,
+    /// then the wider split on a tie. Punctuation in a header alone, such as
+    /// `Status (A|B),Count`, cannot outvote a delimiter that splits every row.
     /// Delimiters inside quoted fields are ignored.
     static func detectDelimiter(in text: String) -> Character {
         let candidates: [Character] = [",", "\t", ";", "|"]
         let sample = String(text.prefix(16_384))
-        var best: (delimiter: Character, score: Int) = (",", 0)
+        var best: (delimiter: Character, consistent: Int, width: Int) = (",", 0, 0)
         for candidate in candidates {
             let records = parse(sample, delimiter: candidate, limit: 10)
             guard let first = records.first, first.count > 1 else { continue }
             let consistent = records.filter { $0.count == first.count }.count
-            let score = consistent * first.count
-            if score > best.score { best = (candidate, score) }
+            if (consistent, first.count) > (best.consistent, best.width) {
+                best = (candidate, consistent, first.count)
+            }
         }
         return best.delimiter
     }
