@@ -59,6 +59,43 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
+            <string>Mermaid Diagram</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>io.mermaid.diagram</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>CSV Table</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.comma-separated-values-text</string>
+                <string>public.tab-separated-values-text</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>SVG Image</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.svg-image</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
             <string>ZIP Package</string>
             <key>CFBundleTypeRole</key>
             <string>Viewer</string>
@@ -158,6 +195,28 @@
                     <string>application/yaml</string>
                     <string>application/x-yaml</string>
                     <string>text/yaml</string>
+                </array>
+            </dict>
+        </dict>
+        <dict>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.plain-text</string>
+            </array>
+            <key>UTTypeDescription</key>
+            <string>Mermaid Diagram</string>
+            <key>UTTypeIdentifier</key>
+            <string>io.mermaid.diagram</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>mmd</string>
+                    <string>mermaid</string>
+                </array>
+                <key>public.mime-type</key>
+                <array>
+                    <string>text/vnd.mermaid</string>
                 </array>
             </dict>
         </dict>

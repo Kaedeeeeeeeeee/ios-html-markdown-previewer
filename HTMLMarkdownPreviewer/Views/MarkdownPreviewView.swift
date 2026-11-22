@@ -744,6 +744,9 @@ private struct MarkdownTableView: View {
                             .background(rowIndex.isMultiple(of: 2) ? Color(.systemBackground) : Color(.tertiarySystemBackground))
                     }
                 }
+                // Lay rows out at their natural height so cells that fill
+                // their row (below) don't stretch the table.
+                .fixedSize(horizontal: false, vertical: true)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
@@ -785,6 +788,9 @@ private struct MarkdownTableView: View {
                     ))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
+                    // Fill the row so the row's background and separator line
+                    // up when one cell wraps to more lines than its neighbours.
+                    .frame(maxHeight: .infinity, alignment: .top)
                     .accessibilityLabel(accessibilityLabel(for: cells[column], column: column, isHeader: isHeader))
                     .accessibilityAddTraits(isHeader ? .isHeader : [])
             }

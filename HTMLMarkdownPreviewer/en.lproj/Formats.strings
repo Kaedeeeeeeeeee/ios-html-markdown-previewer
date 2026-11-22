@@ -1,0 +1,11 @@
+"mermaid.empty" = "This Mermaid file is empty.";
+"csv.empty" = "This table file is empty.";
+"csv.summary" = "%1$ld rows · %2$ld columns";
+"csv.truncated" = "Showing the first %1$ld of %2$ld rows. Choose Raw Text to read every row.";
+"svg.unavailable" = "This SVG image could not be displayed. Choose Raw Text to read its source.";
+"sample.mermaid.title" = "Agent workflow";
+"sample.mermaid.subtitle" = "Mermaid · A diagram file drawn offline";
+"sample.csv.title" = "Benchmark results";
+"sample.csv.subtitle" = "CSV · A readable table with aligned numbers";
+"sample.svg.title" = "Weekly chart";
+"sample.svg.subtitle" = "SVG · A vector image, shown safely";

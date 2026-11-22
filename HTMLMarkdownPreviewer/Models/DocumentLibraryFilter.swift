@@ -1,7 +1,7 @@
 import Foundation
 
 enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
-    case all, html, markdown, yaml, json, zip
+    case all, html, markdown, yaml, json, mermaid, csv, svg, zip
 
     var id: String { rawValue }
 
@@ -12,6 +12,9 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .markdown: PreviewDocumentType.markdown.displayName
         case .yaml: PreviewDocumentType.yaml.displayName
         case .json: PreviewDocumentType.json.displayName
+        case .mermaid: PreviewDocumentType.mermaid.displayName
+        case .csv: PreviewDocumentType.csv.displayName
+        case .svg: PreviewDocumentType.svg.displayName
         case .zip: PreviewDocumentType.zipPackage.displayName
         }
     }
@@ -23,6 +26,9 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .markdown: PreviewDocumentType.markdown.systemImage
         case .yaml: PreviewDocumentType.yaml.systemImage
         case .json: PreviewDocumentType.json.systemImage
+        case .mermaid: PreviewDocumentType.mermaid.systemImage
+        case .csv: PreviewDocumentType.csv.systemImage
+        case .svg: PreviewDocumentType.svg.systemImage
         case .zip: PreviewDocumentType.zipPackage.systemImage
         }
     }
@@ -34,6 +40,9 @@ enum DocumentLibraryFilter: String, CaseIterable, Identifiable {
         case .markdown: document.type == .markdown
         case .yaml: document.type == .yaml
         case .json: document.type == .json
+        case .mermaid: document.type == .mermaid
+        case .csv: document.type == .csv
+        case .svg: document.type == .svg
         case .zip: document.type == .zipPackage
         }
     }

@@ -1544,25 +1544,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Open an HTML, Markdown, YAML, JSON, or ZIP file."
+            "value": "Open an HTML, Markdown, YAML, JSON, Mermaid, CSV, SVG, or ZIP file."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开 HTML、Markdown、YAML、JSON 或 ZIP 文件。"
+            "value": "打开 HTML、Markdown、YAML、JSON、Mermaid、CSV、SVG 或 ZIP 文件。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "開啟 HTML、Markdown、YAML、JSON 或 ZIP 檔案。"
+            "value": "開啟 HTML、Markdown、YAML、JSON、Mermaid、CSV、SVG 或 ZIP 檔案。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "HTML、Markdown、YAML、JSON、ZIP ファイルを開いてください。"
+            "value": "HTML、Markdown、YAML、JSON、Mermaid、CSV、SVG、ZIP ファイルを開いてください。"
           }
         }
       }

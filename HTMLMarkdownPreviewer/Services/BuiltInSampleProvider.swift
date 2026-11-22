@@ -31,6 +31,12 @@ final class BuiltInSampleProvider {
             try Self.yamlSample.write(to: sampleURL, atomically: true, encoding: .utf8)
         case .json:
             try Self.jsonSample.write(to: sampleURL, atomically: true, encoding: .utf8)
+        case .mermaid:
+            try Self.mermaidSample.write(to: sampleURL, atomically: true, encoding: .utf8)
+        case .csv:
+            try Self.csvSample.write(to: sampleURL, atomically: true, encoding: .utf8)
+        case .svg:
+            try Self.svgSample.write(to: sampleURL, atomically: true, encoding: .utf8)
         case .zipPackage:
             try writeZipSample(to: sampleURL)
         }
