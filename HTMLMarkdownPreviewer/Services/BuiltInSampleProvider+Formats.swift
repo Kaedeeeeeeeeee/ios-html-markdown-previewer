@@ -1,11 +1,10 @@
 import Foundation
 
 extension BuiltInSampleProvider {
-    /// A standalone Mermaid file, as an agent would save it.
+    /// A standalone Mermaid file, as an agent would save it. No `---` front
+    /// matter or `%%{init}` directive: the strict renderer refuses both and
+    /// would show the source instead of the diagram.
     static let mermaidSample = """
-    ---
-    title: How an agent finishes a task
-    ---
     flowchart TD
         Request([Request from you]) --> Plan[Read the files and make a plan]
         Plan --> Work[Edit code and run checks]

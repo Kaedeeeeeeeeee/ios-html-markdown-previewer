@@ -162,6 +162,9 @@ final class DiagramTableImageFormatTests: XCTestCase {
         let mermaid = MermaidDocumentRenderer().render(source: BuiltInSampleProvider.mermaidSample)
         guard case .codeBlock(language: .some("mermaid"), code: let code)? = mermaid.blocks.first else { return XCTFail("\(mermaid.blocks)") }
         XCTAssertTrue(code.contains("flowchart TD"))
+        // MarkdownEnhancementScript refuses document configuration and falls back to source.
+        XCTAssertFalse(code.hasPrefix("---"))
+        XCTAssertFalse(code.contains("%%{"))
 
         let csv = CSVRenderService().render(text: BuiltInSampleProvider.csvSample)
         let table = try XCTUnwrap(Self.table(in: csv))
