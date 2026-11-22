@@ -1,1 +1,1 @@
-YAML,MD,文件,打开,查看器,离线,源码,代码,PDF,导出,公式,流程图,Mermaid,LaTeX,配置,README,本地
+预览,MD,YAML,ZIP,网页,文件,文档,打开,离线,源码,代码,高亮,PDF,导出,公式,数学,流程图,Mermaid,LaTeX,README,本地,压缩包,笔记,AI,htm,配置,结构

@@ -1,1 +1,1 @@
-Markdown 阅读、JSON 查看与 ZIP 报告
+Markdown 阅读器，JSON 查看器

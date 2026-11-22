@@ -63,10 +63,10 @@ class StoreAssetsGateTest < Minitest::Test
     Object.const_set(:RELEASE_NOTES_HANDOFF, File.join(@directory, "release-notes.md"))
     @version = { "id" => "draft-version", "attributes" => { "versionString" => "1.8", "platform" => "IOS", "appStoreState" => "PREPARE_FOR_SUBMISSION" }, "relationships" => { "app" => { "data" => { "id" => "fixture-app" } } } }
     @infos = [{ "id" => "live-info", "attributes" => { "state" => "READY_FOR_DISTRIBUTION" } }, { "id" => "draft-info", "attributes" => { "state" => "PREPARE_FOR_SUBMISSION" } }]
-    @localizations = EXPECTED_SCREENSHOT_LOCALES.map do |locale|
+    @localizations = EXPECTED_METADATA_LOCALES.map do |locale|
       { "id" => "loc-#{locale}", "attributes" => { "locale" => locale }.merge(metadata(locale, VERSION_METADATA_FIELDS)) }
     end
-    @info_localizations = EXPECTED_SCREENSHOT_LOCALES.map do |locale|
+    @info_localizations = EXPECTED_METADATA_LOCALES.map do |locale|
       { "id" => "info-#{locale}", "attributes" => { "locale" => locale }.merge(metadata(locale, APP_INFO_METADATA_FIELDS)) }
     end
     group_names = EXPECTED_SCREENSHOT_GROUPS.keys
@@ -152,7 +152,7 @@ class StoreAssetsGateTest < Minitest::Test
 
   def test_missing_locale_and_published_app_info_are_rejected
     saved = @localizations.pop
-    blocked("four version metadata locales")
+    blocked("6 version metadata locales")
     @localizations << saved
     @infos.last["attributes"]["state"] = "READY_FOR_DISTRIBUTION"
     blocked("editable AppInfo")

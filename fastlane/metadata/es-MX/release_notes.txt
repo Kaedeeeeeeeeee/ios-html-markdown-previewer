@@ -1,0 +1,2 @@
+- Actualizamos la información de la App Store para que la app sea más fácil de encontrar.
+- Los archivos se siguen procesando y guardando localmente en tu dispositivo.
