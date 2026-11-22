@@ -337,7 +337,16 @@ final class SmokeUITests: XCTestCase {
             if element.waitForExistence(timeout: 1), isClearOfBottomEdge() {
                 return true
             }
-            app.swipeUp()
+            if element.exists {
+                // The row is already on screen near the bottom edge. A full
+                // swipe can fling it past the top of a short landscape
+                // viewport and out of the lazy list, so nudge it up instead.
+                let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
+                let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
+                start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+            } else {
+                app.swipeUp()
+            }
         }
         return element.exists && isClearOfBottomEdge()
     }

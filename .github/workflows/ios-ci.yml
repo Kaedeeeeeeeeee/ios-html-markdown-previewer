@@ -217,6 +217,10 @@ jobs:
         run: |
           xcrun simctl shutdown "${{ steps.simulator.outputs.id }}" || true
           xcrun simctl erase "${{ steps.simulator.outputs.id }}"
+          # Finish the first boot after the erase here. Otherwise the first UI
+          # test's launch waits on it and can exceed Xcode's launch timeout.
+          xcrun simctl boot "${{ steps.simulator.outputs.id }}"
+          xcrun simctl bootstatus "${{ steps.simulator.outputs.id }}" -b
 
       - name: Run UI smoke test
         # The 13 tests alone take about 20 minutes on the hosted runner, so a
