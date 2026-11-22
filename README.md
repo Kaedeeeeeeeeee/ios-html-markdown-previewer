@@ -79,6 +79,8 @@ that copy and screenshot set with new [release notes](docs/updates/1.8.1-release
 from the same captures ([release notes](docs/updates/1.8.2-release-notes.md)).
 1.8.3 (16) keeps the same app and screenshots and updates search metadata, adding
 en-GB and es-MX store localizations ([release notes](docs/updates/1.8.3-release-notes.md)).
+1.9.0 (17) adds Mermaid, CSV/TSV, and SVG previews, replaces the withdrawn 1.8.3
+submission, and adds two screenshots to each set ([release notes](docs/updates/1.9.0-release-notes.md)).
 The earlier
 [usage measurement proposal](docs/plans/2026-10-02-usage-measurement.md) remains a
 proposal; the app does not upload usage events or user documents.

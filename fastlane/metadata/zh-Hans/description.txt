@@ -1,4 +1,4 @@
-在 iPhone 和 iPad 上打开收到的 HTML 与 ZIP 报告、阅读 Markdown 笔记、查看 JSON 和 YAML 配置。文件在设备本地处理。
+在 iPhone 和 iPad 上打开收到的 HTML 与 ZIP 报告、阅读 Markdown 笔记、查看 JSON 和 YAML 配置，还能看 Mermaid 图表、CSV 表格和 SVG 图片。文件在设备本地处理。
 
 读内容，也保留排版
 - 呈现 HTML 布局、图形与动画。
@@ -13,15 +13,21 @@
 - 显示和复制 JSON 大整数 ID 时保留原始数字，不进行舍入。
 - 语法错误定位到具体行列；YAML 支持多个文档切换。
 
+图表、表格与图片
+- 打开 .mmd、.mermaid 文件，离线绘制流程图、时序图等 Mermaid 图表。
+- 以表格阅读 CSV 和 TSV 文件，数字列自动对齐，自动识别分隔符。
+- 安全显示 SVG 图片，不加载其中的脚本、链接和远程资源。
+- 都可以切换到原始文本，查看或复制源码。
+
 导入、整理与分享
 - 从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 打开文件。打开或分享菜单的可用性取决于 iOS 和来源 App。
 - 一次选择多份文档或 ZIP 报告包。重复文件可更新、保留两份或逐份跳过，完成后查看导入结果。
 - 粘贴 HTML、Markdown、JSON 或 YAML 文本，创建本地预览。
 - 按文件名查找资料，置顶常用文件，修改显示名称。
 - 分享原文件或完整 ZIP 报告包，将 HTML 与 Markdown 预览导出为 PDF。
-- 内置 HTML、Markdown、JSON、YAML 与 ZIP 示例。
+- 内置 HTML、Markdown、JSON、YAML、Mermaid、CSV、SVG 与 ZIP 示例。
 
-支持 .html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSON 与 YAML 为只读预览，可分享原文件；JSON 不支持 JSONC 注释和尾随逗号。PDF 导出适用于 HTML 与 Markdown。
+支持 .html、.htm、.md、.markdown、.json、.yaml、.yml、.mmd、.mermaid、.csv、.tsv、.svg、.zip。JSON 与 YAML 为只读预览，可分享原文件；JSON 不支持 JSONC 注释和尾随逗号。PDF 导出适用于 HTML 与 Markdown。
 
 隐私与购买方式
 文件在设备本地处理，App 不上传你的文件。无账号、无广告。付费下载，无订阅，无 App 内购买。

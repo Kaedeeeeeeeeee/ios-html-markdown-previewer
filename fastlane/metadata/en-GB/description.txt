@@ -1,4 +1,4 @@
-Open received HTML and ZIP reports, read Markdown notes, and inspect JSON or YAML on iPhone and iPad. Files are processed on your device.
+Open received HTML and ZIP reports, read Markdown notes, inspect JSON or YAML, and view Mermaid diagrams, CSV tables, and SVG images on iPhone and iPad. Files are processed on your device.
 
 Read the content, keep the formatting
 - View HTML layouts, graphics, and animations.
@@ -13,15 +13,21 @@ Inspect JSON and YAML
 - View and copy large JSON numeric IDs without rounding their digits.
 - Locate syntax errors by line and column. YAML also supports multiple documents.
 
+Diagrams, tables, and images
+- Open .mmd and .mermaid files as flowcharts, sequence diagrams, and other Mermaid diagrams, drawn offline.
+- Read CSV and TSV files as tables with aligned number columns. The delimiter is detected automatically.
+- View SVG images safely: scripts, links, and remote resources inside the SVG are not loaded.
+- Switch any of these to raw text to read or copy the source.
+
 Import, organise, and share
 - Open files from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps. Open/share menu availability depends on iOS and the source app.
 - Select multiple documents or ZIP packages. Update duplicates, keep both copies, or skip individual files, then review import results.
 - Paste HTML, Markdown, JSON, or YAML text to create a local preview.
 - Find saved files by filename, pin frequent documents, and rename display titles.
 - Share original files or complete ZIP packages. Export HTML and Markdown previews as PDF.
-- Try the built-in HTML, Markdown, JSON, YAML, and ZIP samples.
+- Try the built-in HTML, Markdown, JSON, YAML, Mermaid, CSV, SVG, and ZIP samples.
 
-Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
+Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, .mmd, .mermaid, .csv, .tsv, .svg, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
 
 Privacy and purchase
 Files are processed on device; the app does not upload your files. No account or ads. Paid download with no subscription or in-app purchase.

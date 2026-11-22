@@ -1,6 +1,6 @@
-# App Store Listing — Version 1.8.3 (16)
+# App Store Listing — Version 1.9.0 (17)
 
-Prepared local metadata for the 1.8.3 release, mirrored from the active
+Prepared local metadata for the 1.9.0 release, mirrored from the active
 `fastlane/metadata/` files below. This document does not establish remote upload,
 Apple acceptance, review submission, or publication; live release records are separate.
 
@@ -39,11 +39,11 @@ Markdown, JSON & YAML Viewer
 
 Promotional Text:
 
-Read HTML and ZIP reports, Markdown code and math, and JSON/YAML structures. Files are processed on device. Paid download. No ads or subscriptions.
+Read HTML and ZIP reports, Markdown, JSON/YAML, plus new Mermaid diagrams, CSV tables and SVG images. Files are processed on device. No ads or subscriptions.
 
 Description:
 
-Open received HTML and ZIP reports, read Markdown notes, and inspect JSON or YAML on iPhone and iPad. Files are processed on your device.
+Open received HTML and ZIP reports, read Markdown notes, inspect JSON or YAML, and view Mermaid diagrams, CSV tables, and SVG images on iPhone and iPad. Files are processed on your device.
 
 Read the content, keep the formatting
 - View HTML layouts, graphics, and animations.
@@ -58,15 +58,21 @@ Inspect JSON and YAML
 - View and copy large JSON numeric IDs without rounding their digits.
 - Locate syntax errors by line and column. YAML also supports multiple documents.
 
+Diagrams, tables, and images
+- Open .mmd and .mermaid files as flowcharts, sequence diagrams, and other Mermaid diagrams, drawn offline.
+- Read CSV and TSV files as tables with aligned number columns. The delimiter is detected automatically.
+- View SVG images safely: scripts, links, and remote resources inside the SVG are not loaded.
+- Switch any of these to raw text to read or copy the source.
+
 Import, organize, and share
 - Open files from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps. Open/share menu availability depends on iOS and the source app.
 - Select multiple documents or ZIP packages. Update duplicates, keep both copies, or skip individual files, then review import results.
 - Paste HTML, Markdown, JSON, or YAML text to create a local preview.
 - Find saved files by filename, pin frequent documents, and rename display titles.
 - Share original files or complete ZIP packages. Export HTML and Markdown previews as PDF.
-- Try the built-in HTML, Markdown, JSON, YAML, and ZIP samples.
+- Try the built-in HTML, Markdown, JSON, YAML, Mermaid, CSV, SVG, and ZIP samples.
 
-Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
+Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, .mmd, .mermaid, .csv, .tsv, .svg, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
 
 Privacy and purchase
 Files are processed on device; the app does not upload your files. No account or ads. Paid download with no subscription or in-app purchase.
@@ -79,7 +85,10 @@ md,yml,zip,preview,reader,offline,pdf,source,code,mermaid,latex,math,readme,file
 
 Release Notes:
 
-- Updated the App Store listing so the app is easier to find.
+- New: open Mermaid diagram files (.mmd, .mermaid), drawn offline.
+- New: read CSV and TSV files as tables with aligned number columns.
+- New: view SVG images safely, with scripts and remote resources blocked.
+- Try the new Mermaid, CSV, and SVG samples in the library.
 - Files continue to be processed and stored locally on your device.
 
 ## en-GB
@@ -94,11 +103,11 @@ Markdown, JSON & YAML Viewer
 
 Promotional Text:
 
-Read HTML and ZIP reports, Markdown code and math, and JSON/YAML structures. Files are processed on device. Paid download. No ads or subscriptions.
+Read HTML and ZIP reports, Markdown, JSON/YAML, plus new Mermaid diagrams, CSV tables and SVG images. Files are processed on device. No ads or subscriptions.
 
 Description:
 
-Open received HTML and ZIP reports, read Markdown notes, and inspect JSON or YAML on iPhone and iPad. Files are processed on your device.
+Open received HTML and ZIP reports, read Markdown notes, inspect JSON or YAML, and view Mermaid diagrams, CSV tables, and SVG images on iPhone and iPad. Files are processed on your device.
 
 Read the content, keep the formatting
 - View HTML layouts, graphics, and animations.
@@ -113,15 +122,21 @@ Inspect JSON and YAML
 - View and copy large JSON numeric IDs without rounding their digits.
 - Locate syntax errors by line and column. YAML also supports multiple documents.
 
+Diagrams, tables, and images
+- Open .mmd and .mermaid files as flowcharts, sequence diagrams, and other Mermaid diagrams, drawn offline.
+- Read CSV and TSV files as tables with aligned number columns. The delimiter is detected automatically.
+- View SVG images safely: scripts, links, and remote resources inside the SVG are not loaded.
+- Switch any of these to raw text to read or copy the source.
+
 Import, organise, and share
 - Open files from Files, Mail, AirDrop, messaging apps, cloud drives, or other apps. Open/share menu availability depends on iOS and the source app.
 - Select multiple documents or ZIP packages. Update duplicates, keep both copies, or skip individual files, then review import results.
 - Paste HTML, Markdown, JSON, or YAML text to create a local preview.
 - Find saved files by filename, pin frequent documents, and rename display titles.
 - Share original files or complete ZIP packages. Export HTML and Markdown previews as PDF.
-- Try the built-in HTML, Markdown, JSON, YAML, and ZIP samples.
+- Try the built-in HTML, Markdown, JSON, YAML, Mermaid, CSV, SVG, and ZIP samples.
 
-Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
+Supported extensions: .html, .htm, .md, .markdown, .json, .yaml, .yml, .mmd, .mermaid, .csv, .tsv, .svg, and .zip. JSON and YAML previews are read-only and share the original file. JSONC comments and trailing commas are not supported. PDF export is available for HTML and Markdown.
 
 Privacy and purchase
 Files are processed on device; the app does not upload your files. No account or ads. Paid download with no subscription or in-app purchase.
@@ -134,7 +149,10 @@ md,yml,zip,preview,reader,offline,pdf,source,code,mermaid,latex,math,readme,file
 
 Release Notes:
 
-- Updated the App Store listing so the app is easier to find.
+- New: open Mermaid diagram files (.mmd, .mermaid), drawn offline.
+- New: read CSV and TSV files as tables with aligned number columns.
+- New: view SVG images safely, with scripts and remote resources blocked.
+- Try the new Mermaid, CSV, and SVG samples in the library.
 - Files continue to be processed and stored locally on your device.
 
 ## es-MX
@@ -149,11 +167,11 @@ Visor de páginas web y código
 
 Promotional Text:
 
-Lee reportes HTML y ZIP, código y fórmulas en Markdown, y estructuras JSON/YAML. Los archivos se procesan en tu dispositivo. Pago único, sin anuncios ni suscripciones.
+Lee reportes HTML y ZIP, Markdown y JSON/YAML, y ahora diagramas Mermaid, tablas CSV e imágenes SVG. Todo se procesa en tu dispositivo. Sin anuncios ni suscripciones.
 
 Description:
 
-Abre reportes HTML y ZIP que recibes, lee notas en Markdown e inspecciona archivos JSON o YAML en iPhone y iPad. Los archivos se procesan en tu dispositivo.
+Abre reportes HTML y ZIP que recibes, lee notas en Markdown, inspecciona archivos JSON o YAML y ve diagramas Mermaid, tablas CSV e imágenes SVG en iPhone y iPad. Los archivos se procesan en tu dispositivo.
 
 Lee el contenido sin perder el formato
 - Ve diseños, gráficos y animaciones HTML.
@@ -168,15 +186,21 @@ Inspecciona JSON y YAML
 - Ve y copia IDs numéricos grandes de JSON sin redondear sus dígitos.
 - Ubica errores de sintaxis por línea y columna. YAML también admite varios documentos.
 
+Diagramas, tablas e imágenes
+- Abre archivos .mmd y .mermaid como diagramas de flujo, de secuencia y otros diagramas Mermaid, dibujados sin conexión.
+- Lee archivos CSV y TSV como tablas con columnas numéricas alineadas. El delimitador se detecta automáticamente.
+- Ve imágenes SVG de forma segura: no se cargan scripts, enlaces ni recursos remotos del SVG.
+- Cambia a texto sin formato para leer o copiar el código fuente.
+
 Importa, organiza y comparte
 - Abre archivos desde Archivos, Mail, AirDrop, apps de mensajería, servicios en la nube u otras apps. La disponibilidad del menú Abrir/Compartir depende de iOS y de la app de origen.
 - Selecciona varios documentos o paquetes ZIP. Actualiza duplicados, conserva ambas copias u omite archivos individuales, y luego revisa los resultados de la importación.
 - Pega texto HTML, Markdown, JSON o YAML para crear una vista previa local.
 - Encuentra archivos guardados por nombre, fija los documentos frecuentes y cambia los títulos que se muestran.
 - Comparte los archivos originales o paquetes ZIP completos. Exporta vistas previas de HTML y Markdown como PDF.
-- Prueba los ejemplos integrados de HTML, Markdown, JSON, YAML y ZIP.
+- Prueba los ejemplos integrados de HTML, Markdown, JSON, YAML, Mermaid, CSV, SVG y ZIP.
 
-Extensiones compatibles: .html, .htm, .md, .markdown, .json, .yaml, .yml y .zip. Las vistas previas de JSON y YAML son de solo lectura y comparten el archivo original. No se admiten comentarios JSONC ni comas finales. La exportación a PDF está disponible para HTML y Markdown.
+Extensiones compatibles: .html, .htm, .md, .markdown, .json, .yaml, .yml, .mmd, .mermaid, .csv, .tsv, .svg y .zip. Las vistas previas de JSON y YAML son de solo lectura y comparten el archivo original. No se admiten comentarios JSONC ni comas finales. La exportación a PDF está disponible para HTML y Markdown.
 
 La interfaz de la app está disponible en inglés, japonés y chino.
 
@@ -191,7 +215,10 @@ markdown,json,yaml,md,lector,archivo,abrir,documento,vista,previa,website,browse
 
 Release Notes:
 
-- Actualizamos la información de la App Store para que la app sea más fácil de encontrar.
+- Nuevo: abre archivos de diagramas Mermaid (.mmd, .mermaid), dibujados sin conexión.
+- Nuevo: lee archivos CSV y TSV como tablas con columnas numéricas alineadas.
+- Nuevo: ve imágenes SVG de forma segura, con scripts y recursos remotos bloqueados.
+- Prueba los nuevos ejemplos de Mermaid, CSV y SVG en la biblioteca.
 - Los archivos se siguen procesando y guardando localmente en tu dispositivo.
 
 ## zh-Hans
@@ -206,11 +233,11 @@ Markdown 阅读器，JSON 查看器
 
 Promotional Text:
 
-收到 HTML 或 ZIP 报告，随手打开；阅读 Markdown 代码与公式，查看 JSON/YAML 结构。文件在设备本地处理，付费下载，无广告、无订阅。
+HTML 与 ZIP 报告、Markdown、JSON/YAML 之外，现在还能看 Mermaid 图表、CSV 表格和 SVG 图片。文件在设备本地处理，付费下载，无广告、无订阅。
 
 Description:
 
-在 iPhone 和 iPad 上打开收到的 HTML 与 ZIP 报告、阅读 Markdown 笔记、查看 JSON 和 YAML 配置。文件在设备本地处理。
+在 iPhone 和 iPad 上打开收到的 HTML 与 ZIP 报告、阅读 Markdown 笔记、查看 JSON 和 YAML 配置，还能看 Mermaid 图表、CSV 表格和 SVG 图片。文件在设备本地处理。
 
 读内容，也保留排版
 - 呈现 HTML 布局、图形与动画。
@@ -225,15 +252,21 @@ Description:
 - 显示和复制 JSON 大整数 ID 时保留原始数字，不进行舍入。
 - 语法错误定位到具体行列；YAML 支持多个文档切换。
 
+图表、表格与图片
+- 打开 .mmd、.mermaid 文件，离线绘制流程图、时序图等 Mermaid 图表。
+- 以表格阅读 CSV 和 TSV 文件，数字列自动对齐，自动识别分隔符。
+- 安全显示 SVG 图片，不加载其中的脚本、链接和远程资源。
+- 都可以切换到原始文本，查看或复制源码。
+
 导入、整理与分享
 - 从“文件”、邮件、隔空投送、消息应用、网盘或其他 App 打开文件。打开或分享菜单的可用性取决于 iOS 和来源 App。
 - 一次选择多份文档或 ZIP 报告包。重复文件可更新、保留两份或逐份跳过，完成后查看导入结果。
 - 粘贴 HTML、Markdown、JSON 或 YAML 文本，创建本地预览。
 - 按文件名查找资料，置顶常用文件，修改显示名称。
 - 分享原文件或完整 ZIP 报告包，将 HTML 与 Markdown 预览导出为 PDF。
-- 内置 HTML、Markdown、JSON、YAML 与 ZIP 示例。
+- 内置 HTML、Markdown、JSON、YAML、Mermaid、CSV、SVG 与 ZIP 示例。
 
-支持 .html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSON 与 YAML 为只读预览，可分享原文件；JSON 不支持 JSONC 注释和尾随逗号。PDF 导出适用于 HTML 与 Markdown。
+支持 .html、.htm、.md、.markdown、.json、.yaml、.yml、.mmd、.mermaid、.csv、.tsv、.svg、.zip。JSON 与 YAML 为只读预览，可分享原文件；JSON 不支持 JSONC 注释和尾随逗号。PDF 导出适用于 HTML 与 Markdown。
 
 隐私与购买方式
 文件在设备本地处理，App 不上传你的文件。无账号、无广告。付费下载，无订阅，无 App 内购买。
@@ -246,7 +279,10 @@ Keywords:
 
 Release Notes:
 
-- 更新了 App Store 介绍信息，让 App 更容易被找到。
+- 新增：打开 Mermaid 图表文件（.mmd、.mermaid），离线绘制。
+- 新增：以表格阅读 CSV 和 TSV 文件，数字列自动对齐。
+- 新增：安全显示 SVG 图片，屏蔽脚本和远程资源。
+- 文件库新增 Mermaid、CSV、SVG 示例，打开即可体验。
 - 文件继续在设备本地处理与保存。
 
 ## ja
@@ -261,11 +297,11 @@ Markdown・JSON・YAML ビューア
 
 Promotional Text:
 
-届いたHTML・ZIPレポートを開く。Markdownのコードや数式を読み、JSON・YAMLの構造を確認。ファイルは端末内で処理します。有料ダウンロード、広告・サブスクリプションなし。
+HTML・ZIPレポート、Markdown、JSON・YAMLに加え、Mermaid図、CSVの表、SVG画像も表示できるようになりました。ファイルは端末内で処理。広告・サブスクリプションなし。
 
 Description:
 
-iPhoneとiPadで、届いたHTML・ZIPレポートを開き、Markdownのノートを読み、JSONやYAMLの設定を確認。ファイルは端末内で処理します。
+iPhoneとiPadで、届いたHTML・ZIPレポートを開き、Markdownのノートを読み、JSONやYAMLの設定を確認。Mermaid図、CSVの表、SVG画像も表示できます。ファイルは端末内で処理します。
 
 内容もレイアウトも読みやすく
 - HTMLのレイアウト、グラフィック、アニメーションを表示。
@@ -280,15 +316,21 @@ JSON・YAMLの構造を確認
 - 大きなJSON整数IDも、桁を丸めずに表示・コピー。
 - 構文エラーの行と列を確認。YAMLは複数ドキュメントの切り替えに対応。
 
+図・表・画像
+- .mmd／.mermaidファイルを、フローチャートやシーケンス図などのMermaid図としてオフラインで描画。
+- CSV・TSVファイルを表として表示。数値の列は右揃えで、区切り文字は自動で判別します。
+- SVG画像を安全に表示。SVG内のスクリプト、リンク、外部リソースは読み込みません。
+- いずれもテキスト表示に切り替えて、ソースを確認・コピーできます。
+
 取り込み・整理・共有
 - 「ファイル」、メール、AirDrop、メッセージアプリ、クラウドドライブ、その他のアプリからファイルを開けます。「開く」や共有メニューの表示は、iOSと送信元アプリによって異なります。
 - 複数の文書やZIPレポートをまとめて取り込み。重複ファイルは更新・両方保存・スキップを選び、完了後に結果を確認できます。
 - HTML、Markdown、JSON、YAMLのテキストを貼り付けてプレビュー。
 - ファイル名で検索し、よく使う文書を固定。表示名の変更にも対応。
 - 元のファイルやZIPパッケージを共有。HTML・MarkdownのプレビューをPDFに書き出せます。
-- HTML、Markdown、JSON、YAML、ZIPの内蔵サンプルを用意。
+- HTML、Markdown、JSON、YAML、Mermaid、CSV、SVG、ZIPの内蔵サンプルを用意。
 
-対応拡張子：.html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSONとYAMLは読み取り専用で、元のファイルを共有できます。JSONCのコメントや末尾のカンマには対応していません。PDFへの書き出しはHTMLとMarkdownで利用できます。
+対応拡張子：.html、.htm、.md、.markdown、.json、.yaml、.yml、.mmd、.mermaid、.csv、.tsv、.svg、.zip。JSONとYAMLは読み取り専用で、元のファイルを共有できます。JSONCのコメントや末尾のカンマには対応していません。PDFへの書き出しはHTMLとMarkdownで利用できます。
 
 プライバシーと購入方式
 ファイルは端末内で処理し、アプリがファイルをアップロードすることはありません。アカウント不要、広告なし。有料ダウンロードで、サブスクリプションやApp内課金はありません。
@@ -301,7 +343,10 @@ Keywords:
 
 Release Notes:
 
-- App Storeの紹介情報を更新し、見つけやすくしました。
+- 新機能：Mermaid図のファイル（.mmd、.mermaid）をオフラインで表示。
+- 新機能：CSV・TSVファイルを、数値の列を揃えた表で表示。
+- 新機能：SVG画像を安全に表示（スクリプトと外部リソースはブロック）。
+- ライブラリにMermaid、CSV、SVGのサンプルを追加しました。
 - ファイルは引き続き端末内で処理・保存します。
 
 ## zh-Hant
@@ -316,11 +361,11 @@ Markdown 閱讀器，JSON 檢視器
 
 Promotional Text:
 
-收到 HTML 或 ZIP 報告，隨手開啟；閱讀 Markdown 程式碼與公式，檢視 JSON/YAML 結構。檔案在裝置本機處理，付費下載，無廣告、無訂閱。
+HTML 與 ZIP 報告、Markdown、JSON/YAML 之外，現在還能看 Mermaid 圖表、CSV 表格和 SVG 圖片。檔案在裝置本機處理，付費下載，無廣告、無訂閱。
 
 Description:
 
-在 iPhone 和 iPad 上開啟收到的 HTML 與 ZIP 報告、閱讀 Markdown 筆記、檢視 JSON 和 YAML 設定。檔案在裝置本機處理。
+在 iPhone 和 iPad 上開啟收到的 HTML 與 ZIP 報告、閱讀 Markdown 筆記、檢視 JSON 和 YAML 設定，還能看 Mermaid 圖表、CSV 表格和 SVG 圖片。檔案在裝置本機處理。
 
 閱讀內容，也保留排版
 - 呈現 HTML 版面配置、圖形與動畫。
@@ -335,15 +380,21 @@ Description:
 - 顯示和複製 JSON 大整數 ID 時保留原始數字，不進行四捨五入。
 - 語法錯誤定位到具體行與欄；YAML 支援切換多份文件。
 
+圖表、表格與圖片
+- 開啟 .mmd、.mermaid 檔案，離線繪製流程圖、時序圖等 Mermaid 圖表。
+- 以表格閱讀 CSV 和 TSV 檔案，數字欄自動對齊，自動辨識分隔符號。
+- 安全顯示 SVG 圖片，不載入其中的指令碼、連結和遠端資源。
+- 皆可切換至原始文字，檢視或複製原始碼。
+
 匯入、整理與分享
 - 從「檔案」、郵件、AirDrop、訊息 App、雲端硬碟或其他 App 開啟檔案。開啟或分享選單的可用性取決於 iOS 和來源 App。
 - 一次選擇多份文件或 ZIP 報告包。重複檔案可更新、保留兩份或逐份略過，完成後查看匯入結果。
 - 貼上 HTML、Markdown、JSON 或 YAML 文字，建立本機預覽。
 - 依檔名尋找資料，釘選常用檔案，修改顯示名稱。
 - 分享原始檔案或完整 ZIP 報告包，將 HTML 與 Markdown 預覽匯出為 PDF。
-- 內建 HTML、Markdown、JSON、YAML 與 ZIP 範例。
+- 內建 HTML、Markdown、JSON、YAML、Mermaid、CSV、SVG 與 ZIP 範例。
 
-支援 .html、.htm、.md、.markdown、.json、.yaml、.yml、.zip。JSON 與 YAML 為唯讀預覽，可分享原始檔案；JSON 不支援 JSONC 註解和結尾逗號。PDF 匯出適用於 HTML 與 Markdown。
+支援 .html、.htm、.md、.markdown、.json、.yaml、.yml、.mmd、.mermaid、.csv、.tsv、.svg、.zip。JSON 與 YAML 為唯讀預覽，可分享原始檔案；JSON 不支援 JSONC 註解和結尾逗號。PDF 匯出適用於 HTML 與 Markdown。
 
 隱私與購買方式
 檔案在裝置本機處理，App 不會上傳你的檔案。無帳號、無廣告。付費下載，無訂閱，無 App 內購買。
@@ -356,7 +407,10 @@ Keywords:
 
 Release Notes:
 
-- 更新了 App Store 介紹資訊，讓 App 更容易被找到。
+- 新增：開啟 Mermaid 圖表檔案（.mmd、.mermaid），離線繪製。
+- 新增：以表格閱讀 CSV 和 TSV 檔案，數字欄自動對齊。
+- 新增：安全顯示 SVG 圖片，阻擋指令碼和遠端資源。
+- 檔案庫新增 Mermaid、CSV、SVG 範例，開啟即可體驗。
 - 檔案繼續在裝置本機處理與儲存。
 
 ## Screenshot Inventory
