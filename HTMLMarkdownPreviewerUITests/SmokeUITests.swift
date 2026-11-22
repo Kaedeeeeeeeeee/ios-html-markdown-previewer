@@ -115,7 +115,10 @@ final class SmokeUITests: XCTestCase {
     func testBuiltInSamplesAndSettingsSmoke() throws {
         continueAfterFailure = false
         let previousOrientation = XCUIDevice.shared.orientation
-        defer {
+        // A teardown block, not a defer: with continueAfterFailure = false a
+        // failed assertion stops the test without running Swift defers, which
+        // left the simulator in landscape for every later suite.
+        addTeardownBlock { @MainActor in
             if #available(iOS 27.1, *) {
                 XCUIDevice.shared.orientation = previousOrientation.isValidInterfaceOrientation ? previousOrientation : .portrait
             }
