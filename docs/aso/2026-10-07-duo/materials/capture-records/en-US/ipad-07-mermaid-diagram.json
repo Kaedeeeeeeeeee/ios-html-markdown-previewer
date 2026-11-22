@@ -1,0 +1,27 @@
+{
+  "capturedAtUTC": "2026-11-22T10:02:33.730190+00:00",
+  "path": "sources/en-US/ipad-07-mermaid-diagram.png",
+  "deviceId": "37995314-A097-4EB8-BA1C-F6396D8EFA5C",
+  "family": "ipad",
+  "sourceKey": "07-mermaid-diagram",
+  "locale": "en-US",
+  "displayId": null,
+  "pixels": [
+    2064,
+    2752
+  ],
+  "mode": "RGBA",
+  "sha256": "df3de75b36ad08a2287ee2265e281b6b9cb3b8d1a59783de3ce92ea793e09f3e",
+  "appVersion": "1.9.0",
+  "buildNumber": "17",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "8afb29dcdbf0a9f1817e1c14308913c418fdb306cc57c84cd04bcc94e172034d",
+    "HTMLMarkdownPreviewer.debug.dylib": "81b6030244c391e58c4097415afdb2fe3d678bae617e573545e03f3f32d8d261"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "contact_sheet_review_passed",
+  "sourcePixelsEdited": false,
+  "visualReviewScope": "Four-language final contact sheets of the Mermaid and CSV slides inspected: diagram fully drawn, number columns aligned and readable, headline and subtitle fit, callout not cut off."
+}

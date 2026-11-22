@@ -2,6 +2,8 @@
   "sourceKeys": [
     "01-html-report",
     "04-markdown-preview",
+    "07-mermaid-diagram",
+    "08-csv-table",
     "03-json-preview",
     "06-yaml-preview",
     "02-batch-import",
@@ -10,10 +12,12 @@
   "outputSuffixes": [
     "01-html-report",
     "02-markdown-preview",
-    "03-json-preview",
-    "04-yaml-preview",
-    "05-batch-import",
-    "06-library"
+    "03-mermaid-diagram",
+    "04-csv-table",
+    "05-json-preview",
+    "06-yaml-preview",
+    "07-batch-import",
+    "08-library"
   ],
   "locales": [
     "en-US",
@@ -21,5 +25,19 @@
     "ja",
     "zh-Hant"
   ],
-  "deviceConfig": "devices.json"
+  "deviceConfig": "devices.json",
+  "captureIdentities": {
+    "default": [
+      "1.8",
+      "13"
+    ],
+    "07-mermaid-diagram": [
+      "1.9.0",
+      "17"
+    ],
+    "08-csv-table": [
+      "1.9.0",
+      "17"
+    ]
+  }
 }

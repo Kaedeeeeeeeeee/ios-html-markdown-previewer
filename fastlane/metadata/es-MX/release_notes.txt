@@ -1,2 +1,5 @@
-- Actualizamos la información de la App Store para que la app sea más fácil de encontrar.
+- Nuevo: abre archivos de diagramas Mermaid (.mmd, .mermaid), dibujados sin conexión.
+- Nuevo: lee archivos CSV y TSV como tablas con columnas numéricas alineadas.
+- Nuevo: ve imágenes SVG de forma segura, con scripts y recursos remotos bloqueados.
+- Prueba los nuevos ejemplos de Mermaid, CSV y SVG en la biblioteca.
 - Los archivos se siguen procesando y guardando localmente en tu dispositivo.

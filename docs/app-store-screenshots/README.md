@@ -6,20 +6,22 @@ packet is [`../aso/2026-10-07-duo/materials/`](../aso/2026-10-07-duo/materials/R
 An integrated local packet does not establish an upload, Apple acceptance,
 review submission, or public release; those states require separate live records.
 
-Each of `en-US`, `zh-Hans`, `ja`, and `zh-Hant` has 18 final PNGs: six ordinary
-iPhone, six iPad, and six iPhone Duo images. The four localized sets total 72.
-The 18 English images are also mirrored here at the root, byte for byte, for
+Each of `en-US`, `zh-Hans`, `ja`, and `zh-Hant` has 24 final PNGs: eight ordinary
+iPhone, eight iPad, and eight iPhone Duo images. The four localized sets total 96.
+The 24 English images are also mirrored here at the root, byte for byte, for
 existing local release consumers. Root copies are compatibility files, not
-another locale or 18 additional uploads.
+another locale or 24 additional uploads.
 
 | Order | Filename suffix | Actual scene |
 | --- | --- | --- |
 | 01 | `01-html-report` | Locally rendered synthetic HTML weekly report |
 | 02 | `02-markdown-preview` | Localized synthetic development notes with code and formula |
-| 03 | `03-json-preview` | Built-in read-only JSON structure |
-| 04 | `04-yaml-preview` | Built-in read-only YAML configuration in dark appearance |
-| 05 | `05-batch-import` | Isolated showcase import results, four imported files |
-| 06 | `06-library` | Two local templates and five built-in format examples |
+| 03 | `03-mermaid-diagram` | Built-in Mermaid flowchart sample (`agent-workflow.mmd`) |
+| 04 | `04-csv-table` | Built-in CSV sample with right-aligned number columns |
+| 05 | `05-json-preview` | Built-in read-only JSON structure |
+| 06 | `06-yaml-preview` | Built-in read-only YAML configuration in dark appearance |
+| 07 | `07-batch-import` | Isolated showcase import results, four imported files |
+| 08 | `08-library` | Two local templates and five built-in format examples |
 
 Use `iphone-`, `ipad-`, or `duo-` prefixes, for example
 `zh-Hant/duo-02-markdown-preview.png`. Source filenames retain their previous
@@ -30,10 +32,10 @@ order. Do not infer source identity from the final number alone.
 
 - Ordinary iPhone: 1320 × 2868, portrait marketing canvas.
 - iPad: 2064 × 2752, portrait marketing canvas.
-- Duo inner: 2853 × 2007, actual Open landscape captures for HTML, JSON, and library.
-- Duo outer: 1398 × 2034, actual Closed portrait captures for Markdown, YAML, and import.
+- Duo inner: 2853 × 2007, actual Open landscape captures for HTML, CSV, JSON, and library.
+- Duo outer: 1398 × 2034, actual Closed portrait captures for Markdown, Mermaid, YAML, and import.
 
-Duo uses one six-image group with both inner and outer examples. This does not
+Duo uses one eight-image group with both inner and outer examples. This does not
 promise automatic posture-specific storefront switching. The backend profile
 and display class are `IPHONE_DUO_PROFILE` and `IPHONE_DUO`; no legacy ScreenshotSet
 enum is guessed. Apple's other supported Duo orientations are 2007 × 2853
@@ -104,3 +106,16 @@ directory and the packet `screenshots/` folder and re-run
 The App Store product page header (3840 × 1646) and search-results artwork
 (3840 × 2560) live in [`../app-store-header/`](../app-store-header/), with
 their HTML sources.
+
+## 2026-11-22 Mermaid and CSV scenes
+
+Two scenes were added for the Mermaid, CSV/TSV and SVG previews: `03-mermaid-diagram`
+and `04-csv-table`; the earlier scenes moved from 03–06 to 05–08. The 72 earlier
+images were renamed only, their bytes are unchanged. The 24 new images were rendered
+with `ONLY_KEYS=07-mermaid-diagram,08-csv-table node scripts/store-art/generate-screenshots-v2.js <out>`
+from new Debug captures of 1.9.0 (17) code (declared per scene in the packet
+`order.json` `captureIdentities`). Re-rendering the earlier scenes today does not
+reproduce their bytes exactly (fonts/Chromium), so they were not regenerated.
+The ordinary iPhone CSV source was captured after scrolling the table sideways in
+the app so the Model, Accuracy and Median columns are visible; the capture record
+notes this as `operatorAdjustment`.

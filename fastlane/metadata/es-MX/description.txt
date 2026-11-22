@@ -1,4 +1,4 @@
-Abre reportes HTML y ZIP que recibes, lee notas en Markdown e inspecciona archivos JSON o YAML en iPhone y iPad. Los archivos se procesan en tu dispositivo.
+Abre reportes HTML y ZIP que recibes, lee notas en Markdown, inspecciona archivos JSON o YAML y ve diagramas Mermaid, tablas CSV e imágenes SVG en iPhone y iPad. Los archivos se procesan en tu dispositivo.
 
 Lee el contenido sin perder el formato
 - Ve diseños, gráficos y animaciones HTML.
@@ -13,15 +13,21 @@ Inspecciona JSON y YAML
 - Ve y copia IDs numéricos grandes de JSON sin redondear sus dígitos.
 - Ubica errores de sintaxis por línea y columna. YAML también admite varios documentos.
 
+Diagramas, tablas e imágenes
+- Abre archivos .mmd y .mermaid como diagramas de flujo, de secuencia y otros diagramas Mermaid, dibujados sin conexión.
+- Lee archivos CSV y TSV como tablas con columnas numéricas alineadas. El delimitador se detecta automáticamente.
+- Ve imágenes SVG de forma segura: no se cargan scripts, enlaces ni recursos remotos del SVG.
+- Cambia a texto sin formato para leer o copiar el código fuente.
+
 Importa, organiza y comparte
 - Abre archivos desde Archivos, Mail, AirDrop, apps de mensajería, servicios en la nube u otras apps. La disponibilidad del menú Abrir/Compartir depende de iOS y de la app de origen.
 - Selecciona varios documentos o paquetes ZIP. Actualiza duplicados, conserva ambas copias u omite archivos individuales, y luego revisa los resultados de la importación.
 - Pega texto HTML, Markdown, JSON o YAML para crear una vista previa local.
 - Encuentra archivos guardados por nombre, fija los documentos frecuentes y cambia los títulos que se muestran.
 - Comparte los archivos originales o paquetes ZIP completos. Exporta vistas previas de HTML y Markdown como PDF.
-- Prueba los ejemplos integrados de HTML, Markdown, JSON, YAML y ZIP.
+- Prueba los ejemplos integrados de HTML, Markdown, JSON, YAML, Mermaid, CSV, SVG y ZIP.
 
-Extensiones compatibles: .html, .htm, .md, .markdown, .json, .yaml, .yml y .zip. Las vistas previas de JSON y YAML son de solo lectura y comparten el archivo original. No se admiten comentarios JSONC ni comas finales. La exportación a PDF está disponible para HTML y Markdown.
+Extensiones compatibles: .html, .htm, .md, .markdown, .json, .yaml, .yml, .mmd, .mermaid, .csv, .tsv, .svg y .zip. Las vistas previas de JSON y YAML son de solo lectura y comparten el archivo original. No se admiten comentarios JSONC ni comas finales. La exportación a PDF está disponible para HTML y Markdown.
 
 La interfaz de la app está disponible en inglés, japonés y chino.
 

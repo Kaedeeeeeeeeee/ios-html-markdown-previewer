@@ -6,6 +6,9 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PACKET="$ROOT_DIR/docs/aso/2026-10-07-duo/materials"
 DEVICE="" FAMILY="" DISPLAY="" LOCALES="en-US zh-Hans ja zh-Hant" KEYS=""
 WAIT_SECONDS="${SCREENSHOT_SAMPLE_WAIT_SECONDS:-12}"
+# Optional operator gate: before each capture, wait until "$ASO_ADJUST_GATE_DIR/<locale>-<key>"
+# exists so a person can make a native in-app adjustment (e.g. scroll a wide table).
+ADJUST_GATE_DIR="${ASO_ADJUST_GATE_DIR:-}" ADJUST_NOTE="${ASO_ADJUST_NOTE:-}"
 BUNDLE_ID="com.kaede.htmlmarkdownpreviewer"
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -25,16 +28,16 @@ done
 if [[ "$FAMILY" == duo ]]; then
   [[ "$DISPLAY" == 1 || "$DISPLAY" == 3 ]] || { echo "Duo requires --display 1 (Closed) or 3 (Open); set the real pose before running." >&2; exit 2; }
   if [[ -z "$KEYS" ]]; then
-    if [[ "$DISPLAY" == 3 ]]; then KEYS="05-library 01-html-report 03-json-preview";
-    else KEYS="04-markdown-preview 06-yaml-preview 02-batch-import"; fi
+    if [[ "$DISPLAY" == 3 ]]; then KEYS="05-library 01-html-report 03-json-preview 08-csv-table";
+    else KEYS="04-markdown-preview 06-yaml-preview 02-batch-import 07-mermaid-diagram"; fi
   fi
 else
-  KEYS="${KEYS:-05-library 01-html-report 04-markdown-preview 03-json-preview 06-yaml-preview 02-batch-import}"
+  KEYS="${KEYS:-05-library 01-html-report 04-markdown-preview 03-json-preview 06-yaml-preview 02-batch-import 07-mermaid-diagram 08-csv-table}"
 fi
 for key in $KEYS; do
-  case "$key" in 01-html-report|04-markdown-preview|03-json-preview|06-yaml-preview|02-batch-import|05-library) ;; *) echo "Unknown source key $key" >&2; exit 2;; esac
+  case "$key" in 01-html-report|04-markdown-preview|03-json-preview|06-yaml-preview|02-batch-import|05-library|07-mermaid-diagram|08-csv-table) ;; *) echo "Unknown source key $key" >&2; exit 2;; esac
   if [[ "$FAMILY" == duo ]]; then
-    case "$key" in 01-html-report|03-json-preview|05-library) required_display=3;; *) required_display=1;; esac
+    case "$key" in 01-html-report|03-json-preview|05-library|08-csv-table) required_display=3;; *) required_display=1;; esac
     [[ "$DISPLAY" == "$required_display" ]] || { echo "$key requires display $required_display; no pose changes are automated." >&2; exit 2; }
   fi
 done
@@ -82,6 +85,8 @@ PY
       01-html-report) args=(--screenshot-open-document=weekly-report.html);;
       04-markdown-preview) args=(--screenshot-open-document=developer-notes.md);;
       03-json-preview) args=(--screenshot-sample=json);;
+      07-mermaid-diagram) args=(--screenshot-sample=mermaid);;
+      08-csv-table) args=(--screenshot-sample=csv);;
       06-yaml-preview) xcrun simctl ui "$DEVICE" appearance dark; args=(--screenshot-sample=yaml);;
       02-batch-import) args=(--screenshot-reset-library "--batch-import-fixture=$(uuidgen)" --batch-import-scenario=showcase);;
       05-library)
@@ -92,13 +97,17 @@ PY
     SIMCTL_CHILD_HTML_PREVIEWER_UI_TESTS=1 xcrun simctl launch --terminate-running-process "$DEVICE" "$BUNDLE_ID" "${args[@]}" -AppleLanguages "($language)" -AppleLocale "$apple_locale" >/dev/null
     xcrun simctl status_bar "$DEVICE" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
     sleep "$WAIT_SECONDS"
+    if [[ -n "$ADJUST_GATE_DIR" ]]; then
+      echo "Waiting for operator adjustment: $ADJUST_GATE_DIR/$locale-$key"
+      while [[ ! -e "$ADJUST_GATE_DIR/$locale-$key" ]]; do sleep 1; done
+    fi
     capture_args=(io "$DEVICE" screenshot)
     if [[ -n "$DISPLAY" ]]; then capture_args+=("--display=$DISPLAY"); fi
     # Simulator services may not have access to /Volumes. Copy native bytes from
     # our unique temporary directory without image conversion or resampling.
     xcrun simctl "${capture_args[@]}" "$CAPTURE_TEMP/capture.png" >/dev/null
     cp "$CAPTURE_TEMP/capture.png" "$output_dir/$FAMILY-$key.png"
-    python3 - "$output_dir/$FAMILY-$key.png" "$PACKET" "$DEVICE" "$FAMILY" "$key" "$locale" "$DISPLAY" <<'PY'
+    python3 - "$output_dir/$FAMILY-$key.png" "$PACKET" "$DEVICE" "$FAMILY" "$key" "$locale" "$DISPLAY" "${ADJUST_GATE_DIR:+$ADJUST_NOTE}" <<'PY'
 from PIL import Image
 from pathlib import Path
 import sys,json,hashlib,datetime,subprocess,plistlib
@@ -109,6 +118,7 @@ for name in [info['CFBundleExecutable'],info['CFBundleExecutable']+'.debug.dylib
     f=app/name
     if f.is_file(): binaries[name]=hashlib.sha256(f.read_bytes()).hexdigest()
 record={'capturedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'path':str(path.relative_to(packet)),'deviceId':sys.argv[3],'family':sys.argv[4],'sourceKey':sys.argv[5],'locale':sys.argv[6],'displayId':int(sys.argv[7]) if sys.argv[7] else None,'pixels':list(im.size),'mode':im.mode,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'appVersion':info.get('CFBundleShortVersionString'),'buildNumber':info.get('CFBundleVersion'),'installedExecutableSHA256':binaries,'developerDirectory':__import__('os').environ['DEVELOPER_DIR'],'sourceKind':'Actual simulator app capture; isolated UITestLibrary and synthetic fixtures','poseSelection':'Native operator sets pose before capture; script does not change pose','visualReview':'pending','sourcePixelsEdited':False}
+if len(sys.argv)>8 and sys.argv[8]: record['operatorAdjustment']=sys.argv[8]
 record_path=packet/'capture-records'/sys.argv[6]/(sys.argv[4]+'-'+sys.argv[5]+'.json');record_path.parent.mkdir(parents=True,exist_ok=True);record_path.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
 print(str(path),im.size,im.mode)
 PY

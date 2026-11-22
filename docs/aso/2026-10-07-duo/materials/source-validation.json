@@ -13,9 +13,9 @@
     "ipad",
     "duo"
   ],
-  "expectedScreenshotCount": 72,
+  "expectedScreenshotCount": 96,
   "actualScreenshotCount": 0,
-  "actualSourceCount": 72,
+  "actualSourceCount": 96,
   "metadata": {
     "en-US": {
       "name": {
@@ -23,19 +23,19 @@
         "limit": 30
       },
       "subtitle": {
-        "characters": 27,
+        "characters": 28,
         "limit": 30
       },
       "keywords": {
-        "characters": 93,
+        "characters": 98,
         "limit": 100
       },
       "promotional_text": {
-        "characters": 147,
+        "characters": 157,
         "limit": 170
       },
       "description": {
-        "characters": 2339,
+        "characters": 2842,
         "limit": 4000
       }
     },
@@ -45,19 +45,19 @@
         "limit": 30
       },
       "subtitle": {
-        "characters": 27,
+        "characters": 21,
         "limit": 30
       },
       "keywords": {
-        "characters": 67,
+        "characters": 99,
         "limit": 100
       },
       "promotional_text": {
-        "characters": 79,
+        "characters": 91,
         "limit": 170
       },
       "description": {
-        "characters": 1002,
+        "characters": 1226,
         "limit": 4000
       }
     },
@@ -67,19 +67,19 @@
         "limit": 30
       },
       "subtitle": {
-        "characters": 21,
+        "characters": 23,
         "limit": 30
       },
       "keywords": {
-        "characters": 80,
+        "characters": 97,
         "limit": 100
       },
       "promotional_text": {
-        "characters": 93,
+        "characters": 97,
         "limit": 170
       },
       "description": {
-        "characters": 1256,
+        "characters": 1523,
         "limit": 4000
       }
     },
@@ -89,19 +89,19 @@
         "limit": 30
       },
       "subtitle": {
-        "characters": 27,
+        "characters": 21,
         "limit": 30
       },
       "keywords": {
-        "characters": 71,
+        "characters": 98,
         "limit": 100
       },
       "promotional_text": {
-        "characters": 80,
+        "characters": 91,
         "limit": 170
       },
       "description": {
-        "characters": 1023,
+        "characters": 1249,
         "limit": 4000
       }
     }
@@ -124,6 +124,24 @@
       ],
       "mode": "RGBA",
       "sha256": "f26a5dcc988fff56473d66dec01f51338478350a7c9be7ec5ffdedcd7b6c210d"
+    },
+    {
+      "path": "sources/en-US/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "3bca3a55ef18d2072e360f15049f8864670940d86b088d13b2559f441c15d025"
+    },
+    {
+      "path": "sources/en-US/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "75a07e91334b9d2bae833acbbb20f1aa0d13cbf381e7de5390c8785cb0d77dd3"
     },
     {
       "path": "sources/en-US/iphone-03-json-preview.png",
@@ -180,6 +198,24 @@
       "sha256": "8824e87fe9130ddb5e47091bad91ab107f12dee11822e8aaa5c5fac10c33e6a6"
     },
     {
+      "path": "sources/en-US/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "df3de75b36ad08a2287ee2265e281b6b9cb3b8d1a59783de3ce92ea793e09f3e"
+    },
+    {
+      "path": "sources/en-US/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "2557cb2bcda88dbba1c2ed8657394e63c363e7dcc6578d9a7e65256d8857be3b"
+    },
+    {
       "path": "sources/en-US/ipad-03-json-preview.png",
       "pixels": [
         2048,
@@ -232,6 +268,24 @@
       ],
       "mode": "RGBA",
       "sha256": "2d08c23378f49f678a9a91d003a43bac325e86b2c4311be345e2a612b4e41f7f"
+    },
+    {
+      "path": "sources/en-US/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "d70f753ab750dcfaa170ac36b2dd5213fe7c20143276fa8528004e9a3dbf3705"
+    },
+    {
+      "path": "sources/en-US/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "1c4e15e9a4116fe27f40b0a10646b1da1cd1cb993f4416172a4c22ab91df64ab"
     },
     {
       "path": "sources/en-US/duo-03-json-preview.png",
@@ -288,6 +342,24 @@
       "sha256": "0b9d7b37eca5ae379502f884b9278304cf06a652857d870170797ec524f22afc"
     },
     {
+      "path": "sources/zh-Hans/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "6770ab8e22153faac524a3c618981c38ae47b92d126d29403c85510643777315"
+    },
+    {
+      "path": "sources/zh-Hans/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "65cae1295d2e82e22f2f6f5b7bd2fccf028937e708d2a451058756c82ec6ad5f"
+    },
+    {
       "path": "sources/zh-Hans/iphone-03-json-preview.png",
       "pixels": [
         1206,
@@ -340,6 +412,24 @@
       ],
       "mode": "RGBA",
       "sha256": "a8413382d93d7cfbd1d68e0aa2a965b7e42a67525a7d2f046258ab1bb56d2ba6"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "09a70e57973564fd6bc1eebd459962066346a10d32d04855bc73a34c4954f264"
+    },
+    {
+      "path": "sources/zh-Hans/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "44af208f34ce6bb5d3f685e3b703bbc8541a38ca277886ea2772fad43f553343"
     },
     {
       "path": "sources/zh-Hans/ipad-03-json-preview.png",
@@ -396,6 +486,24 @@
       "sha256": "4e35c9bd938fc142b19aa1e988c3f0340b0f460bd9786218fd37d48e53031f26"
     },
     {
+      "path": "sources/zh-Hans/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "3f0e821b5f5accff3449eed9f4f45f6e80f5d87ff70a81c53a735bcb40182f8c"
+    },
+    {
+      "path": "sources/zh-Hans/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "4506d282fd9c594af19e296231261a7d02df4307d205ac795c8bc402d6f93e20"
+    },
+    {
       "path": "sources/zh-Hans/duo-03-json-preview.png",
       "pixels": [
         2853,
@@ -448,6 +556,24 @@
       ],
       "mode": "RGBA",
       "sha256": "1dd797dadc47d478d4705f5fe843b40563d1fb71408a40d7593e91569056b36a"
+    },
+    {
+      "path": "sources/ja/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "0ebad21c1b4522d84d7c82356a9085698b68c4d8f5cc923d7852710991a80e68"
+    },
+    {
+      "path": "sources/ja/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "5947882f9358e07cb0f392c0fa0a5978792de0cf7037d066b917c488db4fe479"
     },
     {
       "path": "sources/ja/iphone-03-json-preview.png",
@@ -504,6 +630,24 @@
       "sha256": "683302201339b467327ff9226409e82f333f1f07bec305927b0507e05af2b4eb"
     },
     {
+      "path": "sources/ja/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "b610e7bd820354dfe88e2deb07499cc45e94ffd3cac59f0307bec08067e68d87"
+    },
+    {
+      "path": "sources/ja/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "3dc19eee4082244590421c7ee833bd5df92acc0ac99864abe068cd3893989a3d"
+    },
+    {
       "path": "sources/ja/ipad-03-json-preview.png",
       "pixels": [
         2048,
@@ -556,6 +700,24 @@
       ],
       "mode": "RGBA",
       "sha256": "189315c0a741207ad647d1b33e41433ee1fa168fbedabfbdee5654a5c3bb812a"
+    },
+    {
+      "path": "sources/ja/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "97a35f56e1c99c44a49cadb45e40a2850989779018c72d883ddfe48f29006f80"
+    },
+    {
+      "path": "sources/ja/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "72ef82c739b6580213d8cd8091b04a49fa3a3f00eff4b420a738f86e5121f3ce"
     },
     {
       "path": "sources/ja/duo-03-json-preview.png",
@@ -612,6 +774,24 @@
       "sha256": "73db91169ed28ec6dda780591e2c5a7d36f87d61e9f656f84cc3c444149e52b7"
     },
     {
+      "path": "sources/zh-Hant/iphone-07-mermaid-diagram.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "91684ec1f2a555dc0c1b5af4ba5df07f218f92cb8ebe81d8e2ae388b645b0ce6"
+    },
+    {
+      "path": "sources/zh-Hant/iphone-08-csv-table.png",
+      "pixels": [
+        1320,
+        2868
+      ],
+      "mode": "RGBA",
+      "sha256": "02e3fc3b722d9bd345b8a3d19e9c785f267fb10ff3c9a0224e5ed8c935182472"
+    },
+    {
       "path": "sources/zh-Hant/iphone-03-json-preview.png",
       "pixels": [
         1206,
@@ -666,6 +846,24 @@
       "sha256": "35d70b97cdc00dd02faff585491e0d7771faf94472879662a98ccec90544f4f5"
     },
     {
+      "path": "sources/zh-Hant/ipad-07-mermaid-diagram.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "498f825a001bd99980680b470efcd418b79e2d35ca0b733fab352ec5ba4150e2"
+    },
+    {
+      "path": "sources/zh-Hant/ipad-08-csv-table.png",
+      "pixels": [
+        2064,
+        2752
+      ],
+      "mode": "RGBA",
+      "sha256": "cdfc841c93c3f942169f8b23152684e585a284f100dbbfe8168448afc0d47952"
+    },
+    {
       "path": "sources/zh-Hant/ipad-03-json-preview.png",
       "pixels": [
         2048,
@@ -718,6 +916,24 @@
       ],
       "mode": "RGBA",
       "sha256": "4de01013206e1f2e2455f228df7359dd5cc7568bf087486a7355b6ae18db17fb"
+    },
+    {
+      "path": "sources/zh-Hant/duo-07-mermaid-diagram.png",
+      "pixels": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "6790bfced5ac7a78fffff671afce466568848bf0180f2b0f923da43c1a0107ca"
+    },
+    {
+      "path": "sources/zh-Hant/duo-08-csv-table.png",
+      "pixels": [
+        2853,
+        2007
+      ],
+      "mode": "RGBA",
+      "sha256": "044a8183ab34f47117ab933933323a963afd37e50dfaf2575ee879f828330b84"
     },
     {
       "path": "sources/zh-Hant/duo-03-json-preview.png",

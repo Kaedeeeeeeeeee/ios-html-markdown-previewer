@@ -1,5 +1,7 @@
 # 1.8 (13) 商店素材包
 
+> **2026-11-22 更新：每组 8 张，共 96 张。** 新增 `07-mermaid-diagram`（成品 `03-mermaid-diagram`）与 `08-csv-table`（成品 `04-csv-table`），原 03–06 成品顺延为 05–08，字节不变，仅改名。新 source 为 1.9.0(17) 代码的 Debug 捕获，逐场景身份写在 `order.json` 的 `captureIdentities`，审计据此校验；其余场景仍为 1.8(13)。Duo：Mermaid 为 Closed 外屏 display1，CSV 为 Open 内屏 display3。普通 iPhone 的 CSV 在 App 内横向滚动表格后捕获（`ASO_ADJUST_GATE_DIR`，记录在 capture record 的 `operatorAdjustment`）。新图由 `ONLY_KEYS=07-mermaid-diagram,08-csv-table node scripts/store-art/generate-screenshots-v2.js <out>` 生成。下文中“六张 / 72 张”的描述是 1.8 当时的记录。`visual-review-*.json` 与 `provenance.json` 自 10/29 v2 重绘起即未更新，未纳入本次门禁。
+
 本包使用四语言、三种设备素材，每组六张，共 72 张。Duo 只有一个后台组，六张同时包含内屏与外屏场景。这里是本地制作目录；捕获、合成、视觉核验、上传和提交分别记录，目录存在不代表已经发布。
 
 本地制作与正式集成已完成：72 张 1.8(13) 实际 source、72 张不透明 RGB 成品、12 份联系表均完成核对；四语言正式目录每份 18 张，另有根目录英文 18 张逐字节兼容副本。`validation.json` 与 `integration-validation.json` 均为 PASS；来源、实际混合 Debug 身份与后续 resize 修复差异记录在 `provenance.json`。远端处理、审核与公开状态由发布记录独立核验。

@@ -31,6 +31,16 @@
         "eyebrow": "YOUR FILE LIBRARY",
         "title": "Keep useful files\nclose",
         "subtitle": "Search filenames, pin documents, and read again."
+      },
+      "07-mermaid-diagram": {
+        "eyebrow": "MERMAID DIAGRAMS",
+        "title": "See Mermaid diagrams\ndrawn offline",
+        "subtitle": "Open .mmd files as flowcharts and sequence diagrams."
+      },
+      "08-csv-table": {
+        "eyebrow": "CSV & SVG",
+        "title": "Read CSV tables\nat a glance",
+        "subtitle": "Aligned number columns for CSV and TSV. SVG images shown safely."
       }
     },
     "deviceScreenshots": {
@@ -64,6 +74,16 @@
           "eyebrow": "YOUR FILE LIBRARY",
           "title": "Keep useful files\nclose",
           "subtitle": "Find reports, notes and configuration in the inner-screen library."
+        },
+        "07-mermaid-diagram": {
+          "eyebrow": "MERMAID DIAGRAMS",
+          "title": "See Mermaid diagrams\ndrawn offline",
+          "subtitle": "Open .mmd files as flowcharts and sequence diagrams."
+        },
+        "08-csv-table": {
+          "eyebrow": "CSV & SVG",
+          "title": "Read CSV tables\nat a glance",
+          "subtitle": "Aligned number columns for CSV and TSV. SVG images shown safely."
         }
       }
     }
@@ -100,6 +120,16 @@
         "eyebrow": "你的文件库",
         "title": "常用文件\n下次接着看",
         "subtitle": "按文件名搜索、置顶资料，再次打开继续阅读"
+      },
+      "07-mermaid-diagram": {
+        "eyebrow": "Mermaid 图表",
+        "title": "Mermaid 流程图\n离线绘制",
+        "subtitle": "打开 .mmd 文件，流程图、时序图清晰呈现"
+      },
+      "08-csv-table": {
+        "eyebrow": "CSV 表格与 SVG",
+        "title": "CSV 表格\n整齐易读",
+        "subtitle": "CSV/TSV 数字列自动对齐，SVG 图片安全显示"
       }
     },
     "deviceScreenshots": {
@@ -133,6 +163,16 @@
           "eyebrow": "你的文件库",
           "title": "常用文件\n随手可得",
           "subtitle": "在内屏文件库查找报告、笔记与配置。"
+        },
+        "07-mermaid-diagram": {
+          "eyebrow": "Mermaid 图表",
+          "title": "Mermaid 流程图\n离线绘制",
+          "subtitle": "打开 .mmd 文件，流程图、时序图清晰呈现"
+        },
+        "08-csv-table": {
+          "eyebrow": "CSV 表格与 SVG",
+          "title": "CSV 表格\n整齐易读",
+          "subtitle": "CSV/TSV 数字列自动对齐，SVG 图片安全显示"
         }
       }
     }
@@ -169,6 +209,16 @@
         "eyebrow": "ファイルライブラリ",
         "title": "よく使うファイルを\n手元に",
         "subtitle": "名前で検索して固定。次回もすぐに開ける。"
+      },
+      "07-mermaid-diagram": {
+        "eyebrow": "MERMAID 図",
+        "title": "Mermaidの図を\nオフラインで表示",
+        "subtitle": ".mmdファイルをフローチャートやシーケンス図で表示"
+      },
+      "08-csv-table": {
+        "eyebrow": "CSV・SVG",
+        "title": "CSVの表を\nすっきり表示",
+        "subtitle": "CSV/TSVの数値列を揃えて表示。SVG画像も安全に表示"
       }
     },
     "deviceScreenshots": {
@@ -202,6 +252,16 @@
           "eyebrow": "ファイルライブラリ",
           "title": "よく使うファイルを\n手元に",
           "subtitle": "内側のライブラリでレポート・ノート・設定を探す。"
+        },
+        "07-mermaid-diagram": {
+          "eyebrow": "MERMAID 図",
+          "title": "Mermaidの図を\nオフラインで表示",
+          "subtitle": ".mmdファイルをフローチャートやシーケンス図で表示"
+        },
+        "08-csv-table": {
+          "eyebrow": "CSV・SVG",
+          "title": "CSVの表を\nすっきり表示",
+          "subtitle": "CSV/TSVの数値列を揃えて表示。SVG画像も安全に表示"
         }
       }
     }
@@ -238,6 +298,16 @@
         "eyebrow": "你的檔案庫",
         "title": "常用檔案\n下次接著看",
         "subtitle": "依檔名搜尋、釘選資料，再次開啟繼續閱讀"
+      },
+      "07-mermaid-diagram": {
+        "eyebrow": "Mermaid 圖表",
+        "title": "Mermaid 流程圖\n離線繪製",
+        "subtitle": "開啟 .mmd 檔案，流程圖、時序圖清楚呈現"
+      },
+      "08-csv-table": {
+        "eyebrow": "CSV 表格與 SVG",
+        "title": "CSV 表格\n整齊易讀",
+        "subtitle": "CSV/TSV 數字欄自動對齊，SVG 圖片安全顯示"
       }
     },
     "deviceScreenshots": {
@@ -271,6 +341,16 @@
           "eyebrow": "你的檔案庫",
           "title": "常用檔案\n隨手可得",
           "subtitle": "在內螢幕檔案庫尋找報告、筆記與設定。"
+        },
+        "07-mermaid-diagram": {
+          "eyebrow": "Mermaid 圖表",
+          "title": "Mermaid 流程圖\n離線繪製",
+          "subtitle": "開啟 .mmd 檔案，流程圖、時序圖清楚呈現"
+        },
+        "08-csv-table": {
+          "eyebrow": "CSV 表格與 SVG",
+          "title": "CSV 表格\n整齊易讀",
+          "subtitle": "CSV/TSV 數字欄自動對齊，SVG 圖片安全顯示"
         }
       }
     }

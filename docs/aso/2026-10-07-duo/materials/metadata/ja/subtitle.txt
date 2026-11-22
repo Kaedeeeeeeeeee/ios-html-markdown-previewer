@@ -1,1 +1,1 @@
-Markdown・JSON・ZIPビューア
+Markdown・JSON・YAML ビューア

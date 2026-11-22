@@ -1,0 +1,28 @@
+{
+  "capturedAtUTC": "2026-11-22T10:12:22.955626+00:00",
+  "path": "sources/zh-Hant/iphone-08-csv-table.png",
+  "deviceId": "3FB274D0-D64D-443D-9C6F-9CA0F92251A6",
+  "family": "iphone",
+  "sourceKey": "08-csv-table",
+  "locale": "zh-Hant",
+  "displayId": null,
+  "pixels": [
+    1320,
+    2868
+  ],
+  "mode": "RGBA",
+  "sha256": "02e3fc3b722d9bd345b8a3d19e9c785f267fb10ff3c9a0224e5ed8c935182472",
+  "appVersion": "1.9.0",
+  "buildNumber": "17",
+  "installedExecutableSHA256": {
+    "HTMLMarkdownPreviewer": "8afb29dcdbf0a9f1817e1c14308913c418fdb306cc57c84cd04bcc94e172034d",
+    "HTMLMarkdownPreviewer.debug.dylib": "81b6030244c391e58c4097415afdb2fe3d678bae617e573545e03f3f32d8d261"
+  },
+  "developerDirectory": "/Applications/Xcode-27.1.app/Contents/Developer",
+  "sourceKind": "Actual simulator app capture; isolated UITestLibrary and synthetic fixtures",
+  "poseSelection": "Native operator sets pose before capture; script does not change pose",
+  "visualReview": "contact_sheet_review_passed",
+  "sourcePixelsEdited": false,
+  "operatorAdjustment": "Table scrolled horizontally in-app so the numeric columns are visible",
+  "visualReviewScope": "Four-language final contact sheets of the Mermaid and CSV slides inspected: diagram fully drawn, number columns aligned and readable, headline and subtitle fit, callout not cut off."
+}

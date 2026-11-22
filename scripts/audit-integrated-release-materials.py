@@ -2,7 +2,7 @@
 """Verify that actual upload inputs match the new local release packet.
 
 No App Store write, device operation, or release action is performed. The older
-36/48-image materials cannot satisfy the new 72-image gate.
+36/48/72-image materials cannot satisfy the current 96-image gate.
 """
 import argparse
 import hashlib
@@ -56,9 +56,9 @@ check(f'APP_STORE_CONNECT_VERSION_STRING: "{version}"' in workflow, "Upload work
 check(f'APP_STORE_CONNECT_BUILD_NUMBER: "{build}"' in workflow, "Upload workflow build mismatch")
 locales = order["locales"]
 expected_count = len(locales) * len(devices) * len(order["outputSuffixes"])
-check(expected_count == 72, "Expected the approved four-locale, three-family, six-scene matrix")
-check(len(set(order["sourceKeys"])) == 6 and len(set(order["outputSuffixes"])) == 6,
-      "All six source scenes and final filenames must be distinct")
+check(expected_count == 96, "Expected the approved four-locale, three-family, eight-scene matrix")
+check(len(set(order["sourceKeys"])) == 8 and len(set(order["outputSuffixes"])) == 8,
+      "All eight source scenes and final filenames must be distinct")
 check(set(locales) == {"en-US", "zh-Hans", "ja", "zh-Hant"}, "Four-language inventory missing")
 check({d["prefix"] for d in devices} == {"iphone", "ipad", "duo"}, "New Duo family missing")
 # Distribution must verify the same canonical files with the modern GET-only
@@ -79,8 +79,8 @@ for profile, family in {"IPHONE_DYNAMIC_ISLAND_LARGE_PROFILE":"iphone", "IPAD_13
 validation_path = packet / "validation.json"
 validation = json.loads(validation_path.read_text()) if validation_path.exists() else {}
 validated_images = {entry["path"]: entry for entry in validation.get("screenshots", [])}
-check(validation.get("status") == "PASS" and validation.get("actualScreenshotCount") == 72,
-      "New packet requires completed 72-image validation; old packet is not a substitute")
+check(validation.get("status") == "PASS" and validation.get("actualScreenshotCount") == 96,
+      "New packet requires completed 96-image validation; old packet is not a substitute")
 check((upload / "copy.json").is_file() and json.loads((upload / "copy.json").read_text()) == json.loads((packet / "copy.json").read_text()),
       "Integrated screenshot copy differs from new packet")
 release_handoff = ROOT / "docs/updates" / f"{version}-release-notes.md"
@@ -93,11 +93,13 @@ check("fastlane/metadata/{en-US,zh-Hans,ja,zh-Hant}/release_notes.txt" in value(
 carry_over = re.search(r"Screenshots (?:carried over unchanged from (\d+(?:\.\d+)+) \((\d+)\)|"
                        r"recomposed from (\d+(?:\.\d+)+) \((\d+)\) captures)\.", value(release_handoff))
 capture_version, capture_build = [g for g in carry_over.groups() if g] if carry_over else (version, build)
+# Scenes captured later than the carried-over set declare their own identity in order.json.
+capture_overrides = {key: value for key, value in order.get("captureIdentities", {}).items() if key != "default"}
 
 for locale in locales:
     folder = upload / locale
     expected = {f'{d["prefix"]}-{s}.png' for d in devices for s in order["outputSuffixes"]}
-    check({p.name for p in folder.glob("*.png")} == expected, f"Exact 18-image upload inventory differs: {locale}")
+    check({p.name for p in folder.glob("*.png")} == expected, f"Exact 24-image upload inventory differs: {locale}")
     for device in devices:
         family = device["prefix"]
         for source_key, suffix in zip(order["sourceKeys"], order["outputSuffixes"]):
@@ -118,7 +120,8 @@ for locale in locales:
                   f"Source changed since packet validation: {locale}/{name}")
             capture_path = packet / "capture-records" / locale / f"{family}-{source_key}.json"
             capture = json.loads(capture_path.read_text()) if capture_path.exists() else {}
-            check(capture.get("appVersion") == capture_version and capture.get("buildNumber") == capture_build,
+            expected_capture = capture_overrides.get(source_key, [capture_version, capture_build])
+            check([capture.get("appVersion"), capture.get("buildNumber")] == expected_capture,
                   f"Capture version differs from upload target or declared carry-over: {locale}/{name}")
             check(capture.get("sha256") == validated.get("sourceSHA256") and bool(capture.get("installedExecutableSHA256")),
                   f"Capture identity missing or stale: {locale}/{name}")
@@ -150,7 +153,7 @@ for locale in locales:
 check(len(screenshots) == expected_count, f"Expected {expected_count} integrated images, found {len(screenshots)}")
 result = {"status":"PASS" if not errors else "FAIL", "version":version, "build":build,
           "captureVersion":capture_version, "captureBuild":capture_build,
-          "scope":"Local identity of actual upload inputs, new 72-image inventory, opaque PNG geometry, metadata and release-note handoff. No API enum, upload, Apple acceptance, review or release is asserted.",
+          "scope":"Local identity of actual upload inputs, new 96-image inventory, opaque PNG geometry, metadata and release-note handoff. No API enum, upload, Apple acceptance, review or release is asserted.",
           "packet":str(packet), "uploadPath":str(upload), "locales":locales, "families":[d["prefix"] for d in devices],
           "screenshotCount":len(screenshots), "metadata":metadata, "screenshots":screenshots, "errors":errors}
 if args.output:

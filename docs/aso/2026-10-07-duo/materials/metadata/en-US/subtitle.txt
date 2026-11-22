@@ -1,1 +1,1 @@
-Markdown, JSON & ZIP Viewer
+Markdown, JSON & YAML Viewer

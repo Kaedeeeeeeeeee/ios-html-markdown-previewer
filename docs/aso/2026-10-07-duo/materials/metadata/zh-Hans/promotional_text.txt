@@ -1,1 +1,1 @@
-收到 HTML 或 ZIP 报告，随手打开；阅读 Markdown 代码与公式，查看 JSON/YAML 结构。文件在设备本地处理，付费下载，无广告、无订阅。
+HTML 与 ZIP 报告、Markdown、JSON/YAML 之外，现在还能看 Mermaid 图表、CSV 表格和 SVG 图片。文件在设备本地处理，付费下载，无广告、无订阅。

@@ -1,1 +1,1 @@
-Read HTML and ZIP reports, Markdown code and math, and JSON/YAML structures. Files are processed on device. Paid download. No ads or subscriptions.
+Read HTML and ZIP reports, Markdown, JSON/YAML, plus new Mermaid diagrams, CSV tables and SVG images. Files are processed on device. No ads or subscriptions.

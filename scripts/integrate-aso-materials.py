@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mirror a validated 72-image packet into the canonical local upload inputs.
+"""Mirror a validated 96-image packet into the canonical local upload inputs.
 
 Dry-run by default. --apply changes only local screenshots and copy.json,
 preserves old bytes in a unique /tmp backup, and never accesses App Store Connect.
@@ -25,10 +25,10 @@ validation = json.loads((packet / "validation.json").read_text())
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 families = {d["prefix"] for d in devices}
 if (set(order["locales"]) != {"en-US", "zh-Hans", "ja", "zh-Hant"} or
-        families != {"iphone", "ipad", "duo"} or len(order["outputSuffixes"]) != 6 or len(set(order["outputSuffixes"])) != 6):
+        families != {"iphone", "ipad", "duo"} or len(order["outputSuffixes"]) != 8 or len(set(order["outputSuffixes"])) != 8):
     raise SystemExit("Refusing a different locale/family/scene matrix")
-if validation.get("status") != "PASS" or validation.get("actualScreenshotCount") != 72 or validation.get("errors"):
-    raise SystemExit("Full 72-image packet validation must pass before integration")
+if validation.get("status") != "PASS" or validation.get("actualScreenshotCount") != 96 or validation.get("errors"):
+    raise SystemExit("Full 96-image packet validation must pass before integration")
 validated = {entry["path"]: entry for entry in validation["screenshots"]}
 copies = []
 for locale in order["locales"]:
@@ -52,7 +52,7 @@ if (target / "copy.json").is_file():
 if any(p.is_symlink() for p in old_files) or target.is_symlink() or any((target / locale).is_symlink() for locale in order["locales"]):
     raise SystemExit("Refusing symlink upload inputs")
 result = {"status":"DRY_RUN", "packet":str(packet), "target":str(target),
-          "localizedScreenshotCount":72, "englishCompatibilityCount":18,
+          "localizedScreenshotCount":96, "englishCompatibilityCount":24,
           "scope":"Local exact-byte screenshot/copy integration only; no metadata mutation, upload, archive equivalence, or publication.",
           "oldFileCount":len(old_files)}
 if args.apply:

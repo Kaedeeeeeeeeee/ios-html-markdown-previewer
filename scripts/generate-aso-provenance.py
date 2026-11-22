@@ -11,14 +11,14 @@ parser.add_argument("--packet", type=Path, default=Path(__file__).resolve().pare
 packet = parser.parse_args().packet
 order = json.loads((packet / "order.json").read_text())
 validation = json.loads((packet / "validation.json").read_text())
-if validation.get("status") != "PASS" or validation.get("actualScreenshotCount") != 72:
-    raise SystemExit("A completed 72-image structural audit is required")
+if validation.get("status") != "PASS" or validation.get("actualScreenshotCount") != 96:
+    raise SystemExit("A completed 96-image structural audit is required")
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 reviews, groups, images = {}, {}, []
 for family in validation["families"]:
     path = packet / f"visual-review-{family}.json"
     review = json.loads(path.read_text())
-    if review.get("status") != "PASS" or len(review.get("images", [])) != 24:
+    if review.get("status") != "PASS" or len(review.get("images", [])) != 32:
         raise SystemExit(f"Incomplete visual review: {family}")
     reviews[family] = {entry["path"]:entry for entry in review["images"]}
 for entry in validation["screenshots"]:

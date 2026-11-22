@@ -1,1 +1,1 @@
-Lee reportes HTML y ZIP, código y fórmulas en Markdown, y estructuras JSON/YAML. Los archivos se procesan en tu dispositivo. Pago único, sin anuncios ni suscripciones.
+Lee reportes HTML y ZIP, Markdown y JSON/YAML, y ahora diagramas Mermaid, tablas CSV e imágenes SVG. Todo se procesa en tu dispositivo. Sin anuncios ni suscripciones.
