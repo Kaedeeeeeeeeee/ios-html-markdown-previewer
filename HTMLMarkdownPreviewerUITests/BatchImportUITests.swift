@@ -112,7 +112,7 @@ final class BatchImportUITests: XCTestCase {
         var field = app.searchFields.firstMatch
         if !field.isHittable { app.swipeDown() }
         try require(field.waitForExistence(timeout: 5), "Library search should be available")
-        field.tap()
+        try focus(field)
         if let old = field.value as? String, old != field.placeholderValue, !old.isEmpty {
             // A tap can place the caret inside a long filename. Clear the
             // whole query rather than backspacing only its prefix.
@@ -132,13 +132,29 @@ final class BatchImportUITests: XCTestCase {
                 // Clearing updates the query and accessibility tree. Resolve
                 // and focus the current field before sending the next filename.
                 field = app.searchFields.firstMatch
-                field.tap()
+                try focus(field)
             }
         }
+        try focus(field)
         field.typeText(text)
         let exactQuery = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.value as? String == text }, object: nil)
         try require(XCTWaiter.wait(for: [exactQuery], timeout: 5) == .completed, "Library search must contain the exact query")
         if app.keyboards.buttons["Search"].exists { app.keyboards.buttons["Search"].tap() }
+    }
+
+    /// The first keyboard after a simulator erase can take most of a minute to
+    /// load on the hosted runner, and the tap that requested it may then leave
+    /// the field without focus. Tap again until the field owns the keyboard.
+    private func focus(_ field: XCUIElement) throws {
+        for _ in 0..<3 {
+            if (field.value(forKey: "hasKeyboardFocus") as? Bool) == true { return }
+            field.tap()
+            let focused = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                (field.value(forKey: "hasKeyboardFocus") as? Bool) == true
+            }, object: nil)
+            if XCTWaiter.wait(for: [focused], timeout: 10) == .completed { return }
+        }
+        try require((field.value(forKey: "hasKeyboardFocus") as? Bool) == true, "Library search should take keyboard focus")
     }
 
     private func navigateHome(_ app: XCUIApplication) throws {
