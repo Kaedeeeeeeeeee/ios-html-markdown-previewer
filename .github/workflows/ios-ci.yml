@@ -150,7 +150,14 @@ jobs:
           for runtime, devices in devices_by_runtime.items():
               if not runtime.startswith("com.apple.CoreSimulator.SimRuntime.iOS-"):
                   continue
-              version = tuple(int(part) for part in runtime.rsplit("iOS-", 1)[1].split("-"))
+              # Runtime ids can carry a non-numeric suffix (for example a
+              # device-specific "-iPhone19" build); keep only the version parts.
+              version_parts = []
+              for part in runtime.rsplit("iOS-", 1)[1].split("-"):
+                  if not part.isdigit():
+                      break
+                  version_parts.append(int(part))
+              version = tuple(version_parts)
               for device in devices:
                   name = device.get("name", "")
                   # Ordinary smoke tests use a regular existing iPhone. Duo
