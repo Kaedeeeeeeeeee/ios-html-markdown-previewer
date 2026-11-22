@@ -111,14 +111,18 @@ def wait_image(api, image_id, allowed, dimensions, on_mismatch=None):
             raise ValueError(f"Image validation failed for {image_id}: {attrs['state']}")
         if attrs["state"] in ready_states:
             asset = attrs.get("imageAsset") or {}
-            if attrs.get("specId") in allowed and [asset.get("width"), asset.get("height")] == dimensions:
+            # The delivery template can appear a little after the ready state;
+            # keep polling until it exists so the pixel comparison can run.
+            if (attrs.get("specId") in allowed and [asset.get("width"), asset.get("height")] == dimensions
+                    and asset.get("templateUrl")):
                 return attrs
             # The state can reach ready before the classification/delivery fields
             # converge. Keep GET polling within the same deadline; never accept a
             # permanently incompatible specification or reserve a second image.
             last_mismatch = {"imageId": image_id, "state": attrs["state"],
                              "specId": attrs.get("specId"), "width": asset.get("width"),
-                             "height": asset.get("height"), "fileSize": attrs.get("fileSize")}
+                             "height": asset.get("height"), "fileSize": attrs.get("fileSize"),
+                             "hasTemplateUrl": bool(asset.get("templateUrl"))}
             if on_mismatch:
                 on_mismatch(last_mismatch)
         time.sleep(2)

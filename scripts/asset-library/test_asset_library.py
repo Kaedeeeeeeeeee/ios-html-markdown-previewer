@@ -112,7 +112,7 @@ class PlanningTests(unittest.TestCase):
         group = self.manifest["groups"][0]["placementGroup"]
         self.snapshot["localizations"][0]["placements"] = {"data": [{"id": "p", "attributes": {"placementGroup": group, "state": "PARENT_PREPARE_FOR_SUBMISSION"},
             "relationships": {"image": {"data": {"id": "i"}}}}], "included": [{"type": "appAssetLibraryImages", "id": "i", "attributes": {
-                "state": "PREPARE_FOR_SUBMISSION", "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3}}}]}
+                "state": "PREPARE_FOR_SUBMISSION", "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3, "templateUrl": "https://example.invalid/{w}x{h}.{f}"}}}]}
         receipt = {"appId": "app", "versionString": "1.8", "groups": [{"locale": "en-US", "placementGroup": group,
             "orderedPlacementIds": ["p"], "images": [{"placementId": "p", "imageId": "i", "allowedSpecIds": ["dynamic-spec"], "dimensions": [4, 3]}]}]}
         self.assertTrue(library.verify(self.snapshot, receipt)["verified"])
@@ -202,7 +202,7 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(len(FakeWriteAPI.calls), 1)
 
     def test_mocked_upload_commit_place_order_and_readback(self):
-        attrs = {"state": "PREPARE_FOR_SUBMISSION", "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3}}
+        attrs = {"state": "PREPARE_FOR_SUBMISSION", "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3, "templateUrl": "https://example.invalid/{w}x{h}.{f}"}}
         with mock.patch.object(uploader, "upload_ranges"), mock.patch.object(uploader, "wait_image", return_value=attrs), \
                 mock.patch.object(uploader, "delivery_check", return_value={"pixelExact": True}), \
                 mock.patch.object(library, "verify", return_value={"verified": True, "errors": []}):
@@ -222,7 +222,7 @@ class ReadinessTests(unittest.TestCase):
     def test_transient_ready_mismatch_polls_until_spec_and_dimensions_match(self):
         incomplete = {"state": "PREPARE_FOR_SUBMISSION", "specId": None,
                       "imageAsset": {"width": None, "height": None, "templateUrl": "DO_NOT_LOG"}}
-        ready = {"state": "PREPARE_FOR_SUBMISSION", "specId": "expected", "imageAsset": {"width": 4, "height": 3}}
+        ready = {"state": "PREPARE_FOR_SUBMISSION", "specId": "expected", "imageAsset": {"width": 4, "height": 3, "templateUrl": "https://example.invalid/{w}x{h}.{f}"}}
         api = mock.Mock()
         api.request.side_effect = [{"data": {"attributes": incomplete}}, {"data": {"attributes": ready}}]
         observations = []
@@ -265,7 +265,7 @@ class ResumeTests(unittest.TestCase):
                             "status": "completed", "resultId": identity}]}
         self.receipt_path.write_text(json.dumps(self.receipt, indent=2) + "\n")
         attributes = {**upload["reserve"]["body"]["data"]["attributes"], "state": "PREPARE_FOR_SUBMISSION",
-                      "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3}}
+                      "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3, "templateUrl": "https://example.invalid/{w}x{h}.{f}"}}
         self.members = {"data": [{"type": "appAssetLibraryImages", "id": identity, "attributes": attributes}]}
         self.read_api = mock.Mock()
         self.read_api.list.return_value = self.members
@@ -309,7 +309,7 @@ class ResumeTests(unittest.TestCase):
                       "delivery": {"pixelExact": True}, "readyMismatchObservations": []}
         review = {"planSha256": "digest", "receiptSha256": uploader.hashlib.sha256(self.receipt_path.read_bytes()).hexdigest(),
                   "reusedImages": [inspection]}
-        attrs = {"state": "PREPARE_FOR_SUBMISSION", "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3}}
+        attrs = {"state": "PREPARE_FOR_SUBMISSION", "specId": "dynamic-spec", "imageAsset": {"width": 4, "height": 3, "templateUrl": "https://example.invalid/{w}x{h}.{f}"}}
         # Existing upload is committed and only read/revalidated; one new reserve
         # and commit occur. Fake placement IDs need to be unique for two creates.
         base_request = FakeWriteAPI.request
