@@ -44,7 +44,7 @@ enum AppStrings {
         static let noRecentFiles = AppStrings.localized("home.empty.title", defaultValue: "No Recent Files")
         static let noRecentFilesDescription = AppStrings.localized(
             "home.empty.description",
-            defaultValue: "Open an HTML, Markdown, YAML, JSON, or ZIP file."
+            defaultValue: "Open an HTML, Markdown, YAML, JSON, Mermaid, CSV, SVG, or ZIP file."
         )
     }
 
