@@ -333,11 +333,19 @@ final class SmokeUITests: XCTestCase {
         // A row clipped by the bottom edge reports hittable while its visible
         // slice lies in the home-indicator area, where the system ignores taps.
         let isClearOfBottomEdge = { element.isHittable && element.frame.maxY <= app.frame.maxY - 44 }
+        var nudgedFrame: CGRect?
         for _ in 0..<6 {
             if element.waitForExistence(timeout: 1), isClearOfBottomEdge() {
                 return true
             }
+            if element.exists, element.isHittable, let nudgedFrame, element.frame == nudgedFrame {
+                // A nudge no longer moves it, so the list is at its end and
+                // the row's resting place is above the home indicator. That
+                // inset is shorter than 44 pt in landscape.
+                return true
+            }
             if element.exists {
+                nudgedFrame = element.frame
                 // The row is already on screen near the bottom edge. A full
                 // swipe can fling it past the top of a short landscape
                 // viewport and out of the lazy list, so nudge it up instead.
